@@ -2,8 +2,11 @@ import { supabase } from "@/supabase/client";
 import { UserInfo } from "@/type/supabase";
 
 const signUp = async (userInfo: UserInfo) => {
-  const response = await supabase.auth.signUp(userInfo);
-  return response;
+  const { error, data } = await supabase.auth.signUp(userInfo);
+  console.log(error);
+  if (error) throw new Error(error.message);
+
+  return data;
 };
 
 const authAPI = {

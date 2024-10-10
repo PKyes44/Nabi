@@ -13,6 +13,13 @@ function SignUpPage() {
 
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => api.auth.signUp(userInfo),
+    onSuccess: (...arg) => {
+      console.log("success: ", arg);
+      router.replace("/");
+    },
+    onError: (...arg) => {
+      console.log("error: ", arg);
+    },
   });
 
   const handleSubmitSignUpForm: ComponentProps<"form">["onSubmit"] = async (
@@ -40,7 +47,6 @@ function SignUpPage() {
     };
 
     signUp(userInfo);
-    router.replace("/");
   };
 
   return (
