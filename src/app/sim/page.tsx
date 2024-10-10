@@ -1,5 +1,5 @@
 function SimwooseopPage() {
-  return <div>심우섭</div>;
+  return <main>심우섭</main>;
 }
 
 export default SimwooseopPage;
