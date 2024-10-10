@@ -45,7 +45,7 @@ function Input({
     <div className={`${inputVariant({ intent, rounded })} ${innerClassName}`}>
       <input
         id={inputId}
-        className={`${inputClassName} w-full outline-none`}
+        className={`${inputClassName} w-full outline-none bg-transparent`}
         {...props}
       />
     </div>

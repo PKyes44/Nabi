@@ -4,7 +4,7 @@ import AuthNavigation from "./AuthNavigation";
 
 function Header() {
   return (
-    <header className="h-16 shadow-lg">
+    <header className="h-16 bg-white">
       <Page
         width="lg"
         isMain={false}
