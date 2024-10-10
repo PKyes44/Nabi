@@ -16,10 +16,15 @@ const pageVariant = cva("m-auto", {
 });
 
 type PageVariant = VariantProps<typeof pageVariant>;
-type PageProps = PageVariant & PropsWithChildren;
+type pageProps = {
+  className?: string;
+};
+type PageProps = PageVariant & PropsWithChildren<pageProps>;
 
-function Page({ width, children }: PageProps) {
-  return <div className={`${pageVariant({ width })}`}>{children}</div>;
+function Page({ width, className, children }: PageProps) {
+  return (
+    <div className={`${pageVariant({ width })} ${className}`}>{children}</div>
+  );
 }
 
 export default Page;

@@ -1,9 +1,10 @@
+import Page from "@/components/Page";
 import Link from "next/link";
 
 function Header() {
   return (
     <header className="h-16 shadow-lg">
-      <div className="h-full flex items-center justify-between">
+      <Page width="lg" className="h-full flex items-center justify-between">
         <Link href="/">나비</Link>
 
         <nav>
@@ -16,7 +17,7 @@ function Header() {
             </li>
           </ul>
         </nav>
-      </div>
+      </Page>
     </header>
   );
 }
