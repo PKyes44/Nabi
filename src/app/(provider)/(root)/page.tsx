@@ -1,5 +1,7 @@
+import Page from "@/components/Page";
+
 function RecruitsPage() {
-  return <div>RecruitsPage</div>;
+  return <Page>RecruitsPage</Page>;
 }
 
 export default RecruitsPage;
