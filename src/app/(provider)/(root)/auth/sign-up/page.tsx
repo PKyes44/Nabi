@@ -10,23 +10,29 @@ import { ComponentProps, FormEvent, useState } from "react";
 interface InitialErrMsgs {
   email: string | null;
   password: string | null;
-  passwordConfirm: string | null;
+  nickname: string | null;
 }
 const initialErrMsgs = {
   email: null,
   password: null,
-  passwordConfirm: null,
+  nickname: null,
 };
 
 type CustomFormEvent = FormEvent<HTMLFormElement> & {
   target: FormEvent<HTMLFormElement>["target"] & {
     email: HTMLInputElement;
     password: HTMLInputElement;
-    passwordConfirm: HTMLInputElement;
+    nickname: HTMLInputElement;
   };
 };
 
-function SignUpPage() {
+interface SignUpPageProps {
+  searchParams: {
+    role: string;
+  };
+}
+
+function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
@@ -49,7 +55,6 @@ function SignUpPage() {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const passwordConfirm = e.target.passwordConfirm.value;
 
     setErrMsgs(initialErrMsgs);
 
@@ -63,17 +68,7 @@ function SignUpPage() {
     if (!password)
       return setErrMsgs((prevErrMsgs) => ({
         ...prevErrMsgs,
-        password: "비밀번호을 입력해주세요",
-      }));
-    if (!passwordConfirm)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        passwordConfirm: "비밀번호를 재입력해주세요",
-      }));
-    if (password !== passwordConfirm)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        passwordConfirm: "비밀번호가 일치하지 않습니다",
+        password: "비밀번호를 입력해주세요",
       }));
 
     const userInfo: UserInfo = {
@@ -86,9 +81,9 @@ function SignUpPage() {
 
   return (
     <Page width="md" className="flex flex-col items-center">
-      <h1 className="mt-32 mb-10 text-3xl font-bold">회원가입 하기</h1>
+      <h1 className="mt-20 mb-10 text-3xl font-bold">회원가입 하기</h1>
 
-      <form onSubmit={handleSubmitSignUpForm}>
+      <form onSubmit={handleSubmitSignUpForm} className="flex gap-y-2 flex-col">
         <InputGroup
           type="email"
           errorText={errMsgs.email}
@@ -102,10 +97,10 @@ function SignUpPage() {
           name="password"
         />
         <InputGroup
-          type="password"
-          errorText={errMsgs.passwordConfirm}
-          label="비밀번호 확인"
-          name="passwordConfirm"
+          type="text"
+          errorText={errMsgs.nickname}
+          label="닉네임"
+          name="nickname"
         />
 
         <button

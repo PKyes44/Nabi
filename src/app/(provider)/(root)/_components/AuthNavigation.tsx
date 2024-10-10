@@ -20,10 +20,10 @@ function AuthNavigation() {
         ) : (
           <ul className="flex gap-x-5">
             <li>
-              <Link href="/log-in">로그인</Link>
+              <Link href="/auth?type=log-in">로그인</Link>
             </li>
             <li>
-              <Link href="/sign-up">회원가입</Link>
+              <Link href="/auth?type=sign-up">회원가입</Link>
             </li>
           </ul>
         )
