@@ -5,6 +5,8 @@ type useAuthState = {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   isAuthInitialized: boolean;
   setAuthInitialized: () => void;
+  currentUserId: string | null;
+  setCurrentUserId: (userId: string | null) => void;
 };
 
 export const useAuthStore = create<useAuthState>((set) => ({
@@ -12,4 +14,6 @@ export const useAuthStore = create<useAuthState>((set) => ({
   setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
   isAuthInitialized: false,
   setAuthInitialized: () => set({ isAuthInitialized: true }),
+  currentUserId: null,
+  setCurrentUserId: (userId: string | null) => set({ currentUserId: userId }),
 }));
