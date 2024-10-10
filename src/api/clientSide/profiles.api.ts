@@ -16,15 +16,15 @@ const insertProfile = async (
 };
 
 const getProfileByUserId = async (userId: string) => {
-  const { data: user, error } = await supabase
+  const { data, error } = await supabase
     .from(TABLE_PROFILES)
     .select()
     .eq("userId", userId)
     .single();
 
   if (error) throw new Error(error.message);
-
-  return user;
+  const profile: Database["public"]["Tables"]["userProfiles"]["Row"] = data;
+  return profile;
 };
 
 const profilesAPI = {

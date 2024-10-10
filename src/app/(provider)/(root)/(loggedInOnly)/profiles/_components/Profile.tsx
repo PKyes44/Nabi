@@ -16,7 +16,9 @@ function Profile() {
 
   return (
     <div className="flex gap-x-7">
-      <article className="w-[900px] h-[600px] bg-gray-300 rounded-lg"></article>
+      <article className="w-[900px] h-[600px] bg-gray-300 rounded-lg">
+        {/* {profile} */}
+      </article>
       <article className="grow h-96 bg-gray-300 rounded-lg"></article>
     </div>
   );
