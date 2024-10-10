@@ -1,6 +1,6 @@
 "use client";
 import api from "@/api/api";
-import Page from "@/components/Page";
+import Page from "@/components/Page/Page";
 import { UserInfo } from "@/type/supabase";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen-types": "npx supabase gen types --lang=typescript --project-id gxoibjaejbmathfpztjt --schema public > src/supabase/database.types.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
