@@ -1,5 +1,5 @@
 function YessPage() {
-  return <div>양은석의 페이지</div>;
+  return <main>양은석의 페이지</main>;
 }
 
 export default YessPage;
