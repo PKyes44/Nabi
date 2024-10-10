@@ -1,5 +1,6 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
+import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
 import { Database } from "@/supabase/database.types";
@@ -115,7 +116,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
     <Page width="md" className="flex flex-col items-center">
       <h1 className="mt-20 mb-10 text-3xl font-bold">회원가입 하기</h1>
 
-      <form onSubmit={handleSubmitSignUpForm} className="flex gap-y-2 flex-col">
+      <form onSubmit={handleSubmitSignUpForm} className="flex flex-col gap-y-2">
         <InputGroup
           type="email"
           errorText={errMsgs.email}
@@ -135,12 +136,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
           name="nickname"
         />
 
-        <button
-          className="mt-10 w-96 bg-indigo-300 text-white h-10 font-bold col-span-3"
-          type="submit"
-        >
-          회원가입
-        </button>
+        <ButtonGroup value="회원가입" size="md" className="w-full mt-5" />
       </form>
     </Page>
   );
