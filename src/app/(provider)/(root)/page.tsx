@@ -1,5 +1,5 @@
-function HomePage() {
-  return <div>홈페이지</div>;
+function RecruitsPage() {
+  return <div>RecruitsPage</div>;
 }
 
-export default HomePage;
+export default RecruitsPage;
