@@ -85,16 +85,16 @@ export type Database = {
           createdAt: string
           introduce: string
           nickname: string
-          profileImageUrl: string
+          profileImageUrl: string | null
           role: string
           teamId: string
           userId: string
         }
         Insert: {
           createdAt?: string
-          introduce: string
+          introduce?: string
           nickname: string
-          profileImageUrl: string
+          profileImageUrl?: string | null
           role: string
           teamId?: string
           userId?: string
@@ -103,7 +103,7 @@ export type Database = {
           createdAt?: string
           introduce?: string
           nickname?: string
-          profileImageUrl?: string
+          profileImageUrl?: string | null
           role?: string
           teamId?: string
           userId?: string

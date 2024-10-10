@@ -38,8 +38,9 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
 
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => api.auth.signUp(userInfo),
-    onSuccess: (...arg) => {
-      console.log("success: ", arg);
+    onSuccess: (userData) => {
+      console.log("success: ", userData.user!.id);
+      const userId = userData.user!.id;
       router.replace("/");
     },
     onError: (...arg) => {
