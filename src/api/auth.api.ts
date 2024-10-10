@@ -8,8 +8,16 @@ const signUp = async (userInfo: UserInfo) => {
   return data;
 };
 
+const logIn = async (logInData: UserInfo) => {
+  const { data, error } = await supabase.auth.signInWithPassword(logInData);
+  if (error) throw new Error(error.message);
+
+  return data;
+};
+
 const authAPI = {
   signUp,
+  logIn,
 };
 
 export default authAPI;
