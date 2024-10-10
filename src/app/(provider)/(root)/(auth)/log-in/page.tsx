@@ -1,5 +1,5 @@
 function LogInPage() {
-  return <div>LogInPage</div>;
+  return <div>page</div>;
 }
 
 export default LogInPage;
