@@ -2,14 +2,23 @@
 
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
+import useModalStore from "@/zustand/modal.store";
 import Link from "next/link";
 
 function AuthNavigation() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const authInitialized = useAuthStore((state) => state.isAuthInitialized);
+  const setIsShowSelectRoleModal = useModalStore(
+    (state) => state.setIsShowSelectRoleModal
+  );
+  const setAuthType = useModalStore((state) => state.setAuthType);
 
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();
+  };
+  const handleClickAuth = (type: "log-in" | "sign-up") => {
+    setAuthType(type);
+    setIsShowSelectRoleModal(true);
   };
 
   return (
@@ -28,10 +37,14 @@ function AuthNavigation() {
           ) : (
             <>
               <li>
-                <Link href="/auth?type=log-in">로그인</Link>
+                <button onClick={() => handleClickAuth("log-in")}>
+                  로그인
+                </button>
               </li>
               <li>
-                <Link href="/auth?type=sign-up">회원가입</Link>
+                <button onClick={() => handleClickAuth("sign-up")}>
+                  회원가입
+                </button>
               </li>
             </>
           )

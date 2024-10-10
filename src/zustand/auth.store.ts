@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type useAuthState = {
+type AuthStore = {
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   isAuthInitialized: boolean;
@@ -9,7 +9,7 @@ type useAuthState = {
   setCurrentUserId: (userId: string | null) => void;
 };
 
-export const useAuthStore = create<useAuthState>((set) => ({
+export const useAuthStore = create<AuthStore>((set) => ({
   isLoggedIn: false,
   setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
   isAuthInitialized: false,
