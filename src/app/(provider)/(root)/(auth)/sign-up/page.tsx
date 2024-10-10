@@ -1,5 +1,6 @@
 "use client";
 import api from "@/api/api";
+import Page from "@/components/Page";
 import { UserInfo } from "@/type/supabase";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -18,6 +19,7 @@ function SignUpPage() {
       router.replace("/");
     },
     onError: (...arg) => {
+      alert("회원가입 실패");
       console.log("error: ", arg);
     },
   });
@@ -50,7 +52,7 @@ function SignUpPage() {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center">
+    <Page width="sm">
       <h1 className="mt-32 mb-10 text-3xl font-bold">회원가입 하기</h1>
 
       <form
@@ -86,7 +88,7 @@ function SignUpPage() {
           회원가입
         </button>
       </form>
-    </main>
+    </Page>
   );
 }
 
