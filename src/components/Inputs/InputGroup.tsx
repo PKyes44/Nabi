@@ -6,8 +6,10 @@ type inputGroupProps = {
   wrapperClassName?: string;
   innerClassName?: string;
   inputClassName?: string;
-  errorText?: string;
-  helpText?: string;
+  errorText?: string | null;
+  helpText?: string | null;
+  name?: string;
+  type?: "text" | "email" | "password";
 };
 type InputGroupProps = inputGroupProps;
 
@@ -18,6 +20,8 @@ function InputGroup({
   wrapperClassName,
   innerClassName,
   inputClassName,
+  name,
+  type,
   ...props
 }: InputGroupProps) {
   const inputId = useId();
@@ -30,6 +34,8 @@ function InputGroup({
         innerClassName={innerClassName}
         inputClassName={inputClassName}
         inputId={inputId}
+        name={name}
+        type={type}
         {...props}
       />
       {errorText ? (
