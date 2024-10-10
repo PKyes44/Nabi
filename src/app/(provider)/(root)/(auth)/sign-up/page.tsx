@@ -1,16 +1,34 @@
 "use client";
 import api from "@/api/api";
+import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page";
 import { UserInfo } from "@/type/supabase";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { ComponentProps, useRef } from "react";
+import { ComponentProps, FormEvent, useState } from "react";
+
+interface InitialErrMsgs {
+  email: string | null;
+  password: string | null;
+  passwordConfirm: string | null;
+}
+const initialErrMsgs = {
+  email: null,
+  password: null,
+  passwordConfirm: null,
+};
+
+type CustomFormEvent = FormEvent<HTMLFormElement> & {
+  target: FormEvent<HTMLFormElement>["target"] & {
+    email: HTMLInputElement;
+    password: HTMLInputElement;
+    passwordConfirm: HTMLInputElement;
+  };
+};
 
 function SignUpPage() {
   const router = useRouter();
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
-  const passwordConfirmRef = useRef<HTMLInputElement | null>(null);
+  const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => api.auth.signUp(userInfo),
@@ -25,23 +43,38 @@ function SignUpPage() {
   });
 
   const handleSubmitSignUpForm: ComponentProps<"form">["onSubmit"] = async (
-    e
+    e: CustomFormEvent
   ) => {
     e.preventDefault();
 
-    if (!emailRef || !emailRef.current) return;
-    if (!passwordRef || !passwordRef.current) return;
-    if (!passwordConfirmRef || !passwordConfirmRef.current) return;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const passwordConfirm = e.target.passwordConfirm.value;
 
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    const passwordConfirm = passwordConfirmRef.current.value;
+    setErrMsgs(initialErrMsgs);
 
-    if (!email) return alert("이메일을 입력해주세요");
-    if (!password) return alert("비밀번호를 입력해주세요");
-    if (!passwordConfirm) return alert("비밀번호를 재입력 해주세요");
+    if (!email) {
+      console.log("email is required");
+      return setErrMsgs((prevErrMsgs) => ({
+        ...prevErrMsgs,
+        email: "이메일을 입력해주세요",
+      }));
+    }
+    if (!password)
+      return setErrMsgs((prevErrMsgs) => ({
+        ...prevErrMsgs,
+        password: "비밀번호을 입력해주세요",
+      }));
+    if (!passwordConfirm)
+      return setErrMsgs((prevErrMsgs) => ({
+        ...prevErrMsgs,
+        passwordConfirm: "비밀번호를 재입력해주세요",
+      }));
     if (password !== passwordConfirm)
-      return alert("비밀번호가 일치하지 않습니다");
+      return setErrMsgs((prevErrMsgs) => ({
+        ...prevErrMsgs,
+        passwordConfirm: "비밀번호가 일치하지 않습니다",
+      }));
 
     const userInfo: UserInfo = {
       email,
@@ -52,37 +85,31 @@ function SignUpPage() {
   };
 
   return (
-    <Page width="sm">
+    <Page width="md" className="flex flex-col items-center">
       <h1 className="mt-32 mb-10 text-3xl font-bold">회원가입 하기</h1>
 
-      <form
-        onSubmit={handleSubmitSignUpForm}
-        className="grid grid-cols-3 gap-5"
-      >
-        <label htmlFor="email">이메일</label>
-        <input
+      <form onSubmit={handleSubmitSignUpForm}>
+        <InputGroup
           type="email"
-          ref={emailRef}
-          className="col-span-2 border border-black/35"
-          id="email"
+          errorText={errMsgs.email}
+          label="이메일"
+          name="email"
         />
-        <label htmlFor="password">비밀번호</label>
-        <input
+        <InputGroup
           type="password"
-          ref={passwordRef}
-          className="col-span-2 border border-black/35"
-          id="password"
+          errorText={errMsgs.password}
+          label="비밀번호"
+          name="password"
         />
-        <label htmlFor="password_confirm">비밀번호 확인</label>
-        <input
+        <InputGroup
           type="password"
-          ref={passwordConfirmRef}
-          className="col-span-2 border border-black/35"
-          id="password_confirm"
+          errorText={errMsgs.passwordConfirm}
+          label="비밀번호 확인"
+          name="passwordConfirm"
         />
 
         <button
-          className="bg-indigo-300 text-white h-10 font-bold col-span-3"
+          className="mt-10 w-96 bg-indigo-300 text-white h-10 font-bold col-span-3"
           type="submit"
         >
           회원가입
