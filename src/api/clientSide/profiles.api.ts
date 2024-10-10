@@ -15,8 +15,21 @@ const insertProfile = async (
   return data;
 };
 
+const getProfileByUserId = async (userId: string) => {
+  const { data: user, error } = await supabase
+    .from(TABLE_PROFILES)
+    .select()
+    .eq("userId", userId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return user;
+};
+
 const profilesAPI = {
   insertProfile,
+  getProfileByUserId,
 };
 
 export default profilesAPI;

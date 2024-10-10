@@ -1,6 +1,6 @@
 import Page from "@/components/Page/Page";
 
-function ProfilePage() {
+async function ProfilePage() {
   return <Page width="lg">ProfilePage</Page>;
 }
 
