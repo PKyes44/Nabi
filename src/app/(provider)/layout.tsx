@@ -1,4 +1,4 @@
-import TanstackProvider from "@/providers/TanstackProvider";
+import TanstackProvider from "@/app/(provider)/_providers/tanstack-query.provider";
 import { PropsWithChildren } from "react";
 
 function ProvidersLayout({ children }: PropsWithChildren) {
