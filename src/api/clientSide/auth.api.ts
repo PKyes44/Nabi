@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/client";
-import { UserInfo } from "@/type/supabase";
+import { UserInfo } from "@/types/auth.types";
 
 const signUp = async (userInfo: UserInfo) => {
   const { error, data } = await supabase.auth.signUp(userInfo);

@@ -59,21 +59,21 @@ export type Database = {
       sponTeams: {
         Row: {
           createdAt: string
-          donateDateCycle: string
+          donateDateCycle: string | null
           donationType: string
           teamId: string
           teamName: string
         }
         Insert: {
           createdAt?: string
-          donateDateCycle: string
+          donateDateCycle?: string | null
           donationType: string
           teamId?: string
           teamName: string
         }
         Update: {
           createdAt?: string
-          donateDateCycle?: string
+          donateDateCycle?: string | null
           donationType?: string
           teamId?: string
           teamName?: string
@@ -82,28 +82,31 @@ export type Database = {
       }
       userProfiles: {
         Row: {
+          bgImageUrl: string | null
           createdAt: string
           introduce: string
           nickname: string
-          profileImageUrl: string
+          profileImageUrl: string | null
           role: string
           teamId: string
           userId: string
         }
         Insert: {
+          bgImageUrl?: string | null
           createdAt?: string
-          introduce: string
+          introduce?: string
           nickname: string
-          profileImageUrl: string
+          profileImageUrl?: string | null
           role: string
           teamId?: string
           userId?: string
         }
         Update: {
+          bgImageUrl?: string | null
           createdAt?: string
           introduce?: string
           nickname?: string
-          profileImageUrl?: string
+          profileImageUrl?: string | null
           role?: string
           teamId?: string
           userId?: string

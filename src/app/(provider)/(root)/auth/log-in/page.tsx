@@ -1,8 +1,8 @@
 "use client";
-import api from "@/api/api";
+import clientApi from "@/api/clientSide/api";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
-import { UserInfo } from "@/type/supabase";
+import { UserInfo } from "@/types/auth.types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { ComponentProps, FormEvent, useState } from "react";
@@ -10,85 +10,68 @@ import { ComponentProps, FormEvent, useState } from "react";
 interface InitialErrMsgs {
   email: string | null;
   password: string | null;
-  passwordConfirm: string | null;
 }
 const initialErrMsgs = {
   email: null,
   password: null,
-  passwordConfirm: null,
 };
 
 type CustomFormEvent = FormEvent<HTMLFormElement> & {
   target: FormEvent<HTMLFormElement>["target"] & {
     email: HTMLInputElement;
     password: HTMLInputElement;
-    passwordConfirm: HTMLInputElement;
   };
 };
 
-function SignUpPage() {
+function LogInPage() {
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
-  const { mutate: signUp } = useMutation({
-    mutationFn: (userInfo: UserInfo) => api.auth.signUp(userInfo),
+  const { mutate: logIn } = useMutation({
+    mutationFn: (logInData: UserInfo) => clientApi.auth.logIn(logInData),
     onSuccess: (...arg) => {
       console.log("success: ", arg);
       router.replace("/");
     },
     onError: (...arg) => {
-      alert("회원가입 실패");
+      alert("로그인 실패");
       console.log("error: ", arg);
     },
   });
 
-  const handleSubmitSignUpForm: ComponentProps<"form">["onSubmit"] = async (
+  const handleSubmitLogInForm: ComponentProps<"form">["onSubmit"] = async (
     e: CustomFormEvent
   ) => {
     e.preventDefault();
+    setErrMsgs(initialErrMsgs);
 
     const email = e.target.email.value;
     const password = e.target.password.value;
-    const passwordConfirm = e.target.passwordConfirm.value;
 
-    setErrMsgs(initialErrMsgs);
-
-    if (!email) {
-      console.log("email is required");
+    if (!email)
       return setErrMsgs((prevErrMsgs) => ({
         ...prevErrMsgs,
         email: "이메일을 입력해주세요",
       }));
-    }
     if (!password)
       return setErrMsgs((prevErrMsgs) => ({
         ...prevErrMsgs,
-        password: "비밀번호을 입력해주세요",
-      }));
-    if (!passwordConfirm)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        passwordConfirm: "비밀번호를 재입력해주세요",
-      }));
-    if (password !== passwordConfirm)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        passwordConfirm: "비밀번호가 일치하지 않습니다",
+        password: "비밀번호를 입력해주세요",
       }));
 
-    const userInfo: UserInfo = {
+    const logInData: UserInfo = {
       email,
       password,
     };
 
-    signUp(userInfo);
+    logIn(logInData);
   };
 
   return (
-    <Page width="md" className="flex flex-col items-center">
-      <h1 className="mt-32 mb-10 text-3xl font-bold">회원가입 하기</h1>
+    <Page width="sm" className="flex flex-col items-center">
+      <h1 className="mt-32 mb-10 text-3xl font-bold">로그인 하기</h1>
 
-      <form onSubmit={handleSubmitSignUpForm}>
+      <form onSubmit={handleSubmitLogInForm}>
         <InputGroup
           type="email"
           errorText={errMsgs.email}
@@ -101,22 +84,16 @@ function SignUpPage() {
           label="비밀번호"
           name="password"
         />
-        <InputGroup
-          type="password"
-          errorText={errMsgs.passwordConfirm}
-          label="비밀번호 확인"
-          name="passwordConfirm"
-        />
 
         <button
           className="mt-10 w-96 bg-indigo-300 text-white h-10 font-bold col-span-3"
           type="submit"
         >
-          회원가입
+          로그인
         </button>
       </form>
     </Page>
   );
 }
 
-export default SignUpPage;
+export default LogInPage;
