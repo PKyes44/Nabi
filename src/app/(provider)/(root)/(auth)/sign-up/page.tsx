@@ -1,20 +1,32 @@
 "use client";
-import { supabase } from "@/supabase/client";
+import api from "@/api/api";
+import { UserInfo } from "@/type/supabase";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { ComponentProps, useRef } from "react";
 
 function SignUpPage() {
+  const router = useRouter();
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const passwordConfirmRef = useRef<HTMLInputElement | null>(null);
+
+  const { mutate: signUp } = useMutation({
+    mutationFn: (userInfo: UserInfo) => api.auth.signUp(userInfo),
+  });
 
   const handleSubmitSignUpForm: ComponentProps<"form">["onSubmit"] = async (
     e
   ) => {
     e.preventDefault();
 
-    const email = emailRef.current!.value;
-    const password = passwordRef.current!.value;
-    const passwordConfirm = passwordConfirmRef.current!.value;
+    if (!emailRef || !emailRef.current) return;
+    if (!passwordRef || !passwordRef.current) return;
+    if (!passwordConfirmRef || !passwordConfirmRef.current) return;
+
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    const passwordConfirm = passwordConfirmRef.current.value;
 
     if (!email) return alert("이메일을 입력해주세요");
     if (!password) return alert("비밀번호를 입력해주세요");
@@ -22,14 +34,15 @@ function SignUpPage() {
     if (password !== passwordConfirm)
       return alert("비밀번호가 일치하지 않습니다");
 
-    const userInfo = {
+    const userInfo: UserInfo = {
       email,
       password,
     };
-    const response = await supabase.auth.signUp(userInfo);
-    const data = response.data;
-    console.log(data);
+
+    signUp(userInfo);
+    router.replace("/");
   };
+
   return (
     <main className="flex flex-col justify-center items-center">
       <h1 className="mt-32 mb-10 text-3xl font-bold">회원가입 하기</h1>
