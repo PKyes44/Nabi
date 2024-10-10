@@ -4,11 +4,11 @@ import Header from "./_components/Header";
 
 function RootLayout({ children }: PropsWithChildren) {
   return (
-    <>
+    <div className="bg-gray-100">
       <Header />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }
 
