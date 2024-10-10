@@ -1,8 +1,8 @@
 "use client";
-import api from "@/api/api";
+import clientApi from "@/api/clientSide/api";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
-import { UserInfo } from "@/type/supabase";
+import { UserInfo } from "@/types/auth.types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { ComponentProps, FormEvent, useState } from "react";
@@ -28,7 +28,7 @@ function LogInPage() {
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
   const { mutate: logIn } = useMutation({
-    mutationFn: (logInData: UserInfo) => api.auth.logIn(logInData),
+    mutationFn: (logInData: UserInfo) => clientApi.auth.logIn(logInData),
     onSuccess: (...arg) => {
       console.log("success: ", arg);
       router.replace("/");

@@ -87,7 +87,7 @@ export type Database = {
           nickname: string
           profileImageUrl: string | null
           role: string
-          teamId: string
+          teamId: string | null
           userId: string
         }
         Insert: {
@@ -96,7 +96,7 @@ export type Database = {
           nickname: string
           profileImageUrl?: string | null
           role: string
-          teamId?: string
+          teamId?: string | null
           userId?: string
         }
         Update: {
@@ -105,7 +105,7 @@ export type Database = {
           nickname?: string
           profileImageUrl?: string | null
           role?: string
-          teamId?: string
+          teamId?: string | null
           userId?: string
         }
         Relationships: [

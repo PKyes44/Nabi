@@ -14,20 +14,29 @@ function AuthNavigation() {
 
   return (
     <nav>
-      {authInitialized ? (
-        isLoggedIn ? (
-          <button onClick={handleClickLogOut}>로그아웃</button>
-        ) : (
-          <ul className="flex gap-x-5">
-            <li>
-              <Link href="/auth?type=log-in">로그인</Link>
-            </li>
-            <li>
-              <Link href="/auth?type=sign-up">회원가입</Link>
-            </li>
-          </ul>
-        )
-      ) : null}
+      <ul className="flex gap-x-5">
+        {authInitialized ? (
+          isLoggedIn ? (
+            <>
+              <li>
+                <Link href="/profiles">프로필</Link>
+              </li>
+              <li>
+                <button onClick={handleClickLogOut}>로그아웃</button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link href="/auth?type=log-in">로그인</Link>
+              </li>
+              <li>
+                <Link href="/auth?type=sign-up">회원가입</Link>
+              </li>
+            </>
+          )
+        ) : null}
+      </ul>
     </nav>
   );
 }

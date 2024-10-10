@@ -1,8 +1,10 @@
 "use client";
-import api from "@/api/api";
+import clientApi from "@/api/clientSide/api";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
-import { UserInfo } from "@/type/supabase";
+import { Database } from "@/supabase/database.types";
+import { UserInfo } from "@/types/auth.types";
+import { Role } from "@/types/profiles.types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { ComponentProps, FormEvent, useState } from "react";
@@ -28,24 +30,46 @@ type CustomFormEvent = FormEvent<HTMLFormElement> & {
 
 interface SignUpPageProps {
   searchParams: {
-    role: string;
+    role: Role;
   };
 }
 
 function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
+  const [nickname, setNickname] = useState<string | null>(null);
 
   const { mutate: signUp } = useMutation({
-    mutationFn: (userInfo: UserInfo) => api.auth.signUp(userInfo),
+    mutationFn: (userInfo: UserInfo) => clientApi.auth.signUp(userInfo),
     onSuccess: (userData) => {
       console.log("success: ", userData.user!.id);
+
+      if (!nickname)
+        return setErrMsgs((prevErrMsgs) => ({
+          ...prevErrMsgs,
+          email: "이메일을 입력해주세요",
+        }));
+
       const userId = userData.user!.id;
-      router.replace("/");
+
+      const insertProfileData = {
+        userId,
+        nickname,
+        role,
+      };
+      insertProfile(insertProfileData);
     },
     onError: (...arg) => {
       alert("회원가입 실패");
       console.log("error: ", arg);
+    },
+  });
+  const { mutate: insertProfile } = useMutation({
+    mutationFn: (
+      insertProfileData: Database["public"]["Tables"]["userProfiles"]["Insert"]
+    ) => clientApi.profiles.insertProfile(insertProfileData),
+    onSuccess: () => {
+      router.replace("/");
     },
   });
 
@@ -56,6 +80,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const nickname = e.target.nickname.value;
 
     setErrMsgs(initialErrMsgs);
 
@@ -71,7 +96,13 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
         ...prevErrMsgs,
         password: "비밀번호를 입력해주세요",
       }));
+    if (!nickname)
+      return setErrMsgs((prevErrMsgs) => ({
+        ...prevErrMsgs,
+        nickname: "닉네임을 입력해주세요",
+      }));
 
+    setNickname(nickname);
     const userInfo: UserInfo = {
       email,
       password,
