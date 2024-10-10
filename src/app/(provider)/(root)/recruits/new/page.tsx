@@ -50,6 +50,9 @@ function NewRecruitPage() {
           <span>지역</span>
           <input className="border border-black" type="text" />
         </div>
+        <div>
+          <button>글 올리기</button>
+        </div>
       </section>
     </div>
   );
