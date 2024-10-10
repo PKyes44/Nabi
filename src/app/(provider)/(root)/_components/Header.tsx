@@ -4,8 +4,14 @@ import Link from "next/link";
 function Header() {
   return (
     <header className="h-16 shadow-lg">
-      <Page width="lg" className="h-full flex items-center justify-between">
-        <Link href="/">나비</Link>
+      <Page
+        width="lg"
+        isMain={false}
+        className=" h-full flex items-center justify-between"
+      >
+        <Link href="/" className="text-2xl font-extrabold">
+          나비
+        </Link>
 
         <nav>
           <ul className="flex gap-x-5">

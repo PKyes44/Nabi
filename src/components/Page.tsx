@@ -8,10 +8,15 @@ const pageVariant = cva("m-auto", {
       md: "max-w-[800px] px-5",
       lg: "max-w-[1200px] px-5",
     },
+    isMain: {
+      true: "min-h-[calc(100vh-64px-160px)]",
+      false: "",
+    },
   },
   compoundVariants: [],
   defaultVariants: {
     width: "md",
+    isMain: true,
   },
 });
 
@@ -21,9 +26,11 @@ type pageProps = {
 };
 type PageProps = PageVariant & PropsWithChildren<pageProps>;
 
-function Page({ width, className, children }: PageProps) {
+function Page({ width, isMain, className, children }: PageProps) {
   return (
-    <div className={`${pageVariant({ width })} ${className}`}>{children}</div>
+    <div className={`${pageVariant({ width, isMain })} ${className}`}>
+      {children}
+    </div>
   );
 }
 
