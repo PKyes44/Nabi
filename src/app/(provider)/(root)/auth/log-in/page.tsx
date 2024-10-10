@@ -1,5 +1,6 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
+import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
 import { UserInfo } from "@/types/auth.types";
@@ -10,10 +11,12 @@ import { ComponentProps, FormEvent, useState } from "react";
 interface InitialErrMsgs {
   email: string | null;
   password: string | null;
+  global: string | null;
 }
 const initialErrMsgs = {
   email: null,
   password: null,
+  global: null,
 };
 
 type CustomFormEvent = FormEvent<HTMLFormElement> & {
@@ -34,7 +37,10 @@ function LogInPage() {
       router.replace("/");
     },
     onError: (...arg) => {
-      alert("로그인 실패");
+      setErrMsgs((prevErrMsgs) => ({
+        ...prevErrMsgs,
+        global: "로그인에 실패하였습니다",
+      }));
       console.log("error: ", arg);
     },
   });
@@ -71,7 +77,7 @@ function LogInPage() {
     <Page width="sm" className="flex flex-col items-center">
       <h1 className="mt-32 mb-10 text-3xl font-bold">로그인 하기</h1>
 
-      <form onSubmit={handleSubmitLogInForm}>
+      <form onSubmit={handleSubmitLogInForm} className="flex flex-col gap-y-3">
         <InputGroup
           type="email"
           errorText={errMsgs.email}
@@ -85,12 +91,12 @@ function LogInPage() {
           name="password"
         />
 
-        <button
-          className="mt-10 w-96 bg-indigo-300 text-white h-10 font-bold col-span-3"
-          type="submit"
-        >
-          로그인
-        </button>
+        <ButtonGroup
+          errorText={errMsgs.global}
+          className="w-full mt-5"
+          size="md"
+          value="로그인"
+        />
       </form>
     </Page>
   );
