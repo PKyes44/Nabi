@@ -1,5 +1,7 @@
-function HomePage() {
-  return <div>홈페이지</div>;
+import Page from "@/components/Page";
+
+function RecruitsPage() {
+  return <Page>RecruitsPage</Page>;
 }
 
-export default HomePage;
+export default RecruitsPage;

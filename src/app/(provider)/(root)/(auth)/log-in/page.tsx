@@ -1,5 +1,7 @@
+import Page from "@/components/Page";
+
 function LogInPage() {
-  return <div>page</div>;
+  return <Page>LOGIN</Page>;
 }
 
 export default LogInPage;
