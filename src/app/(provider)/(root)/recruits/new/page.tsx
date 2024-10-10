@@ -5,8 +5,8 @@ import { useState } from "react";
 function NewRecruitPage() {
   const [title, setTitle] = useState("");
   const [context, setContext] = useState("");
-  const [sponserType, setSponserType] = useState("individual");
-  const [donationType, setDonationType] = useState("talentDonation");
+  const [sponserType, setSponserType] = useState("personal");
+  const [donationType, setDonationType] = useState("talent");
   const [maxRecruits, setMaxRecruits] = useState(0);
   const [region, setRegion] = useState("");
 
@@ -43,9 +43,9 @@ function NewRecruitPage() {
             id="sponserType"
             className="border border-black"
           >
-            <option value="individual">개인</option>
-            <option value="organization">후원단체</option>
-            <option value="gathering">후원모임</option>
+            <option value="personal">개인</option>
+            <option value="coporation">후원단체</option>
+            <option value="teams">후원모임</option>
           </select>
         </div>
         <div>
@@ -56,8 +56,8 @@ function NewRecruitPage() {
             id="donationType"
             className="border border-black"
           >
-            <option value="talentDonation">재능기부</option>
-            <option value="articleDonation">물품기부</option>
+            <option value="talent">재능기부</option>
+            <option value="thing">물품기부</option>
           </select>
         </div>
         <div>
