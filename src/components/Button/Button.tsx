@@ -21,6 +21,11 @@ const buttonVariant = cva("", {
       md: "rounded-md",
       lg: "rounded-lg",
     },
+    textIntent: {
+      default: "text-white",
+      black: "text-black",
+      primary: "text-yellow-400",
+    },
   },
   compoundVariants: [
     { intent: "default", className: "text-white" },
@@ -29,12 +34,18 @@ const buttonVariant = cva("", {
       size: "md",
       className: "text-base",
     },
+    {
+      textIntent: "primary",
+      intent: "primary",
+      className: "bg-opacity-40 font-bold",
+    },
   ],
   defaultVariants: {
     outline: false,
     intent: "default",
     size: "sm",
     rounded: "sm",
+    textIntent: "default",
   },
 });
 
@@ -46,13 +57,21 @@ type ButtonProps = ButtonVariant &
   PropsWithChildren<buttonProps> &
   ComponentProps<"button">;
 
-function Button({ size, intent, outline, className, children }: ButtonProps) {
+function Button({
+  size,
+  intent,
+  outline,
+  textIntent,
+  className,
+  children,
+}: ButtonProps) {
   return (
     <button
       className={`${className} ${buttonVariant({
         outline,
         size,
         intent,
+        textIntent,
       })}`}
     >
       {children}
