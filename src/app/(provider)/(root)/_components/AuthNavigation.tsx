@@ -6,7 +6,7 @@ import Link from "next/link";
 
 function AuthNavigation() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const authInitialized = useAuthStore((state) => state.authInitialized);
+  const authInitialized = useAuthStore((state) => state.isAuthInitialized);
 
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();

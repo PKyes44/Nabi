@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect } from "react";
 
 function LoggedInOnlyLayout({ children }: PropsWithChildren) {
   useAuthStore((state) => state.isLoggedIn);
-  useAuthStore((state) => state.authInitialized);
+  useAuthStore((state) => state.isAuthInitialized);
 
   useEffect(() => {}, []);
 
