@@ -1,4 +1,4 @@
-import Page from "@/components/Page";
+import Page from "@/components/Page/Page";
 import Link from "next/link";
 
 function Header() {
