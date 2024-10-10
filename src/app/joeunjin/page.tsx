@@ -1,5 +1,5 @@
 function JoeunjinPage() {
-  return <div>조은진</div>;
+  return <main>조은진</main>;
 }
 
 export default JoeunjinPage;
