@@ -39,6 +39,7 @@ function SelectRoleModal({ children }: PropsWithChildren) {
               </span>
             </article>
           </button>
+
           <button
             onClick={() => handleClickSelectRole("sponsor")}
             className="w-72 aspect-square bg-white border border-gray-500 rounded-xl p-5 pt-10 pb-2"

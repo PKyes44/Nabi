@@ -1,1 +1,1 @@
-export type Role = "sponser" | "recipient";
+export type Role = "sponsor" | "recipient";
