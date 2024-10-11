@@ -12,7 +12,7 @@ interface RecruitDetailPageProps {
 
 function RecruitDetailPage({ searchParams }: RecruitDetailPageProps) {
   const { data: recruitData } = useQuery({
-    queryKey: ["recruit", { searchParams }],
+    queryKey: ["recruits", { searchParams }],
     queryFn: () => clientApi.recruits.getRecruit(searchParams.recruitId),
   });
 

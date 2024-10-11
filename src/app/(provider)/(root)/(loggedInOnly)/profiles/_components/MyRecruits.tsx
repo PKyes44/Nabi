@@ -32,7 +32,7 @@ function MyRecruits() {
   const userId = useAuthStore((state) => state.currentUserId);
 
   const { data: myRecruitsData } = useQuery({
-    queryKey: ["myRecruits", { userId }],
+    queryKey: ["recruits", { userId }],
     queryFn: () => clientApi.recruits.getSortedMyRecruits(userId!),
   });
 
