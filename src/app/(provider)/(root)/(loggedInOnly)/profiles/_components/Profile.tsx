@@ -57,6 +57,7 @@ function Profile() {
           </article>
         </div>
       </section>
+
       <MyRecruits />
     </div>
   );

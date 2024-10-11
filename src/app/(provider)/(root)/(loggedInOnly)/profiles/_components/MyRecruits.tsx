@@ -17,7 +17,8 @@ function MyRecruits() {
     myRecruitsData?.data as Database["public"]["Tables"]["recruits"]["Row"][];
 
   return (
-    <article className="grow h-[500px] bg-gray-300 rounded-lg">
+    <article className="grow bg-gray-300 rounded-lg">
+      <p className="mx-4 my-4 text-indigo-400 text-center ">최근 모집글</p>
       <ul className="flex flex-col gap-y-4 mx-4 my-4">
         {myRecruits?.map((recruit) => (
           <li
