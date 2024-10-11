@@ -75,7 +75,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
     },
   });
 
-  const setErrMsgsFn = (type: string, message: string) => {
+  const throwErrMsgs = (type: string, message: string) => {
     setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
   };
 
@@ -90,9 +90,9 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
 
     setErrMsgs(initialErrMsgs);
 
-    if (!email) return setErrMsgsFn("email", "이메일을 입력해주세요");
-    if (!password) return setErrMsgsFn("password", "비밀번호를 입력해주세요");
-    if (!nickname) return setErrMsgsFn("nickname", "닉네임을 입력해주세요");
+    if (!email) return throwErrMsgs("email", "이메일을 입력해주세요");
+    if (!password) return throwErrMsgs("password", "비밀번호를 입력해주세요");
+    if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해주세요");
 
     setNickname(nickname);
     const userInfo: UserInfo = {

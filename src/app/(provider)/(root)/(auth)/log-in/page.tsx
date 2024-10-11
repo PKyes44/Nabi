@@ -45,7 +45,7 @@ function LogInPage() {
     },
   });
 
-  const setErrMsgsFn = (type: string, message: string) => {
+  const throwErrMsgs = (type: string, message: string) => {
     setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
   };
 
@@ -58,8 +58,8 @@ function LogInPage() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    if (!email) return setErrMsgsFn("email", "이메일을 입력해주세요");
-    if (!password) return setErrMsgsFn("password", "비밀번호를 입력해주세요");
+    if (!email) return throwErrMsgs("email", "이메일을 입력해주세요");
+    if (!password) return throwErrMsgs("password", "비밀번호를 입력해주세요");
 
     const logInData: UserInfo = {
       email,
