@@ -18,7 +18,6 @@ export type Database = {
           maxRecruits: number
           recruitId: string
           region: string
-          sponserType: string
           status: string
           title: string
         }
@@ -30,7 +29,6 @@ export type Database = {
           maxRecruits: number
           recruitId?: string
           region: string
-          sponserType: string
           status: string
           title: string
         }
@@ -42,7 +40,6 @@ export type Database = {
           maxRecruits?: number
           recruitId?: string
           region?: string
-          sponserType?: string
           status?: string
           title?: string
         }
@@ -56,27 +53,66 @@ export type Database = {
           },
         ]
       }
-      sponTeams: {
+      replys: {
+        Row: {
+          content: string
+          createdAt: string
+          recipientId: string
+          recruitId: string
+          replyId: string
+        }
+        Insert: {
+          content: string
+          createdAt?: string
+          recipientId?: string
+          recruitId?: string
+          replyId?: string
+        }
+        Update: {
+          content?: string
+          createdAt?: string
+          recipientId?: string
+          recruitId?: string
+          replyId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "replys_recipientId_fkey"
+            columns: ["recipientId"]
+            isOneToOne: false
+            referencedRelation: "userProfiles"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "replys_recruitId_fkey"
+            columns: ["recruitId"]
+            isOneToOne: false
+            referencedRelation: "recruits"
+            referencedColumns: ["recruitId"]
+          },
+        ]
+      }
+      sponsorShip: {
         Row: {
           createdAt: string
-          donateDateCycle: string | null
           donationType: string
-          teamId: string
-          teamName: string
+          recipientId: string
+          sponsorId: string
+          sponsorShipId: string
         }
         Insert: {
           createdAt?: string
-          donateDateCycle?: string | null
           donationType: string
-          teamId?: string
-          teamName: string
+          recipientId?: string
+          sponsorId?: string
+          sponsorShipId?: string
         }
         Update: {
           createdAt?: string
-          donateDateCycle?: string | null
           donationType?: string
-          teamId?: string
-          teamName?: string
+          recipientId?: string
+          sponsorId?: string
+          sponsorShipId?: string
         }
         Relationships: []
       }
@@ -113,16 +149,45 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "userProfiles_teamId_fkey"
-            columns: ["teamId"]
-            isOneToOne: false
-            referencedRelation: "sponTeams"
-            referencedColumns: ["teamId"]
-          },
-          {
             foreignKeyName: "userProfiles_userId_fkey"
             columns: ["userId"]
             isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      volunteerWorks: {
+        Row: {
+          createdAt: string
+          recruitId: string
+          volunteerId: string
+          workId: number
+        }
+        Insert: {
+          createdAt?: string
+          recruitId?: string
+          volunteerId?: string
+          workId?: number
+        }
+        Update: {
+          createdAt?: string
+          recruitId?: string
+          volunteerId?: string
+          workId?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "volunteerWorks_recruitId_fkey"
+            columns: ["recruitId"]
+            isOneToOne: false
+            referencedRelation: "recruits"
+            referencedColumns: ["recruitId"]
+          },
+          {
+            foreignKeyName: "volunteerWorks_volunteerId_fkey"
+            columns: ["volunteerId"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
