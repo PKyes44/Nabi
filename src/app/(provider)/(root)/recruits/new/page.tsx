@@ -5,8 +5,10 @@ import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
-import { useMutation } from "@tanstack/react-query";
-import { ComponentProps, FormEvent, useState } from "react";
+import { useAuthStore } from "@/zustand/auth.store";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { ComponentProps, FormEvent, useEffect, useState } from "react";
 
 interface InitialErrMsgs {
   title: string | null;
@@ -35,6 +37,10 @@ type CustomFormEvent = FormEvent<HTMLFormElement> & {
 };
 
 function NewRecruitPage() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const authInitialized = useAuthStore((state) => state.isAuthInitialized);
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
   const { mutate: createRecruit } = useMutation<
@@ -44,12 +50,18 @@ function NewRecruitPage() {
   >({
     mutationFn: (data) => clientApi.recruits.createRecruit(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["recruits"] });
       alert("추가되었습니다.");
+      router.push(`/`);
     },
     onError: (e) => {
       alert(e.message);
     },
   });
+
+  const throwErrMsgs = (type: string, message: string) => {
+    setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
+  };
 
   const handleSubmitRecruitForm: ComponentProps<"form">["onSubmit"] = async (
     e: CustomFormEvent
@@ -63,37 +75,16 @@ function NewRecruitPage() {
     const donationType = e.target.donationType.value;
     const status = "recruiting";
 
-    const { data, error } = await supabase.auth.getUser();
-    if (error) {
-      console.log(error);
-      return;
-    }
+    const { data } = await supabase.auth.getUser();
     const authorId = data?.user?.id;
 
-    if (!title) {
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        title: "제목을 입력해주세요",
-      }));
-    }
-    if (!content) {
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        content: "내용을 입력해주세요",
-      }));
-    }
-    if (!maxRecruits) {
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        maxRecruits: "모집 인원을 입력해주세요",
-      }));
-    }
-    if (!region) {
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        region: "지역을 입력해주세요",
-      }));
-    }
+    setErrMsgs(initialErrMsgs);
+
+    if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
+    if (!content) return throwErrMsgs("content", "내용을 입력해주세요");
+    if (!maxRecruits)
+      return throwErrMsgs("maxRecruits", "모집 인원을 입력해주세요");
+    if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
 
     const recruitData: Database["public"]["Tables"]["recruits"]["Insert"] = {
       title,
@@ -107,9 +98,19 @@ function NewRecruitPage() {
 
     createRecruit(recruitData);
   };
+
+  useEffect(() => {
+    if (authInitialized && !isLoggedIn) {
+      router.replace("/");
+      return alert("로그인 후 이용 가능");
+    }
+  }, [authInitialized, isLoggedIn, router]);
+
+  if (!authInitialized || !isLoggedIn) return null;
+
   return (
     <div className="p-8">
-      <h1 className=" mb-10 text-3xl font-bold">봉사원 모집글 작성</h1>
+      <h1 className="mb-10 text-3xl font-bold">봉사원 모집글 작성</h1>
 
       <form
         onSubmit={handleSubmitRecruitForm}

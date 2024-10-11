@@ -43,8 +43,8 @@ const getSortedMyRecruits = async (userId: string) => {
 
 const recruitsAPI = {
   createRecruit,
-  getRecruits,
   getSortedMyRecruits,
+  getRecruits,
   getRecruit,
 };
 
