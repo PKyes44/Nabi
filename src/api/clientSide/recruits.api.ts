@@ -8,6 +8,7 @@ async function createRecruit(
     .from("recruits")
     .insert(data);
   if (error) throw new Error(error.message);
+
   return recruitData;
 }
 
@@ -18,20 +19,33 @@ async function getRecruits() {
   return data;
 }
 
+const getRecruit = async (recruitId: string) => {
+  const response = await supabase
+    .from("recruits")
+    .select("*")
+    .eq("recruitId", recruitId)
+    .single();
+  const recruit = response.data;
+
+  return recruit as Database["public"]["Tables"]["recruits"]["Row"];
+};
+
 const getSortedMyRecruits = async (userId: string) => {
   const response = await supabase
     .from("recruits")
     .select("*")
     .eq("authorId", userId)
-    .order("createdAt", { ascending: false });
-  console.log(response);
+    .order("createdAt", { ascending: false })
+    .limit(5);
+
   return response;
 };
 
 const recruitsAPI = {
   createRecruit,
   getRecruits,
-  getMyRecruits: getSortedMyRecruits,
+  getSortedMyRecruits,
+  getRecruit,
 };
 
 export default recruitsAPI;
