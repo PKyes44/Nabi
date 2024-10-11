@@ -1,5 +1,9 @@
 "use client";
 
+import clientApi from "@/api/clientSide/api";
+import { Database } from "@/supabase/database.types";
+import useStoreDetailStore from "@/zustand/storeDetailModal.store";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import useGeolocation from "./useGeolocation";
 
@@ -11,6 +15,22 @@ declare global {
 
 function KakaoMap() {
   const location = useGeolocation();
+  const setIsShowStoreDetailModal = useStoreDetailStore(
+    (state) => state.setIsShowStoreDetailModal
+  );
+
+  const { data: storeDatas } = useQuery({
+    queryKey: ["storeData"],
+    queryFn: () => clientApi.storeData.getStoreDatas(),
+  });
+  const { mutate: updateStore } = useMutation({
+    mutationFn: (
+      updateStoreData: Database["public"]["Tables"]["storeData"]["Row"]
+    ) => clientApi.storeData.updateStoreData(updateStoreData),
+    onSuccess: (...arg) => {
+      console.log("success:", arg);
+    },
+  });
 
   useEffect(() => {
     let container = document.getElementById(`map`); // 지도를 담을 영역의 DOM 레퍼런스
@@ -26,38 +46,47 @@ function KakaoMap() {
       level: 3, // 지도의 레벨(확대, 축소 정도)
     };
 
-    const map = new window.kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+    const map = new window.kakao.maps.Map(container, options);
 
-    // 주소-좌표 변환 객체를 생성합니다
-    var geocoder = new window.kakao.maps.services.Geocoder();
+    const markerPosition = new window.kakao.maps.LatLng(
+      location.coordinates!.lat,
+      location.coordinates!.lng
+    );
 
-    // 주소로 좌표를 검색합니다
-    geocoder.addressSearch(
-      "제주특별자치도 제주시 첨단로 242",
-      function (result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === window.kakao.maps.services.Status.OK) {
-          var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+    const marker = new window.kakao.maps.Marker({
+      position: markerPosition,
+    });
+    marker.setMap(map);
 
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          var marker = new window.kakao.maps.Marker({
-            map: map,
-            position: coords,
-          });
-
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new window.kakao.maps.InfoWindow({
-            content:
-              '<div style="width:150px;text-align:center;padding:6px 0;">지점</div>',
-          });
-          infowindow.open(map, marker);
-
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          map.setCenter(coords);
-        }
-      }
+    window.kakao.maps.event.addListener(marker, "click", () =>
+      setIsShowStoreDetailModal(true)
     );
   }, [location]);
+
+  useEffect(() => {
+    if (!storeDatas) return;
+
+    // 주소-좌표 변환 객체를 생성합니다
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
+    console.log(storeDatas.length);
+    // 주소로 좌표를 검색합니다
+    storeDatas.forEach((data, index) => {
+      // geocoder.addressSearch(data.address, function (result, status) {
+      //   // 정상적으로 검색이 완료됐으면
+      //   if (status === window.kakao.maps.services.Status.OK) {
+      //     const lat = result[0].y;
+      //     const lng = result[0].x;
+      //     const updateStoreData = {
+      //       ...data,
+      //       lat,
+      //       lng,
+      //     };
+      //     updateStore(updateStoreData);
+      //   }
+      // });
+    });
+  }, [storeDatas]);
 
   // if (!location.loaded) return <span>데이터 로딩중 ..</span>;
 
