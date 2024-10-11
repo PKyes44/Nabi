@@ -6,11 +6,7 @@ async function RecruitDetailPage(props: { params: { recruitId: string } }) {
 
   const recruitData = await clientApi.recruits.getRecruit(recruitId);
 
-  if (!recruitData || recruitData.length === 0) {
-    return <Page>없는 글입니다</Page>;
-  }
-
-  const { title, content, maxRecruits, region, donationType } = recruitData[0];
+  const { title, content, maxRecruits, region, donationType } = recruitData;
 
   const donationText = donationType === "talent" ? "재능 기부" : "물품 기부";
 
