@@ -1,17 +1,17 @@
-import useModalStore from "@/zustand/modal.store";
+import useSelectRoleModalStore from "@/zustand/selectRoleModal.store";
 import { useRouter } from "next/navigation";
-import { PropsWithChildren } from "react";
+import { ComponentProps, PropsWithChildren } from "react";
 import { FaChildren } from "react-icons/fa6";
 import { MdVolunteerActivism } from "react-icons/md";
 import Modal from "./Modal";
 
 function SelectRoleModal({ children }: PropsWithChildren) {
   const router = useRouter();
-  const authType = useModalStore((state) => state.authType);
-  const isShowSelectRoleModal = useModalStore(
+  const authType = useSelectRoleModalStore((state) => state.authType);
+  const isShowSelectRoleModal = useSelectRoleModalStore(
     (state) => state.isShowSelectRoleModal
   );
-  const setIsShowSelectRoleModal = useModalStore(
+  const setIsShowSelectRoleModal = useSelectRoleModalStore(
     (state) => state.setIsShowSelectRoleModal
   );
   const baseHref = `/${authType}`;
@@ -22,10 +22,20 @@ function SelectRoleModal({ children }: PropsWithChildren) {
     router.push(href);
   };
 
+  const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
+    console.log(e.target, e.currentTarget);
+    if (e.target === e.currentTarget) {
+      setIsShowSelectRoleModal(false);
+    }
+  };
+
   return (
     <>
       {isShowSelectRoleModal && (
-        <Modal className="flex gap-x-10 items-center justify-center">
+        <Modal
+          onClickFn={handleClickOutOfRange}
+          className="flex gap-x-10 items-center justify-center"
+        >
           <button
             onClick={() => handleClickSelectRole("recipient")}
             className="w-72 aspect-square bg-white border border-gray-500 rounded-xl p-5 pt-10 pb-2"

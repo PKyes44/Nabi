@@ -1,25 +1,19 @@
-import useModalStore from "@/zustand/modal.store";
 import { ComponentProps, PropsWithChildren } from "react";
 
 interface ModalProps {
   className?: string;
+  onClickFn: ComponentProps<"div">["onClick"];
 }
 
-function Modal({ className, children }: PropsWithChildren<ModalProps>) {
-  const setIsShowSelectRoleModal = useModalStore(
-    (state) => state.setIsShowSelectRoleModal
-  );
-
-  const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
-    if (e.target === e.currentTarget) {
-      setIsShowSelectRoleModal(false);
-    }
-  };
-
+function Modal({
+  className,
+  onClickFn,
+  children,
+}: PropsWithChildren<ModalProps>) {
   return (
     <div
-      className={`${className} w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-45`}
-      onClick={handleClickOutOfRange}
+      className={`${className} w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-45 z-20`}
+      onClick={onClickFn}
     >
       {children}
     </div>
