@@ -65,6 +65,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
       console.log("error: ", arg);
     },
   });
+
   const { mutate: insertProfile } = useMutation({
     mutationFn: (
       insertProfileData: Database["public"]["Tables"]["userProfiles"]["Insert"]
@@ -73,6 +74,10 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
       router.replace("/");
     },
   });
+
+  const throwErrMsgs = (type: string, message: string) => {
+    setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
+  };
 
   const handleSubmitSignUpForm: ComponentProps<"form">["onSubmit"] = async (
     e: CustomFormEvent
@@ -85,23 +90,9 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
 
     setErrMsgs(initialErrMsgs);
 
-    if (!email) {
-      console.log("email is required");
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        email: "이메일을 입력해주세요",
-      }));
-    }
-    if (!password)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        password: "비밀번호를 입력해주세요",
-      }));
-    if (!nickname)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        nickname: "닉네임을 입력해주세요",
-      }));
+    if (!email) return throwErrMsgs("email", "이메일을 입력해주세요");
+    if (!password) return throwErrMsgs("password", "비밀번호를 입력해주세요");
+    if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해주세요");
 
     setNickname(nickname);
     const userInfo: UserInfo = {

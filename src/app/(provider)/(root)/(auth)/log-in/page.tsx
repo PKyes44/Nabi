@@ -45,6 +45,10 @@ function LogInPage() {
     },
   });
 
+  const throwErrMsgs = (type: string, message: string) => {
+    setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
+  };
+
   const handleSubmitLogInForm: ComponentProps<"form">["onSubmit"] = async (
     e: CustomFormEvent
   ) => {
@@ -54,16 +58,8 @@ function LogInPage() {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    if (!email)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        email: "이메일을 입력해주세요",
-      }));
-    if (!password)
-      return setErrMsgs((prevErrMsgs) => ({
-        ...prevErrMsgs,
-        password: "비밀번호를 입력해주세요",
-      }));
+    if (!email) return throwErrMsgs("email", "이메일을 입력해주세요");
+    if (!password) return throwErrMsgs("password", "비밀번호를 입력해주세요");
 
     const logInData: UserInfo = {
       email,

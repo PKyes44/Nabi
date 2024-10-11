@@ -6,6 +6,7 @@ import { MdVolunteerActivism } from "react-icons/md";
 import Modal from "./Modal";
 
 function SelectRoleModal({ children }: PropsWithChildren) {
+  const router = useRouter();
   const authType = useModalStore((state) => state.authType);
   const isShowSelectRoleModal = useModalStore(
     (state) => state.isShowSelectRoleModal
@@ -13,8 +14,7 @@ function SelectRoleModal({ children }: PropsWithChildren) {
   const setIsShowSelectRoleModal = useModalStore(
     (state) => state.setIsShowSelectRoleModal
   );
-  const router = useRouter();
-  const baseHref = authType === "log-in" ? "/auth/log-in" : "/auth/sign-up";
+  const baseHref = `/${authType}`;
 
   const handleClickSelectRole = (role: "recipient" | "sponsor") => {
     const href = baseHref + `?role=${role}`;
@@ -39,6 +39,7 @@ function SelectRoleModal({ children }: PropsWithChildren) {
               </span>
             </article>
           </button>
+
           <button
             onClick={() => handleClickSelectRole("sponsor")}
             className="w-72 aspect-square bg-white border border-gray-500 rounded-xl p-5 pt-10 pb-2"

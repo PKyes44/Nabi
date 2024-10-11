@@ -1,7 +1,7 @@
 "use client";
 
-function SponseredStorePage() {
+function SponsoredStorePage() {
   return <div />;
 }
 
-export default SponseredStorePage;
+export default SponsoredStorePage;

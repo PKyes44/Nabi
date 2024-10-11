@@ -41,7 +41,7 @@ function Profile() {
             )}
             <div className="flex flex-col">
               <span className="text-2xl font-bold">{profile.nickname}</span>
-              <span>{profile.role === "sponser" ? "후원자" : "후원아동"}</span>
+              <span>{profile.role === "sponsor" ? "후원자" : "후원아동"}</span>
             </div>
           </article>
           <article className="self-center -mt-5">
