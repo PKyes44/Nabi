@@ -18,7 +18,8 @@ function AuthNavigation() {
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();
   };
-  const handleClickAuth = (type: "log-in" | "sign-up") => {
+  const handleClickSignUp = () => {
+    const type = "sign-up";
     setAuthType(type);
     setIsShowSelectRoleModal(true);
   };
@@ -39,14 +40,10 @@ function AuthNavigation() {
           ) : (
             <>
               <li>
-                <button onClick={() => handleClickAuth("log-in")}>
-                  로그인
-                </button>
+                <Link href="/log-in">로그인</Link>
               </li>
               <li>
-                <button onClick={() => handleClickAuth("sign-up")}>
-                  회원가입
-                </button>
+                <button onClick={handleClickSignUp}>회원가입</button>
               </li>
             </>
           )
