@@ -8,6 +8,7 @@ function AuthProvider({ children }: PropsWithChildren) {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setAuthInitialized = useAuthStore((state) => state.setAuthInitialized);
   const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
+
   useEffect(() => {
     supabase.auth.onAuthStateChange((_name, session) => {
       if (session) {
@@ -21,6 +22,7 @@ function AuthProvider({ children }: PropsWithChildren) {
       setAuthInitialized();
     });
   }, []);
+
   return children;
 }
 

@@ -5,13 +5,13 @@ import { useState } from "react";
 function NewRecruitPage() {
   const [title, setTitle] = useState("");
   const [context, setContext] = useState("");
-  const [sponserType, setSponserType] = useState("personal");
+  const [sponsorType, setSponsorType] = useState("personal");
   const [donationType, setDonationType] = useState("talent");
   const [maxRecruits, setMaxRecruits] = useState(0);
   const [region, setRegion] = useState("");
 
   const handleClickNewRecruit = () => {
-    console.log(title, context, sponserType, donationType, maxRecruits, region);
+    console.log(title, context, sponsorType, donationType, maxRecruits, region);
   };
 
   return (
@@ -38,9 +38,9 @@ function NewRecruitPage() {
         <div>
           <span>후원자 유형</span>
           <select
-            onChange={(e) => setSponserType(e.target.value)}
-            name="sponserType"
-            id="sponserType"
+            onChange={(e) => setSponsorType(e.target.value)}
+            name="sponsorType"
+            id="sponsorType"
             className="border border-black"
           >
             <option value="personal">개인</option>
