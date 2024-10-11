@@ -118,7 +118,6 @@ function NewRecruitPage() {
         <div>
           <span>기부 유형</span>
           <select
-            onChange={(e) => setDonationType(e.target.value)}
             name="donationType"
             id="donationType"
             className="border border-black"
