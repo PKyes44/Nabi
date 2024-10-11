@@ -4,6 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
+import MyRecruits from "./MyRecruits";
 
 function Profile() {
   const userId = useAuthStore((state) => state.currentUserId);
@@ -56,7 +57,7 @@ function Profile() {
           </article>
         </div>
       </section>
-      <article className="grow h-[500px] bg-gray-300 rounded-lg"></article>
+      <MyRecruits />
     </div>
   );
 }

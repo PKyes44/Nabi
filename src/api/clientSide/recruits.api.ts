@@ -18,9 +18,20 @@ async function getRecruits() {
   return data;
 }
 
-const RecruitsAPI = {
-  createRecruit,
-  getRecruits,
+const getSortedMyRecruits = async (userId: string) => {
+  const response = await supabase
+    .from("recruits")
+    .select("*")
+    .eq("authorId", userId)
+    .order("createdAt", { ascending: false });
+  console.log(response);
+  return response;
 };
 
-export default RecruitsAPI;
+const recruitsAPI = {
+  createRecruit,
+  getRecruits,
+  getMyRecruits: getSortedMyRecruits,
+};
+
+export default recruitsAPI;
