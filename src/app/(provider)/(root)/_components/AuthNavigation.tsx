@@ -4,8 +4,10 @@ import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import useModalStore from "@/zustand/modal.store";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function AuthNavigation() {
+  const router = useRouter();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const authInitialized = useAuthStore((state) => state.isAuthInitialized);
   const setIsShowSelectRoleModal = useModalStore(
