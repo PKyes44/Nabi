@@ -64,6 +64,7 @@ function Button({
   textIntent,
   className,
   children,
+  ...props
 }: ButtonProps) {
   return (
     <button
@@ -73,6 +74,7 @@ function Button({
         intent,
         textIntent,
       })}`}
+      {...props}
     >
       {children}
     </button>

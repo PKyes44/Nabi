@@ -5,16 +5,23 @@ import Button from "@/components/Button/Button";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import MyRecruits from "./MyRecruits";
+import { useProfileEditModalStore } from "@/zustand/profileEditModal.stroe";
 
 function Profile() {
   const userId = useAuthStore((state) => state.currentUserId);
-
+  const setIsShowProfileEditModal = useProfileEditModalStore(
+    (state) => state.setIsShowProfileEditModal
+  );
   const { data: profile, isLoading } = useQuery({
     queryKey: ["userProfiles", { userId }],
     queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
   });
 
   if (isLoading || !profile) return <span>프로필 로딩 중 ..</span>;
+
+  const handleClickProfileEdit = () => {
+    setIsShowProfileEditModal(true);
+  };
 
   return (
     <div className="flex gap-x-7">
@@ -51,6 +58,7 @@ function Profile() {
               className="px-5 py-1.5"
               intent="primary"
               textIntent="primary"
+              onClick={handleClickProfileEdit}
             >
               프로필 수정
             </Button>

@@ -8,7 +8,7 @@ function Header() {
       <Page
         width="lg"
         isMain={false}
-        className=" h-full flex items-center justify-between"
+        className="h-full flex items-center justify-between -mt-8"
       >
         <Link href="/" className="text-2xl font-extrabold">
           나비

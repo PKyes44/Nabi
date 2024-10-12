@@ -29,7 +29,7 @@ type PageProps = PageVariant & PropsWithChildren<pageProps>;
 
 function Page({ width, isMain, className, children }: PageProps) {
   return (
-    <div className={`${pageVariant({ width, isMain })} ${className}`}>
+    <div className={`${pageVariant({ width, isMain })} ${className} pt-16`}>
       {children}
     </div>
   );

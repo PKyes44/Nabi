@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { Component, ComponentProps, useId } from "react";
 import Input from "./Input";
 
 type inputGroupProps = {
@@ -9,7 +9,7 @@ type inputGroupProps = {
   errorText?: string | null;
   helpText?: string | null;
   name?: string;
-  type?: "text" | "email" | "password";
+  type?: "text" | "email" | "password" | "file";
 };
 type InputGroupProps = inputGroupProps;
 

@@ -3,7 +3,7 @@ import Profile from "./_components/Profile";
 
 async function ProfilePage() {
   return (
-    <Page width="lg" className="mt-10 mb-10">
+    <Page width="lg" className="my-10 ">
       <Profile />
     </Page>
   );
