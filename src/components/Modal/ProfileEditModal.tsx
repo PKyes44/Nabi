@@ -10,9 +10,10 @@ import { useProfileEditModalStore } from "@/zustand/profileEditModal.stroe";
 import InputGroup from "../Inputs/InputGroup";
 import Button from "../Button/Button";
 import { supabase } from "@/supabase/client";
-import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/zustand/auth.store";
 import clientApi from "@/api/clientSide/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { EditProfileData } from "@/types/profiles.types";
 
 interface InitialErrMsgs {
   nickname: string | null;
@@ -30,12 +31,25 @@ type CustomFormEvent = FormEvent<HTMLFormElement> & {
 };
 
 function ProfileEditModal({ children }: PropsWithChildren) {
+  const queryClient = useQueryClient();
   const { isShowProfileEditModal, setIsShowProfileEditModal } =
     useProfileEditModalStore();
 
   const userId = useAuthStore((state) => state.currentUserId);
 
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
+
+  // useMutation사용해서 프로필수정 함수 정의
+  const { mutate: editProfile } = useMutation({
+    mutationFn: (profileData: EditProfileData) =>
+      clientApi.profiles.editProfile(profileData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["userProfiles", { userId }],
+        exact: true,
+      });
+    },
+  });
 
   // 에러 메시지 함수화
   const throwErrMsgs = (type: string, message: string) => {
@@ -57,12 +71,20 @@ function ProfileEditModal({ children }: PropsWithChildren) {
 
       const nickname = e.target.nickname.value;
       if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해 주세요");
+      if (!userId) return;
 
-      const img = e.target.profileImg.files?.[0];
-      const response = await supabase.storage
-        .from("profileImages")
-        .upload(`${userId}`, img!, { upsert: true });
-      console.log(response);
+      const profileImg = e.target.profileImg.files?.[0];
+      const bgImg = e.target.backgroundImg.files?.[0];
+
+      const profileData: EditProfileData = {
+        userId,
+        nickname,
+        profileImg,
+        bgImg,
+      };
+
+      editProfile(profileData);
+      setIsShowProfileEditModal(false);
     };
 
   return (
@@ -89,11 +111,13 @@ function ProfileEditModal({ children }: PropsWithChildren) {
                 label="프로필 사진 변경"
                 type="file"
                 name="profileImg"
+                helpText="사진을 선택하지 않으면 기본 이미지로 변경됩니다"
               />
               <InputGroup
                 label="배경 사진 변경"
                 type="file"
                 name="backgroundImg"
+                helpText="사진을 선택하지 않으면 기본 이미지로 변경됩니다"
               />
 
               <Button
