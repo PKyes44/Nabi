@@ -4,8 +4,8 @@ import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
-import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { ComponentProps, FormEvent, useState } from "react";
@@ -46,10 +46,13 @@ interface EditRecruitPageProps {
     recruitId: string;
   };
 }
-const EditRecruitPage = ({ params: { recruitId } }: EditRecruitPageProps) => {
+function EditRecruitPage({ params: { recruitId } }: EditRecruitPageProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
+  const authorId = useAuthStore((state) => state.currentUserId);
+
+  if (!authorId) return router.push("/");
 
   const { mutate: editRecruit } = useMutation<
     unknown,
@@ -70,57 +73,56 @@ const EditRecruitPage = ({ params: { recruitId } }: EditRecruitPageProps) => {
   const throwErrMsgs = (type: string, message: string) => {
     setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
   };
-  const handleSubmitRecruitForm: ComponentProps<"form">["onSubmit"] = async (
-    e: CustomFormEvent
-  ) => {
-    e.preventDefault();
+  const handleSubmitRecruitEditForm: ComponentProps<"form">["onSubmit"] =
+    async (e: CustomFormEvent) => {
+      e.preventDefault();
 
-    const maxSponsorRecruits = +e.target.maxSponsorRecruits.value;
-    const maxRecipientRecruits = +e.target.maxRecipientRecruits.value;
-    const deadLineDate = e.target.deadLineDate.value;
-    const volunteeringDate = e.target.volunteeringDate.value;
-    const region = e.target.region.value;
-    const title = e.target.title.value;
-    const content = e.target.content.value;
-    const isEnd = false;
+      const maxSponsorRecruits = +e.target.maxSponsorRecruits.value;
+      const maxRecipientRecruits = +e.target.maxRecipientRecruits.value;
+      const deadLineDate = e.target.deadLineDate.value;
+      const volunteeringDate = e.target.volunteeringDate.value;
+      const region = e.target.region.value;
+      const title = e.target.title.value;
+      const content = e.target.content.value;
+      const isEnd = false;
 
-    const { data } = await supabase.auth.getUser();
-    const authorId = data?.user?.id;
+      setErrMsgs(initialErrMsgs);
 
-    setErrMsgs(initialErrMsgs);
+      if (!maxSponsorRecruits)
+        return throwErrMsgs(
+          "maxSponsorRecruits",
+          "봉사자 모집 인원을 입력해주세요"
+        );
+      if (!maxRecipientRecruits)
+        return throwErrMsgs(
+          "maxRecipientRecruits",
+          "후원 아동 모집 인원을 입력해주세요"
+        );
+      if (!deadLineDate)
+        return throwErrMsgs("deadLineDate", "모집 마감 날짜를 입력해주세요");
+      if (!volunteeringDate)
+        return throwErrMsgs(
+          "volunteeringDate",
+          "자원 봉사 날짜를 입력해주세요"
+        );
+      if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
+      if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
 
-    if (!maxSponsorRecruits)
-      return throwErrMsgs(
-        "maxSponsorRecruits",
-        "봉사자 모집 인원을 입력해주세요"
-      );
-    if (!maxRecipientRecruits)
-      return throwErrMsgs(
-        "maxRecipientRecruits",
-        "후원 아동 모집 인원을 입력해주세요"
-      );
-    if (!deadLineDate)
-      return throwErrMsgs("deadLineDate", "모집 마감 날짜를 입력해주세요");
-    if (!volunteeringDate)
-      return throwErrMsgs("volunteeringDate", "자원 봉사 날짜를 입력해주세요");
-    if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
-    if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
+      const recruitEditData: Database["public"]["Tables"]["recruits"]["Insert"] =
+        {
+          maxSponsorRecruits,
+          maxRecipientRecruits,
+          deadLineDate,
+          volunteeringDate,
+          region,
+          title,
+          content,
+          isEnd,
+          authorId,
+        };
 
-    const recruitEditData: Database["public"]["Tables"]["recruits"]["Insert"] =
-      {
-        maxSponsorRecruits,
-        maxRecipientRecruits,
-        deadLineDate,
-        volunteeringDate,
-        region,
-        title,
-        content,
-        isEnd,
-        authorId,
-      };
-
-    editRecruit(recruitEditData);
-  };
+      editRecruit(recruitEditData);
+    };
 
   return (
     <Page width="lg" isMain={false} className="h-full py-10">
@@ -128,7 +130,7 @@ const EditRecruitPage = ({ params: { recruitId } }: EditRecruitPageProps) => {
         <h1 className="mb-10 text-3xl font-bold">봉사원 모집글 수정</h1>
 
         <form
-          onSubmit={handleSubmitRecruitForm}
+          onSubmit={handleSubmitRecruitEditForm}
           className="flex flex-col gap-y-2"
         >
           <div className="flex gap-x-2">
@@ -186,6 +188,6 @@ const EditRecruitPage = ({ params: { recruitId } }: EditRecruitPageProps) => {
       </div>
     </Page>
   );
-};
+}
 
 export default EditRecruitPage;

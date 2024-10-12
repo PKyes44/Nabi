@@ -4,12 +4,11 @@ import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
-import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { ComponentProps, FormEvent, useEffect, useState } from "react";
+import { ComponentProps, FormEvent, useState } from "react";
 
 interface InitialErrMsgs {
   maxSponsorRecruits: string | null;
@@ -45,11 +44,10 @@ type CustomFormEvent = FormEvent<HTMLFormElement> & {
 function NewRecruitPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const authInitialized = useAuthStore((state) => state.isAuthInitialized);
-
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
+
+  const authorId = useAuthStore((state) => state.currentUserId);
+  if (!authorId) return router.push("/");
 
   const { mutate: createRecruit } = useMutation<
     unknown,
@@ -85,9 +83,6 @@ function NewRecruitPage() {
     const content = e.target.content.value;
     const isEnd = false;
 
-    const { data } = await supabase.auth.getUser();
-    const authorId = data?.user?.id;
-
     setErrMsgs(initialErrMsgs);
 
     if (!maxSponsorRecruits)
@@ -121,15 +116,6 @@ function NewRecruitPage() {
 
     createRecruit(recruitData);
   };
-
-  useEffect(() => {
-    if (authInitialized && !isLoggedIn) {
-      router.replace("/");
-      return alert("로그인 후 이용 가능");
-    }
-  }, [authInitialized, isLoggedIn, router]);
-
-  if (!authInitialized || !isLoggedIn) return null;
 
   return (
     <Page width="lg" isMain={false} className="h-full py-10">
