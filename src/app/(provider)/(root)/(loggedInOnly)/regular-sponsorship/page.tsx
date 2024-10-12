@@ -1,6 +1,8 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import ButtonGroup from "@/components/Button/ButtonGroup";
+import Page from "@/components/Page/Page";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -27,7 +29,7 @@ function RegularSponsorShipPage() {
   });
 
   useEffect(() => {
-    async function fetchPayment() {
+    (async () => {
       try {
         if (!userId) return;
 
@@ -41,31 +43,29 @@ function RegularSponsorShipPage() {
       } catch (error) {
         console.error("Error fetching payment:", error);
       }
-    }
-
-    fetchPayment();
+    })();
   }, [clientKey, userId]);
 
   async function requestBillingAuth() {
     if (!payment || !user || !userProfile) return;
     await payment.requestBillingAuth({
       method: "CARD",
-      successUrl: window.location.origin + "/payment/billing",
-      failUrl: window.location.origin + "/404",
+      successUrl: window.location.origin + "/regular-sponsorship/billing",
+      failUrl: window.location.origin + "/regular-sponsorship/fail",
       customerEmail: user.email,
       customerName: userProfile.nickname,
     });
   }
 
   return (
-    <div className="wrapper">
-      <div className="box_section">
-        <h1>정기 결제</h1>
-        <button className="button" onClick={requestBillingAuth}>
-          정기 후원하기
-        </button>
+    <Page isMain width="md">
+      <div className="wrapper">
+        <div className="box_section">
+          <h1>정기 결제</h1>
+          <ButtonGroup onClick={requestBillingAuth} value="정기 후원하기" />
+        </div>
       </div>
-    </div>
+    </Page>
   );
 }
 
