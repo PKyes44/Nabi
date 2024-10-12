@@ -183,7 +183,7 @@ function EditRecruitPage({ params: { recruitId } }: EditRecruitPageProps) {
             />
           </div>
 
-          <ButtonGroup value="등록하기" size="md" className="mt-4" />
+          <ButtonGroup value="수정하기" size="md" className="mt-4" />
         </form>
       </div>
     </Page>

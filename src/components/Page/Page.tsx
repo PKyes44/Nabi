@@ -7,6 +7,7 @@ const pageVariant = cva("m-auto", {
       sm: "max-w-[600px] px-5",
       md: "max-w-[800px] px-5",
       lg: "max-w-[1200px] px-5",
+      full: "w-full",
     },
     isMain: {
       true: "min-h-[calc(100vh-64px-160px)]",
