@@ -18,7 +18,7 @@ function Modal({ className, children }: PropsWithChildren<ModalProps>) {
 
   return (
     <div
-      className={`${className} w-screen h-screen absolute z-50 top-0 left-0 bg-black bg-opacity-45`}
+      className={`${className} w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-45`}
       onClick={handleClickOutOfRange}
     >
       {children}
