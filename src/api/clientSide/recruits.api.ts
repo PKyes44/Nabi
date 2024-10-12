@@ -41,11 +41,24 @@ const getSortedMyRecruits = async (userId: string) => {
   return response;
 };
 
+const editRecruit = async (
+  recruitId: string,
+  data: Partial<Database["public"]["Tables"]["recruits"]["Update"]>
+) => {
+  const { error } = await supabase
+    .from("recruits")
+    .update(data)
+    .eq("recruitId", recruitId);
+
+  if (error) throw new Error(error.message);
+};
+
 const recruitsAPI = {
   createRecruit,
   getSortedMyRecruits,
   getRecruits,
   getRecruit,
+  editRecruit,
 };
 
 export default recruitsAPI;

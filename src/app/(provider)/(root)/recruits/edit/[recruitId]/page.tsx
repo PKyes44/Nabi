@@ -6,10 +6,9 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
 import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
-import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { ComponentProps, FormEvent, useEffect, useState } from "react";
+import { ComponentProps, FormEvent, useState } from "react";
 
 interface InitialErrMsgs {
   maxSponsorRecruits: string | null;
@@ -42,24 +41,25 @@ type CustomFormEvent = FormEvent<HTMLFormElement> & {
   };
 };
 
-function NewRecruitPage() {
-  const router = useRouter();
+interface EditRecruitPageProps {
+  params: {
+    recruitId: string;
+  };
+}
+const EditRecruitPage = ({ params: { recruitId } }: EditRecruitPageProps) => {
   const queryClient = useQueryClient();
-
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const authInitialized = useAuthStore((state) => state.isAuthInitialized);
-
+  const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
-  const { mutate: createRecruit } = useMutation<
+  const { mutate: editRecruit } = useMutation<
     unknown,
     Error,
-    Database["public"]["Tables"]["recruits"]["Insert"]
+    Database["public"]["Tables"]["recruits"]["Update"]
   >({
-    mutationFn: (data) => clientApi.recruits.createRecruit(data),
+    mutationFn: (data) => clientApi.recruits.editRecruit(recruitId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recruits"] });
-      alert("추가되었습니다.");
+      alert("수정되었습니다.");
       router.push(`/`);
     },
     onError: (e) => {
@@ -70,7 +70,6 @@ function NewRecruitPage() {
   const throwErrMsgs = (type: string, message: string) => {
     setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
   };
-
   const handleSubmitRecruitForm: ComponentProps<"form">["onSubmit"] = async (
     e: CustomFormEvent
   ) => {
@@ -107,34 +106,26 @@ function NewRecruitPage() {
     if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
     if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
 
-    const recruitData: Database["public"]["Tables"]["recruits"]["Insert"] = {
-      maxSponsorRecruits,
-      maxRecipientRecruits,
-      deadLineDate,
-      volunteeringDate,
-      region,
-      title,
-      content,
-      isEnd,
-      authorId,
-    };
+    const recruitEditData: Database["public"]["Tables"]["recruits"]["Insert"] =
+      {
+        maxSponsorRecruits,
+        maxRecipientRecruits,
+        deadLineDate,
+        volunteeringDate,
+        region,
+        title,
+        content,
+        isEnd,
+        authorId,
+      };
 
-    createRecruit(recruitData);
+    editRecruit(recruitEditData);
   };
-
-  useEffect(() => {
-    if (authInitialized && !isLoggedIn) {
-      router.replace("/");
-      return alert("로그인 후 이용 가능");
-    }
-  }, [authInitialized, isLoggedIn, router]);
-
-  if (!authInitialized || !isLoggedIn) return null;
 
   return (
     <Page width="lg" isMain={false} className="h-full py-10">
       <div className="bg-white p-10 rounded-md">
-        <h1 className="mb-10 text-3xl font-bold">봉사원 모집글 작성</h1>
+        <h1 className="mb-10 text-3xl font-bold">봉사원 모집글 수정</h1>
 
         <form
           onSubmit={handleSubmitRecruitForm}
@@ -195,6 +186,6 @@ function NewRecruitPage() {
       </div>
     </Page>
   );
-}
+};
 
-export default NewRecruitPage;
+export default EditRecruitPage;
