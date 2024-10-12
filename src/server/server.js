@@ -97,7 +97,7 @@ app.post("/issue-billing-key", (req, res) => {
       }
     );
     const json = await paymentRes.json();
-    console.log(json.status);
+    console.log("json: ", json);
 
     const insertLogData = {
       orderName,
@@ -113,8 +113,15 @@ app.post("/issue-billing-key", (req, res) => {
       throw new Error("supabase log insert error");
     }
 
-    billingKeyMap.set(customerKey, result.billingKey);
-    res.status(response.status).json(result);
+    const responseData = {
+      card: json.card,
+      amount: json.totalAmount,
+      approvedAt: json.approvedAt,
+      orderId,
+      orderName,
+    };
+
+    res.status(response.status).json(responseData);
   });
 });
 
