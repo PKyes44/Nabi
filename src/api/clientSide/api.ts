@@ -11,7 +11,7 @@ const clientApi = {
   storeData: storeDataAPI,
   recruits: recruitsAPI,
   storeOwners: storeOwnersAPI,
-  payment: regularSponsorShipAPI,
+  sponsorShip: regularSponsorShipAPI,
 };
 
 export default clientApi;

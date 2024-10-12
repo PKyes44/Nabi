@@ -2,7 +2,6 @@
 
 import clientApi from "@/api/clientSide/api";
 import Page from "@/components/Page/Page";
-import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 
@@ -11,17 +10,25 @@ interface RegularSponsorShipBillingPageProps {
     customerKey: string;
     authKey: string;
   };
+  params: {
+    recipientId: string;
+    price: string;
+  };
 }
 
 function RegularSponsorShipBillingPage({
   searchParams: { customerKey, authKey },
+  params: { recipientId, price },
 }: RegularSponsorShipBillingPageProps) {
-  const userId = useAuthStore((state) => state.currentUserId);
-
   const { mutate: getBillingKey } = useMutation({
-    mutationFn: () => clientApi.payment.getBillingKey({ customerKey, authKey }),
-    onSuccess: (data) => {
-      const billingKey = data.billingKey;
+    mutationFn: (requestData: {
+      customerKey: string;
+      authKey: string;
+      price: number;
+      recipientId: string;
+    }) => clientApi.sponsorShip.getBillingKey(requestData),
+    onSuccess: (...arg) => {
+      console.log("succes:", arg);
     },
     onError: (...arg) => {
       console.log("error: ", arg);
@@ -29,7 +36,13 @@ function RegularSponsorShipBillingPage({
   });
 
   useEffect(() => {
-    getBillingKey();
+    const requestData = {
+      recipientId,
+      price: +price,
+      authKey,
+      customerKey,
+    };
+    getBillingKey(requestData);
   }, []);
 
   return (
@@ -59,15 +72,6 @@ function RegularSponsorShipBillingPage({
           >
             실시간 문의
           </button>
-        </div>
-        <div
-          className="box_section"
-          style={{ width: "600px", textAlign: "left" }}
-        >
-          <b>Response Data :</b>
-          <div id="response" style={{ whiteSpace: "initial" }}>
-            {responseData && <pre>{JSON.stringify(responseData, null, 4)}</pre>}
-          </div>
         </div>
       </div>
     </Page>

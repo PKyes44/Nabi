@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { createClient } = require("@supabase/supabase-js");
 const app = express();
 const port = 8080;
 
@@ -7,13 +8,15 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(cors());
 
-// TODO: 개발자센터에 로그인해서 내 결제위젯 연동 키 > 시크릿 키를 입력하세요. 시크릿 키는 외부에 공개되면 안돼요.
-// @docs https://docs.tosspayments.com/reference/using-api/api-keys
+const supabaseKey = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4b2liamFlamJtYXRoZnB6dGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg1MzY3OTMsImV4cCI6MjA0NDExMjc5M30.flNIK7VSVYNrbZn4cwRxxr8y6kkjtOLrphPt1UBtP_Q`;
+const supabaseUrl = "https://gxoibjaejbmathfpztjt.supabase.co";
+
+if (!supabaseKey || !supabaseUrl) throw new Error("supabase auth error");
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 const apiSecretKey = "test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R";
 
-// 토스페이먼츠 API는 시크릿 키를 사용자 ID로 사용하고, 비밀번호는 사용하지 않습니다.
-// 비밀번호가 없다는 것을 알리기 위해 시크릿 키 뒤에 콜론을 추가합니다.
-// @docs https://docs.tosspayments.com/reference/using-api/authorization#%EC%9D%B8%EC%A6%9D
 const encryptedApiSecretKey =
   "Basic " + Buffer.from(apiSecretKey + ":").toString("base64");
 
@@ -25,7 +28,7 @@ app.get("/", (req, res) => {
 
 // 빌링키 발급
 app.post("/issue-billing-key", (req, res) => {
-  const { customerKey, authKey } = req.body;
+  const { customerKey, authKey, price, recipientId } = req.body;
 
   // AuthKey 로 카드 빌링키 발급 API 를 호출하세요
   // @docs https://docs.tosspayments.com/reference#authkey로-카드-빌링키-발급
@@ -50,8 +53,66 @@ app.post("/issue-billing-key", (req, res) => {
       return;
     }
 
-    // TODO: 빌링키 발급 성공 비즈니스 로직을 구현하세요.
-    // TODO: 발급된 빌링키를 구매자 정보로 찾을 수 있도록 저장해두고, 결제가 필요한 시점에 조회하여 카드 자동결제 승인 API 를 호출합니다.
+    const sponsorShipId = crypto.randomUUID();
+    const insertData = {
+      sponsorShipId,
+      price,
+      recipientId,
+      sponsorId: customerKey,
+      billingKey: result.billingKey,
+    };
+    const { error: insertError } = await supabase
+      .from("sponsorShip")
+      .insert(insertData);
+    if (insertError) throw new Error("supabase insert error");
+
+    const { error: selectError, data } = await supabase
+      .from("userProfiles")
+      .select("nickname, email")
+      .eq("userId", customerKey)
+      .single();
+
+    if (selectError) throw new Error("supabase select error");
+    console.log("userProfile: ", data);
+    const orderId = crypto.randomUUID();
+    const orderName = `나비: ${data.nickname}님의 정기후원`;
+    const requestData = {
+      customerKey,
+      amount: +price,
+      orderId,
+      orderName,
+      customerEmail: data.email,
+      customerName: data.nickname,
+    };
+
+    const paymentRes = await fetch(
+      `https://api.tosspayments.com/v1/billing/${result.billingKey}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: encryptedApiSecretKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+    const json = await paymentRes.json();
+    console.log(json.status);
+
+    const insertLogData = {
+      orderName,
+      sponsorShipId,
+      amount: price,
+    };
+    const { error: insertLogError } = await supabase
+      .from("sponsorShipOrder")
+      .insert(insertLogData);
+
+    if (insertLogError) {
+      console.log("insertLogError: ", insertLogError);
+      throw new Error("supabase log insert error");
+    }
+
     billingKeyMap.set(customerKey, result.billingKey);
     res.status(response.status).json(result);
   });

@@ -5,6 +5,8 @@ const serverClient = axios.create({ baseURL: "http://localhost:8080" });
 const getBillingKey = async (requestData: {
   customerKey: string;
   authKey: string;
+  price: number;
+  recipientId: string;
 }) => {
   const response = await serverClient.post("/issue-billing-key", requestData);
 
@@ -12,8 +14,8 @@ const getBillingKey = async (requestData: {
   return data;
 };
 
-const insertBillingKeyWithSponsorId = async () => {};
-
-const regularSponsorShipAPI = { getBillingKey };
+const regularSponsorShipAPI = {
+  getBillingKey,
+};
 
 export default regularSponsorShipAPI;
