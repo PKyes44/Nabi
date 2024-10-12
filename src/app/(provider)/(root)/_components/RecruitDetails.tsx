@@ -2,11 +2,11 @@ import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import Link from "next/link";
 
-interface RecruitPostProps {
+interface RecruitDetailsProps {
   recruit: Tables<"recruits">;
 }
 
-function RecruitPost({ recruit }: RecruitPostProps) {
+function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const authorId = useAuthStore((state) => state.currentUserId);
 
   const date = (dateString: string) => {
@@ -40,4 +40,4 @@ function RecruitPost({ recruit }: RecruitPostProps) {
   );
 }
 
-export default RecruitPost;
+export default RecruitDetails;

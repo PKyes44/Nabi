@@ -4,7 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import Page from "@/components/Page/Page";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import RecruitPost from "./_components/RecruitPost";
+import RecruitDetails from "./_components/RecruitDetails";
 
 function RecruitsPage() {
   const { data: recruits } = useQuery({
@@ -16,7 +16,7 @@ function RecruitsPage() {
     <Page
       width="lg"
       isMain={false}
-      className="h-full flex items-center justify-between py-10"
+      className="h-full flex items-center justify-between py-20"
     >
       <div className="grid grid-cols-4 gap-x-5 w-full">
         <div className="bg-white h-60"></div>
@@ -29,7 +29,7 @@ function RecruitsPage() {
           </Link>
           <ul className="mt-5 w-full">
             {recruits?.map((recruit) => (
-              <RecruitPost key={recruit.recruitId} recruit={recruit} />
+              <RecruitDetails key={recruit.recruitId} recruit={recruit} />
             ))}
           </ul>
         </div>
