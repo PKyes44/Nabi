@@ -3,7 +3,7 @@
 import clientApi from "@/api/clientSide/api";
 import { Database } from "@/supabase/database.types";
 import useStoreDetailStore from "@/zustand/storeDetailModal.store";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import useGeolocation from "./useGeolocation";
 
@@ -13,26 +13,47 @@ declare global {
   }
 }
 
+type InitialDataKey = {
+  연번: string;
+  업종: string;
+  가맹점명칭: string;
+  주소1: string;
+  전화번호: string;
+};
+
+const initialDataKey: InitialDataKey = {
+  연번: "storeId",
+  업종: "industry",
+  가맹점명칭: "storeName",
+  주소1: "address",
+  전화번호: "phoneNumber",
+};
+
+type DataObject = {
+  storeId: string;
+  industry: string;
+  storeName: string;
+  address: string;
+  phoneNumber: string;
+};
+
 function KakaoMap() {
   const location = useGeolocation();
   const setIsShowStoreDetailModal = useStoreDetailStore(
     (state) => state.setIsShowStoreDetailModal
+  );
+  const setStoreDetailData = useStoreDetailStore(
+    (state) => state.setStoreDetailData
   );
 
   const { data: storeDatas } = useQuery({
     queryKey: ["storeData"],
     queryFn: () => clientApi.storeData.getStoreDatas(),
   });
-  const { mutate: updateStore } = useMutation({
-    mutationFn: (
-      updateStoreData: Database["public"]["Tables"]["storeData"]["Row"]
-    ) => clientApi.storeData.updateStoreData(updateStoreData),
-    onSuccess: (...arg) => {
-      console.log("success:", arg);
-    },
-  });
 
   useEffect(() => {
+    if (!storeDatas) return;
+
     let container = document.getElementById(`map`); // 지도를 담을 영역의 DOM 레퍼런스
     const center = location.loaded
       ? new window.kakao.maps.LatLng(
@@ -58,35 +79,21 @@ function KakaoMap() {
     });
     marker.setMap(map);
 
-    window.kakao.maps.event.addListener(marker, "click", () =>
-      setIsShowStoreDetailModal(true)
-    );
-  }, [location]);
-
-  useEffect(() => {
-    if (!storeDatas) return;
-
-    // 주소-좌표 변환 객체를 생성합니다
-    const geocoder = new window.kakao.maps.services.Geocoder();
-
-    console.log(storeDatas.length);
-    // 주소로 좌표를 검색합니다
-    storeDatas.forEach((data, index) => {
-      // geocoder.addressSearch(data.address, function (result, status) {
-      //   // 정상적으로 검색이 완료됐으면
-      //   if (status === window.kakao.maps.services.Status.OK) {
-      //     const lat = result[0].y;
-      //     const lng = result[0].x;
-      //     const updateStoreData = {
-      //       ...data,
-      //       lat,
-      //       lng,
-      //     };
-      //     updateStore(updateStoreData);
-      //   }
-      // });
+    window.kakao.maps.event.addListener(marker, "click", () => {
+      const detailData: Database["public"]["Tables"]["storeDatas"]["Row"] = {
+        storeId: "ed540cfb-78c3-4821-80af-1796ab6d349d",
+        address: " 강남구  청담1동 76-4  지하1층",
+        phoneNumber: "0234434402",
+        storeType: "한식",
+        brandName: "청숫골보리밥쌈밥",
+        lat: "37.5193631879583",
+        lng: "127.050329397246",
+        createdAt: "",
+      };
+      setStoreDetailData(detailData);
+      setIsShowStoreDetailModal(true);
     });
-  }, [storeDatas]);
+  }, [location, storeDatas]);
 
   // if (!location.loaded) return <span>데이터 로딩중 ..</span>;
 
