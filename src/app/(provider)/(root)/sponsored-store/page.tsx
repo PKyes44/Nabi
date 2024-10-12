@@ -1,7 +1,13 @@
 "use client";
 
+import KakaoMap from "./_components/KakaoMap";
+
 function SponsoredStorePage() {
-  return <div />;
+  return (
+    <div className="App">
+      <KakaoMap />
+    </div>
+  );
 }
 
 export default SponsoredStorePage;
