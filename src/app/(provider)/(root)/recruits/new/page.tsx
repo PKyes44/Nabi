@@ -98,7 +98,6 @@ function NewRecruitPage() {
     const recruitData: Database["public"]["Tables"]["recruits"]["Insert"] = {
       title,
       content,
-      donationType,
       maxRecruits,
       region,
       status,

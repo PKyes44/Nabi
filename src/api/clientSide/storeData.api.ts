@@ -2,18 +2,15 @@ import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
 
 const getStoreDatas = async () => {
-  const { error, data } = await supabase
-    .from("storeData")
-    .select()
-    .not("lat", "is", "null");
+  const { error, data } = await supabase.from("storeDatas").select();
   if (error) throw new Error(error.message);
   return data;
 };
 const updateStoreData = async (
-  updateData: Database["public"]["Tables"]["storeData"]["Row"]
+  updateData: Database["public"]["Tables"]["storeDatas"]["Row"]
 ) => {
   const { error, data } = await supabase
-    .from("storeData")
+    .from("storeDatas")
     .update(updateData)
     .eq("storeId", updateData.storeId);
 

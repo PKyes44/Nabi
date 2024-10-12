@@ -15,9 +15,17 @@ const logIn = async (logInData: UserInfo) => {
   return data;
 };
 
+const getUser = async () => {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) throw new Error(error.message);
+
+  return data.user;
+};
+
 const authAPI = {
   signUp,
   logIn,
+  getUser,
 };
 
 export default authAPI;

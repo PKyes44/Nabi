@@ -16,6 +16,8 @@ const insertProfile = async (
 };
 
 const getProfileByUserId = async (userId: string) => {
+  if (!userId) return;
+
   const { data, error } = await supabase
     .from(TABLE_PROFILES)
     .select()
