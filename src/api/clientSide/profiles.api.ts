@@ -29,25 +29,25 @@ const getProfileByUserId = async (userId: string) => {
 };
 
 
-const editProfile = async ({userId, nickname, profileImg, bgImg }:EditProfileData) => {
+const editProfile = async (editProfileData:EditProfileData) => {
   await supabase
         .from("userProfiles")
-        .update({ nickname })
-        .eq("userId", userId!);
+        .update({nickname: editProfileData.nickname})
+        .eq("userId", editProfileData.userId);
 
   const {data: profileData} = await supabase.storage
         .from("profileImages")
-        .upload(`${userId}`, profileImg!, { upsert: true });
+        .upload(`${editProfileData.userId}`, editProfileData.profileImg!, { upsert: true });
         
   const {data: bgData} = await supabase.storage
         .from("backgroundImages")
-        .upload(`${userId}`, bgImg!, { upsert: true });
+        .upload(`${editProfileData.userId}`, editProfileData.bgImg!, { upsert: true });
 
   const baseURL = "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/"
   await supabase.from("userProfiles").update({
     profileImageUrl: baseURL+profileData!.fullPath,
     bgImageUrl: baseURL+bgData!.fullPath,
-  }).eq("userId", userId!);
+  }).eq("userId", editProfileData.userId);
 
 }
 
