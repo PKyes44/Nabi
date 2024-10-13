@@ -5,11 +5,12 @@ import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
 import { Database } from "@/supabase/database.types";
+import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { ComponentProps, FormEvent, useState } from "react";
+import { ComponentProps, useState } from "react";
 import LoggedInOnlyLayout from "../../(loggedInOnly)/layout";
 
 interface InitialErrMsgs {
@@ -26,18 +27,15 @@ const initialErrMsgs = {
   title: null,
 };
 
-type CustomFormEvent = FormEvent<HTMLFormElement> & {
-  target: FormEvent<HTMLFormElement>["target"] & {
-    donationType: HTMLSelectElement;
-    maxSponsorRecruits: HTMLInputElement;
-    maxRecipientRecruits: HTMLInputElement;
-    deadLineDate: HTMLInputElement;
-    volunteeringDate: HTMLInputElement;
-    region: HTMLInputElement;
-    title: HTMLInputElement;
-    content: HTMLTextAreaElement;
-  };
-};
+interface RecruitForm {
+  maxSponsorRecruits: HTMLInputElement;
+  maxRecipientRecruits: HTMLInputElement;
+  deadLineDate: HTMLInputElement;
+  volunteeringDate: HTMLInputElement;
+  region: HTMLInputElement;
+  title: HTMLInputElement;
+  content: HTMLTextAreaElement;
+}
 
 function NewRecruitPage() {
   const router = useRouter();
@@ -66,7 +64,7 @@ function NewRecruitPage() {
   };
 
   const handleSubmitRecruitForm: ComponentProps<"form">["onSubmit"] = async (
-    e: CustomFormEvent
+    e: CustomFormEvent<RecruitForm>
   ) => {
     e.preventDefault();
 
