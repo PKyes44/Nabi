@@ -28,10 +28,7 @@ function StoreDetails() {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [
-          "storeOwners",
-          { userId: currentUserId, storeId: storeDetailData?.storeId },
-        ],
+        queryKey: ["storeOwners"],
       });
     },
   });

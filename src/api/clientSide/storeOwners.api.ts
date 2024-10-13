@@ -12,15 +12,16 @@ const insertStoreOwner = async (
   return data;
 };
 
-const isStoreOwnerByUserId = async (userId: string) => {
+const isStoreOwnerByUserId = async (userId: string | null) => {
+  if (!userId) return null;
   const { error, data } = await supabase
     .from("storeOwners")
     .select()
     .eq("sponsorId", userId);
   if (error) throw new Error(error.message);
 
-  console.log(data);
-  return data;
+  if (data.length === 0) return false;
+  return true;
 };
 const isStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
   if (!storeId) return;
