@@ -9,7 +9,7 @@ interface ChatPageProps {
 
 function ChatPage({ searchParams: { showChatUserId } }: ChatPageProps) {
   return (
-    <Page isMain>
+    <Page width="lg" isMain>
       <Chats showChatUserId={showChatUserId} />
     </Page>
   );

@@ -1,5 +1,5 @@
-import ChatList from "./ChatList/ChatList";
-import ChatLog from "./ChatLog";
+import RoomList from "./ChatList/RoomList";
+import ChatScreen from "./ChatScreen";
 
 interface ChatsProps {
   showChatUserId: string;
@@ -7,10 +7,10 @@ interface ChatsProps {
 
 function Chats({ showChatUserId }: ChatsProps) {
   return (
-    <>
-      <ChatList showChatUserId={showChatUserId} />
-      <ChatLog showChatUserId={showChatUserId} />
-    </>
+    <div className="flex pt-10 gap-x-2 w-full">
+      <RoomList showChatUserId={showChatUserId} />
+      <ChatScreen showChatUserId={showChatUserId} />
+    </div>
   );
 }
 
