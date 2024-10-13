@@ -19,6 +19,8 @@ const insertProfile = async (
 };
 
 const getProfileByUserId = async (userId: string) => {
+  if (!userId) return;
+
   const { data, error } = await supabase
     .from(TABLE_PROFILES)
     .select()
@@ -32,6 +34,7 @@ const getProfileByUserId = async (userId: string) => {
 
 
 const editProfile = async (editProfileData:EditProfileData) => {
+
   // 닉네임 변경
   if (editProfileData.nickname) await supabase
         .from(TABLE_PROFILES)
@@ -52,6 +55,8 @@ const editProfile = async (editProfileData:EditProfileData) => {
       profileImageUrl: baseURL + result.profileImgUrl
     }).eq("userId", editProfileData.userId);
   }
+
+  // 배경 이미지가 바꼈을 경우 배경 이미지 URL 변경
   if (result.bgImgUrl) {
     await supabase.from(TABLE_PROFILES).update({
       bgImageUrl: baseURL + result.bgImgUrl

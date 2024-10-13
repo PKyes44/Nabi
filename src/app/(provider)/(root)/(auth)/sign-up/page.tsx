@@ -47,6 +47,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
       const insertProfileData = {
         userId,
         nickname,
+        email,
         role,
       };
       insertProfile(insertProfileData);

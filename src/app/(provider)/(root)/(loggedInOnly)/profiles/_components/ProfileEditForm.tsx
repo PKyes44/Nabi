@@ -7,7 +7,11 @@ import { EditProfileData } from "@/types/profiles.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useProfileEditModalStore } from "@/zustand/profileEditModal.stroe";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+<<<<<<< HEAD
 import React, { ComponentProps, useEffect, useState } from "react";
+=======
+import React, { ComponentProps, useState } from "react";
+>>>>>>> 223ecd6a129f2cd718d866ecd564eb9d978ae347
 
 interface InitialErrMsgs {
   nickname: string | null;
@@ -26,13 +30,24 @@ function ProfileEditForm() {
   );
 
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
+<<<<<<< HEAD
   const [isClickedPrimaryProfile, setIsClickedPrimaryProfile] = useState(false);
   const [isClickedPrimaryBg, setIsClickedPrimaryBg] = useState(false);
+=======
+>>>>>>> 223ecd6a129f2cd718d866ecd564eb9d978ae347
 
   // useMutation사용해서 기본 이미지로 변경하는 함수
   const { mutate: setPrimaryImage } = useMutation({
     mutationFn: (type: string) =>
       clientApi.profiles.setPrimaryImage(userId!, type),
+<<<<<<< HEAD
+=======
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["userProfiles", { userId }],
+      });
+    },
+>>>>>>> 223ecd6a129f2cd718d866ecd564eb9d978ae347
   });
 
   // useMutation사용해서 프로필수정하는 함수
@@ -62,9 +77,12 @@ function ProfileEditForm() {
       const nickname = e.target.nickname.value;
       if (!userId) return;
 
+<<<<<<< HEAD
       if (isClickedPrimaryProfile) setPrimaryImage("profile");
       if (isClickedPrimaryBg) setPrimaryImage("background");
 
+=======
+>>>>>>> 223ecd6a129f2cd718d866ecd564eb9d978ae347
       const profileImg = e.target.profileImg.files?.[0];
       const bgImg = e.target.backgroundImg.files?.[0];
 
@@ -82,16 +100,26 @@ function ProfileEditForm() {
     e
   ) => {
     e.preventDefault();
+<<<<<<< HEAD
     setIsClickedPrimaryProfile(true);
+=======
+    setPrimaryImage("profile");
+>>>>>>> 223ecd6a129f2cd718d866ecd564eb9d978ae347
   };
 
   const handleCLickPrimaryBackground: ComponentProps<"button">["onClick"] =
     async (e) => {
       e.preventDefault();
+<<<<<<< HEAD
       setIsClickedPrimaryBg(true);
     };
 
   useEffect(() => {}, []);
+=======
+      setPrimaryImage("background");
+    };
+
+>>>>>>> 223ecd6a129f2cd718d866ecd564eb9d978ae347
   return (
     <form
       onSubmit={handleSubmitProfileEditForm}

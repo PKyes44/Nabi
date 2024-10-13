@@ -1,11 +1,11 @@
-import Button, { ButtonVariant } from "./Button";
+import Button, { ButtonProps, ButtonVariant } from "./Button";
 
 type buttonGroupProps = {
   value: string;
   errorText?: string | null;
   className?: string;
 };
-type ButtonGroupProps = buttonGroupProps & ButtonVariant;
+type ButtonGroupProps = buttonGroupProps & ButtonVariant & ButtonProps;
 
 function ButtonGroup({
   value,
