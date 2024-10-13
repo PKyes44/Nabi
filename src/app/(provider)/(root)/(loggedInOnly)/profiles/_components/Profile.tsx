@@ -17,11 +17,11 @@ function Profile() {
     queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
   });
 
-  if (isLoading || !profile) return <span>프로필 로딩 중 ..</span>;
-
   const handleClickProfileEdit = () => {
     setIsShowProfileEditModal(true);
   };
+
+  if (isLoading || !profile) return <span>프로필 로딩 중 ..</span>;
 
   return (
     <div className="flex gap-x-7">

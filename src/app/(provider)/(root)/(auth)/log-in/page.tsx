@@ -4,6 +4,7 @@ import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
 import { UserInfo } from "@/types/auth.types";
+import { CustomFormEvent } from "@/types/formEvent.types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { ComponentProps, FormEvent, useState } from "react";
@@ -17,13 +18,6 @@ const initialErrMsgs = {
   email: null,
   password: null,
   global: null,
-};
-
-type CustomFormEvent = FormEvent<HTMLFormElement> & {
-  target: FormEvent<HTMLFormElement>["target"] & {
-    email: HTMLInputElement;
-    password: HTMLInputElement;
-  };
 };
 
 function LogInPage() {
@@ -50,7 +44,10 @@ function LogInPage() {
   };
 
   const handleSubmitLogInForm: ComponentProps<"form">["onSubmit"] = async (
-    e: CustomFormEvent
+    e: CustomFormEvent<{
+      email: HTMLInputElement;
+      password: HTMLInputElement;
+    }>
   ) => {
     e.preventDefault();
     setErrMsgs(initialErrMsgs);
