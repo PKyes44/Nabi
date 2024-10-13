@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cron = require("node-cron");
+require("dotenv").config({ path: "./.env.local" });
 const { createClient } = require("@supabase/supabase-js");
 const app = express();
 const port = 8080;
@@ -9,9 +10,8 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(cors());
 
-const supabaseKey = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd4b2liamFlamJtYXRoZnB6dGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg1MzY3OTMsImV4cCI6MjA0NDExMjc5M30.flNIK7VSVYNrbZn4cwRxxr8y6kkjtOLrphPt1UBtP_Q`;
-const supabaseUrl = "https://gxoibjaejbmathfpztjt.supabase.co";
-
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 if (!supabaseKey || !supabaseUrl) throw new Error("supabase auth error");
 
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -44,7 +44,6 @@ app.post("/issue-billing-key", (req, res) => {
     console.log(result);
 
     if (!response.ok) {
-      // TODO: 빌링키 발급 실패 비즈니스 로직을 구현하세요.
       res.status(response.status).json(result);
 
       return;
