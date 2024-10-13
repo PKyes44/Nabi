@@ -7,7 +7,6 @@ import { EditProfileData } from "@/types/profiles.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useProfileEditModalStore } from "@/zustand/profileEditModal.stroe";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { stat } from "fs";
 import React, { ComponentProps, useState } from "react";
 
 interface InitialErrMsgs {
