@@ -12,6 +12,18 @@ const insertStoreOwner = async (
   return data;
 };
 
+const getStoreByUserId = async (userId: string) => {
+  const { error, data } = await supabase
+    .from("storeOwners")
+    .select("*, storeDatas!storeOwners_storeId_fkey(address, brandName)")
+    .eq("sponsorId", userId);
+
+  if (error) throw new Error(error.message);
+
+  console.log(data);
+  return data;
+};
+
 const isStoreOwnerByUserId = async (userId: string | null) => {
   if (!userId) return null;
   const { error, data } = await supabase
@@ -23,6 +35,7 @@ const isStoreOwnerByUserId = async (userId: string | null) => {
   if (data.length === 0) return false;
   return true;
 };
+
 const isStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
   if (!storeId) return;
 
@@ -38,6 +51,7 @@ const isStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
 
 const storeOwnersAPI = {
   insertStoreOwner,
+  getStoreByUserId,
   isStoreOwnerByStoreId,
   isStoreOwnerByUserId,
 };

@@ -1,4 +1,5 @@
 import authAPI from "./auth.api";
+import freeMealsAPI from "./freeMeals.api";
 import profilesAPI from "./profiles.api";
 import recruitsAPI from "./recruits.api";
 import regularSponsorShipAPI from "./regularSponsorShip.api";
@@ -12,6 +13,7 @@ const clientApi = {
   recruits: recruitsAPI,
   storeOwners: storeOwnersAPI,
   sponsorShip: regularSponsorShipAPI,
+  freeMeal: freeMealsAPI,
 };
 
 export default clientApi;

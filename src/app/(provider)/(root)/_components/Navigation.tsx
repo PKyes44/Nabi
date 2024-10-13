@@ -24,7 +24,7 @@ function Navigation() {
       <ul className="flex gap-x-5">
         {authInitialized ? (
           isLoggedIn ? (
-            <LoggedInNavigation userId={userId} />
+            <LoggedInNavigation userId={userId!} />
           ) : (
             <>
               <li>
