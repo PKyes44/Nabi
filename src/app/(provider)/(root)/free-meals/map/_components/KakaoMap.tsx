@@ -53,7 +53,6 @@ function KakaoMap() {
           location.coordinates!.lng
         )
       : new window.kakao.maps.LatLng(33.450701, 126.570667);
-    console.log(center, location);
     let options = {
       center, // 지도 중심 좌표
       level: 3, // 지도의 레벨(확대, 축소 정도)
@@ -79,8 +78,6 @@ function KakaoMap() {
           swLatLng,
           neLatLng,
         };
-
-        // console.log("requestData: ", requestData, mapLevel);
 
         const storeDatas =
           await clientApi.storeData.getStoreDatasBySwLatLngAndNeLatLng(
@@ -114,8 +111,6 @@ function KakaoMap() {
       }
     );
   }, [location]);
-
-  // if (!location.loaded) return <span>데이터 로딩중 ..</span>;
 
   return <div id="map" className="w-screen h-screen" />;
 }
