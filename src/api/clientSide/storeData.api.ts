@@ -1,8 +1,21 @@
 import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
+import { LatLng } from "@/types/address.types";
 
-const getStoreDatas = async () => {
-  const { error, data } = await supabase.from("storeDatas").select();
+const getStoreDatasBySwLatLngAndNeLatLng = async ({
+  swLatLng,
+  neLatLng,
+}: {
+  swLatLng: LatLng;
+  neLatLng: LatLng;
+}) => {
+  const { error, data } = await supabase
+    .from("storeDatas")
+    .select()
+    .gte("lat", swLatLng.Ma)
+    .gte("lng", swLatLng.La)
+    .lte("lat", neLatLng.Ma)
+    .lte("lng", neLatLng.La);
   if (error) throw new Error(error.message);
   return data;
 };
@@ -20,7 +33,7 @@ const updateStoreData = async (
 };
 
 const storeDataAPI = {
-  getStoreDatas,
+  getStoreDatasBySwLatLngAndNeLatLng,
   updateStoreData,
 };
 
