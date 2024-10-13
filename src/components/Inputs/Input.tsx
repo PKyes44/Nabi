@@ -31,7 +31,7 @@ type inputProps = {
   innerClassName?: string;
   inputClassName?: string;
 };
-type InputProps = ComponentProps<"input"> & InputVariant & inputProps;
+export type InputProps = ComponentProps<"input"> & InputVariant & inputProps;
 
 function Input({
   inputId,
