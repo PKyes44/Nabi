@@ -5,6 +5,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
 import { Database } from "@/supabase/database.types";
 import { UserInfo } from "@/types/auth.types";
+import { CustomFormEvent } from "@/types/formEvent.types";
 import { Role } from "@/types/profiles.types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -19,14 +20,6 @@ const initialErrMsgs = {
   email: null,
   password: null,
   nickname: null,
-};
-
-type CustomFormEvent = FormEvent<HTMLFormElement> & {
-  target: FormEvent<HTMLFormElement>["target"] & {
-    email: HTMLInputElement;
-    password: HTMLInputElement;
-    nickname: HTMLInputElement;
-  };
 };
 
 interface SignUpPageProps {
@@ -79,7 +72,11 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   };
 
   const handleSubmitSignUpForm: ComponentProps<"form">["onSubmit"] = async (
-    e: CustomFormEvent
+    e: CustomFormEvent<{
+      email: HTMLInputElement;
+      password: HTMLInputElement;
+      nickname: HTMLInputElement;
+    }>
   ) => {
     e.preventDefault();
 
