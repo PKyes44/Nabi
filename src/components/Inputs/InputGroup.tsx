@@ -1,5 +1,5 @@
 import { useId } from "react";
-import Input from "./Input";
+import Input, { InputProps } from "./Input";
 
 type inputGroupProps = {
   label?: string;
@@ -8,10 +8,8 @@ type inputGroupProps = {
   inputClassName?: string;
   errorText?: string | null;
   helpText?: string | null;
-  name?: string;
-  type?: "text" | "email" | "password";
 };
-type InputGroupProps = inputGroupProps;
+type InputGroupProps = inputGroupProps & Omit<InputProps, "inputId">;
 
 function InputGroup({
   errorText,
@@ -20,8 +18,6 @@ function InputGroup({
   wrapperClassName,
   innerClassName,
   inputClassName,
-  name,
-  type,
   ...props
 }: InputGroupProps) {
   const inputId = useId();
@@ -34,8 +30,6 @@ function InputGroup({
         innerClassName={innerClassName}
         inputClassName={inputClassName}
         inputId={inputId}
-        name={name}
-        type={type}
         {...props}
       />
       {errorText ? (

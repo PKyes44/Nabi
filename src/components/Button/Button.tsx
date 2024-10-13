@@ -39,6 +39,8 @@ const buttonVariant = cva("", {
       intent: "primary",
       className: "bg-opacity-40 font-bold",
     },
+    { outline: true, className: "bg-opacity-5" },
+    { outline: true, textIntent: "default", className: "!text-black" },
   ],
   defaultVariants: {
     outline: false,
@@ -53,7 +55,7 @@ export type ButtonVariant = VariantProps<typeof buttonVariant>;
 type buttonProps = {
   className?: string;
 };
-type ButtonProps = ButtonVariant &
+export type ButtonProps = ButtonVariant &
   PropsWithChildren<buttonProps> &
   ComponentProps<"button">;
 
@@ -64,6 +66,7 @@ function Button({
   textIntent,
   className,
   children,
+  ...props
 }: ButtonProps) {
   return (
     <button
@@ -73,6 +76,7 @@ function Button({
         intent,
         textIntent,
       })}`}
+      {...props}
     >
       {children}
     </button>
