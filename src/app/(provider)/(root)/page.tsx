@@ -22,7 +22,7 @@ function RecruitsPage() {
         <div className="bg-white h-60"></div>
         <div className="col-span-2">
           <Link
-            href="/recruits/new"
+            href={"/recruits/new"}
             className="w-full block bg-white text-center py-3 text-[15px]"
           >
             글 작성

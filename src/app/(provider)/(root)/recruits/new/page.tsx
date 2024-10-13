@@ -70,42 +70,41 @@ function NewRecruitPage() {
 
     const maxSponsorRecruits = +e.target.maxSponsorRecruits.value;
     const maxRecipientRecruits = +e.target.maxRecipientRecruits.value;
-    const deadLineDate = dayjs(e.target.deadLineDate.value);
-    const volunteeringDate = dayjs(e.target.volunteeringDate.value);
+    const deadLineDateValue = e.target.deadLineDate.value;
+    const volunteeringDateValue = e.target.volunteeringDate.value;
     const region = e.target.region.value;
     const title = e.target.title.value;
     const content = e.target.content.value;
     const isEnd = false;
 
+    const deadLineDate = dayjs(deadLineDateValue);
+    const volunteeringDate = dayjs(volunteeringDateValue);
+
     setErrMsgs(initialErrMsgs);
 
-    if (isNaN(maxSponsorRecruits) || 0) {
+    if (isNaN(maxSponsorRecruits) || maxSponsorRecruits <= 0) {
       return throwErrMsgs(
         "maxSponsorRecruits",
         "모집 인원은 0 이상의 숫자로만 작성해주세요"
       );
     }
-    if (!maxSponsorRecruits || 0)
-      return throwErrMsgs(
-        "maxSponsorRecruits",
-        "봉사자 모집 인원은 0 이상의 입력해주세요"
-      );
-    if (isNaN(maxRecipientRecruits)) {
+    if (isNaN(maxRecipientRecruits) || maxRecipientRecruits <= 0) {
       return throwErrMsgs(
         "maxRecipientRecruits",
-        "모집 인원은 숫자로만 작성해주세요"
+        "모집 인원은 0 이상의 숫자로만 작성해주세요"
       );
     }
-    if (!maxRecipientRecruits)
-      return throwErrMsgs(
-        "maxRecipientRecruits",
-        "후원 아동 모집 인원을 입력해주세요"
-      );
+
+    if (!deadLineDateValue) {
+      return alert("모집 마감 날짜를 선택해주세요.");
+    }
+    if (!volunteeringDateValue) {
+      return alert("자원 봉사 날짜를 선택해주세요.");
+    }
+
     if (volunteeringDate.isBefore(deadLineDate)) {
-      return alert("봉사 활동 날짜는 모집 마감 날짜 이후여야 합니다.");
+      return alert("자원 봉사 날짜는 모집 마감 날짜 이후여야 합니다.");
     }
-    if (!deadLineDate) return alert("모집 마감 날짜를 입력해주세요");
-    if (!volunteeringDate) return alert("자원 봉사 날짜를 입력해주세요");
     if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
     if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
     if (!content) return alert("내용을 작성해주세요");
