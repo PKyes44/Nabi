@@ -1,8 +1,10 @@
 import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
 import { EditProfileData } from "@/types/profiles.types";
+import clientApi from "./api";
 
 const TABLE_PROFILES = "userProfiles";
+const baseURL = "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/"
 
 const insertProfile = async (
   insertProfileData: Database["public"]["Tables"]["userProfiles"]["Insert"]
@@ -30,31 +32,44 @@ const getProfileByUserId = async (userId: string) => {
 
 
 const editProfile = async (editProfileData:EditProfileData) => {
-  await supabase
-        .from("userProfiles")
+  // 닉네임 변경
+  if (editProfileData.nickname) await supabase
+        .from(TABLE_PROFILES)
         .update({nickname: editProfileData.nickname})
         .eq("userId", editProfileData.userId);
 
-  const {data: profileData} = await supabase.storage
-        .from("profileImages")
-        .upload(`${editProfileData.userId}`, editProfileData.profileImg!, { upsert: true });
-        
-  const {data: bgData} = await supabase.storage
-        .from("backgroundImages")
-        .upload(`${editProfileData.userId}`, editProfileData.bgImg!, { upsert: true });
+  // 프로필, 배경 이미지 스토리지에 업로드
+  const imageUploadData = {
+    userId: editProfileData.userId,
+    profileImg: editProfileData.profileImg,
+    bgImg: editProfileData.bgImg,
+  }
+  const result = await clientApi.storage.uploadImageToStorage(imageUploadData);
 
-  const baseURL = "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/"
-  await supabase.from("userProfiles").update({
-    profileImageUrl: baseURL+profileData!.fullPath,
-    bgImageUrl: baseURL+bgData!.fullPath,
-  }).eq("userId", editProfileData.userId);
+  // 프로필 이미가가 바꼈을 경우 프로필 이미지 URL 변경
+  if (result.profileImgUrl) {
+    await supabase.from(TABLE_PROFILES).update({
+      profileImageUrl: baseURL + result.profileImgUrl
+    }).eq("userId", editProfileData.userId);
+  }
+  if (result.bgImgUrl) {
+    await supabase.from(TABLE_PROFILES).update({
+      bgImageUrl: baseURL + result.bgImgUrl
+    }).eq("userId", editProfileData.userId);
+  }
+}
 
+const setPrimaryImage = async (userId:string, type:string) => {
+  type === "profile" ? await supabase.from(TABLE_PROFILES).update({profileImageUrl: null}).eq("userId", userId):
+  await supabase.from(TABLE_PROFILES).update({bgImageUrl: null}).eq("userId", userId);
+  clientApi.storage.setPrimaryImage(userId, type)
 }
 
 const profilesAPI = {
   insertProfile,
   getProfileByUserId,
   editProfile,
+  setPrimaryImage,
 };
 
 export default profilesAPI;

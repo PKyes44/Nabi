@@ -5,6 +5,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import Page from "@/components/Page/Page";
 import { Database } from "@/supabase/database.types";
 import { UserInfo } from "@/types/auth.types";
+import { CustomFormEvent } from "@/types/formEvent.types";
 import { Role } from "@/types/profiles.types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -21,14 +22,6 @@ const initialErrMsgs = {
   nickname: null,
 };
 
-type CustomFormEvent = FormEvent<HTMLFormElement> & {
-  target: FormEvent<HTMLFormElement>["target"] & {
-    email: HTMLInputElement;
-    password: HTMLInputElement;
-    nickname: HTMLInputElement;
-  };
-};
-
 interface SignUpPageProps {
   searchParams: {
     role: Role;
@@ -39,17 +32,15 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const [nickname, setNickname] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
 
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => clientApi.auth.signUp(userInfo),
     onSuccess: (userData) => {
       console.log("success: ", userData.user!.id);
 
-      if (!nickname)
-        return setErrMsgs((prevErrMsgs) => ({
-          ...prevErrMsgs,
-          email: "이메일을 입력해주세요",
-        }));
+      if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해주세요");
+      if (!email) return throwErrMsgs("email", "이메일을 입력해주세요");
 
       const userId = userData.user!.id;
 
@@ -80,7 +71,11 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   };
 
   const handleSubmitSignUpForm: ComponentProps<"form">["onSubmit"] = async (
-    e: CustomFormEvent
+    e: CustomFormEvent<{
+      email: HTMLInputElement;
+      password: HTMLInputElement;
+      nickname: HTMLInputElement;
+    }>
   ) => {
     e.preventDefault();
 
@@ -95,6 +90,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
     if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해주세요");
 
     setNickname(nickname);
+    setEmail(email);
     const userInfo: UserInfo = {
       email,
       password,
