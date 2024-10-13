@@ -14,10 +14,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
   };
 
   return (
-    <li
-      key={recruit.recruitId}
-      className="bg-white mb-2 p-10 rounded-md relative"
-    >
+    <div>
       {authorId === recruit.authorId && (
         <Link
           href={`recruits/edit/${recruit.recruitId}`}
@@ -36,7 +33,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         <span>자원 봉사 날짜 : {date(recruit.volunteeringDate)}</span>
         <span>지역 : {recruit.region}</span>
       </div>
-    </li>
+    </div>
   );
 }
 
