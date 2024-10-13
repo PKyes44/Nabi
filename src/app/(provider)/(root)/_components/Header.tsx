@@ -1,6 +1,6 @@
 import Page from "@/components/Page/Page";
 import Link from "next/link";
-import AuthNavigation from "./AuthNavigation";
+import Navigation from "./Navigation";
 
 function Header() {
   return (
@@ -14,7 +14,7 @@ function Header() {
           나비
         </Link>
 
-        <AuthNavigation />
+        <Navigation />
       </Page>
     </header>
   );

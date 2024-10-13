@@ -1,13 +1,17 @@
 import useStoreDetailStore from "@/zustand/storeDetailModal.store";
 import { ComponentProps, PropsWithChildren } from "react";
 import Modal from "./Modal";
+import StoreDetails from "./components/StoreDetails";
 
 function StoreDetailModal({ children }: PropsWithChildren) {
-  const { isShowStoreDetailModal, setIsShowStoreDetailModal } =
-    useStoreDetailStore();
+  const isShowStoreDetailModal = useStoreDetailStore(
+    (state) => state.isShowStoreDetailModal
+  );
+  const setIsShowStoreDetailModal = useStoreDetailStore(
+    (state) => state.setIsShowStoreDetailModal
+  );
 
   const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
-    console.log(e.target, e.currentTarget);
     if (e.target === e.currentTarget) {
       setIsShowStoreDetailModal(false);
     }
@@ -18,9 +22,9 @@ function StoreDetailModal({ children }: PropsWithChildren) {
       {isShowStoreDetailModal && (
         <Modal
           onClickFn={handleClickOutOfRange}
-          className="grid place-content-center"
+          className="grid place-content-center w-auto"
         >
-          <section className="w-96 h-96 bg-white rounded-lg">매장</section>
+          <StoreDetails />
         </Modal>
       )}
       {children}

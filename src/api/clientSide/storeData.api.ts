@@ -1,19 +1,29 @@
 import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
+import { LatLng } from "@/types/address.types";
 
-const getStoreDatas = async () => {
+const getStoreDatasBySwLatLngAndNeLatLng = async ({
+  swLatLng,
+  neLatLng,
+}: {
+  swLatLng: LatLng;
+  neLatLng: LatLng;
+}) => {
   const { error, data } = await supabase
-    .from("storeData")
+    .from("storeDatas")
     .select()
-    .not("lat", "is", "null");
+    .gte("lat", swLatLng.Ma)
+    .gte("lng", swLatLng.La)
+    .lte("lat", neLatLng.Ma)
+    .lte("lng", neLatLng.La);
   if (error) throw new Error(error.message);
   return data;
 };
 const updateStoreData = async (
-  updateData: Database["public"]["Tables"]["storeData"]["Row"]
+  updateData: Database["public"]["Tables"]["storeDatas"]["Row"]
 ) => {
   const { error, data } = await supabase
-    .from("storeData")
+    .from("storeDatas")
     .update(updateData)
     .eq("storeId", updateData.storeId);
 
@@ -23,7 +33,7 @@ const updateStoreData = async (
 };
 
 const storeDataAPI = {
-  getStoreDatas,
+  getStoreDatasBySwLatLngAndNeLatLng,
   updateStoreData,
 };
 

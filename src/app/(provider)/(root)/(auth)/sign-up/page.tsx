@@ -39,23 +39,22 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const [nickname, setNickname] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
 
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => clientApi.auth.signUp(userInfo),
     onSuccess: (userData) => {
       console.log("success: ", userData.user!.id);
 
-      if (!nickname)
-        return setErrMsgs((prevErrMsgs) => ({
-          ...prevErrMsgs,
-          email: "이메일을 입력해주세요",
-        }));
+      if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해주세요");
+      if (!email) return throwErrMsgs("email", "이메일을 입력해주세요");
 
       const userId = userData.user!.id;
 
       const insertProfileData = {
         userId,
         nickname,
+        email,
         role,
       };
       insertProfile(insertProfileData);
@@ -95,6 +94,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
     if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해주세요");
 
     setNickname(nickname);
+    setEmail(email);
     const userInfo: UserInfo = {
       email,
       password,
