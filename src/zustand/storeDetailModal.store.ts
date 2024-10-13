@@ -1,12 +1,12 @@
-import { Database } from "@/supabase/database.types";
+import { Tables } from "@/supabase/database.types";
 import { create } from "zustand";
 
 interface StoreDetailStore {
   isShowStoreDetailModal: boolean;
   setIsShowStoreDetailModal: (isShow: boolean) => void;
-  storeDetailData: Database["public"]["Tables"]["storeDatas"]["Row"] | null;
+  storeDetailData: Omit<Tables<"storeDatas">, "lng" | "lat"> | null;
   setStoreDetailData: (
-    detailData: Database["public"]["Tables"]["storeDatas"]["Row"]
+    detailData: Omit<Tables<"storeDatas">, "lng" | "lat">
   ) => void;
 }
 

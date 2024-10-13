@@ -1,21 +1,18 @@
 "use client";
 
-import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import useSelectRoleModalStore from "@/zustand/selectRoleModal.store";
 import Link from "next/link";
+import LoggedInNavigation from "./LoggedInNavigation";
 
-function AuthNavigation() {
+function Navigation() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const authInitialized = useAuthStore((state) => state.isAuthInitialized);
+  const userId = useAuthStore((state) => state.currentUserId);
   const setIsShowSelectRoleModal = useSelectRoleModalStore(
     (state) => state.setIsShowSelectRoleModal
   );
   const setAuthType = useSelectRoleModalStore((state) => state.setAuthType);
-
-  const handleClickLogOut = async () => {
-    await supabase.auth.signOut();
-  };
   const handleClickSignUp = () => {
     const type = "sign-up";
     setAuthType(type);
@@ -27,14 +24,7 @@ function AuthNavigation() {
       <ul className="flex gap-x-5">
         {authInitialized ? (
           isLoggedIn ? (
-            <>
-              <li>
-                <Link href="/profiles">프로필</Link>
-              </li>
-              <li>
-                <button onClick={handleClickLogOut}>로그아웃</button>
-              </li>
-            </>
+            <LoggedInNavigation userId={userId!} />
           ) : (
             <>
               <li>
@@ -51,4 +41,4 @@ function AuthNavigation() {
   );
 }
 
-export default AuthNavigation;
+export default Navigation;

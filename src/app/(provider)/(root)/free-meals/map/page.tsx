@@ -2,7 +2,7 @@
 
 import KakaoMap from "./_components/KakaoMap";
 
-function SponsoredStorePage() {
+function FreeMealStoresPage() {
   return (
     <div className="App">
       <KakaoMap />
@@ -10,4 +10,4 @@ function SponsoredStorePage() {
   );
 }
 
-export default SponsoredStorePage;
+export default FreeMealStoresPage;

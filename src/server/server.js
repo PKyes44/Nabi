@@ -12,7 +12,7 @@ app.use(cors());
 
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-if (!supabaseKey || !supabaseUrl) throw new Error("supabase auth error");
+if (!supabaseKey || !supabaseUrl) throw new Error("supabase key or url error");
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 

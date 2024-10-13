@@ -12,39 +12,47 @@ const insertStoreOwner = async (
   return data;
 };
 
-const isStoreOwnerByUserId = async (userId: string) => {
+const getStoreByUserId = async (userId: string) => {
   const { error, data } = await supabase
     .from("storeOwners")
-    .select()
+    .select("*, storeDatas!storeOwners_storeId_fkey(address, brandName)")
     .eq("sponsorId", userId);
-  if (error) throw new Error(error.message);
 
-  console.log(data);
-  // return data;
-};
-const isStoreOwnerByStoreIdAndUserId = async ({
-  storeId,
-  userId,
-}: {
-  storeId: string;
-  userId: string;
-}) => {
-  if (!storeId || !userId) return;
-
-  const { error, data } = await supabase
-    .from("storeOwners")
-    .select()
-    .eq("storeId", storeId)
-    .eq("sponsorId", userId);
   if (error) throw new Error(error.message);
 
   console.log(data);
   return data;
 };
 
+const isStoreOwnerByUserId = async (userId: string | null) => {
+  if (!userId) return null;
+  const { error, data } = await supabase
+    .from("storeOwners")
+    .select()
+    .eq("sponsorId", userId);
+  if (error) throw new Error(error.message);
+
+  if (data.length === 0) return false;
+  return true;
+};
+
+const isStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
+  if (!storeId) return;
+
+  const { error, data } = await supabase
+    .from("storeOwners")
+    .select()
+    .eq("storeId", storeId);
+  if (error) throw new Error(error.message);
+
+  if (data.length === 0) return false;
+  return true;
+};
+
 const storeOwnersAPI = {
   insertStoreOwner,
-  isStoreOwnerByStoreIdAndUserId,
+  getStoreByUserId,
+  isStoreOwnerByStoreId,
   isStoreOwnerByUserId,
 };
 export default storeOwnersAPI;
