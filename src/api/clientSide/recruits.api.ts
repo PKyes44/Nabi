@@ -53,12 +53,26 @@ const editRecruit = async (
   if (error) throw new Error(error.message);
 };
 
+const getPaginatedRecruits = async (userId: string, page: number) => {
+  const response = await supabase
+    .from("recruits")
+    .select("*")
+    .eq("authorId", userId)
+    .order("createdAt", { ascending: false })
+    // 3개씩 보여주기
+    .range(page * 3, page * 3 + 2);
+  const recruits = response.data;
+
+  return recruits;
+};
+
 const recruitsAPI = {
   createRecruit,
   getSortedMyRecruits,
   getRecruits,
   getRecruit,
   editRecruit,
+  getPaginatedRecruits,
 };
 
 export default recruitsAPI;
