@@ -5,7 +5,7 @@
 import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
 import useStoreDetailStore from "@/zustand/storeDetailModal.store";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import useGeolocation from "./useGeolocation";
 
 declare global {
@@ -20,7 +20,7 @@ interface KakaoMapProps {
 }
 
 function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
-  const [map, setMap] = useState(null);
+  const mapRef = useRef<HTMLDivElement>(null);
   const location = useGeolocation();
   const setIsShowStoreDetailModal = useStoreDetailStore(
     (state) => state.setIsShowStoreDetailModal
@@ -30,32 +30,29 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
   );
 
   useEffect(() => {
-    const container = document.getElementById("map"); // 지도를 담을 영역의 DOM 레퍼런스
-    const center =
-      lat !== 33.450701
-        ? new window.kakao.maps.LatLng(lat, lng)
-        : location.loaded
-        ? new window.kakao.maps.LatLng(
-            location.coordinates!.lat,
-            location.coordinates!.lng
-          )
-        : new window.kakao.maps.LatLng(lat, lng);
-    const options = {
-      center, // 지도 중심 좌표
-      level: 3, // 지도의 레벨(확대, 축소 정도)
-    };
+    window.kakao.maps.load(() => {
+      const center =
+        lat !== 33.450701
+          ? new window.kakao.maps.LatLng(lat, lng)
+          : location.loaded
+          ? new window.kakao.maps.LatLng(
+              location.coordinates!.lat,
+              location.coordinates!.lng
+            )
+          : new window.kakao.maps.LatLng(lat, lng);
+      const options = {
+        center, // 지도 중심 좌표
+        level: 3, // 지도의 레벨(확대, 축소 정도)
+      };
 
-    setMap(new window.kakao.maps.Map(container, options));
+      const map = new window.kakao.maps.Map(mapRef.current, options);
 
-    if (!!map) {
       paintMarkers(map);
-    }
 
-    // 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
-    window.kakao.maps.event.addListener(map, "bounds_changed", function () {
-      if (!!map) {
+      // 지도가 이동, 확대, 축소로 인해 지도영역이 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+      window.kakao.maps.event.addListener(map, "bounds_changed", function () {
         paintMarkers(map);
-      }
+      });
     });
   }, [location]);
 
@@ -103,7 +100,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
     });
   };
 
-  return <div id="map" className="w-screen h-screen" />;
+  return <div ref={mapRef} className="w-screen h-screen" />;
 }
 
 export default KakaoMap;
