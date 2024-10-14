@@ -10,7 +10,9 @@ import useGeolocation from "./useGeolocation";
 
 declare global {
   interface Window {
-    kakao: any;
+    kakao: {
+      maps: any;
+    };
   }
 }
 
