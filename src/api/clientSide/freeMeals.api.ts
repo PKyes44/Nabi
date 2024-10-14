@@ -9,8 +9,6 @@ const insertFreeMeals = async (
     .from(TABLE_FREE_MEALS)
     .insert(insertData);
   if (error) throw new Error(error.message);
-
-  console.log(data);
 };
 
 const getFreeMealsWithStoreData = async () => {
@@ -18,7 +16,6 @@ const getFreeMealsWithStoreData = async () => {
     "*, storeDatas!freeMeals_storeId_fkey(*), userProfiles!freeMeals_sponsorId_fkey(*)";
   const { error, data } = await supabase.from(TABLE_FREE_MEALS).select(query);
   if (error) throw new Error(error.message);
-  console.log("data");
   return data;
 };
 

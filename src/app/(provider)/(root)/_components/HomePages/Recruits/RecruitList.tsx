@@ -10,8 +10,6 @@ function RecruitList() {
     queryFn: clientApi.recruits.getSortedRecruits,
   });
 
-  console.log("sss", recruits);
-
   return (
     <ul className="mt-5 w-full">
       {recruits?.map((recruit) => (
