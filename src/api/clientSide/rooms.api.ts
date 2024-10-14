@@ -84,36 +84,9 @@ const getRoomIdByUserIdAndTargetUserId = async ({
   return data.roomId;
 };
 
-const isNotExistRoom = async (targetUserId: string, userId: string) => {
-  console.log(targetUserId, userId);
-
-  const query = `and(userAId.eq.${targetUserId},userBId.eq.${userId}),and(userAId.eq.${userId},userBId.eq.${userId})`;
-
-  const { count, error } = await supabase
-    .from(TABLE_ROOMS)
-    .select("", { count: "exact", head: true })
-    .or(query);
-  console.log("count:", count);
-  if (error) throw new Error(error.message);
-
-  if (count === 0) return true;
-
-  return false;
-};
-
-const createRoom = async (insertData: { userAId: string; userBId: string }) => {
-  const { data, error } = await supabase.from(TABLE_ROOMS).insert(insertData);
-
-  if (error) throw new Error(error.message);
-
-  return data;
-};
-
 const roomsAPI = {
   getRoomsWithTargetUserByUserId,
   getRoomIdByUserIdAndTargetUserId,
-  isNotExistRoom,
-  createRoom,
 };
 
 export default roomsAPI;
