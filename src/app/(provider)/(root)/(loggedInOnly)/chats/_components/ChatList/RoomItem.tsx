@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 
 interface RoomItemProps {
@@ -14,8 +15,19 @@ interface RoomItemProps {
 }
 
 function RoomItem({ room, isActived }: RoomItemProps) {
+  const queryClient = useQueryClient();
+  const handleClickReloadChat = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["chats", { targetUserId: room.targetUserId }],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["rooms", { userId: room.targetUserId }],
+    });
+    queryClient.invalidateQueries({ queryKey: ["userProfiles"] });
+  };
   return (
     <Link
+      onClick={handleClickReloadChat}
       href={`/chats?showChatUserId=${room.targetUserId}`}
       className="flex flex-col h-full"
     >

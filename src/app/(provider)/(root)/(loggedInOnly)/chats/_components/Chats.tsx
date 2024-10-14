@@ -1,5 +1,5 @@
 import RoomList from "./ChatList/RoomList";
-import ChatScreen from "./ChatScreen";
+import ChatScreen from "./ShowChats/ChatScreen";
 
 interface ChatsProps {
   showChatUserId: string;

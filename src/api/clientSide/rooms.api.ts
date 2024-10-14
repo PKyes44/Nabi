@@ -66,8 +66,27 @@ const getRoomsWithTargetUserByUserId = async (userId: string) => {
   return result;
 };
 
+const getRoomIdByUserIdAndTargetUserId = async ({
+  userId,
+  targetUserId,
+}: {
+  userId: string;
+  targetUserId: string;
+}) => {
+  const query = `and(userAId.eq.${userId},userBId.eq.${targetUserId}),and(userAId.eq.${targetUserId},userBId.eq.${userId})`;
+  const { error, data } = await supabase
+    .from(TABLE_ROOMS)
+    .select("roomId")
+    .or(query)
+    .single();
+  if (error) throw new Error(error.message);
+
+  return data.roomId;
+};
+
 const roomsAPI = {
   getRoomsWithTargetUserByUserId,
+  getRoomIdByUserIdAndTargetUserId,
 };
 
 export default roomsAPI;

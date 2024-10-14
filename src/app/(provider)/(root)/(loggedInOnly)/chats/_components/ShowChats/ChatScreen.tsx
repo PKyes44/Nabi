@@ -1,9 +1,12 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import socket from "@/socket/socket";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useQuery } from "@tanstack/react-query";
-import ChatLogs from "./ChatLogs";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import ChatForm from "./ChatForm";
+import ChatLogs from "./ChatLogs/ChatLogs";
 
 interface ChatScreenProps {
   showChatUserId: string;
@@ -11,6 +14,7 @@ interface ChatScreenProps {
 
 function ChatScreen({ showChatUserId }: ChatScreenProps) {
   const userId = useAuthStore((state) => state.currentUserId);
+  const queryClient = useQueryClient();
 
   const { data: userProfile, isLoading: isUserProfileLoading } = useQuery({
     queryKey: ["userProfiles", { userId }],
@@ -23,13 +27,51 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   });
 
   const { data: chatLogs, isLoading: isChatLoading } = useQuery({
-    queryKey: ["chats"],
+    queryKey: ["chats", { targetUserId: showChatUserId }],
     queryFn: () =>
       clientApi.chats.getChatsByUserIdAndTargetUserId({
         targetUserId: showChatUserId,
         userId: userId!,
       }),
   });
+
+  const { data: roomId } = useQuery({
+    queryKey: ["rooms", { userId, targetUserId: showChatUserId }],
+    queryFn: () =>
+      clientApi.rooms.getRoomIdByUserIdAndTargetUserId({
+        userId: userId!,
+        targetUserId: showChatUserId!,
+      }),
+  });
+
+  const handleScrollAtBottom = () => {
+    console.log("handleScrollAtBottom");
+    const chatLogs = document.getElementById("chatLogs");
+    if (!chatLogs) return;
+    chatLogs.scrollTop = chatLogs.scrollHeight;
+  };
+
+  useEffect(() => {
+    if (!roomId || isUserProfileLoading || isTargetProfileLoading) return;
+    handleScrollAtBottom();
+
+    if (socket.connected) {
+      socket.emit("enterRoom", roomId, userProfile!.nickname, () => {
+        console.log("entered Room");
+      });
+    }
+
+    socket.on("newMessage", (targetUserId) => {
+      queryClient.invalidateQueries({ queryKey: ["chats", { targetUserId }] });
+
+      handleScrollAtBottom();
+    });
+
+    return () => {
+      console.log("leavedRoom");
+      socket.off("disconnecting");
+    };
+  }, [roomId, userProfile, targetProfile]);
 
   if (isChatLoading || isTargetProfileLoading || isUserProfileLoading)
     return <span>채팅 기록을 불러오는 중 ...</span>;
@@ -58,18 +100,11 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
         chatLogs={chatLogs!}
         targetProfile={targetProfile!}
       />
-      <form className="absolute bottom-0 left-0 w-full  flex">
-        <input
-          className="grow bg-transparent py-2 px-5 outline-none border-t border-black border-r"
-          type="text"
-        />
-        <button
-          type="submit"
-          className="w-24 bg-yellow-300 bg-opacity-45 text-yellow-500 font-bold"
-        >
-          전송
-        </button>
-      </form>
+      <ChatForm
+        roomId={roomId!}
+        targetUserId={showChatUserId}
+        userId={userId!}
+      />
     </div>
   );
 }

@@ -12,11 +12,14 @@ interface ChatLogsProps {
 
 function ChatLogs({ chatLogs, targetProfile, userId }: ChatLogsProps) {
   return (
-    <ul className="mt-5 flex flex-col gap-y-2 px-2 overflow-auto">
+    <ul
+      id="chatLogs"
+      className="py-5 flex flex-col gap-y-2 px-2 max-h-[339px] overflow-auto"
+    >
       {chatLogs?.map((chatLog) => {
         const isMyChat = chatLog.from === userId;
         return (
-          <li>
+          <li key={chatLog.chatId}>
             {isMyChat ? (
               <MyChatLog chatLog={chatLog} />
             ) : (
