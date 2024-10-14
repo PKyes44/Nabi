@@ -2,10 +2,19 @@
 
 import KakaoMap from "./_components/KakaoMap";
 
-function FreeMealStoresPage() {
+interface FreeMealStoresPageProps {
+  searchParams: {
+    lat: string;
+    lng: string;
+  };
+}
+
+function FreeMealStoresPage({
+  searchParams: { lat, lng },
+}: FreeMealStoresPageProps) {
   return (
     <div className="App">
-      <KakaoMap />
+      <KakaoMap lat={+lat} lng={+lng} />
     </div>
   );
 }
