@@ -19,7 +19,7 @@ const getFreeMealsWithStoreData = async () => {
     "*, storeDatas!freeMeals_storeId_fkey(*), userProfiles!freeMeals_sponsorId_fkey(*)";
   const { error, data } = await supabase.from(TABLE_FREE_MEALS).select(query);
   if (error) throw new Error(error.message);
-
+  console.log("data", data);
   return data;
 };
 

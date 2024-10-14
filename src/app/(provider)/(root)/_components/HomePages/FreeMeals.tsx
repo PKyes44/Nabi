@@ -23,7 +23,7 @@ function FreeMeals() {
     <ul className="flex flex-col gap-y-5">
       {freeMeals!.map((freeMeal) => {
         return (
-          <li>
+          <li key={freeMeal.mealId}>
             <article className="bg-white p-5 flex flex-col gap-y-2">
               <div>
                 <span className="font-bold">
