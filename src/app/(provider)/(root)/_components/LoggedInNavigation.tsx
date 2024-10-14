@@ -26,7 +26,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
         </li>
       )}
       <li>
-        <Link href="/profiles">프로필</Link>
+        <Link href={`/profiles?userId=${userId}`}>프로필</Link>
       </li>
       <li>
         <button onClick={handleClickLogOut}>로그아웃</button>

@@ -13,24 +13,22 @@ function Replies({ recruitId }: RepliesProps) {
     queryFn: () => clientApi.reply.getRepliesByRecruitId(recruitId),
   });
 
-  console.log(replies);
+  if (!replies) return;
 
-  return replies ? (
-    replies.length !== 0 ? (
-      <>
-        <strong>댓글 목록</strong>
-        <ul>
-          {replies.map((reply) => (
-            <li key={reply.replyId}>
-              <p>도움받은 아이 : {reply.content}</p>
-            </li>
-          ))}
-        </ul>
-      </>
-    ) : (
-      <p>댓글이 존재하지 않습니다</p>
-    )
-  ) : null;
+  return replies.length ? (
+    <>
+      <strong>댓글 목록</strong>
+      <ul>
+        {replies.map((reply) => (
+          <li key={reply.replyId}>
+            <p>도움받은 아이 : {reply.content}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : (
+    <p>댓글이 존재하지 않습니다</p>
+  );
 }
 
 export default Replies;

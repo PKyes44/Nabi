@@ -1,10 +1,16 @@
 import Page from "@/components/Page/Page";
 import Profile from "./_components/Profile";
 
-async function ProfilePage() {
+interface ProfilePageProps {
+  searchParams: {
+    userId: string;
+  };
+}
+
+async function ProfilePage({ searchParams }: ProfilePageProps) {
   return (
     <Page width="lg" className="my-10 ">
-      <Profile />
+      <Profile userId={searchParams.userId} />
     </Page>
   );
 }

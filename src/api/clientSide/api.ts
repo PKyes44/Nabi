@@ -6,6 +6,7 @@ import recruitsAPI from "./recruits.api";
 import regularSponsorShipAPI from "./regularSponsorShip.api";
 import replyAPI from "./reply.api";
 import roomsAPI from "./rooms.api";
+import sponsorMeetsAPI from "./sponsorMeets.api";
 import storageAPI from "./storage.api";
 import storeDataAPI from "./storeData.api";
 import storeOwnersAPI from "./storeOwners.api";
@@ -22,6 +23,7 @@ const clientApi = {
   rooms: roomsAPI,
   chats: chatsAPI,
   reply: replyAPI,
+  sponsorMeets: sponsorMeetsAPI,
 };
 
 export default clientApi;
