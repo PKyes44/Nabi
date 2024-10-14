@@ -1,6 +1,5 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
-import { useAuthStore } from "@/zustand/auth.store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -29,8 +28,11 @@ dayjs.updateLocale("en", {
   },
 });
 
-function SponsorHistories() {
-  const userId = useAuthStore((state) => state.currentUserId);
+interface SponsorHistoriesProps {
+  showUserId: string;
+}
+
+function SponsorHistories({ showUserId }: SponsorHistoriesProps) {
   const observerRef = useRef(null);
   const {
     data: recruitsData,
@@ -38,9 +40,9 @@ function SponsorHistories() {
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["recruits", { userId }],
+    queryKey: ["recruits", { userId: showUserId }],
     queryFn: ({ pageParam }) =>
-      clientApi.recruits.getPaginatedRecruits(userId!, pageParam),
+      clientApi.recruits.getPaginatedRecruits(showUserId, pageParam),
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage) return;
       return pages.length;

@@ -7,14 +7,18 @@ import { useProfileEditModalStore } from "@/zustand/profileEditModal.stroe";
 import { useQuery } from "@tanstack/react-query";
 import SponsorHistories from "./SponsorHistories";
 
-function Profile() {
-  const userId = useAuthStore((state) => state.currentUserId);
+interface ProfileProps {
+  userId: string;
+}
+
+function Profile({ userId: showUserId }: ProfileProps) {
+  const currentUserId = useAuthStore((state) => state.currentUserId);
   const setIsShowProfileEditModal = useProfileEditModalStore(
     (state) => state.setIsShowProfileEditModal
   );
   const { data: profile, isLoading } = useQuery({
-    queryKey: ["userProfiles", { userId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
+    queryKey: ["userProfiles", { userId: showUserId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(showUserId!),
   });
 
   const handleClickProfileEdit = () => {
@@ -56,21 +60,23 @@ function Profile() {
                   </span>
                 </div>
               </article>
-              <article className="self-center -mt-5">
-                <Button
-                  size="md"
-                  className="px-5 py-1.5"
-                  intent="primary"
-                  textIntent="primary"
-                  onClick={handleClickProfileEdit}
-                >
-                  프로필 수정
-                </Button>
-              </article>
+              {showUserId === currentUserId && (
+                <article className="self-center -mt-5">
+                  <Button
+                    size="md"
+                    className="px-5 py-1.5"
+                    intent="primary"
+                    textIntent="primary"
+                    onClick={handleClickProfileEdit}
+                  >
+                    프로필 수정
+                  </Button>
+                </article>
+              )}
             </div>
           </section>
 
-          <SponsorHistories />
+          <SponsorHistories showUserId={showUserId} />
         </div>
 
         <article className="grow bg-gray-300 h-full rounded-lg">
