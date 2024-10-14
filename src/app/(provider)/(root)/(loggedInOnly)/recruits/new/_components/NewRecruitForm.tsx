@@ -1,3 +1,5 @@
+"use client";
+
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
@@ -6,7 +8,7 @@ import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 
 interface InitialErrMsgs {
@@ -14,6 +16,9 @@ interface InitialErrMsgs {
   maxRecipientRecruits: string | null;
   region: string | null;
   title: string | null;
+  deadLineDate: string | null;
+  volunteeringDate: string | null;
+  content: string | null;
 }
 
 const initialErrMsgs = {
@@ -21,6 +26,9 @@ const initialErrMsgs = {
   maxRecipientRecruits: null,
   region: null,
   title: null,
+  deadLineDate: null,
+  volunteeringDate: null,
+  content: null,
 };
 
 interface NewRecruitForm {
@@ -96,18 +104,21 @@ function NewRecruitForm() {
     }
 
     if (!deadLineDateValue) {
-      return alert("모집 마감 날짜를 선택해주세요.");
+      return throwErrMsgs("deadLineDate", "모집 마감 날짜를 선택해주세요.");
     }
     if (!volunteeringDateValue) {
-      return alert("자원 봉사 날짜를 선택해주세요.");
+      return throwErrMsgs("volunteeringDate", "자원 봉사 날짜를 선택해주세요.");
     }
 
     if (nonFormatVolunteeringDate.isBefore(nonFormatDeadLineDate)) {
-      return alert("자원 봉사 날짜는 모집 마감 날짜 이후여야 합니다.");
+      return throwErrMsgs(
+        "volunteeringDate",
+        "자원 봉사 날짜는 모집 마감 날짜 이후여야 합니다."
+      );
     }
     if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
     if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
-    if (!content) return alert("내용을 작성해주세요");
+    if (!content) return throwErrMsgs("content", "내용을 작성해주세요");
 
     const deadLineDate = nonFormatDeadLineDate.format("YYYY-MM-DD HH:mm");
     const volunteeringDate =
@@ -132,35 +143,31 @@ function NewRecruitForm() {
     <form onSubmit={handleSubmitRecruitForm} className="flex flex-col gap-y-2">
       <div className="flex gap-x-2">
         <InputGroup
-          type="text"
+          type="number"
           label="봉사자 모집 인원"
           name="maxSponsorRecruits"
           errorText={errMsgs.maxSponsorRecruits}
         />
         <InputGroup
-          type="text"
+          type="number"
           label="후원 아동 모집 인원"
           name="maxRecipientRecruits"
           errorText={errMsgs.maxRecipientRecruits}
         />
       </div>
       <div className="flex gap-x-2">
-        <div>
-          <p>모집 마감 날짜</p>
-          <input
-            className="border border-black px-7 py-1 mt-1"
-            type="date"
-            name="deadLineDate"
-          />
-        </div>
-        <div>
-          <p>자원 봉사 날짜</p>
-          <input
-            className="border border-black px-7 py-1 mt-1"
-            type="date"
-            name="volunteeringDate"
-          />
-        </div>
+        <InputGroup
+          label="모집 마감 날짜"
+          type="date"
+          name="deadLineDate"
+          errorText={errMsgs.deadLineDate}
+        />
+        <InputGroup
+          label="봉사 활동 날짜"
+          type="date"
+          name="volunteeringDate"
+          errorText={errMsgs.volunteeringDate}
+        />
       </div>
 
       <InputGroup
@@ -180,8 +187,13 @@ function NewRecruitForm() {
         <p className="mb-1">내용</p>
         <textarea
           name="content"
-          className="border-black border resize-none w-full h-60 p-3 "
+          className={`border-black border resize-none w-full h-60 p-3 ${
+            errMsgs.content && "border-red-500"
+          }`}
         />
+        {errMsgs.content && (
+          <span className="text-red-500 text-sm">{errMsgs.content}</span>
+        )}
       </div>
 
       <ButtonGroup value="등록하기" size="md" className="mt-4" />

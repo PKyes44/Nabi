@@ -1,5 +1,3 @@
-"use client";
-
 import Page from "@/components/Page/Page";
 import NewRecruitForm from "./_components/NewRecruitForm";
 
