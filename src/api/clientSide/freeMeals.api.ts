@@ -1,11 +1,15 @@
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
 
 const TABLE_FREE_MEALS = "freeMeals";
 
-const insertFreeMeals = async (
-  insertData: Database["public"]["Tables"]["freeMeals"]["Insert"]
-) => {
+const insertFreeMeals = async (insertData: {
+  createdAt?: string;
+  freeMealDate: string;
+  maxServingCount: number;
+  mealId?: string;
+  sponsorId?: string;
+  storeId?: string;
+}) => {
   const { error, data } = await supabase
     .from(TABLE_FREE_MEALS)
     .insert(insertData);
