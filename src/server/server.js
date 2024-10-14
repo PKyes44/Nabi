@@ -201,9 +201,34 @@ wsServer.on("connection", (socket) => {
   socket.onAny((event) => {
     console.log("socket event:", event);
   });
-  socket.on("enterRoom", (roomName, nickname, done) => {
-    socket.join(roomName);
+  socket.on("enterRoom", async (userId, targetUserId, nickname, done) => {
+    console.log("enter room");
+    const query = `and(userAId.eq.${userId},userBId.eq.${targetUserId}),and(userAId.eq.${targetUserId},userBId.eq.${userId})`;
+    const { error: selectError, data: roomIdData } = await supabase
+      .from("rooms")
+      .select("roomId")
+      .or(query);
+    if (selectError) throw new Error(selectError.message);
+
+    const isExistRoom = roomIdData.length !== 0;
+    let roomId;
+    console.log("isExistRoom: ", isExistRoom);
+    if (!isExistRoom) {
+      roomId = crypto.randomUUID();
+      const insertData = {
+        roomId,
+        userAId: targetUserId,
+        userBId: userId,
+      };
+      const { error } = await supabase.from("rooms").insert(insertData);
+      if (error) throw new Error(error.message);
+    } else {
+      roomId = roomIdData[0].roomId;
+    }
+    console.log("roomId:", roomId);
+    socket.join(roomId);
     socket["nickname"] = nickname;
+    socket.emit("returnRoomId", roomId);
     done();
   });
   socket.on("newMessage", async (msg, userData, roomId, done) => {

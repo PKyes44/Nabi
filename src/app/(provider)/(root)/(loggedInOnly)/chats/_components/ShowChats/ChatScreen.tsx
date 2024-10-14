@@ -4,7 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import socket from "@/socket/socket";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ChatForm from "./ChatForm";
 import ChatLogs from "./ChatLogs/ChatLogs";
 
@@ -15,6 +15,7 @@ interface ChatScreenProps {
 function ChatScreen({ showChatUserId }: ChatScreenProps) {
   const userId = useAuthStore((state) => state.currentUserId);
   const queryClient = useQueryClient();
+  const [roomId, setRoomId] = useState(null);
 
   const { data: userProfile, isLoading: isUserProfileLoading } = useQuery({
     queryKey: ["userProfiles", { userId }],
@@ -35,15 +36,6 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
       }),
   });
 
-  const { data: roomId } = useQuery({
-    queryKey: ["rooms", { userId, targetUserId: showChatUserId }],
-    queryFn: () =>
-      clientApi.rooms.getRoomIdByUserIdAndTargetUserId({
-        userId: userId!,
-        targetUserId: showChatUserId!,
-      }),
-  });
-
   const handleScrollAtBottom = () => {
     console.log("handleScrollAtBottom");
     const chatLogs = document.getElementById("chatLogs");
@@ -52,14 +44,27 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   };
 
   useEffect(() => {
-    if (!roomId || isUserProfileLoading || isTargetProfileLoading) return;
+    console.log("use Effect start");
+    if (isUserProfileLoading || isTargetProfileLoading) return;
     handleScrollAtBottom();
 
     if (socket.connected) {
-      socket.emit("enterRoom", roomId, userProfile!.nickname, () => {
-        console.log("entered Room");
-      });
+      console.log("connected socket");
+      socket.emit(
+        "enterRoom",
+        userId,
+        targetProfile!.userId,
+        userProfile!.nickname,
+        () => {
+          console.log("entered Room");
+        }
+      );
     }
+
+    socket.on("returnRoomId", (roomId) => {
+      setRoomId(roomId);
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+    });
 
     socket.on("newMessage", (targetUserId) => {
       queryClient.invalidateQueries({ queryKey: ["chats", { targetUserId }] });
@@ -71,7 +76,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
       console.log("leavedRoom");
       socket.off("disconnecting");
     };
-  }, [roomId, userProfile, targetProfile]);
+  }, [userProfile, targetProfile]);
 
   if (isChatLoading || isTargetProfileLoading || isUserProfileLoading)
     return <span>채팅 기록을 불러오는 중 ...</span>;

@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/client";
-import { UserProfiles } from "@/types/customDatabase";
+import { Tables } from "@/supabase/database.types";
 import { EditProfileData } from "@/types/profiles.types";
 import clientApi from "./api";
 
@@ -18,7 +18,7 @@ const insertProfile = async (insertProfileData: UserProfiles["Insert"]) => {
 };
 
 const getProfileByUserId = async (userId: string) => {
-  if (!userId) return;
+  if (!userId) return null;
 
   const { data, error } = await supabase
     .from(TABLE_PROFILES)
@@ -81,11 +81,62 @@ const setPrimaryImage = async (userId: string, type: string) => {
   clientApi.storage.setPrimaryImage(userId, type);
 };
 
+const getProfilesFilterByRoleAndSponsorShipCount = async (
+  role: "recipient" | "sponsor"
+) => {
+  const query = `*, sponsorShip!sponsorShip_recipientId_fkey(count)`;
+  const { error, data } = await supabase
+    .from(TABLE_PROFILES)
+    .select(query)
+    .eq("role", role)
+    .returns<
+      (Tables<"userProfiles"> & { sponsorShip: { count: number }[] })[]
+    >();
+
+  if (error) throw new Error(error.message);
+
+  const orderedData: Omit<
+    (Tables<"userProfiles"> & { sponsorShip: { count: number }[] })[],
+    "sponsorShip"
+  > = bubbleSort(data!);
+  return orderedData;
+};
+
+function bubbleSort(
+  arr: (Tables<"userProfiles"> & { sponsorShip: { count: number }[] })[]
+) {
+  let newArr = arr;
+  for (let x = 0; x < newArr.length; x++) {
+    for (let y = 1; y < newArr.length - x; y++) {
+      if (newArr[y - 1].sponsorShip[0].count > newArr[y].sponsorShip[0].count) {
+        [newArr[y - 1], newArr[y]] = [newArr[y], newArr[y - 1]];
+      }
+    }
+  }
+
+  return newArr;
+}
+
+const getNavigationCount = async (role: "recipient" | "sponsor") => {
+  const { error, count: data } = await supabase
+    .from(TABLE_PROFILES)
+    .select("*", { count: "exact", head: true })
+    .eq("role", role);
+
+  if (error) throw new Error(error.message);
+
+  if (data! <= 5) return 1;
+
+  return Math.ceil(data! / 5);
+};
+
 const profilesAPI = {
   insertProfile,
   getProfileByUserId,
   editProfile,
   setPrimaryImage,
+  getProfilesFilterByRoleAndSponsorShipCount,
+  getNavigationCount,
 };
 
 export default profilesAPI;
