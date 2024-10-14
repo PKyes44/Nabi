@@ -28,6 +28,9 @@ function Navigation() {
           ) : (
             <>
               <li>
+                <Link href="/free-meals/map">매장지도보기</Link>
+              </li>
+              <li>
                 <Link href="/log-in">로그인</Link>
               </li>
               <li>
