@@ -32,6 +32,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
   );
 
   useEffect(() => {
+    console.log(window.kakao);
     window.kakao.maps.load(() => {
       const center =
         lat !== 33.450701
