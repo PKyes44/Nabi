@@ -1,7 +1,7 @@
 import Page from "@/components/Page/Page";
 import Profile from "./_components/Profile";
 
-async function ProfilePage() {
+function ProfilePage() {
   return (
     <Page width="lg" className="my-10 ">
       <Profile />
