@@ -3,12 +3,22 @@ const cors = require("cors");
 const cron = require("node-cron");
 require("dotenv").config({ path: "./.env.local" });
 const { createClient } = require("@supabase/supabase-js");
+const { Server } = require("socket.io");
+const http = require("http");
+
 const app = express();
 const port = 8080;
 
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cors());
+
+const httpServer = http.createServer(app);
+const wsServer = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
 
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -22,7 +32,7 @@ const encryptedApiSecretKey =
   "Basic " + Buffer.from(apiSecretKey + ":").toString("base64");
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  return res.send("helloworld");
 });
 
 // 빌링키 발급
@@ -123,11 +133,7 @@ app.post("/issue-billing-key", (req, res) => {
   });
 });
 
-cron.schedule("0 0 1 * *", function () {
-  console.log("cron actived");
-});
-
-cron.schedule("* * * * *", () => {
+cron.schedule("0 0 1 * *", () => {
   (async function () {
     const response = await supabase
       .from("sponsorShip")
@@ -190,4 +196,24 @@ cron.schedule("* * * * *", () => {
   })();
 });
 
-app.listen(port, () => console.log(`listen on http://localhost:${port}`));
+wsServer.on("connection", (socket) => {
+  socket["nickname"] = "anon";
+  socket.onAny((event) => {
+    console.log("socket event:", event);
+  });
+  socket.on("enterRoom", (roomName, nickname, done) => {
+    socket.join(roomName);
+    socket["nickname"] = nickname;
+    done();
+  });
+  socket.on("newMessage", async (msg, userData, roomId, done) => {
+    const insertData = { ...userData, content: msg, roomId };
+    const { error } = await supabase.from("chats").insert(insertData);
+    if (error) throw new Error(error.message);
+    socket.to(roomId).emit("newMessage", userData.from);
+    done();
+  });
+});
+const handleListen = () => console.log(`listen on http://localhost:${port}`);
+// app.listen(port, handleListen);
+httpServer.listen(port, handleListen);
