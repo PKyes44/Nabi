@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { supabase } from "@/supabase/client";
 import { Database, Tables } from "@/supabase/database.types";
 import { EditProfileData } from "@/types/profiles.types";
@@ -107,7 +108,7 @@ const getProfilesFilterByRoleAndSponsorShipCount = async (
 function bubbleSort(
   arr: (Tables<"userProfiles"> & { sponsorShip: { count: number }[] })[]
 ) {
-  let newArr = arr;
+  const newArr = arr;
   for (let x = 0; x < newArr.length; x++) {
     for (let y = 1; y < newArr.length - x; y++) {
       if (newArr[y - 1].sponsorShip[0].count > newArr[y].sponsorShip[0].count) {
