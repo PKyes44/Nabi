@@ -1,6 +1,5 @@
 import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
-
 const TABLE_FREE_MEALS = "freeMeals";
 
 const insertFreeMeals = async (
