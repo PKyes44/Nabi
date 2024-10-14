@@ -4,7 +4,7 @@ import User from "../User";
 
 function Sponsors() {
   const { data: sponsors, isLoading } = useQuery({
-    queryKey: ["userProfiles", { role: "recipient" }],
+    queryKey: ["userProfiles", { role: "sponsor" }],
     queryFn: () =>
       clientApi.profiles.getProfilesFilterByRoleAndSponsorShipCount("sponsor"),
   });
