@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import clientApi from "@/api/clientSide/api";
@@ -27,7 +29,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
   );
 
   useEffect(() => {
-    let container = document.getElementById("map"); // 지도를 담을 영역의 DOM 레퍼런스
+    const container = document.getElementById("map"); // 지도를 담을 영역의 DOM 레퍼런스
     const center =
       lat !== 33.450701
         ? new window.kakao.maps.LatLng(lat, lng)
@@ -37,7 +39,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
             location.coordinates!.lng
           )
         : new window.kakao.maps.LatLng(lat, lng);
-    let options = {
+    const options = {
       center, // 지도 중심 좌표
       level: 3, // 지도의 레벨(확대, 축소 정도)
     };
@@ -52,7 +54,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
   }, [location]);
 
   const paintMarkers = async (map: {
-    getLevel: () => any;
+    getLevel: () => number;
     getBounds: () => any;
   }) => {
     const level = map.getLevel();

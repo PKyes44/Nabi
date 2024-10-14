@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import Button from "@/components/Button/Button";
 import { Tables } from "@/supabase/database.types";
-import { useAuthStore } from "@/zustand/auth.store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
@@ -12,7 +12,6 @@ interface RecipientProps {
 function User({ user }: RecipientProps) {
   const router = useRouter();
   const [isHovering, setIsHovering] = useState(false);
-  const userId = useAuthStore((state) => state.currentUserId);
 
   const handleMouseOver = () => {
     setIsHovering(true);
