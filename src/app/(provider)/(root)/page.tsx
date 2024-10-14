@@ -1,5 +1,6 @@
 import Page from "@/components/Page/Page";
 import Link from "next/link";
+import FreeMeals from "./_components/HomePages/FreeMeals";
 import RecruitList from "./_components/HomePages/Recruits/RecruitList";
 import Users from "./_components/HomePages/Users/Users";
 
@@ -15,7 +16,7 @@ function HomePage({ searchParams: { page } }: HomePageProps) {
       className="h-full flex items-center justify-between py-20"
     >
       <div className="grid grid-cols-4 gap-x-5 w-full">
-        <div className="bg-white h-60"></div>
+        <FreeMeals />
         <div className="col-span-2">
           <Link
             href={"/recruits/new"}

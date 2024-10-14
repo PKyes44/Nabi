@@ -27,6 +27,7 @@ function Pagination({ page }: PaginationProps) {
         {Array.from({ length: navigationCount! }).map((_, index) => {
           return (
             <li
+              key={index}
               className={`${
                 index + 1 == +page
                   ? "font-bold text-black"
