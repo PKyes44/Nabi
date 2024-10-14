@@ -7,7 +7,7 @@ interface ProfilePageProps {
   };
 }
 
-async function ProfilePage({ searchParams }: ProfilePageProps) {
+function ProfilePage({ searchParams }: ProfilePageProps) {
   return (
     <Page width="lg" className="my-10 ">
       <Profile userId={searchParams.userId} />

@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
+import { UserProfiles } from "@/types/customDatabase";
 import { EditProfileData } from "@/types/profiles.types";
 import clientApi from "./api";
 
