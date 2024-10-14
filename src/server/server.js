@@ -133,68 +133,68 @@ app.post("/issue-billing-key", (req, res) => {
   });
 });
 
-// cron.schedule("* * * * *", () => {
-//   (async function () {
-//     const response = await supabase
-//       .from("sponsorShip")
-//       .select(
-//         "sponsorShipId, sponsorId, price, billingKey, userProfiles!sponsorShip_sponsorId_fkey(nickname, email)"
-//       )
-//       .eq("isTermination", false);
-//     console.log(response);
-//     if (response.error) {
-//       throw new Error(response.error);
-//     }
-//     console.log("sponsors: ", response.data);
+cron.schedule("0 0 1 * *", () => {
+  (async function () {
+    const response = await supabase
+      .from("sponsorShip")
+      .select(
+        "sponsorShipId, sponsorId, price, billingKey, userProfiles!sponsorShip_sponsorId_fkey(nickname, email)"
+      )
+      .eq("isTermination", false);
+    console.log(response);
+    if (response.error) {
+      throw new Error(response.error);
+    }
+    console.log("sponsors: ", response.data);
 
-//     response.data.forEach(async (data) => {
-//       const orderId = crypto.randomUUID();
-//       const sponsorShipId = data.sponsorShipId;
-//       const customerKey = data.sponsorId;
-//       const billingKey = data.billingKey;
-//       const price = +data.price;
-//       const orderName = `나비: ${data.userProfiles.nickname}님의 정기후원`;
+    response.data.forEach(async (data) => {
+      const orderId = crypto.randomUUID();
+      const sponsorShipId = data.sponsorShipId;
+      const customerKey = data.sponsorId;
+      const billingKey = data.billingKey;
+      const price = +data.price;
+      const orderName = `나비: ${data.userProfiles.nickname}님의 정기후원`;
 
-//       const requestData = {
-//         customerKey,
-//         amount: price,
-//         orderId,
-//         orderName: orderName,
-//         customerEmail: data.userProfiles.email,
-//         customerName: data.userProfiles.nickname,
-//       };
+      const requestData = {
+        customerKey,
+        amount: price,
+        orderId,
+        orderName: orderName,
+        customerEmail: data.userProfiles.email,
+        customerName: data.userProfiles.nickname,
+      };
 
-//       const paymentRes = await fetch(
-//         `https://api.tosspayments.com/v1/billing/${billingKey}`,
-//         {
-//           method: "POST",
-//           headers: {
-//             Authorization: encryptedApiSecretKey,
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify(requestData),
-//         }
-//       );
-//       const json = await paymentRes.json();
+      const paymentRes = await fetch(
+        `https://api.tosspayments.com/v1/billing/${billingKey}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: encryptedApiSecretKey,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+      const json = await paymentRes.json();
 
-//       console.log("json: ", json);
-//       const insertLogData = {
-//         orderName,
-//         sponsorShipId,
-//         amount: price,
-//       };
-//       console.log("insertLogData:", insertLogData);
-//       const { error: insertLogError } = await supabase
-//         .from("sponsorShipOrder")
-//         .insert(insertLogData);
+      console.log("json: ", json);
+      const insertLogData = {
+        orderName,
+        sponsorShipId,
+        amount: price,
+      };
+      console.log("insertLogData:", insertLogData);
+      const { error: insertLogError } = await supabase
+        .from("sponsorShipOrder")
+        .insert(insertLogData);
 
-//       if (insertLogError) {
-//         console.log("insertLogError: ", insertLogError);
-//         throw new Error("supabase log insert error");
-//       }
-//     });
-//   })();
-// });
+      if (insertLogError) {
+        console.log("insertLogError: ", insertLogError);
+        throw new Error("supabase log insert error");
+      }
+    });
+  })();
+});
 
 wsServer.on("connection", (socket) => {
   socket["nickname"] = "anon";
@@ -205,7 +205,6 @@ wsServer.on("connection", (socket) => {
     socket.join(roomName);
     socket["nickname"] = nickname;
     done();
-    // socket.to(roomName).emit("welcome", socket.nickname, roomName);
   });
   socket.on("newMessage", async (msg, userData, roomId, done) => {
     const insertData = { ...userData, content: msg, roomId };
