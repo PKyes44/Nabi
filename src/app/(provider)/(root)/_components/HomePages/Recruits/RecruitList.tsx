@@ -5,10 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import RecruitDetails from "./RecruitDetails";
 
 function RecruitList() {
-  const { data: recruits, isLoading } = useQuery({
+  const { data: recruits } = useQuery({
     queryKey: ["recruits"],
-    queryFn: clientApi.recruits.getRecruits,
+    queryFn: clientApi.recruits.getSortedRecruits,
   });
+
+  console.log("sss", recruits);
 
   return (
     <ul className="mt-5 w-full">
