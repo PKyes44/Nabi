@@ -1,23 +1,23 @@
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 
-async function createRecruit(
+const createRecruit = async (
   data: Database["public"]["Tables"]["recruits"]["Insert"]
-) {
+) => {
   const { data: recruitData, error } = await supabase
     .from("recruits")
     .insert(data);
   if (error) throw new Error(error.message);
 
   return recruitData;
-}
+};
 
-async function getRecruits() {
+const getRecruits = async () => {
   const response = await supabase.from("recruits").select("*");
   const data = response.data;
 
-  return data;
-}
+  return data as Tables<"recruits">[];
+};
 
 const getRecruit = async (recruitId: string) => {
   const response = await supabase
@@ -54,12 +54,25 @@ const getPaginatedRecruits = async (userId: string, page: number) => {
   return recruits;
 };
 
+const editRecruit = async (
+  recruitId: string,
+  data: Partial<Database["public"]["Tables"]["recruits"]["Update"]>
+) => {
+  const { error } = await supabase
+    .from("recruits")
+    .update(data)
+    .eq("recruitId", recruitId);
+
+  if (error) throw new Error(error.message);
+};
+
 const recruitsAPI = {
   createRecruit,
-  getRecruits,
   getSortedMyRecruits,
+  getRecruits,
   getRecruit,
   getPaginatedRecruits,
+  editRecruit,
 };
 
 export default recruitsAPI;
