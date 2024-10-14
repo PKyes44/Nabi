@@ -1,3 +1,5 @@
+"use client";
+
 import clientApi from "@/api/clientSide/api";
 import { useQuery } from "@tanstack/react-query";
 import RecruitDetails from "./RecruitDetails";

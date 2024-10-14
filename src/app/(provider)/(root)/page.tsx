@@ -1,17 +1,13 @@
-"use client";
-
-import clientApi from "@/api/clientSide/api";
 import Page from "@/components/Page/Page";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import RecruitList from "./_components/HomePages/Recruits/RecruitList";
+import Users from "./_components/HomePages/Users/Users";
 
-function RecruitsPage() {
-  const { data: recruits, isLoading } = useQuery({
-    queryKey: ["recruits"],
-    queryFn: clientApi.recruits.getRecruits,
-  });
+interface HomePageProps {
+  searchParams: { page: string };
+}
 
+function HomePage({ searchParams: { page } }: HomePageProps) {
   return (
     <Page
       width="lg"
@@ -29,10 +25,10 @@ function RecruitsPage() {
           </Link>
           <RecruitList />
         </div>
-        <div className="bg-white h-60"></div>
+        <Users page={page} />
       </div>
     </Page>
   );
 }
 
-export default RecruitsPage;
+export default HomePage;
