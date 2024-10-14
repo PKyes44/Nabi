@@ -13,7 +13,7 @@ function LoggedInOnlyLayout({ children }: PropsWithChildren) {
 
   if (!isAuthInitialized) return <Page>페이지를 로딩하는 중 ...</Page>;
 
-  if (!isLoggedIn) router.replace("/auth");
+  if (!isLoggedIn) router.replace("/log-in");
 
   return children;
 }
