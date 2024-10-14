@@ -44,7 +44,7 @@ function CreateFreeMealForm() {
   const { mutate: insertFreeMeal } = useMutation({
     mutationFn: (
       insertData: Database["public"]["Tables"]["freeMeals"]["Insert"]
-    ) => clientApi.freeMeal.insertFreeMeals(insertData),
+    ) => clientApi.freeMeals.insertFreeMeals(insertData),
     onSuccess: (...arg) => {
       console.log("success: ", arg);
       router.push("/");
