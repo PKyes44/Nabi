@@ -1,17 +1,13 @@
-"use client";
-
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
-import Page from "@/components/Page/Page";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { ComponentProps, useState } from "react";
-import LoggedInOnlyLayout from "../../(loggedInOnly)/layout";
 
 interface InitialErrMsgs {
   maxSponsorRecruits: string | null;
@@ -27,7 +23,7 @@ const initialErrMsgs = {
   title: null,
 };
 
-interface RecruitForm {
+interface NewRecruitForm {
   maxSponsorRecruits: HTMLInputElement;
   maxRecipientRecruits: HTMLInputElement;
   deadLineDate: HTMLInputElement;
@@ -37,7 +33,9 @@ interface RecruitForm {
   content: HTMLTextAreaElement;
 }
 
-function NewRecruitPage() {
+type NewRecruitFormEvent = CustomFormEvent<NewRecruitForm>;
+
+function NewRecruitForm() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
@@ -64,9 +62,11 @@ function NewRecruitPage() {
   };
 
   const handleSubmitRecruitForm: ComponentProps<"form">["onSubmit"] = async (
-    e: CustomFormEvent<RecruitForm>
+    e: NewRecruitFormEvent
   ) => {
     e.preventDefault();
+
+    if (!authorId) return;
 
     const maxSponsorRecruits = +e.target.maxSponsorRecruits.value;
     const maxRecipientRecruits = +e.target.maxRecipientRecruits.value;
@@ -77,21 +77,21 @@ function NewRecruitPage() {
     const content = e.target.content.value;
     const isEnd = false;
 
-    const deadLineDate = dayjs(deadLineDateValue);
-    const volunteeringDate = dayjs(volunteeringDateValue);
+    const nonFormatDeadLineDate = dayjs(deadLineDateValue);
+    const nonFormatVolunteeringDate = dayjs(volunteeringDateValue);
 
     setErrMsgs(initialErrMsgs);
 
     if (isNaN(maxSponsorRecruits) || maxSponsorRecruits <= 0) {
       return throwErrMsgs(
         "maxSponsorRecruits",
-        "모집 인원은 0 이상의 숫자로만 작성해주세요"
+        "모집 인원은 1 이상의 숫자로만 작성해주세요"
       );
     }
     if (isNaN(maxRecipientRecruits) || maxRecipientRecruits <= 0) {
       return throwErrMsgs(
         "maxRecipientRecruits",
-        "모집 인원은 0 이상의 숫자로만 작성해주세요"
+        "모집 인원은 1 이상의 숫자로만 작성해주세요"
       );
     }
 
@@ -102,18 +102,22 @@ function NewRecruitPage() {
       return alert("자원 봉사 날짜를 선택해주세요.");
     }
 
-    if (volunteeringDate.isBefore(deadLineDate)) {
+    if (nonFormatVolunteeringDate.isBefore(nonFormatDeadLineDate)) {
       return alert("자원 봉사 날짜는 모집 마감 날짜 이후여야 합니다.");
     }
     if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
     if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
     if (!content) return alert("내용을 작성해주세요");
 
+    const deadLineDate = nonFormatDeadLineDate.format("YYYY-MM-DD HH:mm");
+    const volunteeringDate =
+      nonFormatVolunteeringDate.format("YYYY-MM-DD HH:mm");
+
     const recruitData: Database["public"]["Tables"]["recruits"]["Insert"] = {
-      maxSponsorRecruits: maxSponsorRecruits,
-      maxRecipientRecruits: maxRecipientRecruits,
-      deadLineDate: deadLineDate.format("YYYY-MM-DD"),
-      volunteeringDate: volunteeringDate.format("YYYY-MM-DD"),
+      maxSponsorRecruits,
+      maxRecipientRecruits,
+      deadLineDate,
+      volunteeringDate,
       region,
       title,
       content,
@@ -125,75 +129,64 @@ function NewRecruitPage() {
   };
 
   return (
-    <LoggedInOnlyLayout>
-      <Page width="lg" isMain={false} className="h-full py-20">
-        <div className="bg-white p-10 rounded-md">
-          <h1 className="mb-10 text-3xl font-bold">봉사원 모집글 작성</h1>
-
-          <form
-            onSubmit={handleSubmitRecruitForm}
-            className="flex flex-col gap-y-2"
-          >
-            <div className="flex gap-x-2">
-              <InputGroup
-                type="text"
-                label="봉사자 모집 인원"
-                name="maxSponsorRecruits"
-                errorText={errMsgs.maxSponsorRecruits}
-              />
-              <InputGroup
-                type="text"
-                label="후원 아동 모집 인원"
-                name="maxRecipientRecruits"
-                errorText={errMsgs.maxRecipientRecruits}
-              />
-            </div>
-            <div className="flex gap-x-2">
-              <div>
-                <p>모집 마감 날짜</p>
-                <input
-                  className="border border-black px-7 py-1 mt-1"
-                  type="date"
-                  name="deadLineDate"
-                />
-              </div>
-              <div>
-                <p>자원 봉사 날짜</p>
-                <input
-                  className="border border-black px-7 py-1 mt-1"
-                  type="date"
-                  name="volunteeringDate"
-                />
-              </div>
-            </div>
-
-            <InputGroup
-              type="text"
-              label="지역"
-              name="region"
-              errorText={errMsgs.region}
-            />
-
-            <InputGroup
-              type="text"
-              label="제목"
-              name="title"
-              errorText={errMsgs.title}
-            />
-            <div>
-              <p className="mb-1">내용</p>
-              <textarea
-                name="content"
-                className="border-black border resize-none w-full h-60 p-3 "
-              />
-            </div>
-
-            <ButtonGroup value="등록하기" size="md" className="mt-4" />
-          </form>
+    <form onSubmit={handleSubmitRecruitForm} className="flex flex-col gap-y-2">
+      <div className="flex gap-x-2">
+        <InputGroup
+          type="text"
+          label="봉사자 모집 인원"
+          name="maxSponsorRecruits"
+          errorText={errMsgs.maxSponsorRecruits}
+        />
+        <InputGroup
+          type="text"
+          label="후원 아동 모집 인원"
+          name="maxRecipientRecruits"
+          errorText={errMsgs.maxRecipientRecruits}
+        />
+      </div>
+      <div className="flex gap-x-2">
+        <div>
+          <p>모집 마감 날짜</p>
+          <input
+            className="border border-black px-7 py-1 mt-1"
+            type="date"
+            name="deadLineDate"
+          />
         </div>
-      </Page>
-    </LoggedInOnlyLayout>
+        <div>
+          <p>자원 봉사 날짜</p>
+          <input
+            className="border border-black px-7 py-1 mt-1"
+            type="date"
+            name="volunteeringDate"
+          />
+        </div>
+      </div>
+
+      <InputGroup
+        type="text"
+        label="지역"
+        name="region"
+        errorText={errMsgs.region}
+      />
+
+      <InputGroup
+        type="text"
+        label="제목"
+        name="title"
+        errorText={errMsgs.title}
+      />
+      <div>
+        <p className="mb-1">내용</p>
+        <textarea
+          name="content"
+          className="border-black border resize-none w-full h-60 p-3 "
+        />
+      </div>
+
+      <ButtonGroup value="등록하기" size="md" className="mt-4" />
+    </form>
   );
 }
 
-export default NewRecruitPage;
+export default NewRecruitForm;

@@ -4,7 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import Page from "@/components/Page/Page";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import RecruitDetails from "./_components/RecruitDetails";
+import RecruitList from "./_components/HomePages/Recruits/RecruitList";
 
 function RecruitsPage() {
   const { data: recruits, isLoading } = useQuery({
@@ -27,19 +27,7 @@ function RecruitsPage() {
           >
             글 작성
           </Link>
-          {isLoading && (
-            <div className="mt-5 text-center text-gray-500">로딩 중...</div>
-          )}
-          <ul className="mt-5 w-full">
-            {recruits?.map((recruit) => (
-              <li
-                key={recruit.recruitId}
-                className="bg-white mb-2 p-10 rounded-md relative"
-              >
-                <RecruitDetails recruit={recruit} />
-              </li>
-            ))}
-          </ul>
+          <RecruitList />
         </div>
         <div className="bg-white h-60"></div>
       </div>
