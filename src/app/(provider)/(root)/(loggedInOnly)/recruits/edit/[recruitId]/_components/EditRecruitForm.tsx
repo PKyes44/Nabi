@@ -4,7 +4,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
@@ -44,6 +44,11 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const authorId = useAuthStore((state) => state.currentUserId);
+
+  const { data: recruit } = useQuery({
+    queryKey: ["recruit"],
+    queryFn: () => clientApi.recruits.getRecruit(recruitId),
+  });
 
   const { mutate: editRecruit } = useMutation<
     unknown,
@@ -137,12 +142,14 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
     >
       <div className="flex gap-x-2">
         <InputGroup
+          defaultValue={recruit?.maxSponsorRecruits}
           type="text"
           label="봉사자 모집 인원"
           name="maxSponsorRecruits"
           errorText={errMsgs.maxSponsorRecruits}
         />
         <InputGroup
+          defaultValue={recruit?.maxRecipientRecruits}
           type="text"
           label="후원 아동 모집 인원"
           name="maxRecipientRecruits"
@@ -153,6 +160,11 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
         <div>
           <p>모집 마감 날짜</p>
           <input
+            defaultValue={
+              recruit?.deadLineDate
+                ? dayjs(recruit.deadLineDate).format("YYYY-MM-DD")
+                : ""
+            }
             className="border border-black px-7 py-1 mt-1"
             type="date"
             name="deadLineDate"
@@ -161,6 +173,11 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
         <div>
           <p>자원 봉사 날짜</p>
           <input
+            defaultValue={
+              recruit?.volunteeringDate
+                ? dayjs(recruit.volunteeringDate).format("YYYY-MM-DD")
+                : ""
+            }
             className="border border-black px-7 py-1 mt-1"
             type="date"
             name="volunteeringDate"
@@ -169,6 +186,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
       </div>
 
       <InputGroup
+        defaultValue={recruit?.region}
         type="text"
         label="지역"
         name="region"
@@ -176,6 +194,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
       />
 
       <InputGroup
+        defaultValue={recruit?.title}
         type="text"
         label="제목"
         name="title"
@@ -184,12 +203,13 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
       <div>
         <p className="mb-1">내용</p>
         <textarea
+          defaultValue={recruit?.content}
           name="content"
           className="border-black border resize-none w-full h-60 p-3 "
         />
       </div>
 
-      <ButtonGroup value="등록하기" size="md" className="mt-4" />
+      <ButtonGroup type="submit" value="등록하기" size="md" className="mt-4" />
     </form>
   );
 }
