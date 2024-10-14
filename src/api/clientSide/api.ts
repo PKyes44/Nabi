@@ -4,6 +4,7 @@ import freeMealsAPI from "./freeMeals.api";
 import profilesAPI from "./profiles.api";
 import recruitsAPI from "./recruits.api";
 import regularSponsorShipAPI from "./regularSponsorShip.api";
+import repliesAPI from "./replies.api";
 import replyAPI from "./reply.api";
 import roomsAPI from "./rooms.api";
 import storageAPI from "./storage.api";
@@ -22,6 +23,7 @@ const clientApi = {
   rooms: roomsAPI,
   chats: chatsAPI,
   reply: replyAPI,
+  replies: repliesAPI,
 };
 
 export default clientApi;
