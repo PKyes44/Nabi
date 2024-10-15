@@ -34,32 +34,28 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           수정하기
         </Link>
       )}
-
-      <p className="font-bold text-lg mb-5">{recruit.title}</p>
-      <p className="mb-5 border-b pb-5">작성자 : {profile?.nickname}</p>
-      <p className="mb-5 text-base">{recruit.content}</p>
-      <div className="grid grid-cols-2 gap-y-1 text-sm text-black/50 mb-5 border-b border-black pb-5">
-        {userProfile?.role ? (
-          userProfile.role === "recipient" ? (
-            <span>봉사자 모집 인원 : {recruit.maxSponsorRecruits}</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-x-5 ">
+          {profile?.profileImageUrl ? (
+            <img
+              src={profile.profileImageUrl}
+              alt="profile image"
+              className="w-16 rounded-full aspect-square object-cover"
+            />
           ) : (
-            <span>아동 모집 인원 : {recruit.maxRecipientRecruits}</span>
-          )
-        ) : (
-          <>
-            <span>봉사자 모집 인원 : {recruit.maxSponsorRecruits}</span>
-            <span>후원 아동 인원 : {recruit.maxRecipientRecruits}</span>
-          </>
-        )}
-        <span>
-          모집 마감 날짜 : {dayjs(recruit.deadLineDate).format("YYYY-MM-DD")}
+            <div className="w-16 rounded-full aspect-square object-cover" />
+          )}
+          <div className="flex flex-col">
+            <span className="font-extrabold">{profile?.nickname}</span>
+            <span className="font-light text-xs">{profile?.email}</span>
+          </div>
+        </div>
+        <span className="font-normal text-xs">
+          {Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours"))}시간 전
         </span>
-        <span>
-          자원 봉사 날짜 :{" "}
-          {dayjs(recruit.volunteeringDate).format("YYYY-DD-MM")}
-        </span>
-        <span>지역 : {recruit.region}</span>
       </div>
+      <article></article>
+      <div className="grid grid-cols-2 gap-y-1 text-sm text-black/50 mb-5 border-b border-black pb-5"></div>
       <CreateRecruitsReply recruitId={recruit.recruitId} />
       <Replies recruitId={recruit.recruitId} />
     </div>
