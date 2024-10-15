@@ -20,7 +20,7 @@ const initialErrMsgs = {
 function ProfileEditForm() {
   const queryClient = useQueryClient();
 
-  const userId = useAuthStore((state) => state.currentUserId);
+  const showUserId = useAuthStore((state) => state.currentUserId);
   const setIsShowProfileEditModal = useProfileEditModalStore(
     (state) => state.setIsShowProfileEditModal
   );
@@ -32,7 +32,7 @@ function ProfileEditForm() {
   // useMutation사용해서 기본 이미지로 변경하는 함수
   const { mutate: setPrimaryImage } = useMutation({
     mutationFn: (type: string) =>
-      clientApi.profiles.setPrimaryImage(userId!, type),
+      clientApi.profiles.setPrimaryImage(showUserId!, type),
   });
 
   // useMutation사용해서 프로필수정하는 함수
@@ -41,7 +41,7 @@ function ProfileEditForm() {
       clientApi.profiles.editProfile(profileData),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["userProfiles", { userId }],
+        queryKey: ["userProfiles", { showUserId }],
       });
       setIsShowProfileEditModal(false);
     },
@@ -60,7 +60,7 @@ function ProfileEditForm() {
       setErrMsgs(initialErrMsgs);
 
       const nickname = e.target.nickname.value;
-      if (!userId) return;
+      if (!showUserId) return;
 
       if (isClickedPrimaryProfile) setPrimaryImage("profile");
       if (isClickedPrimaryBg) setPrimaryImage("background");
@@ -69,7 +69,7 @@ function ProfileEditForm() {
       const bgImg = e.target.backgroundImg.files?.[0];
 
       const profileData: EditProfileData = {
-        userId,
+        userId: showUserId,
         nickname,
         profileImg,
         bgImg,
