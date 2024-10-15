@@ -74,22 +74,20 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
     e.target.content.value = "";
   };
 
-  if (recipients?.some((recipient) => recipient.userId !== currentUserId))
-    return null;
-
-  return (
-    <div className="w-full border-b border-black pb-5 mb-5">
-      <form onSubmit={handleSubmitReplyForm}>
-        <InputGroup
-          label="댓글 남기기"
-          type="text"
-          name="content"
-          errorText={errMsgs.content}
-        />
-        <ButtonGroup className="mt-2" value="등록" type="submit" />
-      </form>
-    </div>
-  );
+  if (recipients?.some((recipient) => recipient.userId === currentUserId))
+    return (
+      <div className="w-full border-b border-black pb-5 mb-5">
+        <form onSubmit={handleSubmitReplyForm}>
+          <InputGroup
+            label="댓글 남기기"
+            type="text"
+            name="content"
+            errorText={errMsgs.content}
+          />
+          <ButtonGroup className="mt-2" value="등록" type="submit" />
+        </form>
+      </div>
+    );
 }
 
 export default CreateRecruitsReply;

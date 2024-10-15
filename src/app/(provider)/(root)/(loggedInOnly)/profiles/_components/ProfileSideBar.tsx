@@ -58,13 +58,13 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                   <p>{recruit.content}</p>
                   <br />
                   {recruit.sponsorMeets.some((user) => user.isSponsor) &&
-                    recruit.maxSponsorRecruits >
+                    recruit.maxSponsorRecruits >=
                       recruit.sponsorMeets.filter(
                         (user) => user.isSponsor && user.isApproved
                       ).length && (
                       <div className="text-center">
                         <strong>
-                          신청한 후원자 목록 (
+                          모집된 후원자 목록 (
                           {
                             recruit.sponsorMeets.filter(
                               (user) => user.isSponsor && user.isApproved
@@ -102,19 +102,19 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                     )}
                   <br />
                   {recruit.sponsorMeets.some((user) => !user.isSponsor) &&
-                    recruit.maxRecipientRecruits >
+                    recruit.maxRecipientRecruits >=
                       recruit.sponsorMeets.filter(
                         (user) => !user.isSponsor && user.isApproved
                       ).length && (
                       <div className="text-center">
                         <strong>
-                          신청한 아동 목록(
+                          모집된 아동 목록(
                           {
                             recruit.sponsorMeets.filter(
                               (user) => !user.isSponsor && user.isApproved
                             ).length
                           }
-                          /{recruit.maxRecipientRecruits})
+                          /{recruit.maxSponsorRecruits})
                         </strong>
                         <ul>
                           {recruit.maxSponsorRecruits >
