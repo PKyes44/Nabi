@@ -3,7 +3,7 @@
 import clientApi from "@/api/clientSide/api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
-import Reply from "./Reply";
+import ReplyList from "./ReplyList";
 
 type RepliesProps = {
   recruitId: string;
@@ -26,13 +26,7 @@ function Replies({ recruitId }: RepliesProps) {
     replies.length !== 0 ? (
       <>
         <strong>댓글 목록</strong>
-        <ul className="mt-5">
-          {replies.map((reply) => (
-            <li key={reply.replyId}>
-              <Reply content={reply.content} nickname={profile?.nickname} />
-            </li>
-          ))}
-        </ul>
+        <ReplyList nickname={profile?.nickname} replies={replies} />
       </>
     ) : (
       <p className="text-black/30">댓글이 존재하지 않습니다</p>
