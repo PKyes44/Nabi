@@ -96,7 +96,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           </div>
         </div>
       </article>
-      <article className="mt-8">
+      <article className="mt-2">
         <div className="flex gap-x-3 items-center">
           <div className="flex gap-x-2 items-center">
             <img

@@ -21,7 +21,7 @@ function Users({ page = "1" }: UsersProps) {
   if (isLoading) return <span>데이터를 불러오는 중</span>;
 
   return (
-    <article className="bg-white h-80 px-4 pt-5 gap-y-3 flex flex-col justify-between rounded-lg">
+    <article className="bg-white h-80 px-4 pt-5 flex flex-col gap-y-5 rounded-lg">
       {userProfile ? (
         userProfile!.role === "recipient" ? (
           <Sponsors />
