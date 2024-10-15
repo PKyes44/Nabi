@@ -73,7 +73,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
       console.log("center: ", center);
       const options = {
         center, // 지도 중심 좌표
-        level: 3, // 지도의 레벨(확대, 축소 정도)
+        level: 2, // 지도의 레벨(확대, 축소 정도)
       };
 
       const map = new window.kakao.maps.Map(mapRef.current, options);

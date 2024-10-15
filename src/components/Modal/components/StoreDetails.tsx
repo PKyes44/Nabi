@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 function StoreDetails() {
   const storeDetailData = useStoreDetailStore((state) => state.storeDetailData);
   const currentUserId = useAuthStore((state) => state.currentUserId);
-
+  const roleType = useAuthStore((state) => state.roleType);
   const queryClient = useQueryClient();
 
   const { data: isStoreOwner } = useQuery({
@@ -42,6 +42,8 @@ function StoreDetails() {
     insertOwner(insertOwnerData);
   };
 
+  if (!roleType) return <span>데이터 로딩중</span>;
+  console.log(roleType);
   return (
     <section className="w-auto min-w-96 h-96 bg-white rounded-lg py-8 px-10 flex flex-col gap-y-5">
       <div className="bg-gray-400 w-full h-40" />
@@ -55,30 +57,31 @@ function StoreDetails() {
             {storeDetailData?.address}
           </address>
         </div>
-        {isStoreOwner ? (
-          <Button
-            size="md"
-            rounded="lg"
-            className="px-5 py-1.5"
-            intent="default"
-            outline
-            textIntent="default"
-            disabled
-          >
-            이미 등록된 매장입니다
-          </Button>
-        ) : (
-          <Button
-            onClick={handleClickRegistOwner}
-            size="md"
-            rounded="lg"
-            className="px-5 py-1.5"
-            textIntent="primary"
-            intent="primary"
-          >
-            점주 등록하기
-          </Button>
-        )}
+        {roleType === "sponsor" &&
+          (isStoreOwner ? (
+            <Button
+              size="md"
+              rounded="lg"
+              className="px-5 py-1.5"
+              intent="default"
+              outline
+              textIntent="default"
+              disabled
+            >
+              이미 등록된 매장입니다
+            </Button>
+          ) : (
+            <Button
+              onClick={handleClickRegistOwner}
+              size="md"
+              rounded="lg"
+              className="px-5 py-1.5"
+              textIntent="primary"
+              intent="primary"
+            >
+              점주 등록하기
+            </Button>
+          ))}
       </div>
     </section>
   );
