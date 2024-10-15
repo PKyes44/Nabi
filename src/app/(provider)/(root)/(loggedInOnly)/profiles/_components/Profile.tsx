@@ -10,10 +10,10 @@ import ProfileSideBar from "./ProfileSideBar";
 import SponsorHistories from "./SponsorHistories";
 
 interface ProfileProps {
-  userId?: string;
+  userId: string;
 }
 
-function Profile({ userId }: ProfileProps) {
+function Profile({ userId: showUserId }: ProfileProps) {
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const roleType = useAuthStore((state) => state.roleType);
 
@@ -23,8 +23,8 @@ function Profile({ userId }: ProfileProps) {
 
   // 선택한 유저의 프로필
   const { data: profile, isLoading } = useQuery({
-    queryKey: ["userProfiles", { userId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
+    queryKey: ["userProfiles", { showUserId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(showUserId!),
   });
 
   const handleClickProfileEdit = () => {
@@ -90,7 +90,7 @@ function Profile({ userId }: ProfileProps) {
             </div>
           </section>
 
-          <SponsorHistories userId={userId!} />
+          <SponsorHistories userId={showUserId!} />
         </div>
 
         <ProfileSideBar profile={profile!} />
