@@ -13,7 +13,6 @@ interface ProfileSideBarProps {
 function ProfileSideBar({ profile }: ProfileSideBarProps) {
   const queryClient = useQueryClient();
   const currentUserId = useAuthStore((state) => state.currentUserId);
-
   // 후원자가 본인 프로필을 봤을 때 모집글 불러오기
   const { data: myRecruits } = useQuery({
     queryKey: ["recruits", { userId: profile.userId }],
