@@ -46,6 +46,17 @@ const getRecentlySponsorship = async (userId: string, role: string) => {
   }
 };
 
-const sponsorMeetsAPI = { getRecruitIdByUserId, getRecentlySponsorship };
+const approvedUser = async (userId: string) => {
+  await supabase
+    .from("sponsorMeets")
+    .update({ isApproved: true })
+    .eq("userId", userId);
+};
+
+const sponsorMeetsAPI = {
+  getRecruitIdByUserId,
+  getRecentlySponsorship,
+  approvedUser,
+};
 
 export default sponsorMeetsAPI;
