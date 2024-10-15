@@ -47,7 +47,11 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
       <li className="w-10">
         <Link href={`/profiles?userId=${userId}`}>
           {profile?.profileImageUrl ? (
-            <img src={profile.profileImageUrl} alt="profile image" />
+            <img
+              src={profile.profileImageUrl}
+              alt="profile image"
+              className="w-full aspect-square object-cover rounded-lg"
+            />
           ) : (
             <div className="bg-[#f5f5f5] w-full aspect-square rounded-lg grid place-items-center">
               <img
