@@ -1,10 +1,11 @@
+"use client";
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useState } from "react";
 
 interface InitialErrMsgs {
@@ -22,8 +23,19 @@ type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
 
 function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
   const queryClient = useQueryClient();
-  const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const recipientId = useAuthStore((state) => state.currentUserId);
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+  const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
+
+  const { data: recipients } = useQuery({
+    queryKey: ["sponsorMeets", { recruitId }],
+    queryFn: () => clientApi.sponsorMeets.getRecipients(recruitId),
+  });
+
+  // sponsorMeets에 recruitId와 자신의 userId를 넣어 isApproved가 true이고,
+  // isSponsor가 false일 때만 댓글 작성
+
+  // 만들기
   const { mutate: editReply } = useMutation<
     unknown,
     Error,
@@ -61,6 +73,9 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
     editReply(data);
     e.target.content.value = "";
   };
+
+  if (recipients?.some((recipient) => recipient.userId !== currentUserId))
+    return null;
 
   return (
     <div className="w-full border-b border-black pb-5 mb-5">
