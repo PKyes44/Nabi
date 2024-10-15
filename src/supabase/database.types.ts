@@ -228,6 +228,7 @@ export type Database = {
       sponsorMeets: {
         Row: {
           createdAt: string
+          isApproved: boolean
           isSponsor: boolean
           meetId: string
           recruitId: string
@@ -235,6 +236,7 @@ export type Database = {
         }
         Insert: {
           createdAt?: string
+          isApproved?: boolean
           isSponsor?: boolean
           meetId?: string
           recruitId?: string
@@ -242,6 +244,7 @@ export type Database = {
         }
         Update: {
           createdAt?: string
+          isApproved?: boolean
           isSponsor?: boolean
           meetId?: string
           recruitId?: string

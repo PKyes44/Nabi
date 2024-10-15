@@ -1,17 +1,18 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import Button from "@/components/Button/Button";
 import { UserProfiles } from "@/types/customDatabase";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface ProfileSideBarProps {
   profile: UserProfiles["Row"];
 }
 
 function ProfileSideBar({ profile }: ProfileSideBarProps) {
+  const queryClient = useQueryClient();
   const currentUserId = useAuthStore((state) => state.currentUserId);
-  const currentRoleType = useAuthStore((state) => state.roleType);
 
   // 후원자가 본인 프로필을 봤을 때 모집글 불러오기
   const { data: myRecruits } = useQuery({
@@ -20,6 +21,16 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     enabled: profile.role === "sponsor" && currentUserId === profile.userId,
   });
 
+  const { mutate: approved } = useMutation({
+    mutationFn: (userId: string) => clientApi.sponsorMeets.approvedUser(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["recruits", { userId: profile.userId }],
+      });
+    },
+  });
+
+  // 다른 유저 프로필 봤을 때 최근 후원자|후원아동 불러오기
   const { data: recentlySponsorships } = useQuery({
     queryKey: ["recruits", { profile }],
     queryFn: () =>
@@ -28,6 +39,10 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
         profile.role
       ),
   });
+
+  const handleClickApproved = (userId: string) => {
+    approved(userId);
+  };
 
   return (
     <article className="grow bg-gray-300 h-full rounded-lg text-center">
@@ -38,15 +53,56 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
             <strong>모집글 목록</strong>
             <ul className="flex flex-col gap-y-4 items-center ">
               {myRecruits?.map((recruit) => (
-                <li
-                  className="w-32 h-16 bg-yellow-300 "
-                  key={recruit.recruitId}
-                >
+                <li className="w-56 bg-yellow-300 " key={recruit.recruitId}>
                   <p>{recruit.title}</p>
                   <p>{recruit.content}</p>
+                  <br />
+                  {recruit.sponsorMeets.some((user) => user.isSponsor) && (
+                    <>
+                      <strong>신청한 후원자 목록</strong>
+                      <ul>
+                        {recruit.sponsorMeets
+                          .filter((user) => user.isSponsor)
+                          .map((user) => (
+                            <li className="grid grid-cols-2" key={user.userId}>
+                              <p>{user.userProfiles?.nickname}</p>
+                              <Button
+                                className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
+                                onClick={() => handleClickApproved(user.userId)}
+                              >
+                                수락하기
+                              </Button>
+                            </li>
+                          ))}
+                      </ul>
+                    </>
+                  )}
+                  <br />
+                  {recruit.sponsorMeets.some((user) => !user.isSponsor) && (
+                    <>
+                      <strong>신청한 후원아동 목록</strong>
+                      <ul>
+                        {recruit.sponsorMeets
+                          .filter((user) => !user.isSponsor)
+                          .map((user) => (
+                            <li className="grid grid-cols-2" key={user.userId}>
+                              <p>{user.userProfiles?.nickname}</p>
+                              <Button
+                                className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
+                                onClick={() => handleClickApproved(user.userId)}
+                              >
+                                수락하기
+                              </Button>
+                            </li>
+                          ))}
+                      </ul>
+                    </>
+                  )}
                 </li>
               ))}
             </ul>
+
+            <ul></ul>
           </>
         ) : (
           // 다른 후원자의 프로필
