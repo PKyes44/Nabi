@@ -7,6 +7,7 @@ import regularSponsorShipAPI from "./regularSponsorShip.api";
 import repliesAPI from "./replies.api";
 import replyAPI from "./reply.api";
 import roomsAPI from "./rooms.api";
+import sponsorMeetsAPI from "./sponsorMeets.api";
 import storageAPI from "./storage.api";
 import storeDataAPI from "./storeData.api";
 import storeOwnersAPI from "./storeOwners.api";
@@ -24,6 +25,7 @@ const clientApi = {
   chats: chatsAPI,
   reply: replyAPI,
   replies: repliesAPI,
+  sponsorMeets: sponsorMeetsAPI,
 };
 
 export default clientApi;

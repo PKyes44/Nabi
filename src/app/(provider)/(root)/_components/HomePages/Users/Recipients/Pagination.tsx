@@ -9,7 +9,7 @@ interface PaginationProps {
 function Pagination({ page }: PaginationProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { data: navigationCount, isLoading: isCountLoading } = useQuery({
+  const { data: navigationCount } = useQuery({
     queryKey: ["userProfiles", { type: "recipientCount" }],
     queryFn: () => clientApi.profiles.getNavigationCount("recipient"),
   });
@@ -27,6 +27,7 @@ function Pagination({ page }: PaginationProps) {
         {Array.from({ length: navigationCount! }).map((_, index) => {
           return (
             <li
+              key={index}
               className={`${
                 index + 1 == +page
                   ? "font-bold text-black"

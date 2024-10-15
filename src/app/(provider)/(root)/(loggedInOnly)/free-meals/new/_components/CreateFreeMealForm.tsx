@@ -71,7 +71,7 @@ function CreateFreeMealForm() {
     if (date.length === 0) return throwErrorMsgs("date", "날짜를 지정해주세요");
     if (time.length === 0) return throwErrorMsgs("time", "시간을 지정해주세요");
 
-    let day = dayjs(`${date} ${time}`);
+    const day = dayjs(`${date} ${time}`);
     const now = dayjs();
     if (!day.isAfter(now))
       return throwErrorMsgs("date", "작성된 시점보다 이후여야 합니다");

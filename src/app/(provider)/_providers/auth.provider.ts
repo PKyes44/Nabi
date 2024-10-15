@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import clientApi from "@/api/clientSide/api";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
 import { PropsWithChildren, useEffect } from "react";
@@ -8,6 +9,8 @@ function AuthProvider({ children }: PropsWithChildren) {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setAuthInitialized = useAuthStore((state) => state.setAuthInitialized);
   const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
+  const setRoleType = useAuthStore((state) => state.setRoleType);
+  const userId = useAuthStore((state) => state.currentUserId);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_name, session) => {
@@ -22,6 +25,15 @@ function AuthProvider({ children }: PropsWithChildren) {
       setAuthInitialized();
     });
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (!userId) return;
+      const response = await clientApi.profiles.getProfileByUserId(userId);
+      const roleType = response?.role;
+      setRoleType(roleType);
+    })();
+  }, [userId]);
 
   return children;
 }

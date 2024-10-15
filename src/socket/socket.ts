@@ -2,5 +2,7 @@
 
 import { io } from "socket.io-client";
 
-const socket = io("ws://localhost:8080");
+const socket = io(
+  "https://port-0-nabi-backend-m29e62geab88e174.sel4.cloudtype.app/"
+);
 export default socket;

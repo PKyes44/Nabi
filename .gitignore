@@ -35,5 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-database.types.ts
+# database.types.ts
+output.csv
+storeAddressData.csv
+storeAddressData.xlsx
 getStoreAddressData.js

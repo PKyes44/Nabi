@@ -1,7 +1,6 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
-import { useAuthStore } from "@/zustand/auth.store";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
@@ -29,20 +28,34 @@ dayjs.updateLocale("en", {
   },
 });
 
-function SponsorHistories() {
-  const userId = useAuthStore((state) => state.currentUserId);
+interface SponsorHistoriesProps {
+  userId: string;
+}
+
+function SponsorHistories({ userId }: SponsorHistoriesProps) {
   const observerRef = useRef(null);
+
+  //sponsorMeets에 userId 넣어서 recruitId들 가져오기
+  const { data: recruitIds } = useQuery({
+    queryKey: ["sponsorMeets", { userId }],
+    queryFn: () => clientApi.sponsorMeets.getRecruitIdByUserId(userId!),
+  });
+
+  // recruitId로 게시글 3개씩 가져오기(인피니트 스크롤)
   const {
     data: recruitsData,
     fetchNextPage,
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["recruits", { userId }],
-    queryFn: ({ pageParam }) =>
-      clientApi.recruits.getPaginatedRecruits(userId!, pageParam),
+    queryKey: ["recruits", { recruitIds }],
+    queryFn: ({ pageParam }) => {
+      if (!recruitIds) return;
+      return clientApi.recruits.getPaginatedRecruits(recruitIds, pageParam);
+    },
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage) return;
+      if (!pages) return;
       return pages.length;
     },
     initialPageParam: 0,
@@ -86,7 +99,7 @@ function SponsorHistories() {
           ))
         )}
         <p ref={observerRef} className="text-transparent">
-          하나 더 보여주기
+          3개 더 보여주기
         </p>
       </ul>
     </div>

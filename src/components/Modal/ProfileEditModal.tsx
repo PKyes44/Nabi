@@ -1,8 +1,8 @@
 "use client";
-import React, { ComponentProps, PropsWithChildren } from "react";
-import Modal from "./Modal";
-import { useProfileEditModalStore } from "@/zustand/profileEditModal.stroe";
 import ProfileEditForm from "@/app/(provider)/(root)/(loggedInOnly)/profiles/_components/ProfileEditForm";
+import { useProfileEditModalStore } from "@/zustand/profileEditModal.store";
+import { ComponentProps, PropsWithChildren } from "react";
+import Modal from "./Modal";
 
 function ProfileEditModal({ children }: PropsWithChildren) {
   const { isShowProfileEditModal, setIsShowProfileEditModal } =
