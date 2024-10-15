@@ -3,6 +3,7 @@
 import clientApi from "@/api/clientSide/api";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
+import Reply from "./Reply";
 
 type RepliesProps = {
   recruitId: string;
@@ -28,9 +29,7 @@ function Replies({ recruitId }: RepliesProps) {
         <ul className="mt-5">
           {replies.map((reply) => (
             <li key={reply.replyId}>
-              <p>
-                {profile?.nickname} : {reply.content}
-              </p>
+              <Reply content={reply.content} nickname={profile?.nickname} />
             </li>
           ))}
         </ul>

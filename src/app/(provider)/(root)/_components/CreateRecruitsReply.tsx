@@ -14,15 +14,16 @@ const initialErrMsgs = {
   content: null,
 };
 
+interface SubmitReplyForm {
+  content: HTMLInputElement;
+}
+
+type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
+
 function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
   const queryClient = useQueryClient();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const recipientId = useAuthStore((state) => state.currentUserId);
-
-  const throwErrMsgs = (type: string, message: string) => {
-    setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
-  };
-
   const { mutate: editReply } = useMutation<
     unknown,
     Error,
@@ -39,10 +40,12 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
 
   if (!recipientId) return null;
 
+  const throwErrMsgs = (type: string, message: string) => {
+    setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
+  };
+
   const handleSubmitReplyForm: ComponentProps<"form">["onSubmit"] = (
-    e: CustomFormEvent<{
-      content: HTMLInputElement;
-    }>
+    e: SubmitReplyFormEvent
   ) => {
     e.preventDefault();
     const content = e.target.content.value;
@@ -58,6 +61,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
     editReply(data);
     e.target.content.value = "";
   };
+
   return (
     <div className="w-full border-b border-black pb-5 mb-5">
       <form onSubmit={handleSubmitReplyForm}>
