@@ -82,7 +82,7 @@ function RegularSponsorShipBillingPage({
 
         <div>
           <h3 className="font-bold">
-            카드 번호 :{" "}
+            카드 번호 :
             <span className="font-normal">{receipt?.card.number}</span>
           </h3>
           <span className="text-sm">
