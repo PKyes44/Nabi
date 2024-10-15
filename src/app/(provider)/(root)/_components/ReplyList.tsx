@@ -1,7 +1,7 @@
 import { Tables } from "@/supabase/database.types";
 
 type ReplyResponse = (Tables<"replies"> & {
-  userProfiles: Pick<Tables<"userProfiles">, "nickname">;
+  userProfiles: Pick<Tables<"userProfiles">, "nickname"> | null;
 })[];
 
 function ReplyList({ replies }: { replies: ReplyResponse }) {
