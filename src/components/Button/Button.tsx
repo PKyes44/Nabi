@@ -8,12 +8,14 @@ const buttonVariant = cva("", {
       false: "border-none",
     },
     size: {
+      xs: "p-0",
       sm: "px-14 py-1.5",
       md: "px-28 py-2.5",
     },
     intent: {
       default: "bg-black",
       primary: "bg-yellow-300",
+      none: "bg-none",
     },
     rounded: {
       none: "rounded-none",

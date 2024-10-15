@@ -22,7 +22,15 @@ function Recipients({ page }: RecipientsProps) {
   const startNum = page === 1 ? 0 : (page - 1) * 5 + 1;
   const endNum = page === 1 ? 5 : page * 5;
   return (
-    <>
+    <article className="bg-white h-[360px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg">
+      <h2 className="flex items-center mx-auto gap-x-2">
+        <img
+          className="w-5 aspect-square"
+          src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Heart.png"
+          alt="heart icon"
+        />
+        도움이 필요한 아이들
+      </h2>
       <ul className="grid grid-cols-1 grid-rows-5 gap-y-2">
         {recipients!.slice(startNum, endNum).map((recipient) => {
           return (
@@ -33,7 +41,7 @@ function Recipients({ page }: RecipientsProps) {
         })}
       </ul>
       <Pagination page={page} />
-    </>
+    </article>
   );
 }
 

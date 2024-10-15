@@ -20,7 +20,7 @@ function HomePage({ searchParams: { page } }: HomePageProps) {
         <div className="col-span-2">
           <Link
             href={"/recruits/new"}
-            className="w-full block bg-white text-center py-3 text-[15px]"
+            className={`w-full block bg-white text-center py-3 text-[15px] font-paperlogy`}
           >
             글 작성
           </Link>
