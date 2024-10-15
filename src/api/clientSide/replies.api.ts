@@ -14,9 +14,7 @@ const getRepliesByRecruitId = async (recruitId: string) => {
 const createReply = async (
   data: Database["public"]["Tables"]["replies"]["Insert"]
 ) => {
-  const { data: replyData, error } = await supabase
-    .from("replies")
-    .insert(data);
+  const { error } = await supabase.from("replies").insert(data);
   if (error) throw new Error(error.message);
 };
 
