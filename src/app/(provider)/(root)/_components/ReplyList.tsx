@@ -1,18 +1,16 @@
 import { Tables } from "@/supabase/database.types";
+import Reply from "./Reply";
 
 interface ReplyListProps {
   replies: Tables<"replies">[];
-  nickname?: string;
 }
 
-function ReplyList({ nickname, replies }: ReplyListProps) {
+function ReplyList({ replies }: ReplyListProps) {
   return (
     <ul className="mt-5">
       {replies.map((reply) => (
         <li key={reply.replyId}>
-          <p>
-            {nickname} : {reply.content}
-          </p>
+          <Reply reply={reply} />
         </li>
       ))}
     </ul>
