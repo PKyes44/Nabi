@@ -1,25 +1,65 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import RecruitDetails from "./RecruitDetails";
 
 function RecruitList() {
-  const { data: recruits } = useQuery({
+  const observerRef = useRef(null);
+
+  const {
+    data: recruitsData,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+  } = useInfiniteQuery({
     queryKey: ["recruits"],
-    queryFn: clientApi.recruits.getSortedRecruits,
+    queryFn: ({ pageParam }) =>
+      clientApi.recruits.getInfiniteRecruits(pageParam),
+    getNextPageParam: (lastPage, pages) => {
+      if (!lastPage) return;
+      if (!pages) return;
+      return pages.length;
+    },
+    initialPageParam: 0,
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [isLoading]);
 
   return (
     <ul className="mt-5 w-full">
-      {recruits?.map((recruit) => (
-        <li
-          key={recruit.recruitId}
-          className="bg-white mb-2 p-10 rounded-md relative"
-        >
-          <RecruitDetails recruit={recruit} />
-        </li>
-      ))}
+      {recruitsData?.pages.map((recruits) =>
+        recruits?.map((recruit) => (
+          <li
+            key={recruit.recruitId}
+            className="bg-white mb-2 p-10 rounded-md relative"
+          >
+            <RecruitDetails recruit={recruit} />
+          </li>
+        ))
+      )}
+      {isLoading && <li>Loading...</li>}
+      <div ref={observerRef} />
     </ul>
   );
 }
