@@ -1,17 +1,23 @@
-import { Tables } from "@/supabase/database.types";
-
 interface ReplyListProps {
-  replies: Tables<"replies">[];
-  nickname?: string;
+  replies: {
+    content: string;
+    createdAt: string;
+    recipientId: string;
+    recruitId: string;
+    replyId: string;
+    userProfiles: {
+      nickname: string;
+    } | null;
+  }[];
 }
 
-function ReplyList({ nickname, replies }: ReplyListProps) {
+function ReplyList({ replies }: ReplyListProps) {
   return (
     <ul className="mt-5">
       {replies.map((reply) => (
         <li key={reply.replyId}>
           <p>
-            {nickname} : {reply.content}
+            {reply.userProfiles?.nickname} : {reply.content}
           </p>
         </li>
       ))}
