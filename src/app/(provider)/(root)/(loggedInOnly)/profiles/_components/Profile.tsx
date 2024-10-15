@@ -35,7 +35,7 @@ function Profile({ userId: showUserId }: ProfileProps) {
             {profile.bgImageUrl ? (
               <img
                 src={profile.bgImageUrl}
-                className="w-full h-64 border border-gray-100"
+                className="w-full h-64 border border-gray-100 object-cover"
               />
             ) : (
               <div className="w-full h-64 bg-yellow-200 border border-gray-100" />
@@ -45,7 +45,7 @@ function Profile({ userId: showUserId }: ProfileProps) {
                 {profile.profileImageUrl ? (
                   <img
                     src={profile.profileImageUrl}
-                    className="w-36 h-36 rounded-full -mt-12"
+                    className="w-36 h-36 rounded-full -mt-12 object-cover"
                   />
                 ) : (
                   <div className="w-36 aspect-square bg-white -mt-12  rounded-full overflow-hidden relative border-2 border-white">
