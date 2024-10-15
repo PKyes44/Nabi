@@ -61,7 +61,6 @@ const getRecipients = async (recruitId: string) => {
     .eq("isApproved", true)
     .eq("isSponsor", false);
   const data = response.data;
-
   return data;
 };
 
