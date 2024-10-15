@@ -5,6 +5,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Nabi",
   description: "",
+  icons: {
+    icon: "/nabi-small.png",
+  },
 };
 
 export default function HTMLLayout({

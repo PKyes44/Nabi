@@ -11,7 +11,11 @@ function Header() {
         className="h-full flex items-center justify-between"
       >
         <Link href="/" className="text-2xl font-extrabold">
-          나비
+          <img
+            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/nabiLogo.png"
+            className="w-14"
+            alt="nabi logo"
+          />
         </Link>
 
         <Navigation />

@@ -70,7 +70,6 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
             location.coordinates!.lng
           )
         : new window.kakao.maps.LatLng(33.450701, 126.570667);
-      console.log("center: ", center);
       const options = {
         center, // 지도 중심 좌표
         level: 2, // 지도의 레벨(확대, 축소 정도)
@@ -80,7 +79,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
       const clusterer = new kakao.maps.MarkerClusterer({
         map: map,
         markers: [],
-        gridSize: 50,
+        gridSize: 100,
         averageCenter: true,
         minLevel: 3,
         disableClickZoom: true,
