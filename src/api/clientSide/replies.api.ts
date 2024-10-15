@@ -1,14 +1,17 @@
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 
 const getRepliesByRecruitId = async (recruitId: string) => {
-  const response = await supabase
+  const { data } = await supabase
     .from("replies")
-    .select("*, userProfiles(nickname)")
-    .eq("recruitId", recruitId);
-  const replies = response.data;
-
-  return replies;
+    .select("*, userProfiles!replies_recipientId_fkey(*)")
+    .eq("recruitId", recruitId)
+    .returns<
+      (Tables<"replies"> & {
+        userProfiles: Tables<"userProfiles">;
+      })[]
+    >();
+  return data;
 };
 
 const createReply = async (

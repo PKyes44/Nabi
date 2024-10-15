@@ -10,6 +10,7 @@ const inputVariant = cva("border", {
     intent: {
       error: "border-red-500",
       default: "border-black",
+      comment: "bg-[#f5f5f5]",
     },
     rounded: {
       sm: "rounded-sm",

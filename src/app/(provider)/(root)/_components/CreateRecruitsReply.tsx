@@ -1,19 +1,12 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
-import ButtonGroup from "@/components/Button/ButtonGroup";
+import Button from "@/components/Button/Button";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ComponentProps, useState } from "react";
-
-interface InitialErrMsgs {
-  content: string | null;
-}
-const initialErrMsgs = {
-  content: null,
-};
+import { ComponentProps } from "react";
 
 interface SubmitReplyForm {
   content: HTMLInputElement;
@@ -24,16 +17,11 @@ type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
 function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
   const queryClient = useQueryClient();
   const recipientId = useAuthStore((state) => state.currentUserId);
-  const currentUserId = useAuthStore((state) => state.currentUserId);
-  const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
-  const { data: recipients } = useQuery({
+  const { data: recipient } = useQuery({
     queryKey: ["sponsorMeets", { recruitId }],
-    queryFn: () => clientApi.sponsorMeets.getRecipients(recruitId),
+    queryFn: () => clientApi.sponsorMeets.getRecipientByUserId(recruitId),
   });
-
-  // sponsorMeets에 recruitId와 자신의 userId를 넣어 isApproved가 true이고,
-  // isSponsor가 false일 때만 댓글 작성
 
   // 만들기
   const { mutate: editReply } = useMutation<
@@ -52,17 +40,13 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
 
   if (!recipientId) return null;
 
-  const throwErrMsgs = (type: string, message: string) => {
-    setErrMsgs((prevErrMsgs) => ({ ...prevErrMsgs, [type]: message }));
-  };
-
   const handleSubmitReplyForm: ComponentProps<"form">["onSubmit"] = (
     e: SubmitReplyFormEvent
   ) => {
     e.preventDefault();
     const content = e.target.content.value;
 
-    if (!content) return throwErrMsgs("content", "내용을 입력해주세요");
+    if (!content) return;
 
     const data = {
       content,
@@ -74,17 +58,37 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
     e.target.content.value = "";
   };
 
-  if (recipients?.some((recipient) => recipient.userId === currentUserId))
+  if (recipient && recipient.userProfiles!.role === "recipient")
     return (
-      <div className="w-full border-b border-black pb-5 mb-5">
-        <form onSubmit={handleSubmitReplyForm}>
+      <div className=" pb-5 mb-5 text-xs flex items-center mt-4 gap-x-3">
+        {recipient.userProfiles?.profileImageUrl ? (
+          <img
+            src={recipient.userProfiles?.profileImageUrl}
+            alt="profile image"
+            className="w-7 aspect-square object-cover rounded-full"
+          />
+        ) : (
+          <img
+            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+            alt=""
+            className="w-7 aspect-square object-cover rounded-full"
+          />
+        )}
+        <form className="relative" onSubmit={handleSubmitReplyForm}>
           <InputGroup
-            label="댓글 남기기"
             type="text"
             name="content"
-            errorText={errMsgs.content}
+            intent="comment"
+            wrapperClassName="grow"
+            innerClassName="pr-10"
+            placeholder="댓글을 입력해주세요"
           />
-          <ButtonGroup className="mt-2" value="등록" type="submit" />
+          <Button className="absolute top-1/4 right-3" intent="none" size="xs">
+            <img
+              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Send.png?t=2024-10-15T20%3A30%3A14.946Z"
+              alt="send icon"
+            />
+          </Button>
         </form>
       </div>
     );

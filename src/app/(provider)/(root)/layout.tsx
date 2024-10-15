@@ -4,7 +4,7 @@ import Header from "./_components/Headers/Header";
 
 function RootLayout({ children }: PropsWithChildren) {
   return (
-    <div className="bg-gray-100">
+    <div className="bg-[#f5f5f5]">
       <Header />
       {children}
       <Footer />

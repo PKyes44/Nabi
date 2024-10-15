@@ -17,7 +17,6 @@ function Replies({ recruitId }: RepliesProps) {
   return replies ? (
     replies.length !== 0 ? (
       <>
-        <strong>댓글 목록</strong>
         <ReplyList replies={replies} />
       </>
     ) : (
