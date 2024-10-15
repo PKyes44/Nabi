@@ -3,8 +3,10 @@
 import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useProfileEditModalStore } from "@/zustand/profileEditModal.stroe";
+import { useProfileEditModalStore } from "@/zustand/profileEditModal.store";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import ProfileSideBar from "./ProfileSideBar";
 import SponsorHistories from "./SponsorHistories";
 
 interface ProfileProps {
@@ -13,11 +15,15 @@ interface ProfileProps {
 
 function Profile({ userId: showUserId }: ProfileProps) {
   const currentUserId = useAuthStore((state) => state.currentUserId);
+  const roleType = useAuthStore((state) => state.roleType);
+
   const setIsShowProfileEditModal = useProfileEditModalStore(
     (state) => state.setIsShowProfileEditModal
   );
+
+  // 선택한 유저의 프로필
   const { data: profile, isLoading } = useQuery({
-    queryKey: ["userProfiles", { userId: showUserId }],
+    queryKey: ["userProfiles", { showUserId }],
     queryFn: () => clientApi.profiles.getProfileByUserId(showUserId!),
   });
 
@@ -60,8 +66,8 @@ function Profile({ userId: showUserId }: ProfileProps) {
                   </span>
                 </div>
               </article>
-              {showUserId === currentUserId && (
-                <article className="self-center -mt-5">
+              <article className="self-center -mt-5">
+                {currentUserId === profile.userId ? (
                   <Button
                     size="md"
                     className="px-5 py-1.5"
@@ -71,20 +77,31 @@ function Profile({ userId: showUserId }: ProfileProps) {
                   >
                     프로필 수정
                   </Button>
-                </article>
-              )}
+                ) : null}
+                {roleType === "sponsor" && profile.role === "recipient" ? (
+                  <Link
+                    href={`/regular-sponsorship?recipientId=${profile.userId}`}
+                    className="px-5 py-1.5 bg-yellow-300 rounded-sm text-black text-base font-bold"
+                  >
+                    정기 후원
+                  </Link>
+                ) : null}
+              </article>
             </div>
           </section>
 
-          <SponsorHistories showUserId={showUserId} />
+          <SponsorHistories userId={showUserId!} />
         </div>
 
-        <article className="grow bg-gray-300 h-full rounded-lg">
-          <strong>asd</strong>
-          <br />
-          <p>안녕</p>
-        </article>
+        <ProfileSideBar profile={profile!} />
       </div>
+
+      <Link
+        className="border border-black bg-gray-300"
+        href="?userId=aabb8f18-c37f-4165-8a79-0ec527a88319"
+      >
+        (임시) 후원아동 프로필 이동
+      </Link>
     </>
   );
 }
