@@ -10,14 +10,13 @@ const getRecruitIdByUserId = async (userId: string) => {
 };
 
 const getRecentlySponsorship = async (userId: string, role: string) => {
-  const recruitIdsResponse = await supabase
+  const { data: recruitIds } = await supabase
     .from("sponsorMeets")
     .select("recruitId")
     .eq("userId", userId)
     .eq("isApproved", true);
-  const recruitIds = recruitIdsResponse.data;
 
-  const sponRelationshipResponse = await supabase
+  const { data: sponRelationship } = await supabase
     .from("sponsorMeets")
     .select("userId, userProfiles(nickname)")
     .in(
@@ -28,7 +27,6 @@ const getRecentlySponsorship = async (userId: string, role: string) => {
     .eq("isSponsor", role === "recipient")
     .order("createdAt", { ascending: false })
     .limit(5);
-  const sponRelationship = sponRelationshipResponse.data;
 
   return sponRelationship;
 };
