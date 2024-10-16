@@ -5,6 +5,8 @@ import CreateRecruitButton from "./_components/HomePages/Recruits/CreateRecruitB
 import RecruitList from "./_components/HomePages/Recruits/RecruitList";
 import Users from "./_components/HomePages/Users/Users";
 
+export const revalidate = 0;
+
 interface HomePageProps {
   searchParams: { page: string };
 }
