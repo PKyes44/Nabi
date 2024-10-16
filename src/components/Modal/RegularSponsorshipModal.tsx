@@ -3,7 +3,6 @@ import RegularSponsorShip from "@/components/Modal/components/RegularSponsorShip
 import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal.store";
 import { ComponentProps, PropsWithChildren } from "react";
 import Modal from "./Modal";
-import RegularSponsorShip from "./components/RegularSponsorShip";
 
 function RegularSponsorshipModal({ children }: PropsWithChildren) {
   const { isShowRegularSponsorShipModal, setIsRegularSponsorShipModal } =
