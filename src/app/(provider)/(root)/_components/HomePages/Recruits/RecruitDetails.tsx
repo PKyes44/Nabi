@@ -5,13 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Link from "next/link";
-<<<<<<< HEAD
-import Replies from "./Replies/Replies";
-=======
-import CreateRecruitsReply from "../../CreateRecruitsReply";
-import Replies from "../../Replies";
 import ApplyButton from "./ApplyButton";
->>>>>>> dd1f9ec6d793b30c028287d88f74bb2af77d6d31
+import Replies from "./Replies/Replies";
 
 interface RecruitDetailsProps {
   recruit: Tables<"recruits">;
