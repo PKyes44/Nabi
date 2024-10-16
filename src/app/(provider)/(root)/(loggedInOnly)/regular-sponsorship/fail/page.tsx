@@ -1,5 +1,5 @@
+import ButtonGroup from "@/components/Button/ButtonGroup";
 import Page from "@/components/Page/Page";
-import Link from "next/link";
 
 interface FailPageProps {
   searchParams: {
@@ -11,51 +11,50 @@ interface FailPageProps {
 export default function FailPage({
   searchParams: { message, code },
 }: FailPageProps) {
+  console.log(message, code); //
+
   return (
     <Page isMain width="md" className="pt-10 flex flex-col items-center">
-      <div className="flex flex-col">
-        <img
-          className="m-auto"
-          width="100px"
-          src="https://static.toss.im/lotties/error-spot-no-loop-space-apng.png"
-          alt="에러 이미지"
-        />
-        <h2 className="font-extrabold text-2xl mt-5 text-center">
-          결제를 실패했어요
-        </h2>
-
-        <div className="p-grid typography--p" style={{ marginTop: "50px" }}>
-          <div className="p-grid-col text--left">
-            <b>에러메시지</b>
-          </div>
-          <div className="p-grid-col text--right" id="message">
-            {message}
-          </div>
+      <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
+        <div className="flex items-center gap-x-3">
+          <img
+            width="40px"
+            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/FailPayment.png"
+            alt="에러 이미지"
+          />
+          <h2 className="font-extrabold text-2xl text-center">결제 실패</h2>
         </div>
-        <div className="p-grid typography--p" style={{ marginTop: "10px" }}>
-          <div className="p-grid-col text--left">
-            <b>에러코드</b>
+        <div className="w-full flex flex-col gap-y-5 text-black">
+          <div>
+            <p className="font-bold">결제코드</p>
+            <p>0dcdafba-bcb4-4361-a24e-ffc044781aea</p>
           </div>
-          <div className="p-grid-col text--right" id="code">
-            {code}
-          </div>
-        </div>
 
-        <div className="p-grid-col mt-10 flex gap-x-5 self-center">
-          <Link
-            href="https://docs.tosspayments.com/guides/v2/payment-widget/integration"
-            className="bg-blue-50 text-blue-600"
-          >
-            <button className="button p-grid-col5">연동 문서</button>
-          </Link>
-          <Link href="https://discord.gg/A4fRFXQhRu">
-            <button
-              className="button p-grid-col5"
-              style={{ backgroundColor: "#e8f3ff", color: "#1b64da" }}
-            >
-              실시간 문의
-            </button>
-          </Link>
+          <div className="flex gap-x-10">
+            <div>
+              <p className="font-bold">결제명</p>
+              <p>나비 : 익명의 후원자1님의 정기후원</p>
+            </div>
+            <div>
+              <p className="font-bold">후원금액</p>
+              <p>10,000원</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="font-bold">카드번호</p>
+            <p>3212-****-****-***5</p>
+          </div>
+
+          <div>
+            <p className="font-bold">결제일</p>
+            <p>2024-10-19 02:01</p>
+          </div>
+          <ButtonGroup
+            intent="none"
+            value="결제화면으로 돌아가기"
+            className="ml-auto bg-[#ff4d4d42] text-[#E91313] font-bold"
+          />
         </div>
       </div>
     </Page>

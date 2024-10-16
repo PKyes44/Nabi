@@ -1,11 +1,10 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import ButtonGroup from "@/components/Button/ButtonGroup";
 import Page from "@/components/Page/Page";
 import { PaymentResponse } from "@/types/paymentResponse.types";
 import { useMutation } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -53,60 +52,51 @@ function RegularSponsorShipBillingPage({
     getBillingKey(requestData);
   }, []);
 
+  console.log(receipt); //
+
   return (
     <Page isMain className="pt-10 flex flex-col">
-      <img
-        width="100px"
-        src="https://static.toss.im/illusts/check-blue-spot-ending-frame.png"
-      />
-
-      <h2 className="font-extrabold text-2xl mt-5">결제를 완료했어요</h2>
-      <article className="mt-10 flex flex-col gap-y-5">
-        <div className="flex gap-x-5">
-          <div className="flex flex-col">
-            <span className="font-bold">결제번호</span>
-            <span>{receipt?.orderId}</span>
+      <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
+        <div className="flex items-center gap-x-3">
+          <img
+            width="40px"
+            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/SuccessPayment.png"
+          />
+          <h2 className="font-extrabold text-2xl text-center">결제 완료</h2>
+        </div>
+        <div className="w-full flex flex-col gap-y-5 text-black">
+          <div>
+            <p className="font-bold">결제코드</p>
+            <p>0dcdafba-bcb4-4361-a24e-ffc044781aea</p>
           </div>
-          <div className="flex flex-col">
-            <span className="font-bold">결제명</span>
-            <span>{receipt?.orderName}</span>
+
+          <div className="flex gap-x-10">
+            <div>
+              <p className="font-bold">결제명</p>
+              <p>나비 : 익명의 후원자1님의 정기후원</p>
+            </div>
+            <div>
+              <p className="font-bold">후원금액</p>
+              <p>10,000원</p>
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-col">
-          <span className="font-bold">결제금액</span>
-          <span>{receipt?.amount.toLocaleString()}</span>
-        </div>
+          <div>
+            <p className="font-bold">카드번호</p>
+            <p>3212-****-****-***5</p>
+          </div>
 
-        <div>
-          <h3 className="font-bold">
-            카드 번호 :
-            <span className="font-normal">{receipt?.card.number}</span>
-          </h3>
-          <span className="text-sm">
-            {receipt?.card.ownerType} | {receipt?.card.cardType}
-          </span>
+          <div>
+            <p className="font-bold">결제일</p>
+            <p>2024-10-19 02:01</p>
+          </div>
+          <ButtonGroup
+            intent="primary"
+            textIntent="primary"
+            className="ml-auto"
+            value="프로필로 돌아가기"
+          />
         </div>
-        <div className="flex flex-col">
-          <span className="font-bold">결제일</span>
-          <time>{dayjs(receipt?.approvedAt).format("YYYY-MM-DD HH:mm")}</time>
-        </div>
-      </article>
-      <div className="p-grid-col mt-5 flex gap-x-5">
-        <Link
-          href="https://docs.tosspayments.com/guides/v2/payment-widget/integration"
-          className="bg-blue-50 text-blue-600"
-        >
-          <button className="button p-grid-col5">연동 문서</button>
-        </Link>
-        <Link href="https://discord.gg/A4fRFXQhRu">
-          <button
-            className="button p-grid-col5"
-            style={{ backgroundColor: "#e8f3ff", color: "#1b64da" }}
-          >
-            실시간 문의
-          </button>
-        </Link>
       </div>
     </Page>
   );
