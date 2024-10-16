@@ -7,10 +7,11 @@ import { useEffect, useRef } from "react";
 import RecruitDetails from "./RecruitDetails";
 
 interface RecruitListProps {
-  initialRecruits: Tables<"recruits">[] | null;
+  initialRecruits?: Tables<"recruits">[] | null;
+  userId?: string;
 }
 
-function RecruitList({ initialRecruits }: RecruitListProps) {
+function RecruitList({ initialRecruits, userId }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
@@ -20,8 +21,15 @@ function RecruitList({ initialRecruits }: RecruitListProps) {
     isLoading,
   } = useInfiniteQuery({
     queryKey: ["recruits"],
-    queryFn: ({ pageParam }) =>
-      clientApi.recruits.getInfiniteRecruits(pageParam),
+    queryFn: ({ pageParam }) => {
+      if (userId)
+        return clientApi.recruits.getInfiniteRecruitsByUserId(
+          pageParam,
+          userId
+        );
+
+      return clientApi.recruits.getInfiniteRecruits(pageParam);
+    },
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage) return;
       if (!pages) return;

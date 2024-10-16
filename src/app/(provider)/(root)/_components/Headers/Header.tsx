@@ -4,7 +4,7 @@ import Navigation from "./Navigation";
 
 function Header() {
   return (
-    <header className="h-16 bg-white fixed top-0 left-0 z-10 w-screen">
+    <header className="h-16 bg-white fixed top-0 left-0 z-[1] w-screen">
       <Page
         width="lg"
         isMain={false}

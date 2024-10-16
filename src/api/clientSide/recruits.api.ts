@@ -80,15 +80,23 @@ const getPaginatedRecruits = async (
   return recruits;
 };
 
+const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
+  let { data } = await supabase
+    .from("recruits")
+    .select("*")
+    .eq("authorId", userId)
+    .order("createdAt", { ascending: false })
+    .range(page * 5, page * 5 + 4);
+  return data;
+};
+
 const getInfiniteRecruits = async (page: number) => {
-  const response = await supabase
+  let { data } = await supabase
     .from("recruits")
     .select("*")
     .order("createdAt", { ascending: false })
     .range(page * 5, page * 5 + 4);
-  const recruits = response.data;
-
-  return recruits;
+  return data;
 };
 
 const recruitsAPI = {
@@ -96,10 +104,11 @@ const recruitsAPI = {
   getSortedMyRecruits,
   getRecruits,
   getRecruit,
+  getInfiniteRecruits,
   editRecruit,
   getPaginatedRecruits,
   getSortedRecruits,
-  getInfiniteRecruits,
+  getInfiniteRecruitsByUserId,
 };
 
 export default recruitsAPI;
