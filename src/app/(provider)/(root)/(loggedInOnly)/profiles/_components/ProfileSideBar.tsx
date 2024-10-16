@@ -60,7 +60,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
         currentUserId === profile.userId ? (
           // 후원자 본인 프로필
           <>
-            <ul className="flex flex-col gap-y-16 h-full text-start">
+            <ul className="flex flex-col gap-y-8 h-full text-start">
               {myRecruits?.map((recruit) => (
                 <>
                   <li
@@ -87,6 +87,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                         <ul className="flex flex-col gap-y-3">
                           {recruit.sponsorMeets
                             .filter((user) => user.isSponsor)
+                            .sort((a, b) => -a.isApproved - -b.isApproved)
                             .map((user) => (
                               <li
                                 className="flex items-center gap-x-3 justify-center"
@@ -166,12 +167,13 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                               (user) => !user.isSponsor && user.isApproved
                             ).length
                           }
-                          /{recruit.maxSponsorRecruits})
+                          /{recruit.maxRecipientRecruits})
                         </strong>
 
                         <ul className="mt-2 flex flex-col gap-y-3">
                           {recruit.sponsorMeets
                             .filter((user) => !user.isSponsor)
+                            .sort((a, b) => -a.isApproved - -b.isApproved)
                             .map((user) => (
                               <li
                                 className="flex items-center gap-x-3 justify-center"
