@@ -48,6 +48,7 @@ function NewRecruitForm() {
   const queryClient = useQueryClient();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const authorId = useAuthStore((state) => state.currentUserId);
+  const today = dayjs().format("YYYY-MM-DD");
 
   const { mutate: createRecruit } = useMutation<
     unknown,
@@ -161,12 +162,14 @@ function NewRecruitForm() {
           type="date"
           name="deadLineDate"
           errorText={errMsgs.deadLineDate}
+          min={today}
         />
         <InputGroup
           label="봉사 활동 날짜"
           type="date"
           name="volunteeringDate"
           errorText={errMsgs.volunteeringDate}
+          min={today}
         />
       </div>
 

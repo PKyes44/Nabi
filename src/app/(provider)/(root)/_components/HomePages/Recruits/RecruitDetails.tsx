@@ -56,7 +56,9 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         <span className="font-normal text-xs">{createdAt}</span>
       </div>
       <article className="flex flex-col gap-y-3">
-        <ApplyButton recruitId={recruit.recruitId} />
+        {userId !== recruit.authorId && (
+          <ApplyButton recruitId={recruit.recruitId} />
+        )}
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
