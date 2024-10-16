@@ -14,6 +14,9 @@ interface InitialErrMsgs {
   maxRecipientRecruits: string | null;
   region: string | null;
   title: string | null;
+  deadLineDate: string | null;
+  volunteeringDate: string | null;
+  content: string | null;
 }
 
 const initialErrMsgs = {
@@ -21,6 +24,9 @@ const initialErrMsgs = {
   maxRecipientRecruits: null,
   region: null,
   title: null,
+  deadLineDate: null,
+  volunteeringDate: null,
+  content: null,
 };
 
 interface EditRecruitForm {
@@ -44,6 +50,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const authorId = useAuthStore((state) => state.currentUserId);
+  const today = dayjs().format("YYYY-MM-DD");
 
   const { data: recruit } = useQuery({
     queryKey: ["recruit"],
@@ -103,21 +110,28 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
       }
 
       if (!deadLineDateValue) {
-        return alert("모집 마감 날짜를 선택해주세요.");
+        return throwErrMsgs("deadLineDate", "모집 마감 날짜를 선택해주세요.");
       }
       if (!volunteeringDateValue) {
-        return alert("자원 봉사 날짜를 선택해주세요.");
+        return throwErrMsgs(
+          "volunteeringDate",
+          "자원 봉사 날짜를 선택해주세요."
+        );
       }
 
       if (nonFormatVolunteeringDate.isBefore(nonFormatDeadLineDate)) {
-        return alert("자원 봉사 날짜는 모집 마감 날짜 이후여야 합니다.");
+        return throwErrMsgs(
+          "volunteeringDate",
+          "자원 봉사 날짜는 모집 마감 날짜 이후여야 합니다."
+        );
       }
       if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
       if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
-      if (!content) return alert("내용을 작성해주세요");
+      if (!content) return throwErrMsgs("content", "내용을 작성해주세요");
 
-      const deadLineDate = nonFormatDeadLineDate.format("YYYY-MM-DD");
-      const volunteeringDate = nonFormatVolunteeringDate.format("YYYY-MM-DD");
+      const deadLineDate = nonFormatDeadLineDate.format("YYYY-MM-DD HH:mm");
+      const volunteeringDate =
+        nonFormatVolunteeringDate.format("YYYY-MM-DD HH:mm");
 
       const recruitEditData: Database["public"]["Tables"]["recruits"]["Insert"] =
         {
@@ -157,32 +171,22 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
         />
       </div>
       <div className="flex gap-x-2">
-        <div>
-          <p>모집 마감 날짜</p>
-          <input
-            defaultValue={
-              recruit?.deadLineDate
-                ? dayjs(recruit.deadLineDate).format("YYYY-MM-DD")
-                : ""
-            }
-            className="border border-black px-7 py-1 mt-1"
-            type="date"
-            name="deadLineDate"
-          />
-        </div>
-        <div>
-          <p>자원 봉사 날짜</p>
-          <input
-            defaultValue={
-              recruit?.volunteeringDate
-                ? dayjs(recruit.volunteeringDate).format("YYYY-MM-DD")
-                : ""
-            }
-            className="border border-black px-7 py-1 mt-1"
-            type="date"
-            name="volunteeringDate"
-          />
-        </div>
+        <InputGroup
+          label="모집 마감 날짜"
+          type="date"
+          name="deadLineDate"
+          errorText={errMsgs.deadLineDate}
+          defaultValue={dayjs(recruit?.deadLineDate).format("YYYY-MM-DD")}
+          min={today}
+        />
+        <InputGroup
+          label="봉사 활동 날짜"
+          type="date"
+          name="volunteeringDate"
+          errorText={errMsgs.volunteeringDate}
+          min={today}
+          defaultValue={dayjs(recruit?.volunteeringDate).format("YYYY-MM-DD")}
+        />
       </div>
 
       <InputGroup
@@ -203,10 +207,15 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
       <div>
         <p className="mb-1">내용</p>
         <textarea
-          defaultValue={recruit?.content}
           name="content"
-          className="border-black border resize-none w-full h-60 p-3 "
+          defaultValue={recruit?.content}
+          className={`border-black border resize-none w-full h-60 p-3 ${
+            errMsgs.content && "border-red-500"
+          }`}
         />
+        {errMsgs.content && (
+          <span className="text-red-500 text-sm">{errMsgs.content}</span>
+        )}
       </div>
 
       <ButtonGroup type="submit" value="등록하기" size="md" className="mt-4" />
