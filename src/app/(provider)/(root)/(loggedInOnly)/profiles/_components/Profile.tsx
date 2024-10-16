@@ -3,7 +3,8 @@
 import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useProfileEditModalStore } from "@/zustand/profileEditModal.store";
+import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
+import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import ProfileSideBar from "./ProfileSideBar";
@@ -16,6 +17,9 @@ interface ProfileProps {
 function Profile({ userId: showUserId }: ProfileProps) {
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const roleType = useAuthStore((state) => state.roleType);
+  const setIsRegularSponsorShipModal = useRegularSponsorShipModalStore(
+    (state) => state.setIsRegularSponsorShipModal
+  );
 
   const setIsShowProfileEditModal = useProfileEditModalStore(
     (state) => state.setIsShowProfileEditModal
@@ -29,6 +33,10 @@ function Profile({ userId: showUserId }: ProfileProps) {
 
   const handleClickProfileEdit = () => {
     setIsShowProfileEditModal(true);
+  };
+
+  const handleClickRegularSponsorShip = () => {
+    setIsRegularSponsorShipModal(true);
   };
 
   if (isLoading || !profile) return <span>프로필 로딩 중 ..</span>;
@@ -86,12 +94,12 @@ function Profile({ userId: showUserId }: ProfileProps) {
                   </Link>
                 )}
                 {roleType === "sponsor" && profile.role === "recipient" ? (
-                  <Link
-                    href={`/regular-sponsorship?recipientId=${profile.userId}`}
-                    className="px-5 py-1.5 bg-yellow-300 rounded-sm text-black text-base font-bold"
+                  <Button
+                    onClick={handleClickRegularSponsorShip}
+                    className="px-5 py-1.5 bg-yellow-300 rounded-sm text-base font-bold"
                   >
                     정기 후원
-                  </Link>
+                  </Button>
                 ) : null}
               </article>
             </div>

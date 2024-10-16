@@ -57,93 +57,69 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                   <p>{recruit.title}</p>
                   <p>{recruit.content}</p>
                   <br />
-                  {recruit.sponsorMeets.some((user) => user.isSponsor) &&
-                    recruit.maxSponsorRecruits >=
-                      recruit.sponsorMeets.filter(
-                        (user) => user.isSponsor && user.isApproved
-                      ).length && (
-                      <div className="text-center">
-                        <strong>
-                          모집된 후원자 목록 (
-                          {
-                            recruit.sponsorMeets.filter(
-                              (user) => user.isSponsor && user.isApproved
-                            ).length
-                          }
-                          /{recruit.maxSponsorRecruits})
-                        </strong>
-                        <ul>
-                          {recruit.maxSponsorRecruits >
-                            recruit.sponsorMeets.filter(
-                              (user) => user.isSponsor && user.isApproved
-                            ).length &&
-                            recruit.sponsorMeets
-                              .filter(
-                                (user) => user.isSponsor && !user.isApproved
-                              )
-                              .map((user) => (
-                                <li
-                                  className="grid grid-cols-2"
-                                  key={user.userId}
-                                >
-                                  <p>{user.userProfiles?.nickname}</p>
-                                  <Button
-                                    className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
-                                    onClick={() =>
-                                      handleClickApproved(user.userId)
-                                    }
-                                  >
-                                    수락하기
-                                  </Button>
-                                </li>
-                              ))}
-                        </ul>
-                      </div>
-                    )}
-                  <br />
-                  {recruit.sponsorMeets.some((user) => !user.isSponsor) &&
-                    recruit.maxRecipientRecruits >=
-                      recruit.sponsorMeets.filter(
-                        (user) => !user.isSponsor && user.isApproved
-                      ).length && (
-                      <div className="text-center">
-                        <strong>
-                          모집된 아동 목록(
-                          {
-                            recruit.sponsorMeets.filter(
-                              (user) => !user.isSponsor && user.isApproved
-                            ).length
-                          }
-                          /{recruit.maxSponsorRecruits})
-                        </strong>
-                        <ul>
-                          {recruit.maxSponsorRecruits >
-                            recruit.sponsorMeets.filter(
-                              (user) => !user.isSponsor && user.isApproved
-                            ).length &&
-                            recruit.sponsorMeets
-                              .filter(
-                                (user) => !user.isSponsor && !user.isApproved
-                              )
-                              .map((user) => (
-                                <li
-                                  className="grid grid-cols-2"
-                                  key={user.userId}
-                                >
-                                  <p>{user.userProfiles?.nickname}</p>
-                                  <Button
-                                    className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
-                                    onClick={() =>
-                                      handleClickApproved(user.userId)
-                                    }
-                                  >
-                                    수락하기
-                                  </Button>
-                                </li>
-                              ))}
-                        </ul>
-                      </div>
-                    )}
+                  <div className="text-center">
+                    <strong>
+                      모집된 후원자 (
+                      {
+                        recruit.sponsorMeets.filter(
+                          (user) => user.isSponsor && user.isApproved
+                        ).length
+                      }
+                      /{recruit.maxSponsorRecruits})
+                    </strong>
+
+                    <ul>
+                      {recruit.maxSponsorRecruits >
+                        recruit.sponsorMeets.filter(
+                          (user) => user.isSponsor && user.isApproved
+                        ).length &&
+                        recruit.sponsorMeets
+                          .filter((user) => user.isSponsor && !user.isApproved)
+                          .map((user) => (
+                            <li className="grid grid-cols-2" key={user.userId}>
+                              <p>{user.userProfiles?.nickname}</p>
+                              <Button
+                                className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
+                                onClick={() => handleClickApproved(user.userId)}
+                              >
+                                수락하기
+                              </Button>
+                            </li>
+                          ))}
+                    </ul>
+
+                    <br />
+
+                    <strong>
+                      모집된 아동 (
+                      {
+                        recruit.sponsorMeets.filter(
+                          (user) => !user.isSponsor && user.isApproved
+                        ).length
+                      }
+                      /{recruit.maxRecipientRecruits})
+                    </strong>
+
+                    <ul>
+                      {recruit.maxRecipientRecruits >
+                        recruit.sponsorMeets.filter(
+                          (user) => !user.isSponsor && user.isApproved
+                        ).length &&
+                        recruit.sponsorMeets
+                          .filter((user) => !user.isSponsor && !user.isApproved)
+                          .map((user) => (
+                            <li className="grid grid-cols-2" key={user.userId}>
+                              <p>{user.userProfiles?.nickname}</p>
+                              <Button
+                                className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
+                                onClick={() => handleClickApproved(user.userId)}
+                              >
+                                수락하기
+                              </Button>
+                            </li>
+                          ))}
+                    </ul>
+                  </div>
                 </li>
               ))}
             </ul>

@@ -1,4 +1,4 @@
-import useSelectRoleModalStore from "@/zustand/selectRoleModal.store";
+import useSelectRoleModalStore from "@/zustand/modals/selectRoleModal.store";
 import { useRouter } from "next/navigation";
 import { ComponentProps, PropsWithChildren } from "react";
 import { FaChildren } from "react-icons/fa6";

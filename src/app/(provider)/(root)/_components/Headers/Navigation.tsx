@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/zustand/auth.store";
-import useSelectRoleModalStore from "@/zustand/selectRoleModal.store";
+import useSelectRoleModalStore from "@/zustand/modals/selectRoleModal.store";
 import Link from "next/link";
 import LoggedInNavigation from "./LoggedInNavigation";
 
