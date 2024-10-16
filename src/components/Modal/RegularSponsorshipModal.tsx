@@ -1,5 +1,5 @@
 "use client";
-import RegularSponsorShip from "@/components/Modal/components/RegularSponsorShipPage";
+import RegularSponsorShip from "@/components/Modal/components/RegularSponsorShip";
 import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
 import { ComponentProps, PropsWithChildren } from "react";
 import Modal from "./Modal";
@@ -21,7 +21,7 @@ function RegularSponsorshipModal({ children }: PropsWithChildren) {
         <Modal
           onClickFn={handleClickOutOfRange}
           className="flex items-center justify-center"
-          dim={false}
+          isDim={false}
         >
           <div className="fixed w-[650px] h-[650px] bg-white flex flex-col gap-y-8 justify-start items-center rounded-3xl p-12">
             <RegularSponsorShip />

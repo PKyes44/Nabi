@@ -28,7 +28,6 @@ function Modal({
   className,
   onClickFn,
   children,
-  dim,
 }: PropsWithChildren<ModalProps>) {
   return (
     <div
