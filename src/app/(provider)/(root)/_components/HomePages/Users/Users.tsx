@@ -13,7 +13,7 @@ interface UsersProps {
 function Users({ page = "1" }: UsersProps) {
   const userId = useAuthStore((state) => state.currentUserId);
 
-  const { data: userProfile, isLoading } = useQuery({
+  const { data: userProfile } = useQuery({
     queryKey: ["userProfiles", { userId }],
     queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
   });
