@@ -12,9 +12,15 @@ interface ChatFormProps {
   targetUserId: string;
   userId: string;
   roomId: string;
+  handlehandleScrollAtBottom: () => void;
 }
 
-function ChatForm({ targetUserId, userId, roomId }: ChatFormProps) {
+function ChatForm({
+  targetUserId,
+  userId,
+  roomId,
+  handlehandleScrollAtBottom,
+}: ChatFormProps) {
   const queryClient = useQueryClient();
   const handleSubmitChat: ComponentProps<"form">["onSubmit"] = (
     e: ChatFormEvent
@@ -33,10 +39,12 @@ function ChatForm({ targetUserId, userId, roomId }: ChatFormProps) {
       msg,
       { to: targetUserId, from: userId },
       roomId,
-      () =>
+      () => {
         queryClient.invalidateQueries({
           queryKey: ["chats", { targetUserId }],
-        })
+        });
+        handlehandleScrollAtBottom();
+      }
     );
 
     e.target.message.value = "";
