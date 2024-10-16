@@ -5,7 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Link from "next/link";
+<<<<<<< HEAD
 import Replies from "./Replies/Replies";
+=======
+import CreateRecruitsReply from "../../CreateRecruitsReply";
+import Replies from "../../Replies";
+import ApplyButton from "./ApplyButton";
+>>>>>>> dd1f9ec6d793b30c028287d88f74bb2af77d6d31
 
 interface RecruitDetailsProps {
   recruit: Tables<"recruits">;
@@ -14,6 +20,7 @@ interface RecruitDetailsProps {
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const userId = useAuthStore((state) => state.currentUserId);
   const roleType = useAuthStore((state) => state.roleType);
+  const authorId = recruit.authorId;
 
   const createdAt =
     Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours")) !== 0
@@ -21,8 +28,8 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
       : Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "minutes")) + "분 전";
 
   const { data: profile } = useQuery({
-    queryKey: ["userProfiles"],
-    queryFn: () => clientApi.profiles.getProfileByUserId(recruit.authorId!),
+    queryKey: ["userProfiles", { authorId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(authorId!),
   });
 
   return (
@@ -54,6 +61,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         <span className="font-normal text-xs">{createdAt}</span>
       </div>
       <article className="flex flex-col gap-y-3">
+        <ApplyButton recruitId={recruit.recruitId} />
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">

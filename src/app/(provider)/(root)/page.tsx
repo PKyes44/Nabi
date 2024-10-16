@@ -1,3 +1,4 @@
+import clientApi from "@/api/clientSide/api";
 import Page from "@/components/Page/Page";
 import FreeMeals from "./_components/HomePages/FreeMeals";
 import CreateRecruitButton from "./_components/HomePages/Recruits/CreateRecruitButton";
@@ -8,7 +9,10 @@ interface HomePageProps {
   searchParams: { page: string };
 }
 
-function HomePage({ searchParams: { page } }: HomePageProps) {
+async function HomePage({ searchParams: { page } }: HomePageProps) {
+  const initialRecruits =
+    (await clientApi.recruits.getInfiniteRecruits(0)) || null;
+
   return (
     <Page
       width="lg"
@@ -19,7 +23,7 @@ function HomePage({ searchParams: { page } }: HomePageProps) {
         <FreeMeals />
         <div className="col-span-2">
           <CreateRecruitButton />
-          <RecruitList />
+          <RecruitList initialRecruits={initialRecruits} />
         </div>
         <Users page={page} />
       </div>
