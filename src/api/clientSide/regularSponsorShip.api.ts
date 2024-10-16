@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const serverClient = axios.create({ baseURL: "http://localhost:8080" });
+const serverClient = axios.create({
+  baseURL: "https://port-0-nabi-backend-m29e62geab88e174.sel4.cloudtype.app/",
+});
 
 const getBillingKey = async (requestData: {
   customerKey: string;
