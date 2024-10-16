@@ -22,11 +22,12 @@ function RecruitList({ initialRecruits, userId }: RecruitListProps) {
   } = useInfiniteQuery({
     queryKey: ["recruits"],
     queryFn: ({ pageParam }) => {
-      if (userId)
+      if (userId) {
         return clientApi.recruits.getInfiniteRecruitsByUserId(
           pageParam,
           userId
         );
+      }
 
       return clientApi.recruits.getInfiniteRecruits(pageParam);
     },
