@@ -15,10 +15,11 @@ interface RecruitDetailsProps {
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const userId = useAuthStore((state) => state.currentUserId);
   const roleType = useAuthStore((state) => state.roleType);
+  const authorId = recruit.authorId;
 
   const { data: profile } = useQuery({
-    queryKey: ["userProfiles"],
-    queryFn: () => clientApi.profiles.getProfileByUserId(recruit.authorId!),
+    queryKey: ["userProfiles", { authorId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(authorId!),
   });
 
   return (
