@@ -39,6 +39,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
   });
 
   if (!recipientId) return null;
+  if (recipient?.userId !== recipientId) return null;
 
   const handleSubmitReplyForm: ComponentProps<"form">["onSubmit"] = (
     e: SubmitReplyFormEvent
