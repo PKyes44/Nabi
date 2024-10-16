@@ -5,7 +5,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { EditProfileData } from "@/types/profiles.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useProfileEditModalStore } from "@/zustand/profileEditModal.store";
+import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useEffect, useState } from "react";
 

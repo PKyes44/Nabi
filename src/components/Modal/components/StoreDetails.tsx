@@ -2,7 +2,7 @@ import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { Database } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import useStoreDetailStore from "@/zustand/storeDetailModal.store";
+import useStoreDetailStore from "@/zustand/modals/storeDetailModal.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function StoreDetails() {

@@ -4,7 +4,7 @@
 
 import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
-import useStoreDetailStore from "@/zustand/storeDetailModal.store";
+import useStoreDetailStore from "@/zustand/modals/storeDetailModal.store";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import useGeolocation from "./useGeolocation";

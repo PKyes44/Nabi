@@ -1,4 +1,4 @@
-import useStoreDetailStore from "@/zustand/storeDetailModal.store";
+import useStoreDetailStore from "@/zustand/modals/storeDetailModal.store";
 import { ComponentProps, PropsWithChildren } from "react";
 import Modal from "./Modal";
 import StoreDetails from "./components/StoreDetails";

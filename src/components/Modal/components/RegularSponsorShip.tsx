@@ -10,25 +10,20 @@ import {
   loadTossPayments,
   TossPaymentsPayment,
 } from "@tosspayments/tosspayments-sdk";
+import { useSearchParams } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 
 const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY;
 if (!clientKey) throw new Error("cannot find toss client key");
 
-interface RegularSponsorShipPageProps {
-  searchParams: {
-    recipientId: string;
-  };
-}
-
-function RegularSponsorShipPage({
-  searchParams: { recipientId },
-}: RegularSponsorShipPageProps) {
+function RegularSponsorShip() {
+  const params = useSearchParams();
   const [payment, setPayment] = useState<TossPaymentsPayment | null>(null);
   const [price, setPrice] = useState("10000");
   const [priceErrorMsg, setPriceErrorMsg] = useState<string | null>(null);
 
   const userId = useAuthStore((state) => state.currentUserId);
+  const recipientId = params.get("userId");
 
   const { data: userProfile } = useQuery({
     queryKey: ["userProfiles", { userId }],
@@ -55,7 +50,7 @@ function RegularSponsorShipPage({
         console.error("Error fetching payment:", error);
       }
     })();
-  }, [clientKey, userId]);
+  }, [userId]);
 
   async function requestBillingAuth() {
     if (!payment || !user || !userProfile) return;
@@ -71,6 +66,7 @@ function RegularSponsorShipPage({
       customerName: userProfile.nickname,
     });
   }
+
   const handleChangePrice: ComponentProps<"input">["onChange"] = (e) => {
     const newPriceValue = e.target.value;
     setPrice(newPriceValue);
@@ -96,4 +92,4 @@ function RegularSponsorShipPage({
   );
 }
 
-export default RegularSponsorShipPage;
+export default RegularSponsorShip;

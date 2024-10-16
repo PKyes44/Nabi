@@ -34,14 +34,12 @@ function RegularSponsorShipBillingPage({
       recipientId: string;
     }) => clientApi.sponsorShip.getBillingKey(requestData),
     onSuccess: (responseData: PaymentResponse) => {
-      console.log("succes:", responseData);
+      console.log("success:", responseData);
       setReceipt(responseData);
     },
     onError: (data: { message: string; code: string }) => {
       console.log("error: ", data);
-      router.replace(
-        `/regular-sponsorship?code=${data.code}&message=${data.message}`
-      );
+      router.replace(`?code=${data.code}&message=${data.message}`);
     },
   });
 
