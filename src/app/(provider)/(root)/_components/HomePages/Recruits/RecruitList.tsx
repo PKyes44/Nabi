@@ -47,7 +47,7 @@ function RecruitList() {
   }, [isLoading]);
 
   return (
-    <ul className="mt-5 w-full">
+    <ul className="mt-5 w-full flex flex-col gap-y-4">
       {recruitsData?.pages.map((recruits) =>
         recruits?.map((recruit) => (
           <li

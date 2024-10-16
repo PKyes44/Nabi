@@ -26,7 +26,7 @@ function FreeMeals() {
         {freeMeals?.map((freeMeal) => {
           return (
             <li key={freeMeal.mealId}>
-              <article className="bg-white p-5 flex flex-col gap-y-2 shadow-sm">
+              <article className="bg-white p-5 flex flex-col gap-y-5 shadow-sm">
                 <div>
                   <span className="font-bold">
                     {freeMeal.userProfiles?.nickname}

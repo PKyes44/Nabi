@@ -8,7 +8,11 @@ interface ReplyProps {
 }
 
 function Reply({ reply }: ReplyProps) {
-  console.log(reply);
+  const createdAt =
+    Math.abs(dayjs(reply.createdAt).diff(dayjs(), "hours")) !== 0
+      ? Math.abs(dayjs(reply.createdAt).diff(dayjs(), "hours")) + "시간 전"
+      : Math.abs(dayjs(reply.createdAt).diff(dayjs(), "minutes")) + "분 전";
+
   return (
     <div className="flex items-start gap-x-3">
       {reply.userProfiles?.profileImageUrl ? (
@@ -32,11 +36,7 @@ function Reply({ reply }: ReplyProps) {
           <p className="text-xs">{reply.content}</p>
         </div>
         <span className="font-light text-[9px] whitespace-nowrap">
-          {Math.abs(dayjs(reply.createdAt).diff(dayjs(), "hours")) !== 0
-            ? Math.abs(dayjs(reply.createdAt).diff(dayjs(), "hours")) +
-              "시간 전"
-            : Math.abs(dayjs(reply.createdAt).diff(dayjs(), "minutes")) +
-              "분 전"}
+          {createdAt}
         </span>
       </article>
     </div>

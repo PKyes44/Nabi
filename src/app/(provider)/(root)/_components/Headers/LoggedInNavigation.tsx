@@ -21,14 +21,12 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   });
 
   const handleHoverOnProfile = () => {
-    console.log("is hovering !");
     setIsHoverOnProfile(true);
     setIsShowLogOutModal(true);
   };
 
   useEffect(() => {
     if (!isShowLogOutModal) {
-      console.log("inactive modal");
       setIsHoverOnProfile(false);
     }
   }, [isShowLogOutModal, isHoverOnProfile]);
@@ -55,7 +53,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
           </Link>
         </li>
       )}
-      <li className="w-10" onMouseOver={handleHoverOnProfile}>
+      <li className="w-10 z-30 relative" onMouseOver={handleHoverOnProfile}>
         <Link href={`/profiles?userId=${userId}`}>
           {profile?.profileImageUrl ? (
             <img
