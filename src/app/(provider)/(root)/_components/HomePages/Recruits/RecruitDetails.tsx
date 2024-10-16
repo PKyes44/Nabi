@@ -38,7 +38,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         </Link>
       )}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-x-5 ">
+        <Link
+          href={`/profile?userId=${profile?.userId}`}
+          className="flex items-center gap-x-5 "
+        >
           {profile?.profileImageUrl ? (
             <img
               src={profile.profileImageUrl}
@@ -52,7 +55,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             <span className="font-extrabold">{profile?.nickname}</span>
             <span className="font-light text-xs">{profile?.email}</span>
           </div>
-        </div>
+        </Link>
         <span className="font-normal text-xs">{createdAt}</span>
       </div>
       <article className="flex flex-col gap-y-3">
