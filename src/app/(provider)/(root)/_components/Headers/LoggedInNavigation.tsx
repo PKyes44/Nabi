@@ -1,5 +1,6 @@
 import clientApi from "@/api/clientSide/api";
 import { useLogOutModal } from "@/zustand/logOutModal.store";
+import { useFreeMealCreateModalStore } from "@/zustand/modals/freeMealCreateModal.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,6 +13,9 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const [isHoverOnProfile, setIsHoverOnProfile] = useState(false);
   const queryClient = useQueryClient();
   const { isShowLogOutModal, setIsShowLogOutModal } = useLogOutModal();
+  const setIsFreeMealCreateModal = useFreeMealCreateModalStore(
+    (state) => state.setIsFreeMealCreateModal
+  );
   const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners"],
     queryFn: () => clientApi.storeOwners.isStoreOwnerByUserId(userId),
@@ -27,6 +31,9 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   };
   const handleClickLinkToProfile = () => {
     queryClient.invalidateQueries({ queryKey: ["recruits"] });
+  };
+  const handleClickCreateFreeMeal = () => {
+    setIsFreeMealCreateModal(true);
   };
 
   useEffect(() => {
@@ -48,13 +55,13 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
       </li>
       {isStoreOwner && (
         <li className="w-10">
-          <Link href="free-meals/new">
+          <button onClick={handleClickCreateFreeMeal}>
             <img
               className="w-full aspect-square rounded-lg"
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/LinkToFreeMeal%20.png?t=2024-10-15T21%3A07%3A35.956Z"
               alt="create free-meal post icon"
             />
-          </Link>
+          </button>
         </li>
       )}
       <li className="w-10 z-30 relative" onMouseOver={handleHoverOnProfile}>

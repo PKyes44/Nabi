@@ -6,9 +6,9 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFreeMealCreateModalStore } from "@/zustand/modals/freeMealCreateModal.store";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 
 type freeMealFormEvent = {
@@ -33,9 +33,12 @@ const initialErrMsgs: InitialErrMsgs = {
 };
 
 function CreateFreeMealForm() {
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const [errorMsgs, setErrorMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const sponsorId = useAuthStore((state) => state.currentUserId);
+  const setIsFreeMealCreateModal = useFreeMealCreateModalStore(
+    (state) => state.setIsFreeMealCreateModal
+  );
 
   const { data: stores, isLoading } = useQuery({
     queryKey: ["storeOwners", { sponsorId }],
@@ -46,8 +49,9 @@ function CreateFreeMealForm() {
       insertData: Database["public"]["Tables"]["freeMeals"]["Insert"]
     ) => clientApi.freeMeals.insertFreeMeals(insertData),
     onSuccess: (...arg) => {
+      queryClient.invalidateQueries({ queryKey: ["freeMeals"] });
       console.log("success: ", arg);
-      router.push("/");
+      setIsFreeMealCreateModal(false);
     },
     onError: (...arg) => {
       console.log("error: ", arg);
@@ -105,54 +109,66 @@ function CreateFreeMealForm() {
   if (isLoading) return <span>데이터를 불러오는 중</span>;
 
   return (
-    <form
-      onSubmit={handleSubmitCreateFreeMeal}
-      className="w-full h-full flex flex-col items-center justify-center gap-y-3"
-    >
-      <h1 className="mt-10 mb-5 text-3xl font-bold">무상식사 구인공고 작성</h1>
+    <div className="px-6 w-[500px]">
+      <form
+        onSubmit={handleSubmitCreateFreeMeal}
+        className="flex flex-col items-center justify-center gap-y-3 w-full"
+      >
+        <h1 className=" mb-5 text-3xl font-bold">무상식사 제공하기</h1>
 
-      <div className="flex flex-col w-96 gap-y-1">
-        <label htmlFor="storeId">매장 이름</label>
-        <div className="px-3 w-full h-10 bg-transparent border border-black rounded-sm">
-          <select
-            name="storeId"
-            id="storeId"
-            className="h-full w-full outline-none bg-transparent"
-          >
-            {stores!.map((store) => {
-              return (
-                <option key={store.storeId} value={store.storeId}>
-                  {store.storeDatas!.brandName}
-                </option>
-              );
-            })}
-          </select>
+        <div className="flex flex-col w-full gap-y-4">
+          <label htmlFor="storeId">매장명</label>
+          <div className="px-3 w-full h-10 bg-[#f5f5f5] border rounded-sm ">
+            <select
+              name="storeId"
+              id="storeId"
+              className="h-full w-full outline-none bg-transparent "
+            >
+              {stores!.map((store) => {
+                return (
+                  <option key={store.storeId} value={store.storeId}>
+                    {store.storeDatas!.brandName}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="grid grid-cols-2 gap-x-5 w-full">
+            <InputGroup
+              intent="comment"
+              label="날짜"
+              type="date"
+              name="date"
+              errorText={errorMsgs.date}
+              wrapperClassName="w-full"
+            />
+            <InputGroup
+              intent="comment"
+              label="시간"
+              type="time"
+              name="time"
+              errorText={errorMsgs.time}
+              wrapperClassName="w-full"
+            />
+          </div>
+          <InputGroup
+            intent="comment"
+            label="수용 가능 인원"
+            name="maxServingCount"
+            errorText={errorMsgs.maxServingCount}
+            wrapperClassName="w-full"
+          />
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-x-5 w-96">
-        <InputGroup
-          label="날짜"
-          type="date"
-          name="date"
-          errorText={errorMsgs.date}
-          wrapperClassName="w-full"
-        />
-        <InputGroup
-          label="시간"
-          type="time"
-          name="time"
-          errorText={errorMsgs.time}
-          wrapperClassName="w-full"
-        />
-      </div>
-      <InputGroup
-        label="수용 가능 인원"
-        name="maxServingCount"
-        errorText={errorMsgs.maxServingCount}
-      />
 
-      <ButtonGroup value="작성하기" className="w-96 mt-5" size="md" />
-    </form>
+        <ButtonGroup
+          intent="primary"
+          textIntent="primary"
+          value="등록하기"
+          className="w-full mt-5"
+          size="md"
+        />
+      </form>
+    </div>
   );
 }
 

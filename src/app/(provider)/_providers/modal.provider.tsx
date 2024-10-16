@@ -1,5 +1,6 @@
 "use client";
 
+import FreeMealCreateModal from "@/components/Modal/FreeMealCreateModal";
 import LogOutModal from "@/components/Modal/LogOutModal";
 import ProfileEditModal from "@/components/Modal/ProfileEditModal";
 import RegularSponsorshipModal from "@/components/Modal/RegularSponsorshipModal";
@@ -13,8 +14,9 @@ function ModalProvider({ children }: PropsWithChildren) {
       <StoreDetailModal>
         <ProfileEditModal>
           <RegularSponsorshipModal>
-     
-          <LogOutModal>{children}</LogOutModal>
+            <FreeMealCreateModal>
+              <LogOutModal>{children}</LogOutModal>
+            </FreeMealCreateModal>
           </RegularSponsorshipModal>
         </ProfileEditModal>
       </StoreDetailModal>
