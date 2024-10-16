@@ -1,6 +1,7 @@
+import clientApi from "@/api/clientSide/api";
 import Page from "@/components/Page/Page";
-import Link from "next/link";
 import FreeMeals from "./_components/HomePages/FreeMeals";
+import CreateRecruitButton from "./_components/HomePages/Recruits/CreateRecruitButton";
 import RecruitList from "./_components/HomePages/Recruits/RecruitList";
 import Users from "./_components/HomePages/Users/Users";
 
@@ -8,7 +9,10 @@ interface HomePageProps {
   searchParams: { page: string };
 }
 
-function HomePage({ searchParams: { page } }: HomePageProps) {
+async function HomePage({ searchParams: { page } }: HomePageProps) {
+  const initialRecruits =
+    (await clientApi.recruits.getInfiniteRecruits(0)) || null;
+
   return (
     <Page
       width="lg"
@@ -18,13 +22,8 @@ function HomePage({ searchParams: { page } }: HomePageProps) {
       <div className="grid grid-cols-4 gap-x-5 w-full">
         <FreeMeals />
         <div className="col-span-2">
-          <Link
-            href={"/recruits/new"}
-            className={`w-full block bg-white text-center py-3 text-[15px] font-paperlogy`}
-          >
-            글 작성
-          </Link>
-          <RecruitList />
+          <CreateRecruitButton />
+          <RecruitList initialRecruits={initialRecruits} />
         </div>
         <Users page={page} />
       </div>

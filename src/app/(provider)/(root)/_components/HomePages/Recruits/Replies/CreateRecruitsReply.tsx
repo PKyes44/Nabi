@@ -24,7 +24,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
   });
 
   // 만들기
-  const { mutate: editReply } = useMutation<
+  const { mutate: createReply } = useMutation<
     unknown,
     Error,
     Database["public"]["Tables"]["replies"]["Insert"]
@@ -55,7 +55,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
       recipientId,
     };
 
-    editReply(data);
+    createReply(data);
     e.target.content.value = "";
   };
 

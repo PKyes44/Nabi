@@ -12,7 +12,7 @@ function Sponsors() {
   if (isLoading) return <span>데이터 불러오는 중 ...</span>;
 
   return (
-    <article className="bg-white h-[320px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg">
+    <article className="bg-white h-[320px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
       <h2 className="flex items-center gap-x-2 text-center mx-auto font-semibold">
         <img
           className="w-5 aspect-square"

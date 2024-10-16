@@ -1,15 +1,20 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import { Tables } from "@/supabase/database.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import RecruitDetails from "./RecruitDetails";
 
-function RecruitList() {
+interface RecruitListProps {
+  initialRecruits: Tables<"recruits">[] | null;
+}
+
+function RecruitList({ initialRecruits }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
-    data: recruitsData,
+    data: recruitsData = { pages: [initialRecruits || []] },
     fetchNextPage,
     hasNextPage,
     isLoading,
@@ -47,12 +52,12 @@ function RecruitList() {
   }, [isLoading]);
 
   return (
-    <ul className="mt-5 w-full">
+    <ul className="mt-5 w-full flex flex-col gap-y-4">
       {recruitsData?.pages.map((recruits) =>
         recruits?.map((recruit) => (
           <li
             key={recruit.recruitId}
-            className="bg-white mb-2 p-10 rounded-md relative"
+            className="bg-white mb-2 p-10 pt-7 shadow-md rounded-md relative"
           >
             <RecruitDetails recruit={recruit} />
           </li>

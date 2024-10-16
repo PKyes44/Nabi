@@ -6,9 +6,9 @@ import ModalProvider from "./_providers/modal.provider";
 function ProviderLayout({ children }: PropsWithChildren) {
   return (
     <TanstackProvider>
-      <ModalProvider>
-        <AuthProvider>{children}</AuthProvider>
-      </ModalProvider>
+      <AuthProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </AuthProvider>
     </TanstackProvider>
   );
 }

@@ -18,12 +18,10 @@ function Users({ page = "1" }: UsersProps) {
     queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
   });
 
-  if (isLoading) return <span>데이터를 불러오는 중</span>;
-
   return (
     <>
       {userProfile ? (
-        userProfile!.role === "recipient" ? (
+        userProfile?.role === "recipient" ? (
           <Sponsors />
         ) : (
           <Recipients page={+page} />

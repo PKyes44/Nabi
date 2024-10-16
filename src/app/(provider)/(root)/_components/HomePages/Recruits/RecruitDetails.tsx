@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Link from "next/link";
-import CreateRecruitsReply from "../../CreateRecruitsReply";
-import Replies from "../../Replies";
+import ApplyButton from "./ApplyButton";
+import Replies from "./Replies/Replies";
 
 interface RecruitDetailsProps {
   recruit: Tables<"recruits">;
@@ -15,10 +15,16 @@ interface RecruitDetailsProps {
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const userId = useAuthStore((state) => state.currentUserId);
   const roleType = useAuthStore((state) => state.roleType);
+  const authorId = recruit.authorId;
+
+  const createdAt =
+    Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours")) !== 0
+      ? Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours")) + "시간 전"
+      : Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "minutes")) + "분 전";
 
   const { data: profile } = useQuery({
-    queryKey: ["userProfiles"],
-    queryFn: () => clientApi.profiles.getProfileByUserId(recruit.authorId!),
+    queryKey: ["userProfiles", { authorId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(authorId!),
   });
 
   return (
@@ -47,11 +53,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             <span className="font-light text-xs">{profile?.email}</span>
           </div>
         </div>
-        <span className="font-normal text-xs">
-          {Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours"))}시간 전
-        </span>
+        <span className="font-normal text-xs">{createdAt}</span>
       </div>
       <article className="flex flex-col gap-y-3">
+        <ApplyButton recruitId={recruit.recruitId} />
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
@@ -96,26 +101,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           </div>
         </div>
       </article>
-      <article className="mt-2">
-        <div className="flex gap-x-3 items-center">
-          <div className="flex gap-x-2 items-center">
-            <img
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Comments.png"
-              alt="comments icon"
-            />
-            <span className="font-light text-xs">댓글 더보기 (+99)</span>
-          </div>
-          <div className="flex gap-x-2 items-center">
-            <img
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ThumbsUp.png?t=2024-10-15T19%3A56%3A31.548Z"
-              alt="thumbs up icon"
-            />
-            <span className="font-light text-xs">좋아요 (56)</span>
-          </div>
-        </div>
-        <CreateRecruitsReply recruitId={recruit.recruitId} />
-        <Replies recruitId={recruit.recruitId} />
-      </article>
+      <Replies recruitId={recruit.recruitId} />
     </div>
   );
 }

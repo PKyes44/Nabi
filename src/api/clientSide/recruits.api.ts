@@ -43,9 +43,7 @@ const getRecruit = async (recruitId: string) => {
 const getSortedMyRecruits = async (userId: string) => {
   const response = await supabase
     .from("recruits")
-    .select(
-      "*, sponsorMeets(isSponsor, userId, isApproved, userProfiles(nickname))"
-    )
+    .select("*, sponsorMeets(isSponsor, userId, isApproved, userProfiles(*))")
     .eq("authorId", userId)
     .order("createdAt", { ascending: false });
   const recruits = response.data;

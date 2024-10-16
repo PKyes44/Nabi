@@ -1,5 +1,6 @@
 "use client";
 
+import LogOutModal from "@/components/Modal/LogOutModal";
 import ProfileEditModal from "@/components/Modal/ProfileEditModal";
 import RegularSponsorshipModal from "@/components/Modal/RegularSponsorshipModal";
 import SelectRoleModal from "@/components/Modal/SelectRoleModal";
@@ -11,7 +12,10 @@ function ModalProvider({ children }: PropsWithChildren) {
     <SelectRoleModal>
       <StoreDetailModal>
         <ProfileEditModal>
-          <RegularSponsorshipModal>{children}</RegularSponsorshipModal>
+          <RegularSponsorshipModal>
+     
+          <LogOutModal>{children}</LogOutModal>
+          </RegularSponsorshipModal>
         </ProfileEditModal>
       </StoreDetailModal>
     </SelectRoleModal>

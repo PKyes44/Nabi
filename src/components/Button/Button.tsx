@@ -16,6 +16,7 @@ const buttonVariant = cva("", {
       default: "bg-black",
       primary: "bg-yellow-300",
       none: "bg-none",
+      disabled: "bg-[#dddddd] bg-opacity-80 text-[#999999]",
     },
     rounded: {
       none: "rounded-none",

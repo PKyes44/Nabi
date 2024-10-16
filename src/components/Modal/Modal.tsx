@@ -3,14 +3,14 @@ import { ComponentProps, PropsWithChildren } from "react";
 
 const modalVariant = cva("w-screen h-screen absolute top-0 left-0 z-20 ", {
   variants: {
-    dim: {
+    isDim: {
       true: "bg-black bg-opacity-45",
-      false: "",
+      false: "bg-transparent",
     },
   },
   compoundVariants: [],
   defaultVariants: {
-    dim: true,
+    isDim: true,
   },
 });
 
@@ -24,6 +24,7 @@ type PassedModalProps = {
 type ModalProps = PassedModalProps & ModalVariant;
 
 function Modal({
+  isDim,
   className,
   onClickFn,
   children,
@@ -31,7 +32,7 @@ function Modal({
 }: PropsWithChildren<ModalProps>) {
   return (
     <div
-      className={`${className} ${modalVariant({ dim })}`}
+      className={`${className} ${modalVariant({ isDim })}`}
       onClick={onClickFn}
     >
       {children}

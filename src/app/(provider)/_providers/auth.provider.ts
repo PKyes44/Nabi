@@ -14,6 +14,7 @@ function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_name, session) => {
+      console.log(session);
       if (session) {
         const userId = session.user.id;
         setCurrentUserId(userId);
