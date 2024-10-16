@@ -8,7 +8,6 @@ interface ReplyProps {
 }
 
 function Reply({ reply }: ReplyProps) {
-  console.log(reply);
   return (
     <div className="flex items-start gap-x-3">
       {reply.userProfiles?.profileImageUrl ? (

@@ -7,6 +7,7 @@ import "dayjs/locale/ko";
 import Link from "next/link";
 import CreateRecruitsReply from "../../CreateRecruitsReply";
 import Replies from "../../Replies";
+import ApplyButton from "./ApplyButton";
 
 interface RecruitDetailsProps {
   recruit: Tables<"recruits">;
@@ -53,6 +54,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         </span>
       </div>
       <article className="flex flex-col gap-y-3">
+        <ApplyButton recruitId={recruit.recruitId} />
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
