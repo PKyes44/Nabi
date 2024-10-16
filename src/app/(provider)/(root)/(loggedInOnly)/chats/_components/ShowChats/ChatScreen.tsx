@@ -4,7 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import socket from "@/socket/socket";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatForm from "./ChatForm";
 import ChatLogs from "./ChatLogs/ChatLogs";
 
@@ -13,6 +13,7 @@ interface ChatScreenProps {
 }
 
 function ChatScreen({ showChatUserId }: ChatScreenProps) {
+  const messageEndRef = useRef<HTMLUListElement | null>(null);
   const userId = useAuthStore((state) => state.currentUserId);
   const queryClient = useQueryClient();
   const [roomId, setRoomId] = useState(null);
@@ -37,14 +38,12 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   });
 
   const handleScrollAtBottom = () => {
+    if (!messageEndRef || !messageEndRef.current) return;
+    messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
     console.log("handleScrollAtBottom");
-    const chatLogs = document.getElementById("chatLogs");
-    if (!chatLogs) return;
-    chatLogs.scrollTop = chatLogs.scrollHeight;
   };
 
   useEffect(() => {
-    console.log(socket);
     if (!targetProfile || !userProfile || !socket.connected) return;
     handleScrollAtBottom();
     if (socket.connected) {
@@ -67,7 +66,12 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
     });
 
     socket.on("newMessage", (targetUserId) => {
-      queryClient.invalidateQueries({ queryKey: ["chats", { targetUserId }] });
+      console.log("newMessage");
+      console.log(targetUserId === showChatUserId);
+
+      queryClient.invalidateQueries({
+        queryKey: ["chats", { targetUserId }],
+      });
 
       handleScrollAtBottom();
     });
@@ -76,7 +80,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
       console.log("leavedRoom");
       socket.off("disconnecting");
     };
-  }, [userProfile, targetProfile, socket]);
+  }, [userProfile, targetProfile, socket, chatLogs]);
 
   if (isChatLoading || isTargetProfileLoading || isUserProfileLoading)
     return <span>채팅 기록을 불러오는 중 ...</span>;
@@ -101,11 +105,13 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
         </div>
       </header>
       <ChatLogs
+        messageEndRef={messageEndRef}
         userId={userId!}
         chatLogs={chatLogs!}
         targetProfile={targetProfile!}
       />
       <ChatForm
+        handlehandleScrollAtBottom={handleScrollAtBottom}
         roomId={roomId!}
         targetUserId={showChatUserId}
         userId={userId!}
