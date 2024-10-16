@@ -13,37 +13,24 @@ const getRecentlySponsorship = async (userId: string, role: string) => {
   const recruitIdsResponse = await supabase
     .from("sponsorMeets")
     .select("recruitId")
-    .eq("userId", userId);
+    .eq("userId", userId)
+    .eq("isApproved", true);
+  const recruitIds = recruitIdsResponse.data;
 
-  if (role === "sponsor") {
-    const recipientIdsResponse = await supabase
-      .from("sponsorMeets")
-      .select("userId, userProfiles(nickname)")
-      .in(
-        "recruitId",
-        recruitIdsResponse.data?.map((data) => data.recruitId) || []
-      )
-      .eq("isSponsor", false)
-      .order("createdAt", { ascending: false })
-      .limit(5);
-    const recipientIds = recipientIdsResponse.data;
+  const sponRelationshipResponse = await supabase
+    .from("sponsorMeets")
+    .select("userId, userProfiles(nickname)")
+    .in(
+      "recruitId",
+      recruitIds!.map((data) => data.recruitId)
+    )
+    .eq("isApproved", true)
+    .eq("isSponsor", role === "recipient")
+    .order("createdAt", { ascending: false })
+    .limit(5);
+  const sponRelationship = sponRelationshipResponse.data;
 
-    return recipientIds;
-  } else {
-    const sponsorIdsResponse = await supabase
-      .from("sponsorMeets")
-      .select("userId, userProfiles(nickname)")
-      .in(
-        "recruitId",
-        recruitIdsResponse.data?.map((data) => data.recruitId) || []
-      )
-      .eq("isSponsor", true)
-      .order("createdAt", { ascending: false })
-      .limit(5);
-    const sponsorIds = sponsorIdsResponse.data;
-
-    return sponsorIds;
-  }
+  return sponRelationship;
 };
 
 const approvedUser = async (userId: string) => {

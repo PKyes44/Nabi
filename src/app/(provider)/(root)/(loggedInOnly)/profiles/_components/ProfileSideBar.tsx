@@ -1,5 +1,4 @@
 "use client";
-
 import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { UserProfiles } from "@/types/customDatabase";
@@ -21,6 +20,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     enabled: profile.role === "sponsor" && currentUserId === profile.userId,
   });
 
+  // 수락하기
   const { mutate: approved } = useMutation({
     mutationFn: (userId: string) => clientApi.sponsorMeets.approvedUser(userId),
     onSuccess: () => {
