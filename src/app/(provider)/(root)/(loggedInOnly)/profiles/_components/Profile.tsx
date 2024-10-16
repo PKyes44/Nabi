@@ -4,17 +4,18 @@ import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
-import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
+import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal.store";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import RecruitList from "../../../_components/HomePages/Recruits/RecruitList";
 import ProfileSideBar from "./ProfileSideBar";
-import SponsorHistories from "./SponsorHistories";
 
 interface ProfileProps {
   userId: string;
 }
 
 function Profile({ userId: showUserId }: ProfileProps) {
+  const router = useRouter();
   const currentUserId = useAuthStore((state) => state.currentUserId);
   const roleType = useAuthStore((state) => state.roleType);
   const setIsRegularSponsorShipModal = useRegularSponsorShipModalStore(
@@ -37,6 +38,10 @@ function Profile({ userId: showUserId }: ProfileProps) {
 
   const handleClickRegularSponsorShip = () => {
     setIsRegularSponsorShipModal(true);
+  };
+
+  const handleClickLinkToChat = () => {
+    router.push(`/chats?showChatUserId=${showUserId}`);
   };
 
   if (isLoading || !profile) return <span>프로필 로딩 중 ..</span>;
@@ -74,22 +79,32 @@ function Profile({ userId: showUserId }: ProfileProps) {
                   </span>
                 </div>
               </article>
-              <article className="self-center -mt-5">
+              <article className="self-center -mt-5 flex gap-x-3">
                 {currentUserId === profile.userId ? (
                   <Button
-                    size="md"
-                    className="px-5 py-1.5"
                     intent="primary"
                     textIntent="primary"
+                    className="px-5 py-1.5 rounded-sm text-base font-bold"
                     onClick={handleClickProfileEdit}
                   >
                     프로필 수정
                   </Button>
-                ) : null}
+                ) : (
+                  <Button
+                    intent="primary"
+                    textIntent="primary"
+                    onClick={handleClickLinkToChat}
+                    className="px-5 py-1.5 rounded-sm text-base font-bold"
+                  >
+                    채팅하기
+                  </Button>
+                )}
                 {roleType === "sponsor" && profile.role === "recipient" ? (
                   <Button
+                    intent="primary"
+                    textIntent="primary"
                     onClick={handleClickRegularSponsorShip}
-                    className="px-5 py-1.5 bg-yellow-300 rounded-sm text-base font-bold"
+                    className="px-5 py-1.5 rounded-sm text-base font-bold"
                   >
                     정기 후원
                   </Button>
@@ -98,18 +113,11 @@ function Profile({ userId: showUserId }: ProfileProps) {
             </div>
           </section>
 
-          <SponsorHistories userId={showUserId!} />
+          <RecruitList userId={showUserId} />
         </div>
 
         <ProfileSideBar profile={profile!} />
       </div>
-
-      <Link
-        className="border border-black bg-gray-300"
-        href="?userId=aabb8f18-c37f-4165-8a79-0ec527a88319"
-      >
-        (임시) 후원아동 프로필 이동
-      </Link>
     </>
   );
 }

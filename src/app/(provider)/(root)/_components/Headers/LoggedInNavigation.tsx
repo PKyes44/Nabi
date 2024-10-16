@@ -1,6 +1,6 @@
 import clientApi from "@/api/clientSide/api";
 import { useLogOutModal } from "@/zustand/logOutModal.store";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -10,6 +10,7 @@ interface LoggedInNavigationProps {
 
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const [isHoverOnProfile, setIsHoverOnProfile] = useState(false);
+  const queryClient = useQueryClient();
   const { isShowLogOutModal, setIsShowLogOutModal } = useLogOutModal();
   const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners"],
@@ -23,6 +24,9 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const handleHoverOnProfile = () => {
     setIsHoverOnProfile(true);
     setIsShowLogOutModal(true);
+  };
+  const handleClickLinkToProfile = () => {
+    queryClient.invalidateQueries({ queryKey: ["recruits"] });
   };
 
   useEffect(() => {
@@ -54,7 +58,10 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
         </li>
       )}
       <li className="w-10 z-30 relative" onMouseOver={handleHoverOnProfile}>
-        <Link href={`/profiles?userId=${userId}`}>
+        <Link
+          href={`/profiles?userId=${userId}`}
+          onClick={handleClickLinkToProfile}
+        >
           {profile?.profileImageUrl ? (
             <img
               src={profile.profileImageUrl}
