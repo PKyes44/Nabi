@@ -39,7 +39,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
       )}
       <div className="flex items-center justify-between">
         <Link
-          href={`/profile?userId=${profile?.userId}`}
+          href={`/profiles?userId=${profile?.userId}`}
           className="flex items-center gap-x-5 "
         >
           {profile?.profileImageUrl ? (
