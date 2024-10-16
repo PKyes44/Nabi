@@ -1,3 +1,4 @@
+import clientApi from "@/api/clientSide/api";
 import Page from "@/components/Page/Page";
 import Link from "next/link";
 import FreeMeals from "./_components/HomePages/FreeMeals";
@@ -8,7 +9,10 @@ interface HomePageProps {
   searchParams: { page: string };
 }
 
-function HomePage({ searchParams: { page } }: HomePageProps) {
+async function HomePage({ searchParams: { page } }: HomePageProps) {
+  const initialRecruits =
+    (await clientApi.recruits.getInfiniteRecruits(0)) || null;
+
   return (
     <Page
       width="lg"
@@ -24,7 +28,7 @@ function HomePage({ searchParams: { page } }: HomePageProps) {
           >
             글 작성
           </Link>
-          <RecruitList />
+          <RecruitList initialRecruits={initialRecruits} />
         </div>
         <Users page={page} />
       </div>

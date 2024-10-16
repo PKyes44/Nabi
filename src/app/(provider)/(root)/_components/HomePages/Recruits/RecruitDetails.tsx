@@ -7,6 +7,7 @@ import "dayjs/locale/ko";
 import Link from "next/link";
 import CreateRecruitsReply from "../../CreateRecruitsReply";
 import Replies from "../../Replies";
+import ApplyButton from "./ApplyButton";
 
 interface RecruitDetailsProps {
   recruit: Tables<"recruits">;
@@ -15,10 +16,11 @@ interface RecruitDetailsProps {
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const userId = useAuthStore((state) => state.currentUserId);
   const roleType = useAuthStore((state) => state.roleType);
+  const authorId = recruit.authorId;
 
   const { data: profile } = useQuery({
-    queryKey: ["userProfiles"],
-    queryFn: () => clientApi.profiles.getProfileByUserId(recruit.authorId!),
+    queryKey: ["userProfiles", { authorId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(authorId!),
   });
 
   return (
@@ -52,6 +54,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         </span>
       </div>
       <article className="flex flex-col gap-y-3">
+        <ApplyButton recruitId={recruit.recruitId} />
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
