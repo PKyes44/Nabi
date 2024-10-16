@@ -66,7 +66,7 @@ function Profile({ userId: showUserId }: ProfileProps) {
                   </span>
                 </div>
               </article>
-              <article className="flex gap-x-10 self-center -mt-5">
+              <article className="self-center -mt-5">
                 {currentUserId === profile.userId ? (
                   <Button
                     size="md"
@@ -77,14 +77,7 @@ function Profile({ userId: showUserId }: ProfileProps) {
                   >
                     프로필 수정
                   </Button>
-                ) : (
-                  <Link
-                    href={`chats?showChatUserId=${profile.userId}`}
-                    className="px-5 py-1.5 bg-yellow-300 rounded-sm text-black text-base font-bold"
-                  >
-                    채팅하기
-                  </Link>
-                )}
+                ) : null}
                 {roleType === "sponsor" && profile.role === "recipient" ? (
                   <Link
                     href={`/regular-sponsorship?recipientId=${profile.userId}`}

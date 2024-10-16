@@ -9,7 +9,7 @@ interface ProfilePageProps {
 
 function ProfilePage({ searchParams: { userId } }: ProfilePageProps) {
   return (
-    <Page width="lg" className="my-10 ">
+    <Page width="lg" className="my-10 pt-5">
       <Profile userId={userId} />
     </Page>
   );

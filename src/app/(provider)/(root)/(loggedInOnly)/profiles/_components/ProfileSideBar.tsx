@@ -45,106 +45,190 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   };
 
   return (
-    <article className="grow bg-gray-300 h-full rounded-lg text-center">
+    <article className="grow bg-white shadow-md h-full rounded-lg text-center">
       {profile.role === "sponsor" ? (
         currentUserId === profile.userId ? (
           // 후원자 본인 프로필
           <>
-            <strong>모집글 목록</strong>
-            <ul className="flex flex-col gap-y-4 text-start items-center ">
+            <ul className="flex flex-col gap-y-4 text-start items-center py-3 px-2">
               {myRecruits?.map((recruit) => (
-                <li className="w-56 bg-yellow-300 " key={recruit.recruitId}>
-                  <p>{recruit.title}</p>
-                  <p>{recruit.content}</p>
-                  <br />
-                  {recruit.sponsorMeets.some((user) => user.isSponsor) &&
-                    recruit.maxSponsorRecruits >=
-                      recruit.sponsorMeets.filter(
-                        (user) => user.isSponsor && user.isApproved
-                      ).length && (
-                      <div className="text-center">
-                        <strong>
-                          모집된 후원자 목록 (
-                          {
-                            recruit.sponsorMeets.filter(
-                              (user) => user.isSponsor && user.isApproved
-                            ).length
-                          }
-                          /{recruit.maxSponsorRecruits})
-                        </strong>
-                        <ul>
-                          {recruit.maxSponsorRecruits >
-                            recruit.sponsorMeets.filter(
-                              (user) => user.isSponsor && user.isApproved
-                            ).length &&
-                            recruit.sponsorMeets
-                              .filter(
-                                (user) => user.isSponsor && !user.isApproved
-                              )
-                              .map((user) => (
-                                <li
-                                  className="grid grid-cols-2"
-                                  key={user.userId}
-                                >
-                                  <p>{user.userProfiles?.nickname}</p>
-                                  <Button
-                                    className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
-                                    onClick={() =>
-                                      handleClickApproved(user.userId)
-                                    }
+                <>
+                  <li className="flex flex-col gap-y-2" key={recruit.recruitId}>
+                    <h3 className="font-light mx-auto text-center">
+                      <span className="font-bold">{recruit.title}</span> 글의
+                      신청자 목록
+                    </h3>
+                    {recruit.sponsorMeets.some((user) => user.isSponsor) &&
+                      recruit.maxSponsorRecruits >=
+                        recruit.sponsorMeets.filter(
+                          (user) => user.isSponsor && user.isApproved
+                        ).length && (
+                        <div className="text-center">
+                          <strong className="font-medium">
+                            신청한 후원자 목록 (
+                            {
+                              recruit.sponsorMeets.filter(
+                                (user) => user.isSponsor && user.isApproved
+                              ).length
+                            }
+                            /{recruit.maxSponsorRecruits})
+                          </strong>
+                          <ul className="mt-2 flex flex-col gap-y-3">
+                            {
+                              // recruit.maxSponsorRecruits >
+                              //   recruit.sponsorMeets.filter(
+                              //     (user) => user.isSponsor && user.isApproved
+                              //   ).length &&
+                              recruit.sponsorMeets
+                                .filter(
+                                  (user) => user.isSponsor
+                                  //  && !user.isApproved
+                                )
+                                .map((user) => (
+                                  <li
+                                    className="flex items-center gap-x-3 justify-center"
+                                    key={user.userId}
                                   >
-                                    수락하기
-                                  </Button>
-                                </li>
-                              ))}
-                        </ul>
-                      </div>
-                    )}
-                  <br />
-                  {recruit.sponsorMeets.some((user) => !user.isSponsor) &&
-                    recruit.maxRecipientRecruits >=
-                      recruit.sponsorMeets.filter(
-                        (user) => !user.isSponsor && user.isApproved
-                      ).length && (
-                      <div className="text-center">
-                        <strong>
-                          모집된 아동 목록(
-                          {
-                            recruit.sponsorMeets.filter(
-                              (user) => !user.isSponsor && user.isApproved
-                            ).length
-                          }
-                          /{recruit.maxSponsorRecruits})
-                        </strong>
-                        <ul>
-                          {recruit.maxSponsorRecruits >
-                            recruit.sponsorMeets.filter(
-                              (user) => !user.isSponsor && user.isApproved
-                            ).length &&
-                            recruit.sponsorMeets
-                              .filter(
-                                (user) => !user.isSponsor && !user.isApproved
-                              )
-                              .map((user) => (
-                                <li
-                                  className="grid grid-cols-2"
-                                  key={user.userId}
-                                >
-                                  <p>{user.userProfiles?.nickname}</p>
-                                  <Button
-                                    className="px-0 py-0 border-none bg-black rounded-sm text-white text-sm"
-                                    onClick={() =>
-                                      handleClickApproved(user.userId)
-                                    }
+                                    {user.userProfiles?.profileImageUrl ? (
+                                      <img
+                                        src={user.userProfiles.profileImageUrl}
+                                        alt="profile image"
+                                        className="w-7 aspect-square  rounded-lg"
+                                      />
+                                    ) : (
+                                      <div className="w-7 aspect-square rounded-lg grid place-items-center bg-[#f5f5f5]">
+                                        <img
+                                          className="object-cover w-8/12"
+                                          src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+                                          alt="default profile"
+                                        />
+                                      </div>
+                                    )}
+                                    <span>
+                                      {user.userProfiles!.nickname.length < 6
+                                        ? user.userProfiles?.nickname
+                                        : user.userProfiles?.nickname.slice(
+                                            0,
+                                            5
+                                          ) + "..."}
+                                    </span>
+                                    {user.isApproved ? (
+                                      <Button
+                                        intent="disabled"
+                                        rounded="sm"
+                                        className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
+                                        disabled
+                                        onClick={() =>
+                                          handleClickApproved(user.userId)
+                                        }
+                                      >
+                                        승인됨
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        intent="primary"
+                                        rounded="sm"
+                                        textIntent="primary"
+                                        className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
+                                        onClick={() =>
+                                          handleClickApproved(user.userId)
+                                        }
+                                      >
+                                        승인
+                                      </Button>
+                                    )}
+                                  </li>
+                                ))
+                            }
+                          </ul>
+                        </div>
+                      )}
+                    <br />
+                    {recruit.sponsorMeets.some((user) => !user.isSponsor) &&
+                      recruit.maxRecipientRecruits >=
+                        recruit.sponsorMeets.filter(
+                          (user) => !user.isSponsor && user.isApproved
+                        ).length && (
+                        <div className="text-center">
+                          <strong className="font-medium">
+                            신청한 아동 목록(
+                            {
+                              recruit.sponsorMeets.filter(
+                                (user) => !user.isSponsor && user.isApproved
+                              ).length
+                            }
+                            /{recruit.maxSponsorRecruits})
+                          </strong>
+                          <ul className="mt-2 flex flex-col gap-y-3">
+                            {recruit.maxSponsorRecruits >
+                              recruit.sponsorMeets.filter(
+                                (user) => !user.isSponsor && user.isApproved
+                              ).length &&
+                              recruit.sponsorMeets
+                                .filter(
+                                  (user) => !user.isSponsor && !user.isApproved
+                                )
+                                .map((user) => (
+                                  <li
+                                    className="flex items-center gap-x-3 justify-center"
+                                    key={user.userId}
                                   >
-                                    수락하기
-                                  </Button>
-                                </li>
-                              ))}
-                        </ul>
-                      </div>
-                    )}
-                </li>
+                                    {user.userProfiles?.profileImageUrl ? (
+                                      <img
+                                        src={user.userProfiles.profileImageUrl}
+                                        alt="profile image"
+                                        className="w-7 aspect-square  rounded-lg"
+                                      />
+                                    ) : (
+                                      <div className="w-7 aspect-square rounded-lg grid place-items-center bg-[#f5f5f5]">
+                                        <img
+                                          className="object-cover w-8/12"
+                                          src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+                                          alt="default profile"
+                                        />
+                                      </div>
+                                    )}
+                                    <span>
+                                      {user.userProfiles!.nickname.length < 6
+                                        ? user.userProfiles?.nickname
+                                        : user.userProfiles?.nickname.slice(
+                                            0,
+                                            5
+                                          ) + "..."}
+                                    </span>
+
+                                    {user.isApproved ? (
+                                      <Button
+                                        intent="disabled"
+                                        rounded="sm"
+                                        className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
+                                        disabled
+                                        onClick={() =>
+                                          handleClickApproved(user.userId)
+                                        }
+                                      >
+                                        승인됨
+                                      </Button>
+                                    ) : (
+                                      <Button
+                                        intent="primary"
+                                        rounded="sm"
+                                        textIntent="primary"
+                                        className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
+                                        onClick={() =>
+                                          handleClickApproved(user.userId)
+                                        }
+                                      >
+                                        승인
+                                      </Button>
+                                    )}
+                                  </li>
+                                ))}
+                          </ul>
+                        </div>
+                      )}
+                  </li>
+                </>
               ))}
             </ul>
 
