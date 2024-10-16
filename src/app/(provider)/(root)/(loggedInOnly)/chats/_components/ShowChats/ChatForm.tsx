@@ -24,6 +24,9 @@ function ChatForm({ targetUserId, userId, roomId }: ChatFormProps) {
     const msg = e.target.message.value;
 
     if (msg.length === 0) return;
+    if (!roomId) {
+      return console.log("roomId is null : ", roomId);
+    }
 
     socket.emit(
       "newMessage",

@@ -44,12 +44,11 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   };
 
   useEffect(() => {
-    console.log("use Effect start");
-    if (isUserProfileLoading || isTargetProfileLoading) return;
+    console.log(socket);
+    if (!targetProfile || !userProfile || !socket.connected) return;
     handleScrollAtBottom();
-
     if (socket.connected) {
-      console.log("connected socket");
+      console.log("connected socket : ", socket.connected);
       socket.emit(
         "enterRoom",
         userId,
@@ -63,6 +62,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
 
     socket.on("returnRoomId", (roomId) => {
       setRoomId(roomId);
+      console.log("roomId", roomId);
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
     });
 
@@ -76,7 +76,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
       console.log("leavedRoom");
       socket.off("disconnecting");
     };
-  }, [userProfile, targetProfile]);
+  }, [userProfile, targetProfile, socket]);
 
   if (isChatLoading || isTargetProfileLoading || isUserProfileLoading)
     return <span>채팅 기록을 불러오는 중 ...</span>;
