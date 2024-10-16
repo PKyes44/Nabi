@@ -1,5 +1,5 @@
 "use client";
-import RegularSponsorShipPage from "@/app/(provider)/(root)/(loggedInOnly)/regular-sponsorship/page";
+import RegularSponsorShip from "@/components/Modal/components/RegularSponsorShipPage";
 import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
 import { ComponentProps, PropsWithChildren } from "react";
 import Modal from "./Modal";
@@ -24,7 +24,7 @@ function RegularSponsorshipModal({ children }: PropsWithChildren) {
           dim={false}
         >
           <div className="fixed w-[650px] h-[650px] bg-white flex flex-col gap-y-8 justify-start items-center rounded-3xl p-12">
-            <RegularSponsorShipPage />
+            <RegularSponsorShip />
           </div>
         </Modal>
       )}

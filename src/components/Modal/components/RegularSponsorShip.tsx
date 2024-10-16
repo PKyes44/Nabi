@@ -16,7 +16,7 @@ import { ComponentProps, useEffect, useState } from "react";
 const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY;
 if (!clientKey) throw new Error("cannot find toss client key");
 
-function RegularSponsorShipPage() {
+function RegularSponsorShip() {
   const params = useSearchParams();
   const [payment, setPayment] = useState<TossPaymentsPayment | null>(null);
   const [price, setPrice] = useState("10000");
@@ -66,6 +66,7 @@ function RegularSponsorShipPage() {
       customerName: userProfile.nickname,
     });
   }
+
   const handleChangePrice: ComponentProps<"input">["onChange"] = (e) => {
     const newPriceValue = e.target.value;
     setPrice(newPriceValue);
@@ -91,4 +92,4 @@ function RegularSponsorShipPage() {
   );
 }
 
-export default RegularSponsorShipPage;
+export default RegularSponsorShip;
