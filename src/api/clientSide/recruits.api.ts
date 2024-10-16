@@ -81,7 +81,7 @@ const getPaginatedRecruits = async (
 };
 
 const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
-  let { data } = await supabase
+  const { data } = await supabase
     .from("recruits")
     .select("*")
     .eq("authorId", userId)
@@ -91,7 +91,7 @@ const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
 };
 
 const getInfiniteRecruits = async (page: number) => {
-  let { data } = await supabase
+  const { data } = await supabase
     .from("recruits")
     .select("*")
     .order("createdAt", { ascending: false })
