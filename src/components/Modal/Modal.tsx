@@ -1,18 +1,37 @@
+import { cva, VariantProps } from "class-variance-authority";
 import { ComponentProps, PropsWithChildren } from "react";
 
-interface ModalProps {
+const modalVariant = cva("", {
+  variants: {
+    isDim: {
+      true: "bg-black bg-opacity-45",
+      false: "bg-transparent",
+    },
+  },
+  compoundVariants: [],
+  defaultVariants: {
+    isDim: true,
+  },
+});
+
+type ModalVariant = VariantProps<typeof modalVariant>;
+
+type ModalProps = ModalVariant & {
   className?: string;
   onClickFn: ComponentProps<"div">["onClick"];
-}
+};
 
 function Modal({
+  isDim,
   className,
   onClickFn,
   children,
 }: PropsWithChildren<ModalProps>) {
   return (
     <div
-      className={`${className} w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-45 z-20`}
+      className={`w-screen h-screen absolute top-0 left-0 z-20 ${modalVariant({
+        isDim,
+      })} ${className} `}
       onClick={onClickFn}
     >
       {children}

@@ -52,7 +52,7 @@ function RecruitList() {
         recruits?.map((recruit) => (
           <li
             key={recruit.recruitId}
-            className="bg-white mb-2 p-10 rounded-md relative"
+            className="bg-white mb-2 p-10 pt-7 shadow-md rounded-md relative"
           >
             <RecruitDetails recruit={recruit} />
           </li>

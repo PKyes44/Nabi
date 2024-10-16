@@ -10,7 +10,7 @@ function User({ user }: RecipientProps) {
   return (
     <Link
       href={`/profiles?userId=${user.userId}`}
-      className="flex items-center gap-x-2 "
+      className="flex items-center gap-x-4 "
     >
       {user.bgImageUrl ? (
         <img

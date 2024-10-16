@@ -1,27 +1,38 @@
 import clientApi from "@/api/clientSide/api";
-import { supabase } from "@/supabase/client";
+import { useLogOutModal } from "@/zustand/logOutModal.store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface LoggedInNavigationProps {
   userId: string;
 }
 
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
-  const { data: isStoreOwner, isLoading } = useQuery({
+  const [isHoverOnProfile, setIsHoverOnProfile] = useState(false);
+  const { isShowLogOutModal, setIsShowLogOutModal } = useLogOutModal();
+  const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners"],
     queryFn: () => clientApi.storeOwners.isStoreOwnerByUserId(userId),
   });
-  const { data: profile, isLoading: isUserProfileLoading } = useQuery({
+  const { data: profile } = useQuery({
     queryKey: ["userProfiles", { userId }],
     queryFn: () => clientApi.profiles.getProfileByUserId(userId),
   });
 
-  const handleClickLogOut = async () => {
-    await supabase.auth.signOut();
+  const handleHoverOnProfile = () => {
+    console.log("is hovering !");
+    setIsHoverOnProfile(true);
+    setIsShowLogOutModal(true);
   };
 
-  if (isLoading || isUserProfileLoading) return <span>데이터 불러오는 중</span>;
+  useEffect(() => {
+    if (!isShowLogOutModal) {
+      console.log("inactive modal");
+      setIsHoverOnProfile(false);
+    }
+  }, [isShowLogOutModal, isHoverOnProfile]);
+
   return (
     <>
       <li className="w-10">
@@ -44,7 +55,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
           </Link>
         </li>
       )}
-      <li className="w-10">
+      <li className="w-10" onMouseOver={handleHoverOnProfile}>
         <Link href={`/profiles?userId=${userId}`}>
           {profile?.profileImageUrl ? (
             <img
@@ -62,9 +73,6 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
             </div>
           )}
         </Link>
-      </li>
-      <li>
-        <button onClick={handleClickLogOut}>로그아웃</button>
       </li>
     </>
   );

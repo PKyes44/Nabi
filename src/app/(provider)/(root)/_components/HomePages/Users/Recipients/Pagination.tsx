@@ -22,7 +22,7 @@ function Pagination({ page }: PaginationProps) {
   };
 
   return (
-    <nav className="m-auto">
+    <nav className="m-auto text-sm">
       <ul className="flex gap-x-2">
         {Array.from({ length: navigationCount! }).map((_, index) => {
           return (
