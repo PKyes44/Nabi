@@ -18,7 +18,7 @@ interface RecruitListProps {
   })[];
 }
 
-function RecruitList({ userId, initialRecruitList }: RecruitListProps) {
+function RecruitList({ initialRecruitList, userId }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
@@ -27,7 +27,7 @@ function RecruitList({ userId, initialRecruitList }: RecruitListProps) {
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["recruits"],
+    queryKey: ["recruits", { userId }],
     queryFn: ({ pageParam }) => {
       if (userId)
         return clientApi.recruits.getInfiniteRecruitsByUserId(
@@ -58,16 +58,17 @@ function RecruitList({ userId, initialRecruitList }: RecruitListProps) {
       { threshold: 0.5 }
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    const currentObserver = observerRef.current;
+    if (currentObserver) {
+      observer.observe(currentObserver);
     }
 
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (currentObserver) {
+        observer.unobserve(currentObserver);
       }
     };
-  }, [isLoading, fetchNextPage, hasNextPage]);
+  }, [isLoading, hasNextPage, fetchNextPage]);
 
   return (
     <ul className="mt-5 w-full flex flex-col gap-y-4">

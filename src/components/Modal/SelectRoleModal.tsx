@@ -23,7 +23,6 @@ function SelectRoleModal({ children }: PropsWithChildren) {
   };
 
   const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
-    console.log(e.target, e.currentTarget);
     if (e.target === e.currentTarget) {
       setIsShowSelectRoleModal(false);
     }

@@ -1,5 +1,5 @@
 "use client";
-import ProfileEditForm from "@/app/(provider)/(root)/(loggedInOnly)/profiles/_components/ProfileEditForm";
+import ProfileEditForm from "@/app/(provider)/(root)/profiles/_components/ProfileEditForm";
 import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
 import { ComponentProps, PropsWithChildren } from "react";
 import Modal from "./Modal";

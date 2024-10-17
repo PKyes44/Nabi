@@ -1,5 +1,6 @@
 "use client";
 import { Tables } from "@/supabase/database.types";
+import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -21,7 +22,8 @@ function ApprovedUser({ recruit, isSponsor }: ApprovedUserProps) {
   return recruit.sponsorMeets
     .filter((user) => user.isApproved && user.isSponsor === isSponsor)
     .map((user) => (
-      <li
+      <Link
+        href={`/profiles?userId=${user.userId}`}
         className="flex items-center gap-x-3 justify-center"
         key={user.userId}
       >
@@ -45,10 +47,14 @@ function ApprovedUser({ recruit, isSponsor }: ApprovedUserProps) {
             ? user.userProfiles?.nickname
             : user.userProfiles?.nickname.slice(0, 5) + "..."}
         </span>
-        <div className="w-14 px-0 py-0.5 bg-black border-none bg-opacity-80 rounded-sm text-white text-sm">
+        <button
+          onClick={(e) => e.preventDefault()}
+          disabled
+          className="w-14 px-0 py-0.5 bg-black border-none bg-opacity-80 rounded-sm text-white text-sm"
+        >
           승인됨
-        </div>
-      </li>
+        </button>
+      </Link>
     ));
 }
 

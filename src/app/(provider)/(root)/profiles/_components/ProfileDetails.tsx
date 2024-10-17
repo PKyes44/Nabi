@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-"use client";
 
 import { Tables } from "@/supabase/database.types";
-import ProfileButtons from "./_components/ProfileButtons";
+import ProfileButtons from "./ProfileButtons";
 
 interface ProfileDetailsProps {
   showUserId: string;

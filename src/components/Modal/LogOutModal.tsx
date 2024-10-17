@@ -10,7 +10,6 @@ function LogOutModal({ children }: PropsWithChildren) {
 
   // 모달 백드랍 클릭 시 모달 닫기
   const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
-    console.log(e.target);
     if (e.target === e.currentTarget) {
       setIsShowLogOutModal(false);
     }
