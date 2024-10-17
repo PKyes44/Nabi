@@ -1,4 +1,4 @@
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
 import Chats from "./_components/Chats";
 
 interface ChatPageProps {
@@ -9,9 +9,9 @@ interface ChatPageProps {
 
 function ChatPage({ searchParams: { showChatUserId } }: ChatPageProps) {
   return (
-    <Page width="lg" isMain>
+    <Container width="lg" isMain>
       <Chats showChatUserId={showChatUserId} />
-    </Page>
+    </Container>
   );
 }
 

@@ -17,7 +17,7 @@ type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
 
 function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
   const queryClient = useQueryClient();
-  const recipientId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
 
   const { data: recipient } = useQuery({
     queryKey: ["sponsorMeets", { recruitId }],
@@ -39,8 +39,8 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     },
   });
 
-  if (!recipientId) return null;
-  if (recipient?.userId !== recipientId) return null;
+  if (!user?.userId) return null;
+  if (recipient?.userId !== user.userId) return null;
 
   const handleSubmitReplyForm: ComponentProps<"form">["onSubmit"] = (
     e: SubmitReplyFormEvent
@@ -53,7 +53,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     const data = {
       content,
       recruitId,
-      recipientId,
+      recipientId: user.userId,
     };
 
     createReply(data);

@@ -1,11 +1,11 @@
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
 import Link from "next/link";
 import Navigation from "./Navigation";
 
 function Header() {
   return (
     <header className="h-16 bg-white fixed top-0 left-0 z-[2] w-screen">
-      <Page
+      <Container
         width="lg"
         isMain={false}
         className="h-full flex items-center justify-between"
@@ -19,7 +19,7 @@ function Header() {
         </Link>
 
         <Navigation />
-      </Page>
+      </Container>
     </header>
   );
 }

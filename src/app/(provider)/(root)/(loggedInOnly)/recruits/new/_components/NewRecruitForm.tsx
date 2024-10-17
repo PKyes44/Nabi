@@ -47,7 +47,7 @@ function NewRecruitForm() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
-  const authorId = useAuthStore((state) => state.currentUserId);
+  const author = useAuthStore((state) => state.currentUser);
   const today = dayjs().format("YYYY-MM-DD");
 
   const { mutate: createRecruit } = useMutation<
@@ -75,7 +75,7 @@ function NewRecruitForm() {
   ) => {
     e.preventDefault();
 
-    if (!authorId) return;
+    if (!author?.userId) return;
 
     const maxSponsorRecruits = +e.target.maxSponsorRecruits.value;
     const maxRecipientRecruits = +e.target.maxRecipientRecruits.value;
@@ -134,7 +134,7 @@ function NewRecruitForm() {
       title,
       content,
       isEnd,
-      authorId,
+      authorId: author.userId,
     };
 
     createRecruit(recruitData);

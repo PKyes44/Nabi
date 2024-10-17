@@ -13,11 +13,11 @@ interface ApplyButtonProps {
 
 function ApplyButton({ recruitId, authorId }: ApplyButtonProps) {
   const queryClient = useQueryClient();
-  const userId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
 
   const { data } = useQuery({
-    queryKey: ["sponsorMeets", userId],
-    queryFn: () => clientApi.sponsorMeets.getRecruitIdByUserId(userId!),
+    queryKey: ["sponsorMeets", { userId: user?.userId }],
+    queryFn: () => clientApi.sponsorMeets.getRecruitIdByUserId(user?.userId!),
   });
 
   const { mutate: insertSponsorMeet } = useMutation<
@@ -35,7 +35,7 @@ function ApplyButton({ recruitId, authorId }: ApplyButtonProps) {
     },
   });
 
-  if (!userId) return null;
+  if (!user?.userId) return null;
 
   const hasApplied = data?.some(
     (application) => application.recruitId === recruitId
@@ -44,15 +44,15 @@ function ApplyButton({ recruitId, authorId }: ApplyButtonProps) {
   const handleClickApplyButton = () => {
     const data = {
       recruitId,
-      userId,
+      userId: user.userId,
     };
 
-    insertSponsorMeet(data);
+    // insertSponsorMeet(data);
   };
 
   return (
     <>
-      {userId !== authorId &&
+      {user.userId !== authorId &&
         (!hasApplied ? (
           <ButtonGroup
             intent="primary"

@@ -3,9 +3,10 @@
 import Button from "@/components/Button/Button";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
-import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
+import { useModal } from "@/zustand/modal.store";
 import { useRouter } from "next/navigation";
+import ProfileEditModal from "./Modals/ProfileEditModal";
+import RegularSponsorshipModal from "./Modals/RegularSponsorshipModal";
 
 interface ProfileButtonsProps {
   showUserId: string;
@@ -14,21 +15,15 @@ interface ProfileButtonsProps {
 
 function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const router = useRouter();
-  const currentUserId = useAuthStore((state) => state.currentUserId);
-  const roleType = useAuthStore((state) => state.roleType);
-  const setIsRegularSponsorShipModal = useRegularSponsorShipModalStore(
-    (state) => state.setIsRegularSponsorShipModal
-  );
+  const user = useAuthStore((state) => state.currentUser);
+  const setActiveModal = useModal((state) => state.setActiveModal);
 
-  const setIsShowProfileEditModal = useProfileEditModalStore(
-    (state) => state.setIsShowProfileEditModal
-  );
   const handleClickProfileEdit = () => {
-    setIsShowProfileEditModal(true);
+    setActiveModal(<ProfileEditModal />);
   };
 
   const handleClickRegularSponsorShip = () => {
-    setIsRegularSponsorShipModal(true);
+    setActiveModal(<RegularSponsorshipModal />);
   };
 
   const handleClickLinkToChat = () => {
@@ -36,7 +31,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   };
   return (
     <article className="self-center -mt-5 flex gap-x-3">
-      {currentUserId === profile.userId ? (
+      {user?.userId === profile.userId ? (
         <Button
           intent="primary"
           textIntent="primary"
@@ -55,7 +50,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
           채팅하기
         </Button>
       )}
-      {roleType === "sponsor" && profile.role === "recipient" ? (
+      {user?.role === "sponsor" && profile.role === "recipient" ? (
         <Button
           intent="primary"
           textIntent="primary"
