@@ -1,8 +1,8 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
+import Container from "@/components/Container/Container";
 import InputGroup from "@/components/Inputs/InputGroup";
-import Page from "@/components/Page/Page";
 import { Database } from "@/supabase/database.types";
 import { UserInfo } from "@/types/auth.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
@@ -101,7 +101,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   };
 
   return (
-    <Page width="md" className="flex flex-col items-center">
+    <Container width="md" className="flex flex-col items-center">
       <h1 className="mt-20 mb-10 text-3xl font-bold">회원가입 하기</h1>
 
       <form onSubmit={handleSubmitSignUpForm} className="flex flex-col gap-y-2">
@@ -126,7 +126,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
 
         <ButtonGroup value="회원가입" size="md" className="w-full mt-5" />
       </form>
-    </Page>
+    </Container>
   );
 }
 

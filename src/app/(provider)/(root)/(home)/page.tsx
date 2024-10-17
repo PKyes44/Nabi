@@ -1,5 +1,5 @@
 import serverApi from "@/api/serverSide/api";
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
 import FreeMeals from "./_components/FreeMeals/FreeMeals";
 import CreateRecruitButton from "./_components/Recruits/CreateRecruitButton";
 import RecruitList from "./_components/Recruits/RecruitList";
@@ -16,7 +16,7 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
   );
 
   return (
-    <Page
+    <Container
       width="lg"
       isMain={false}
       className="h-full flex items-center justify-between py-20"
@@ -29,7 +29,7 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
         </div>
         <Users page={page} />
       </div>
-    </Page>
+    </Container>
   );
 }
 

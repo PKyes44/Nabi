@@ -2,8 +2,8 @@
 
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
+import Container from "@/components/Container/Container";
 import InputGroup from "@/components/Inputs/InputGroup";
-import Page from "@/components/Page/Page";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -73,7 +73,7 @@ function RegularSponsorShip() {
   };
 
   return (
-    <Page isMain width="md">
+    <Container isMain width="md">
       <div className="wrapper">
         <div className="box_section">
           <h1>정기 결제</h1>
@@ -88,7 +88,7 @@ function RegularSponsorShip() {
           <ButtonGroup onClick={requestBillingAuth} value="정기 후원하기" />
         </div>
       </div>
-    </Page>
+    </Container>
   );
 }
 

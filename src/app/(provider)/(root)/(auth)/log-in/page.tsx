@@ -1,8 +1,8 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
+import Container from "@/components/Container/Container";
 import InputGroup from "@/components/Inputs/InputGroup";
-import Page from "@/components/Page/Page";
 import { UserInfo } from "@/types/auth.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useMutation } from "@tanstack/react-query";
@@ -26,10 +26,6 @@ function LogInPage() {
 
   const { mutate: logIn } = useMutation({
     mutationFn: (logInData: UserInfo) => clientApi.auth.logIn(logInData),
-    onSuccess: (...arg) => {
-      console.log("success: ", arg);
-      router.replace("/");
-    },
     onError: (...arg) => {
       setErrMsgs((prevErrMsgs) => ({
         ...prevErrMsgs,
@@ -67,7 +63,7 @@ function LogInPage() {
   };
 
   return (
-    <Page width="sm" className="flex flex-col items-center">
+    <Container width="sm" className="flex flex-col items-center">
       <h1 className="mt-32 mb-10 text-3xl font-bold">로그인 하기</h1>
 
       <form onSubmit={handleSubmitLogInForm} className="flex flex-col gap-y-3">
@@ -91,7 +87,7 @@ function LogInPage() {
           value="로그인"
         />
       </form>
-    </Page>
+    </Container>
   );
 }
 

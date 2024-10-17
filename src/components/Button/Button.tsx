@@ -73,12 +73,13 @@ function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`${className} ${buttonVariant({
+      className={buttonVariant({
         outline,
         size,
         intent,
         textIntent,
-      })}`}
+        className,
+      })}
       {...props}
     >
       {children}

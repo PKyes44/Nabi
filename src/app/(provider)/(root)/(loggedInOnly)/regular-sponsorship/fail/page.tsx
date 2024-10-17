@@ -1,5 +1,5 @@
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
 
 interface FailPageProps {
   searchParams: {
@@ -14,7 +14,7 @@ export default function FailPage({
   console.log(message, code); //
 
   return (
-    <Page isMain width="md" className="pt-10 flex flex-col items-center">
+    <Container isMain width="md" className="pt-10 flex flex-col items-center">
       <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
         <div className="flex items-center gap-x-3">
           <img
@@ -57,6 +57,6 @@ export default function FailPage({
           />
         </div>
       </div>
-    </Page>
+    </Container>
   );
 }

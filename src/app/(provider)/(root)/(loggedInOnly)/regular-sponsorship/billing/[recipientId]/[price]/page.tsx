@@ -2,7 +2,7 @@
 
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
 import { PaymentResponse } from "@/types/paymentResponse.types";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -55,7 +55,7 @@ function RegularSponsorShipBillingPage({
   console.log(receipt); //
 
   return (
-    <Page isMain className="pt-10 flex flex-col">
+    <Container isMain className="pt-10 flex flex-col">
       <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
         <div className="flex items-center gap-x-3">
           <img
@@ -98,7 +98,7 @@ function RegularSponsorShipBillingPage({
           />
         </div>
       </div>
-    </Page>
+    </Container>
   );
 }
 
