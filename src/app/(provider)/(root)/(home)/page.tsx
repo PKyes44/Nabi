@@ -5,8 +5,6 @@ import CreateRecruitButton from "./_components/Recruits/CreateRecruitButton";
 import RecruitList from "./_components/Recruits/RecruitList";
 import Users from "./_components/Users/Users";
 
-export const revalidate = 0;
-
 interface HomePageProps {
   searchParams: { page: string };
 }
@@ -16,6 +14,7 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
     0,
     5
   );
+
   return (
     <Page
       width="lg"
