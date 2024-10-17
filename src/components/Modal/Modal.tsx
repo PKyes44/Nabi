@@ -27,7 +27,6 @@ function Modal({ isDim, className, children }: PropsWithChildren<ModalProps>) {
   const setActiveModal = useModal((state) => state.setActiveModal);
 
   const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
-    console.log(e);
     if (e.target === e.currentTarget) {
       setActiveModal(null);
     }

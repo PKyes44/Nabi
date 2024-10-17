@@ -10,7 +10,6 @@ interface RecipientsProps {
 }
 
 function Recipients({ page }: RecipientsProps) {
-  console.log("recipients");
   return (
     <article className="bg-white h-[360px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
       <h2 className="flex items-center mx-auto gap-x-2 font-bold">

@@ -1,6 +1,7 @@
 import clientApi from "@/api/clientSide/api";
 import { useModal } from "@/zustand/modal.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import FreeMealCreateModal from "./FreeMealCreateModal";
@@ -44,8 +45,10 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
     <>
       <li className="w-10">
         <Link href="/free-meals/map">
-          <img
-            className="w-full aspect-square rounded-lg"
+          <Image
+            width={150}
+            height={150}
+            className="w-10 aspect-square rounded-lg"
             src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/LinkToMap.png?t=2024-10-15T21%3A06%3A46.454Z"
             alt="link to free-meals store map"
           />
@@ -54,8 +57,10 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
       {isStoreOwner && (
         <li className="w-10">
           <button onClick={handleClickCreateFreeMeal}>
-            <img
-              className="w-full aspect-square rounded-lg"
+            <Image
+              width={150}
+              height={150}
+              className="w-10 aspect-square rounded-lg"
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/LinkToFreeMeal%20.png?t=2024-10-15T21%3A07%3A35.956Z"
               alt="create free-meal post icon"
             />
@@ -67,21 +72,16 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
           href={`/profiles?userId=${userId}`}
           onClick={handleClickLinkToProfile}
         >
-          {profile?.profileImageUrl ? (
-            <img
-              src={profile.profileImageUrl}
-              alt="profile image"
-              className="w-full aspect-square object-cover rounded-lg"
-            />
-          ) : (
-            <div className="bg-[#f5f5f5] w-full aspect-square rounded-lg grid place-items-center">
-              <img
-                className="w-7/12 aspect-square rounded-lg"
-                src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
-                alt="default profile image"
-              />
-            </div>
-          )}
+          <Image
+            width={100}
+            height={100}
+            src={
+              profile?.profileImageUrl ||
+              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+            }
+            alt="profile image"
+            className="w-full aspect-square object-cover rounded-lg"
+          />
         </Link>
       </li>
     </>

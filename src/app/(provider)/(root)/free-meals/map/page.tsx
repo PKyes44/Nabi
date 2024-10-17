@@ -6,15 +6,16 @@ interface FreeMealStoresPageProps {
   searchParams: {
     lat: string;
     lng: string;
+    brandName: string;
   };
 }
 
 function FreeMealStoresPage({
-  searchParams: { lat, lng },
+  searchParams: { lat, lng, brandName },
 }: FreeMealStoresPageProps) {
   return (
     <div className="App">
-      <KakaoMap lat={+lat} lng={+lng} />
+      <KakaoMap lat={+lat} lng={+lng} brandName={brandName} />
     </div>
   );
 }

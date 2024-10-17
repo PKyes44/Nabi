@@ -40,14 +40,12 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   const handleScrollAtBottom = () => {
     if (!messageEndRef || !messageEndRef.current) return;
     messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
-    console.log("handleScrollAtBottom");
   };
 
   useEffect(() => {
     if (!targetProfile || !userProfile || !socket.connected) return;
     handleScrollAtBottom();
     if (socket.connected) {
-      console.log("connected socket : ", socket.connected);
       socket.emit(
         "enterRoom",
         user?.userId,
@@ -61,14 +59,10 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
 
     socket.on("returnRoomId", (roomId) => {
       setRoomId(roomId);
-      console.log("roomId", roomId);
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
     });
 
     socket.on("newMessage", (targetUserId) => {
-      console.log("newMessage");
-      console.log(targetUserId === showChatUserId);
-
       queryClient.invalidateQueries({
         queryKey: ["chats", { targetUserId }],
       });
