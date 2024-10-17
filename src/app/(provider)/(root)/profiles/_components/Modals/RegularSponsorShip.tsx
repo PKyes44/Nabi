@@ -2,7 +2,6 @@
 
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import Container from "@/components/Container/Container";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
@@ -73,22 +72,24 @@ function RegularSponsorShip() {
   };
 
   return (
-    <Container isMain width="md">
-      <div className="wrapper">
-        <div className="box_section">
-          <h1>정기 결제</h1>
-          <InputGroup
-            value={price}
-            errorText={priceErrorMsg}
-            onChange={handleChangePrice}
-            label="후원금액"
-            helpText="최소 후원 금액은 10,000₩입니다"
-            type="number"
-          />
-          <ButtonGroup onClick={requestBillingAuth} value="정기 후원하기" />
-        </div>
-      </div>
-    </Container>
+    <div className="flex flex-col gap-y-[70px] py-10 justify-between">
+      <h1 className="font-bold text-3xl text-center">정기 후원하기</h1>
+      <InputGroup
+        value={price}
+        errorText={priceErrorMsg}
+        onChange={handleChangePrice}
+        label="후원금액"
+        helpText="최소 후원 금액은 10,000₩입니다"
+        type="number"
+      />
+      <ButtonGroup
+        onClick={requestBillingAuth}
+        intent="primary"
+        textIntent="primary"
+        className="w-full py-3.5 text-lg"
+        value="정기 후원하기"
+      />
+    </div>
   );
 }
 
