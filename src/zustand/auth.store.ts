@@ -7,8 +7,8 @@ type AuthStore = {
   setAuthInitialized: () => void;
   currentUserId: string | null;
   setCurrentUserId: (userId: string | null) => void;
-  roleType: string | undefined;
-  setRoleType: (roleType: string | undefined) => void;
+  roleType: "sponsor" | "recipient" | null;
+  setRoleType: (roleType: "sponsor" | "recipient" | null) => void;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -18,6 +18,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
   setAuthInitialized: () => set({ isAuthInitialized: true }),
   currentUserId: null,
   setCurrentUserId: (userId: string | null) => set({ currentUserId: userId }),
-  roleType: undefined,
+  roleType: null,
   setRoleType: (roleType) => set({ roleType }),
 }));

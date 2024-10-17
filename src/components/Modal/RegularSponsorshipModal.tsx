@@ -1,6 +1,6 @@
 "use client";
 import RegularSponsorShip from "@/components/Modal/components/RegularSponsorShip";
-import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal.store";
+import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
 import { ComponentProps, PropsWithChildren } from "react";
 import Modal from "./Modal";
 

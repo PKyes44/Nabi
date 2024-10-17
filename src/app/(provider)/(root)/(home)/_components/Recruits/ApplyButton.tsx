@@ -8,9 +8,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface ApplyButtonProps {
   recruitId: string;
+  authorId: string;
 }
 
-function ApplyButton({ recruitId }: ApplyButtonProps) {
+function ApplyButton({ recruitId, authorId }: ApplyButtonProps) {
   const queryClient = useQueryClient();
   const userId = useAuthStore((state) => state.currentUserId);
 
@@ -51,21 +52,22 @@ function ApplyButton({ recruitId }: ApplyButtonProps) {
 
   return (
     <>
-      {!hasApplied ? (
-        <ButtonGroup
-          intent="primary"
-          textIntent="primary"
-          className="ml-auto"
-          value="신청하기"
-          onClick={handleClickApplyButton}
-        />
-      ) : (
-        <ButtonGroup
-          className="ml-auto bg-[#DDDDDD] text-[#999999]"
-          value="신청됨"
-          disabled
-        />
-      )}
+      {userId !== authorId &&
+        (!hasApplied ? (
+          <ButtonGroup
+            intent="primary"
+            textIntent="primary"
+            className="ml-auto"
+            value="신청하기"
+            onClick={handleClickApplyButton}
+          />
+        ) : (
+          <ButtonGroup
+            className="ml-auto bg-[#DDDDDD] text-[#999999]"
+            value="신청됨"
+            disabled
+          />
+        ))}
     </>
   );
 }

@@ -14,7 +14,6 @@ function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_name, session) => {
-      console.log(session);
       if (session) {
         const userId = session.user.id;
         setCurrentUserId(userId);
@@ -31,7 +30,7 @@ function AuthProvider({ children }: PropsWithChildren) {
     (async () => {
       if (!userId) return;
       const response = await clientApi.profiles.getProfileByUserId(userId);
-      const roleType = response?.role;
+      const roleType = response?.role as "sponsor" | "recipient";
       setRoleType(roleType);
     })();
   }, [userId]);

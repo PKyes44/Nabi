@@ -1,41 +1,50 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import RecruitDetails from "./RecruitDetails";
+import Recruit from "./Recruit";
 
 interface RecruitListProps {
-  initialRecruits?: Tables<"recruits">[] | null;
   userId?: string;
+  initialRecruitList: (Tables<"recruits"> & {
+    userProfiles: Tables<"userProfiles">;
+  } & {
+    replies: (Tables<"replies"> & {
+      userProfiles: Tables<"userProfiles">;
+    })[];
+  })[];
 }
 
-function RecruitList({ initialRecruits, userId }: RecruitListProps) {
+function RecruitList({ userId, initialRecruitList }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
-    data: recruitsData = { pages: [initialRecruits || []] },
+    data: recruitsData = { pages: [initialRecruitList || []] },
     fetchNextPage,
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
     queryKey: ["recruits"],
     queryFn: ({ pageParam }) => {
-      if (userId) {
+      if (userId)
         return clientApi.recruits.getInfiniteRecruitsByUserId(
           pageParam,
           userId
         );
-      }
 
       return clientApi.recruits.getInfiniteRecruits(pageParam);
     },
     getNextPageParam: (lastPage, pages) => {
-      if (!lastPage) return;
-      if (!pages) return;
+      if (!lastPage) return undefined;
+      if (!pages) return undefined;
       return pages.length;
     },
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     initialPageParam: 0,
   });
 
@@ -58,21 +67,21 @@ function RecruitList({ initialRecruits, userId }: RecruitListProps) {
         observer.unobserve(observerRef.current);
       }
     };
-  }, [isLoading]);
+  }, [isLoading, fetchNextPage, hasNextPage]);
 
   return (
     <ul className="mt-5 w-full flex flex-col gap-y-4">
-      {recruitsData?.pages.map((recruits) =>
-        recruits?.map((recruit) => (
+      {recruitsData!.pages[0]!.map((recruit) => {
+        return (
           <li
             key={recruit.recruitId}
             className="bg-white mb-2 p-10 pt-7 shadow-md rounded-md relative"
           >
-            <RecruitDetails recruit={recruit} />
+            <Recruit recruit={recruit} />
           </li>
-        ))
-      )}
-      {isLoading && <li>Loading...</li>}
+        );
+      })}
+      {isLoading && <div className="m-auto">Loading...</div>}
       <div ref={observerRef} />
     </ul>
   );

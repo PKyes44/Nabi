@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Tables } from "@/supabase/database.types";
 import dayjs from "dayjs";
 
