@@ -15,7 +15,6 @@ function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (_eventName, session) => {
       if (session) {
-        console.log("logged in user");
         const userId = session.user.id;
         const response = await clientApi.profiles.getProfileByUserId(userId);
         const role = response?.role as "sponsor" | "recipient";

@@ -4,7 +4,7 @@ import { Tables } from "@/supabase/database.types";
 import { useModal } from "@/zustand/modal.store";
 
 interface StoreDetailModalProps {
-  detailData: Omit<Tables<"storeDatas">, "lng" | "lat">;
+  detailData: Tables<"storeDatas">;
 }
 
 function StoreDetailModal({ detailData }: StoreDetailModalProps) {

@@ -10,7 +10,7 @@ interface UsersProps {
 
 function Users({ page = "1" }: UsersProps) {
   const user = useAuthStore((state) => state.currentUser);
-  console.log("users");
+
   return (
     <>
       {!user?.userId ? (

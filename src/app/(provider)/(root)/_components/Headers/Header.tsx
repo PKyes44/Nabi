@@ -13,8 +13,8 @@ function Header() {
       >
         <Link href="/" className="text-2xl font-extrabold">
           <Image
-            width={10}
-            height={10}
+            width={200}
+            height={200}
             src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/NabiLogo.png?t=2024-10-16T06%3A12%3A04.231Z"
             className="w-14"
             alt="nabi logo"

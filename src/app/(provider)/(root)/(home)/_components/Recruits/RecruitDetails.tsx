@@ -2,6 +2,7 @@
 import { Tables } from "@/supabase/database.types";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import Image from "next/image";
 import Link from "next/link";
 import ApplyButton from "./ApplyButton";
 import RecruitCount from "./RecruitCount";
@@ -35,15 +36,16 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           href={`/profiles?userId=${recruit.authorId}`}
           className="flex items-center gap-x-5 "
         >
-          {recruit.userProfiles.profileImageUrl ? (
-            <img
-              src={recruit.userProfiles.profileImageUrl}
-              alt="profile image"
-              className="w-16 rounded-full aspect-square object-cover"
-            />
-          ) : (
-            <div className="w-16 rounded-full aspect-square object-cover" />
-          )}
+          <Image
+            width={300}
+            height={300}
+            src={
+              recruit.userProfiles.profileImageUrl ||
+              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigProfile.png"
+            }
+            alt="profile image"
+            className="w-16 rounded-full aspect-square object-cover"
+          />
           <div className="flex flex-col">
             <span className="font-extrabold">
               {recruit.userProfiles.nickname}
@@ -64,7 +66,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
           <div className="flex gap-x-2 items-center group relative">
-            <img
+            <Image
+              width={150}
+              height={150}
+              className="w-4 aspect-square"
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Location.png?t=2024-10-15T19%3A39%3A08.745Z"
               alt="location icon"
             />
@@ -74,7 +79,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             </span>
           </div>
           <div className="flex gap-x-2 items-center group relative">
-            <img
+            <Image
+              width={150}
+              height={150}
+              className="w-4 aspect-square"
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Date.png"
               alt="date icon"
             />
