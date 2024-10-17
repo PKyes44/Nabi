@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 function CreateRecruitButton() {
@@ -15,7 +16,9 @@ function CreateRecruitButton() {
       className="w-full grid place-items-center bg-white text-center py-3 text-[15px] font-paperlogy shadow-sm"
     >
       <div className="flex items-center gap-x-3">
-        <img
+        <Image
+          width={100}
+          height={100}
           className="w-8 aspect-square"
           src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/PlusButton.png?t=2024-10-16T02%3A00%3A45.760Z"
           alt="create recruits button"

@@ -2,6 +2,7 @@
 
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import Image from "next/image";
 
 interface RecruitCountProps {
   recruit:
@@ -14,7 +15,10 @@ function RecruitCount({ recruit }: RecruitCountProps) {
 
   return (
     <div className="flex gap-x-2 items-center group relative">
-      <img
+      <Image
+        width={100}
+        height={100}
+        className="w-4"
         src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/RecruitCount.png?t=2024-10-15T19%3A45%3A09.027Z"
         alt="recruit count icon"
       />

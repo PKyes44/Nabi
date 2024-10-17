@@ -6,7 +6,6 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { UserInfo } from "@/types/auth.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 
 interface InitialErrMsgs {
@@ -21,7 +20,6 @@ const initialErrMsgs = {
 };
 
 function LogInPage() {
-  const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
   const { mutate: logIn } = useMutation({

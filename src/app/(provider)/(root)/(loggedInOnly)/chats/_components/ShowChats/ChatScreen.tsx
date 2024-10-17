@@ -4,6 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import socket from "@/socket/socket";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import ChatForm from "./ChatForm";
 import ChatLogs from "./ChatLogs/ChatLogs";
@@ -83,7 +84,9 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
     <div className="grow border border-black h-[450px] relative">
       <header className="border-b border-black px-5 py-3 flex gap-x-4 items-center">
         {targetProfile?.profileImageUrl ? (
-          <img
+          <Image
+            height={100}
+            width={100}
             src={targetProfile!.profileImageUrl}
             alt="profile image"
             className="w-10 aspect-square rounded-xl"

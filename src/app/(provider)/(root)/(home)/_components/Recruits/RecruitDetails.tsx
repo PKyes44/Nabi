@@ -41,7 +41,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             height={300}
             src={
               recruit.userProfiles.profileImageUrl ||
-              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigProfile.png"
+              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
             }
             alt="profile image"
             className="w-16 rounded-full aspect-square object-cover"
