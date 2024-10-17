@@ -29,7 +29,7 @@ function AuthProvider({ children }: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange(async (eventName, _) => {
+    supabase.auth.onAuthStateChange(async (eventName) => {
       console.log(eventName);
       if (eventName === "SIGNED_IN") router.replace("/");
     });
