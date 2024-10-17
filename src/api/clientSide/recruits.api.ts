@@ -18,17 +18,6 @@ const getRecruits = async () => {
   return data as Tables<"recruits">[];
 };
 
-const getSortedRecruits = async () => {
-  const response = await supabase
-    .from("recruits")
-    .select("*")
-    .order("createdAt", { ascending: false });
-
-  const data = response.data;
-
-  return data;
-};
-
 const getRecruit = async (recruitId: string) => {
   const response = await supabase
     .from("recruits")
@@ -38,6 +27,17 @@ const getRecruit = async (recruitId: string) => {
   const recruit = response.data;
 
   return recruit as Recruits["Row"];
+};
+
+const getSortedRecruits = async () => {
+  const response = await supabase
+    .from("recruits")
+    .select("*")
+    .order("createdAt", { ascending: false });
+
+  const data = response.data;
+
+  return data;
 };
 
 const getSortedMyRecruits = async (userId: string) => {
@@ -64,31 +64,21 @@ const editRecruit = async (
   if (error) throw new Error(error.message);
 };
 
-const getPaginatedRecruits = async (
-  recruitArr: { recruitId: string }[],
-  page: number
-) => {
-  const recruitIds = recruitArr.map((recruitId) => recruitId.recruitId);
-  const response = await supabase
-    .from("recruits")
-    .select("*")
-    .in("recruitId", recruitIds)
-    .order("createdAt", { ascending: false })
-    // 3개씩 보여주기
-    .range(page * 3, page * 3 + 2);
-  const recruits = response.data;
-
-  return recruits;
-};
-
 const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
-  const { data } = await supabase
-    .from("recruits")
-    .select("*")
-    .eq("authorId", userId)
+  // userId 넣어서 approved가 되어있는 게시글들 불러오기
+  const { data: RecruitsData } = await supabase
+    .from("sponsorMeets")
+    .select("recruits(*)")
+    .eq("userId", userId)
+    .eq("isApproved", true)
     .order("createdAt", { ascending: false })
     .range(page * 5, page * 5 + 4);
-  return data;
+
+  const recruits = RecruitsData?.map((recruitsAndId) => {
+    return recruitsAndId.recruits!;
+  });
+
+  return recruits;
 };
 
 const getInfiniteRecruits = async (page: number) => {
@@ -107,7 +97,6 @@ const recruitsAPI = {
   getRecruit,
   getInfiniteRecruits,
   editRecruit,
-  getPaginatedRecruits,
   getSortedRecruits,
   getInfiniteRecruitsByUserId,
 };

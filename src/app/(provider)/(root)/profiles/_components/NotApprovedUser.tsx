@@ -5,6 +5,7 @@ import Button from "@/components/Button/Button";
 import { Tables } from "@/supabase/database.types";
 import { UserProfiles } from "@/types/customDatabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -40,7 +41,7 @@ function NotApprovedUser({
     }) => clientApi.sponsorMeets.approvedUser(userId, recruitId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["recruits", { userId: profile.userId }],
+        queryKey: ["myRecruits", { userId: profile.userId }],
       });
     },
   });
@@ -56,7 +57,8 @@ function NotApprovedUser({
   return recruit.sponsorMeets
     .filter((user) => user.isSponsor === isSponsor && !user.isApproved)
     .map((user) => (
-      <li
+      <Link
+        href={`/profiles?userId=${user.userId}`}
         className="flex items-center gap-x-3 justify-center"
         key={user.userId}
       >
@@ -85,11 +87,14 @@ function NotApprovedUser({
           rounded="sm"
           textIntent="primary"
           className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
-          onClick={() => handleClickApproved(user.userId, recruit.recruitId)}
+          onClick={(e) => {
+            e.preventDefault();
+            handleClickApproved(user.userId, recruit.recruitId);
+          }}
         >
           승인
         </Button>
-      </li>
+      </Link>
     ));
 }
 

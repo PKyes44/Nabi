@@ -8,10 +8,10 @@ import RecruitDetails from "./RecruitDetails";
 
 interface RecruitListProps {
   initialRecruits?: Tables<"recruits">[] | null;
-  userId?: string;
+  showUserId?: string;
 }
 
-function RecruitList({ initialRecruits, userId }: RecruitListProps) {
+function RecruitList({ initialRecruits, showUserId }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
@@ -20,15 +20,13 @@ function RecruitList({ initialRecruits, userId }: RecruitListProps) {
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["recruits"],
+    queryKey: ["recruits", { showUserId }],
     queryFn: ({ pageParam }) => {
-      if (userId) {
+      if (showUserId)
         return clientApi.recruits.getInfiniteRecruitsByUserId(
           pageParam,
-          userId
+          showUserId
         );
-      }
-
       return clientApi.recruits.getInfiniteRecruits(pageParam);
     },
     getNextPageParam: (lastPage, pages) => {
@@ -49,16 +47,17 @@ function RecruitList({ initialRecruits, userId }: RecruitListProps) {
       { threshold: 0.5 }
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    const currentObserver = observerRef.current;
+    if (currentObserver) {
+      observer.observe(currentObserver);
     }
 
     return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
+      if (currentObserver) {
+        observer.unobserve(currentObserver);
       }
     };
-  }, [isLoading]);
+  }, [isLoading, hasNextPage, fetchNextPage]);
 
   return (
     <ul className="mt-5 w-full flex flex-col gap-y-4">
