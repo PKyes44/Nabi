@@ -2,25 +2,23 @@
 
 import clientApi from "@/api/clientSide/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface PaginationProps {
   page: number;
 }
 
 function Pagination({ page }: PaginationProps) {
-  const router = useRouter();
   const queryClient = useQueryClient();
   const { data: navigationCount } = useQuery({
     queryKey: ["userProfiles", { type: "recipientCount" }],
     queryFn: () => clientApi.profiles.getNavigationCount("recipient"),
   });
 
-  const handleClickNavigation = (page: number) => {
+  const handleClickNavigation = () => {
     queryClient.invalidateQueries({
       queryKey: ["userProfiles", { role: "recipient" }],
     });
-    router.push(`?page=${page}`);
   };
 
   return (
@@ -36,9 +34,12 @@ function Pagination({ page }: PaginationProps) {
                   : "font-light text-gray-500"
               }`}
             >
-              <button onClick={() => handleClickNavigation(index + 1)}>
+              <Link
+                href={`?page=${index + 1}`}
+                onClick={() => handleClickNavigation()}
+              >
                 {index + 1}
-              </button>
+              </Link>
             </li>
           );
         })}
