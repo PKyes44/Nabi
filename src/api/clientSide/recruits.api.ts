@@ -18,17 +18,6 @@ const getRecruits = async () => {
   return data as Tables<"recruits">[];
 };
 
-const getSortedRecruits = async () => {
-  const response = await supabase
-    .from("recruits")
-    .select("*")
-    .order("createdAt", { ascending: false });
-
-  const data = response.data;
-
-  return data;
-};
-
 const getRecruit = async (recruitId: string) => {
   const response = await supabase
     .from("recruits")
@@ -38,6 +27,17 @@ const getRecruit = async (recruitId: string) => {
   const recruit = response.data;
 
   return recruit as Recruits["Row"];
+};
+
+const getSortedRecruits = async () => {
+  const response = await supabase
+    .from("recruits")
+    .select("*")
+    .order("createdAt", { ascending: false });
+
+  const data = response.data;
+
+  return data;
 };
 
 const getSortedMyRecruits = async (userId: string) => {
@@ -150,7 +150,6 @@ const recruitsAPI = {
   getRecruit,
   getInfiniteRecruits,
   editRecruit,
-  getPaginatedRecruits,
   getSortedRecruits,
   getInfiniteRecruitsByUserId,
   getGroupOfPageRecruits,

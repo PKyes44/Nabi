@@ -20,7 +20,6 @@ const getStoreByUserId = async (userId: string) => {
 
   if (error) throw new Error(error.message);
 
-  console.log(data);
   return data;
 };
 
