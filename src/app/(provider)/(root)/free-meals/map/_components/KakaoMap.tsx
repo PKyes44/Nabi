@@ -57,7 +57,13 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
       alert("지도를 찾을 수 없습니다");
       return router.replace("/");
     }
+
     window.kakao.maps.load(() => {
+      const selectedStoreOnHome = !isNaN(lat) && !isNaN(lng);
+      console.log(selectedStoreOnHome);
+      if (selectedStoreOnHome) {
+      }
+
       const center = !isNaN(lat)
         ? new window.kakao.maps.LatLng(lat, lng)
         : !location.error && location.loaded
@@ -67,8 +73,8 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
           )
         : new window.kakao.maps.LatLng(33.450701, 126.570667);
       const options = {
-        center, // 지도 중심 좌표
-        level: 2, // 지도의 레벨(확대, 축소 정도)
+        center,
+        level: 2,
       };
 
       const map = new window.kakao.maps.Map(mapRef.current, options);
