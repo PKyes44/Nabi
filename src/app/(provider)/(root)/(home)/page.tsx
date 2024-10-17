@@ -1,9 +1,9 @@
 import serverApi from "@/api/serverSide/api";
 import Page from "@/components/Page/Page";
-import FreeMeals from "./_components/HomePages/FreeMeals/FreeMeals";
-import CreateRecruitButton from "./_components/HomePages/Recruits/CreateRecruitButton";
-import RecruitList from "./_components/HomePages/Recruits/RecruitList";
-import Users from "./_components/HomePages/Users/Users";
+import FreeMeals from "./_components/FreeMeals/FreeMeals";
+import CreateRecruitButton from "./_components/Recruits/CreateRecruitButton";
+import RecruitList from "./_components/Recruits/RecruitList";
+import Users from "./_components/Users/Users";
 
 export const revalidate = 0;
 

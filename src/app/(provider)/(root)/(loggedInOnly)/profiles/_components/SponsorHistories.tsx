@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 import { useEffect, useRef } from "react";
-import CreateRecruitsReply from "../../../_components/HomePages/Recruits/Replies/CreateRecruitsReply";
-import Replies from "../../../_components/HomePages/Recruits/Replies/Replies";
+import CreateRecruitsReply from "../../../(home)/_components/Recruits/Replies/CreateRecruitsReply";
+import Replies from "../../../(home)/_components/Recruits/Replies/Replies";
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);

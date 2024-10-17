@@ -100,14 +100,24 @@ const getPaginatedRecruits = async (
 };
 
 const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
-  const query = "*, userProfiles!recruits_authorId_fkey(*)";
+  const query =
+    "*, userProfiles(*), replies!replies_recruitId_fkey(*,userProfiles!replies_recipientId_fkey(*))";
 
   const { data } = await supabase
     .from("recruits")
     .select(query)
     .eq("authorId", userId)
     .order("createdAt", { ascending: false })
-    .range(page * 5, page * 5 + 4);
+    .range(page * 5, page * 5 + 5)
+    .returns<
+      (Tables<"recruits"> & {
+        userProfiles: Tables<"userProfiles">;
+      } & {
+        replies: (Tables<"replies"> & {
+          userProfiles: Tables<"userProfiles">;
+        })[];
+      })[]
+    >();
 
   return data;
 };

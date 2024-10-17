@@ -18,7 +18,7 @@ interface RecruitListProps {
   })[];
 }
 
-function RecruitList({ initialRecruitList }: RecruitListProps) {
+function RecruitList({ userId, initialRecruitList }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
@@ -28,8 +28,15 @@ function RecruitList({ initialRecruitList }: RecruitListProps) {
     isLoading,
   } = useInfiniteQuery({
     queryKey: ["recruits"],
-    queryFn: ({ pageParam }) =>
-      clientApi.recruits.getInfiniteRecruits(pageParam),
+    queryFn: ({ pageParam }) => {
+      if (userId)
+        return clientApi.recruits.getInfiniteRecruitsByUserId(
+          pageParam,
+          userId
+        );
+
+      return clientApi.recruits.getInfiniteRecruits(pageParam);
+    },
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage) return undefined;
       if (!pages) return undefined;
