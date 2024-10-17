@@ -37,6 +37,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   };
 
   useEffect(() => {
+    console.log(userId);
     if (!isShowLogOutModal) {
       setIsHoverOnProfile(false);
     }
