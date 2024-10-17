@@ -13,8 +13,9 @@ function AuthProvider({ children }: PropsWithChildren) {
   const setUser = useAuthStore((state) => state.setCurrentUser);
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange(async (eventName, session) => {
+    supabase.auth.onAuthStateChange(async (_eventName, session) => {
       if (session) {
+        console.log("logged in user");
         const userId = session.user.id;
         const response = await clientApi.profiles.getProfileByUserId(userId);
         const role = response?.role as "sponsor" | "recipient";
@@ -30,7 +31,6 @@ function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (eventName) => {
-      console.log(eventName);
       if (eventName === "SIGNED_IN") router.replace("/");
     });
   }, []);
