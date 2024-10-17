@@ -1,50 +1,43 @@
-import clientApi from "@/api/clientSide/api";
+/* eslint-disable @next/next/no-img-element */
 import { Tables } from "@/supabase/database.types";
-import { useAuthStore } from "@/zustand/auth.store";
-import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Link from "next/link";
 import ApplyButton from "./ApplyButton";
-import Replies from "./Replies/Replies";
+import RecruitCount from "./RecruitCount";
+import UpdateRecruitButton from "./UpdateRecruitButton";
 
 interface RecruitDetailsProps {
-  recruit: Tables<"recruits">;
+  recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
 }
 
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
-  const userId = useAuthStore((state) => state.currentUserId);
-  const roleType = useAuthStore((state) => state.roleType);
-  const authorId = recruit.authorId;
-
-  const createdAt =
-    Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours")) !== 0
-      ? Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours")) + "시간 전"
-      : Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "minutes")) + "분 전";
-
-  const { data: profile } = useQuery({
-    queryKey: ["userProfiles", { authorId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(authorId!),
-  });
+  let createdAt =
+    Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "days")) + "일 전";
+  if (+createdAt.split("일 전")[0] === 0)
+    createdAt =
+      Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours")) + "시간 전";
+  if (
+    +createdAt.split("시간 전")[0] === 0 ||
+    +createdAt.split("일 전")[0] === 0
+  )
+    createdAt =
+      Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "minutes")) + "분 전";
 
   return (
-    <div className="flex flex-col gap-y-10">
-      {userId === recruit.authorId && (
-        <Link
-          href={`recruits/edit/${recruit.recruitId}`}
-          className="border border-black text-sm absolute rounded-md py-1 px-2 right-5 top-5 bg-white"
-        >
-          수정하기
-        </Link>
-      )}
+    <>
+      <UpdateRecruitButton
+        authorId={recruit.authorId}
+        recruitId={recruit.recruitId}
+      />
       <div className="flex items-center justify-between">
         <Link
-          href={`/profiles?userId=${profile?.userId}`}
+          href={`/profiles?userId=${recruit.authorId}`}
           className="flex items-center gap-x-5 "
         >
-          {profile?.profileImageUrl ? (
+          {recruit.userProfiles.profileImageUrl ? (
             <img
-              src={profile.profileImageUrl}
+              src={recruit.userProfiles.profileImageUrl}
               alt="profile image"
               className="w-16 rounded-full aspect-square object-cover"
             />
@@ -52,16 +45,21 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             <div className="w-16 rounded-full aspect-square object-cover" />
           )}
           <div className="flex flex-col">
-            <span className="font-extrabold">{profile?.nickname}</span>
-            <span className="font-light text-xs">{profile?.email}</span>
+            <span className="font-extrabold">
+              {recruit.userProfiles.nickname}
+            </span>
+            <span className="font-light text-xs">
+              {recruit.userProfiles.email}
+            </span>
           </div>
         </Link>
         <span className="font-normal text-xs">{createdAt}</span>
       </div>
       <article className="flex flex-col gap-y-3">
-        {userId !== recruit.authorId && (
-          <ApplyButton recruitId={recruit.recruitId} />
-        )}
+        <ApplyButton
+          recruitId={recruit.recruitId}
+          authorId={recruit.authorId}
+        />
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
@@ -89,25 +87,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
               봉사활동 일시
             </span>
           </div>
-          <div className="flex gap-x-2 items-center group relative">
-            <img
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/RecruitCount.png?t=2024-10-15T19%3A45%3A09.027Z"
-              alt="recruit count icon"
-            />
-            <span className="font-light text-xs">
-              {roleType === "sponsor"
-                ? recruit.maxSponsorRecruits
-                : recruit.maxRecipientRecruits}
-              명
-            </span>
-            <span className="whitespace-nowrap absolute top-6 -left-1/2 font-normal text-xs invisible group-hover:visible">
-              {roleType === "sponsor" ? "후원자 모집인원" : "후원아동 모집인원"}
-            </span>
-          </div>
+          <RecruitCount recruit={recruit} />
         </div>
       </article>
-      <Replies recruitId={recruit.recruitId} />
-    </div>
+    </>
   );
 }
 

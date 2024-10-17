@@ -1,8 +1,6 @@
 "use client";
 
-import clientApi from "@/api/clientSide/api";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useQuery } from "@tanstack/react-query";
 import Recipients from "./Recipients/Recipients";
 import Sponsors from "./Sponsors/Sponsors";
 
@@ -12,16 +10,12 @@ interface UsersProps {
 
 function Users({ page = "1" }: UsersProps) {
   const userId = useAuthStore((state) => state.currentUserId);
-
-  const { data: userProfile } = useQuery({
-    queryKey: ["userProfiles", { userId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
-  });
+  const roleType = useAuthStore((state) => state.roleType);
 
   return (
     <>
-      {userProfile ? (
-        userProfile?.role === "recipient" ? (
+      {!userId ? (
+        roleType === "recipient" ? (
           <Sponsors />
         ) : (
           <Recipients page={+page} />

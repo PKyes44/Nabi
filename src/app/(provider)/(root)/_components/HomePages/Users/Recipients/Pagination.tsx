@@ -1,3 +1,5 @@
+"use client";
+
 import clientApi from "@/api/clientSide/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

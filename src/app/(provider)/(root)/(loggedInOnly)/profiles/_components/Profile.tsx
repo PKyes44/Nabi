@@ -4,7 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
-import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal.store";
+import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import RecruitList from "../../../_components/HomePages/Recruits/RecruitList";

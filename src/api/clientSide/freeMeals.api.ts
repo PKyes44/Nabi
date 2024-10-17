@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 const TABLE_FREE_MEALS = "freeMeals";
 
 const insertFreeMeals = async (
@@ -12,7 +12,16 @@ const insertFreeMeals = async (
 const getFreeMealsWithStoreData = async () => {
   const query =
     "*, storeDatas!freeMeals_storeId_fkey(*), userProfiles!freeMeals_sponsorId_fkey(*)";
-  const { error, data } = await supabase.from(TABLE_FREE_MEALS).select(query);
+  const { error, data } = await supabase
+    .from(TABLE_FREE_MEALS)
+    .select(query)
+    .returns<
+      (Tables<"freeMeals"> & {
+        storeDatas: Tables<"storeDatas">;
+      } & {
+        userProfiles: Tables<"userProfiles">;
+      })[]
+    >();
   if (error) throw new Error(error.message);
   return data;
 };

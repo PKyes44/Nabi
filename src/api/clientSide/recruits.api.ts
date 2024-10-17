@@ -64,6 +64,24 @@ const editRecruit = async (
   if (error) throw new Error(error.message);
 };
 
+const getGroupOfPageRecruits = async (page: number, offset: number) => {
+  const from = page * offset;
+  const to = page * offset + offset - 1;
+  const query = "*, userProfiles(*)";
+  const { data, error } = await supabase
+    .from("recruits")
+    .select(query)
+    .range(from, to)
+    .returns<
+      (Tables<"recruits"> & {
+        userProfiles: Tables<"userProfiles">;
+      })[]
+    >();
+  if (error) throw new Error(error.message);
+
+  return data;
+};
+
 const getPaginatedRecruits = async (
   recruitArr: { recruitId: string }[],
   page: number
@@ -82,21 +100,36 @@ const getPaginatedRecruits = async (
 };
 
 const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
+  const query = "*, userProfiles!recruits_authorId_fkey(*)";
+
   const { data } = await supabase
     .from("recruits")
-    .select("*")
+    .select(query)
     .eq("authorId", userId)
     .order("createdAt", { ascending: false })
     .range(page * 5, page * 5 + 4);
+
   return data;
 };
 
 const getInfiniteRecruits = async (page: number) => {
+  const query =
+    "*, userProfiles(*), replies!replies_recruitId_fkey(*,userProfiles!replies_recipientId_fkey(*))";
   const { data } = await supabase
     .from("recruits")
-    .select("*")
+    .select(query)
     .order("createdAt", { ascending: false })
-    .range(page * 5, page * 5 + 4);
+    .range(page * 5, page * 5 + 5)
+    .returns<
+      (Tables<"recruits"> & {
+        userProfiles: Tables<"userProfiles">;
+      } & {
+        replies: (Tables<"replies"> & {
+          userProfiles: Tables<"userProfiles">;
+        })[];
+      })[]
+    >();
+
   return data;
 };
 
@@ -110,6 +143,7 @@ const recruitsAPI = {
   getPaginatedRecruits,
   getSortedRecruits,
   getInfiniteRecruitsByUserId,
+  getGroupOfPageRecruits,
 };
 
 export default recruitsAPI;

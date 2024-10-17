@@ -1,29 +1,18 @@
-import ButtonGroup from "@/components/Button/ButtonGroup";
 import { Tables } from "@/supabase/database.types";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import LinkToStoreMapButton from "./LinkToStoreMapButton";
 
 interface FreeMealProps {
-  freeMeal: {
-    createdAt: string;
-    freeMealDate: string;
-    maxServingCount: number;
-    mealId: string;
-    sponsorId: string;
-    storeId: string;
-    storeDatas: Tables<"storeDatas"> | null;
-    userProfiles: Tables<"userProfiles"> | null;
+  freeMeal: Tables<"freeMeals"> & {
+    storeDatas: Tables<"storeDatas">;
+  } & {
+    userProfiles: Tables<"userProfiles">;
   };
 }
 
 function FreeMeal({ freeMeal }: FreeMealProps) {
-  const router = useRouter();
-  const handleClickLinkToStoreMap = (lat: number, lng: number) => {
-    router.push(`/free-meals/map?lat=${lat}&lng=${lng}`);
-  };
-
   return (
-    <article className="bg-white p-5 flex flex-col gap-y-2">
+    <article className="bg-white p-5 flex flex-col gap-y-5 shadow-sm">
       <div>
         <span className="font-bold">
           {freeMeal.userProfiles?.nickname}
@@ -52,18 +41,7 @@ function FreeMeal({ freeMeal }: FreeMealProps) {
           {dayjs(freeMeal.freeMealDate).format("YYYY-MM-DD HH:mm")}
         </address>
       </div>
-      <ButtonGroup
-        value="위치 보기"
-        intent="primary"
-        textIntent="primary"
-        className="w-full"
-        onClick={() =>
-          handleClickLinkToStoreMap(
-            freeMeal.storeDatas!.lat,
-            freeMeal.storeDatas!.lng
-          )
-        }
-      />
+      <LinkToStoreMapButton storeDatas={freeMeal.storeDatas!} />
     </article>
   );
 }

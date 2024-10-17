@@ -1,4 +1,5 @@
 "use client";
+
 import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import InputGroup from "@/components/Inputs/InputGroup";
@@ -14,13 +15,13 @@ interface SubmitReplyForm {
 
 type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
 
-function CreateRecruitsReply({ recruitId }: { recruitId: string }) {
+function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
   const queryClient = useQueryClient();
   const recipientId = useAuthStore((state) => state.currentUserId);
 
   const { data: recipient } = useQuery({
     queryKey: ["sponsorMeets", { recruitId }],
-    queryFn: () => clientApi.sponsorMeets.getRecipientByUserId(recruitId),
+    queryFn: () => clientApi.sponsorMeets.getRecipientByUserId(recruitId!),
   });
 
   // 만들기

@@ -1,6 +1,6 @@
-import clientApi from "@/api/clientSide/api";
+import serverApi from "@/api/serverSide/api";
 import Page from "@/components/Page/Page";
-import FreeMeals from "./_components/HomePages/FreeMeals";
+import FreeMeals from "./_components/HomePages/FreeMeals/FreeMeals";
 import CreateRecruitButton from "./_components/HomePages/Recruits/CreateRecruitButton";
 import RecruitList from "./_components/HomePages/Recruits/RecruitList";
 import Users from "./_components/HomePages/Users/Users";
@@ -12,9 +12,10 @@ interface HomePageProps {
 }
 
 async function HomePage({ searchParams: { page } }: HomePageProps) {
-  const initialRecruits =
-    (await clientApi.recruits.getInfiniteRecruits(0)) || null;
-
+  const initialRecruitList = await serverApi.recruits.getGroupOfPageRecruits(
+    0,
+    5
+  );
   return (
     <Page
       width="lg"
@@ -25,7 +26,7 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
         <FreeMeals />
         <div className="col-span-2">
           <CreateRecruitButton />
-          <RecruitList initialRecruits={initialRecruits} />
+          <RecruitList initialRecruitList={initialRecruitList!} />
         </div>
         <Users page={page} />
       </div>

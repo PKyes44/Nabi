@@ -1,20 +1,14 @@
-"use client";
-
-import clientApi from "@/api/clientSide/api";
-import { useQuery } from "@tanstack/react-query";
-import CreateRecruitsReply from "./CreateRecruitsReply";
+/* eslint-disable @next/next/no-img-element */
+import { Tables } from "@/supabase/database.types";
 import ReplyList from "./ReplyList";
 
 type RepliesProps = {
-  recruitId: string;
+  replies: (Tables<"replies"> & {
+    userProfiles: Tables<"userProfiles">;
+  })[];
 };
 
-function Replies({ recruitId }: RepliesProps) {
-  const { data: replies } = useQuery({
-    queryKey: ["replies", { recruitId }],
-    queryFn: () => clientApi.replies.getRepliesByRecruitId(recruitId),
-  });
-
+function Replies({ replies }: RepliesProps) {
   return (
     <>
       <article className="mt-2">
@@ -22,7 +16,7 @@ function Replies({ recruitId }: RepliesProps) {
           <div className="flex gap-x-2 items-center">
             <img
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Comments.png"
-              alt="comments icon"
+              alt="reply icon"
             />
             <span className="font-light text-xs">댓글 ({replies?.length})</span>
           </div>
@@ -34,12 +28,10 @@ function Replies({ recruitId }: RepliesProps) {
             <span className="font-light text-xs">좋아요 (56)</span>
           </div>
         </div>
-        <CreateRecruitsReply recruitId={recruitId} />
+        {/* <CreateRecruitsReply recruitId={recruitId} />  */}
         {replies ? (
           replies.length !== 0 ? (
-            <>
-              <ReplyList replies={replies} />
-            </>
+            <ReplyList replies={replies} />
           ) : (
             <p className="text-black/30 mt-5">댓글이 존재하지 않습니다</p>
           )
