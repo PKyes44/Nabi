@@ -6,6 +6,7 @@ import Container from "@/components/Container/Container";
 import { PaymentResponse } from "@/types/paymentResponse.types";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -57,8 +58,11 @@ function RegularSponsorShipBillingPage({
     <Container isMain className="pt-10 flex flex-col">
       <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
         <div className="flex items-center gap-x-3">
-          <img
-            width="40px"
+          <Image
+            height={100}
+            width={100}
+            alt="success payment icon"
+            className="w-10"
             src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/SuccessPayment.png"
           />
           <h2 className="font-extrabold text-2xl text-center">결제 완료</h2>
