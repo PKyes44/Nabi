@@ -30,7 +30,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         authorId={recruit.authorId}
         recruitId={recruit.recruitId}
       />
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-4">
         <Link
           href={`/profiles?userId=${recruit.authorId}`}
           className="flex items-center gap-x-5 "
@@ -42,7 +42,11 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
               className="w-16 rounded-full aspect-square object-cover"
             />
           ) : (
-            <div className="w-16 rounded-full aspect-square object-cover" />
+            <img
+              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+              alt="profile image"
+              className="w-16 rounded-full aspect-square object-cover"
+            />
           )}
           <div className="flex flex-col">
             <span className="font-extrabold">
