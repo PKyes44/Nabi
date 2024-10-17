@@ -3,9 +3,10 @@
 import Button from "@/components/Button/Button";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
-import { useRegularSponsorShipModalStore } from "@/zustand/modals/regularSponsorshipModal";
+import { useModal } from "@/zustand/modal.store";
 import { useRouter } from "next/navigation";
+import ProfileEditModal from "./Modals/ProfileEditModal";
+import RegularSponsorshipModal from "./Modals/RegularSponsorshipModal";
 
 interface ProfileButtonsProps {
   showUserId: string;
@@ -15,19 +16,14 @@ interface ProfileButtonsProps {
 function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const router = useRouter();
   const user = useAuthStore((state) => state.currentUser);
-  const setIsRegularSponsorShipModal = useRegularSponsorShipModalStore(
-    (state) => state.setIsRegularSponsorShipModal
-  );
+  const setActiveModal = useModal((state) => state.setActiveModal);
 
-  const setIsShowProfileEditModal = useProfileEditModalStore(
-    (state) => state.setIsShowProfileEditModal
-  );
   const handleClickProfileEdit = () => {
-    setIsShowProfileEditModal(true);
+    setActiveModal(<ProfileEditModal />);
   };
 
   const handleClickRegularSponsorShip = () => {
-    setIsRegularSponsorShipModal(true);
+    setActiveModal(<RegularSponsorshipModal />);
   };
 
   const handleClickLinkToChat = () => {

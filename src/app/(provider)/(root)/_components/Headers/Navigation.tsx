@@ -1,22 +1,18 @@
 "use client";
 
 import { useAuthStore } from "@/zustand/auth.store";
-import useSelectRoleModalStore from "@/zustand/modals/selectRoleModal.store";
+import { useModal } from "@/zustand/modal.store";
 import Link from "next/link";
 import LoggedInNavigation from "./LoggedInNavigation";
+import SelectRoleModal from "./SelectRoleModal";
 
 function Navigation() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const authInitialized = useAuthStore((state) => state.isAuthInitialized);
   const user = useAuthStore((state) => state.currentUser);
-  const setIsShowSelectRoleModal = useSelectRoleModalStore(
-    (state) => state.setIsShowSelectRoleModal
-  );
-  const setAuthType = useSelectRoleModalStore((state) => state.setAuthType);
+  const setActiveModal = useModal((state) => state.setActiveModal);
   const handleClickSignUp = () => {
-    const type = "sign-up";
-    setAuthType(type);
-    setIsShowSelectRoleModal(true);
+    setActiveModal(<SelectRoleModal />);
   };
   console.log(authInitialized, isLoggedIn);
   return (

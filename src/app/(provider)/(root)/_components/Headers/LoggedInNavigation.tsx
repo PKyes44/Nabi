@@ -1,21 +1,19 @@
 import clientApi from "@/api/clientSide/api";
-import { useLogOutModal } from "@/zustand/logOutModal.store";
-import { useFreeMealCreateModalStore } from "@/zustand/modals/freeMealCreateModal.store";
+import { useModal } from "@/zustand/modal.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import FreeMealCreateModal from "./FreeMealCreateModal";
+import LogOutModal from "./LogOutModal";
 
 interface LoggedInNavigationProps {
   userId: string;
 }
 
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
+  const { activeModal, setActiveModal } = useModal();
   const [isHoverOnProfile, setIsHoverOnProfile] = useState(false);
   const queryClient = useQueryClient();
-  const { isShowLogOutModal, setIsShowLogOutModal } = useLogOutModal();
-  const setIsFreeMealCreateModal = useFreeMealCreateModalStore(
-    (state) => state.setIsFreeMealCreateModal
-  );
   const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners"],
     queryFn: () => clientApi.storeOwners.isStoreOwnerByUserId(userId),
@@ -27,21 +25,20 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
 
   const handleHoverOnProfile = () => {
     setIsHoverOnProfile(true);
-    setIsShowLogOutModal(true);
+    setActiveModal(<LogOutModal />);
   };
   const handleClickLinkToProfile = () => {
     queryClient.invalidateQueries({ queryKey: ["recruits"] });
   };
   const handleClickCreateFreeMeal = () => {
-    setIsFreeMealCreateModal(true);
+    setActiveModal(<FreeMealCreateModal />);
   };
 
   useEffect(() => {
-    console.log(userId);
-    if (!isShowLogOutModal) {
+    if (!activeModal) {
       setIsHoverOnProfile(false);
     }
-  }, [isShowLogOutModal, isHoverOnProfile]);
+  }, [isHoverOnProfile, activeModal]);
 
   return (
     <>

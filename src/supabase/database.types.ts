@@ -104,35 +104,35 @@ export type Database = {
         Row: {
           createdAt: string
           meetId: string
-          recipientId: string
-          recruitid: string
+          recruitId: string
           status: string
+          userId: string
         }
         Insert: {
           createdAt?: string
           meetId?: string
-          recipientId?: string
-          recruitid?: string
+          recruitId?: string
           status: string
+          userId?: string
         }
         Update: {
           createdAt?: string
           meetId?: string
-          recipientId?: string
-          recruitid?: string
+          recruitId?: string
           status?: string
+          userId?: string
         }
         Relationships: [
           {
             foreignKeyName: "recipientMeets_recipientId_fkey"
-            columns: ["recipientId"]
+            columns: ["userId"]
             isOneToOne: false
             referencedRelation: "userProfiles"
             referencedColumns: ["userId"]
           },
           {
             foreignKeyName: "recipientMeets_recruitid_fkey"
-            columns: ["recruitid"]
+            columns: ["recruitId"]
             isOneToOne: false
             referencedRelation: "recruits"
             referencedColumns: ["recruitId"]

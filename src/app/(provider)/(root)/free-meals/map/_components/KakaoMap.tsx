@@ -4,9 +4,10 @@
 
 import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
-import useStoreDetailStore from "@/zustand/modals/storeDetailModal.store";
+import { useModal } from "@/zustand/modal.store";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import StoreDetailModal from "./StoreDetailModal";
 import useGeolocation from "./useGeolocation";
 
 declare global {
@@ -30,12 +31,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer | null>(
     null
   );
-  const setIsShowStoreDetailModal = useStoreDetailStore(
-    (state) => state.setIsShowStoreDetailModal
-  );
-  const setStoreDetailData = useStoreDetailStore(
-    (state) => state.setStoreDetailData
-  );
+  const setActiveModal = useModal((state) => state.setActiveModal);
 
   const paintMarkers = async (map: {
     getLevel: () => any;
@@ -115,8 +111,7 @@ function KakaoMap({ lat = 33.450701, lng = 126.570667 }: KakaoMapProps) {
           brandName: data.brandName,
           createdAt: data.createdAt,
         };
-        setStoreDetailData(detailData);
-        setIsShowStoreDetailModal(true);
+        setActiveModal(<StoreDetailModal detailData={detailData} />);
       });
     });
   }, [storeDatas]);
