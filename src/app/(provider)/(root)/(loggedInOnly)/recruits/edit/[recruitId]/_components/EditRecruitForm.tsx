@@ -49,7 +49,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
-  const authorId = useAuthStore((state) => state.currentUserId);
+  const author = useAuthStore((state) => state.currentUser);
   const today = dayjs().format("YYYY-MM-DD");
 
   const { data: recruit } = useQuery({
@@ -80,7 +80,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
     async (e: EditRecruitFormEvent) => {
       e.preventDefault();
 
-      if (!authorId) return;
+      if (!author?.userId) return;
 
       const maxSponsorRecruits = +e.target.maxSponsorRecruits.value;
       const maxRecipientRecruits = +e.target.maxRecipientRecruits.value;
@@ -143,7 +143,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
           title,
           content,
           isEnd,
-          authorId,
+          authorId: author.userId,
         };
 
       editRecruit(recruitEditData);

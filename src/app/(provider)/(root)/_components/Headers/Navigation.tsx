@@ -8,7 +8,7 @@ import LoggedInNavigation from "./LoggedInNavigation";
 function Navigation() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const authInitialized = useAuthStore((state) => state.isAuthInitialized);
-  const userId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
   const setIsShowSelectRoleModal = useSelectRoleModalStore(
     (state) => state.setIsShowSelectRoleModal
   );
@@ -24,7 +24,7 @@ function Navigation() {
       <ul className="flex gap-x-5 items-center">
         {authInitialized ? (
           isLoggedIn ? (
-            <LoggedInNavigation userId={userId!} />
+            <LoggedInNavigation userId={user?.userId!} />
           ) : (
             <>
               <li className="w-10 aspect-square">

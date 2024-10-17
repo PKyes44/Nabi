@@ -14,8 +14,7 @@ interface ProfileButtonsProps {
 
 function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const router = useRouter();
-  const currentUserId = useAuthStore((state) => state.currentUserId);
-  const roleType = useAuthStore((state) => state.roleType);
+  const user = useAuthStore((state) => state.currentUser);
   const setIsRegularSponsorShipModal = useRegularSponsorShipModalStore(
     (state) => state.setIsRegularSponsorShipModal
   );
@@ -36,7 +35,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   };
   return (
     <article className="self-center -mt-5 flex gap-x-3">
-      {currentUserId === profile.userId ? (
+      {user?.userId === profile.userId ? (
         <Button
           intent="primary"
           textIntent="primary"
@@ -55,7 +54,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
           채팅하기
         </Button>
       )}
-      {roleType === "sponsor" && profile.role === "recipient" ? (
+      {user?.role === "sponsor" && profile.role === "recipient" ? (
         <Button
           intent="primary"
           textIntent="primary"

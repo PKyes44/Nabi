@@ -1,21 +1,20 @@
 "use client";
 
 import { useAuthStore } from "@/zustand/auth.store";
-import Sponsors from "./Sponsors/Sponsors";
 import Recipients from "./Recipients/Recipients";
+import Sponsors from "./Sponsors/Sponsors";
 
 interface UsersProps {
   page: string;
 }
 
 function Users({ page = "1" }: UsersProps) {
-  const userId = useAuthStore((state) => state.currentUserId);
-  const roleType = useAuthStore((state) => state.roleType);
+  const user = useAuthStore((state) => state.currentUser);
   console.log("users");
   return (
     <>
-      {!userId ? (
-        roleType === "recipient" ? (
+      {!user?.userId ? (
+        user?.role === "recipient" ? (
           <Sponsors />
         ) : (
           <Recipients page={+page} />

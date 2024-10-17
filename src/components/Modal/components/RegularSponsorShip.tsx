@@ -22,12 +22,12 @@ function RegularSponsorShip() {
   const [price, setPrice] = useState("10000");
   const [priceErrorMsg, setPriceErrorMsg] = useState<string | null>(null);
 
-  const userId = useAuthStore((state) => state.currentUserId);
+  const currentUser = useAuthStore((state) => state.currentUser);
   const recipientId = params.get("userId");
 
   const { data: userProfile } = useQuery({
-    queryKey: ["userProfiles", { userId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
+    queryKey: ["userProfiles", { userId: currentUser?.userId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(currentUser?.userId!),
   });
   const { data: user } = useQuery({
     queryKey: ["users"],
@@ -37,12 +37,12 @@ function RegularSponsorShip() {
   useEffect(() => {
     (async () => {
       try {
-        if (!userId) return;
+        if (!currentUser) return;
 
         const tossPayments = await loadTossPayments(clientKey!);
 
         const payment = tossPayments.payment({
-          customerKey: userId,
+          customerKey: currentUser.userId,
         });
 
         setPayment(payment);
@@ -50,7 +50,7 @@ function RegularSponsorShip() {
         console.error("Error fetching payment:", error);
       }
     })();
-  }, [userId]);
+  }, [currentUser]);
 
   async function requestBillingAuth() {
     if (!payment || !user || !userProfile) return;

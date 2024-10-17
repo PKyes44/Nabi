@@ -7,14 +7,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function StoreDetails() {
   const storeDetailData = useStoreDetailStore((state) => state.storeDetailData);
-  const currentUserId = useAuthStore((state) => state.currentUserId);
-  const roleType = useAuthStore((state) => state.roleType);
+  const user = useAuthStore((state) => state.currentUser);
   const queryClient = useQueryClient();
 
   const { data: isStoreOwner } = useQuery({
     queryKey: [
       "storeOwners",
-      { userId: currentUserId, storeId: storeDetailData?.storeId },
+      { userId: user?.userId, storeId: storeDetailData?.storeId },
     ],
     queryFn: () =>
       clientApi.storeOwners.isStoreOwnerByStoreId({
@@ -33,17 +32,17 @@ function StoreDetails() {
     },
   });
   const handleClickRegistOwner = () => {
-    if (!storeDetailData || !currentUserId) return;
+    if (!storeDetailData || !user?.userId) return;
     const insertOwnerData: Database["public"]["Tables"]["storeOwners"]["Insert"] =
       {
         storeId: storeDetailData.storeId,
-        sponsorId: currentUserId,
+        sponsorId: user.userId,
       };
     insertOwner(insertOwnerData);
   };
 
-  if (!roleType) return <span>데이터 로딩중</span>;
-  console.log(roleType);
+  if (!user?.role) return <span>데이터 로딩중</span>;
+  console.log(user.role);
   return (
     <section className="w-auto min-w-96 h-96 bg-white rounded-lg py-8 px-10 flex flex-col gap-y-5">
       <div className="bg-gray-400 w-full h-40" />
@@ -57,7 +56,7 @@ function StoreDetails() {
             {storeDetailData?.address}
           </address>
         </div>
-        {roleType === "sponsor" &&
+        {user.role === "sponsor" &&
           (isStoreOwner ? (
             <Button
               size="md"

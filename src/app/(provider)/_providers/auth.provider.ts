@@ -8,33 +8,23 @@ import { PropsWithChildren, useEffect } from "react";
 function AuthProvider({ children }: PropsWithChildren) {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setAuthInitialized = useAuthStore((state) => state.setAuthInitialized);
-  const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
-  const setRoleType = useAuthStore((state) => state.setRoleType);
-  const userId = useAuthStore((state) => state.currentUserId);
+  const setUser = useAuthStore((state) => state.setCurrentUser);
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_name, session) => {
+    supabase.auth.onAuthStateChange(async (_name, session) => {
       if (session) {
-        console.log(session);
         const userId = session.user.id;
-        setCurrentUserId(userId);
+        const response = await clientApi.profiles.getProfileByUserId(userId);
+        const role = response?.role as "sponsor" | "recipient";
+        setUser({ userId, role });
         setIsLoggedIn(true);
       } else {
-        setCurrentUserId(null);
+        setUser(null);
         setIsLoggedIn(false);
       }
       setAuthInitialized();
     });
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (!userId) return;
-      const response = await clientApi.profiles.getProfileByUserId(userId);
-      const roleType = response?.role as "sponsor" | "recipient";
-      setRoleType(roleType);
-    })();
-  }, [userId]);
 
   return children;
 }

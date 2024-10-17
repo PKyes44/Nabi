@@ -14,13 +14,13 @@ interface ChatScreenProps {
 
 function ChatScreen({ showChatUserId }: ChatScreenProps) {
   const messageEndRef = useRef<HTMLUListElement | null>(null);
-  const userId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
   const queryClient = useQueryClient();
   const [roomId, setRoomId] = useState(null);
 
   const { data: userProfile, isLoading: isUserProfileLoading } = useQuery({
-    queryKey: ["userProfiles", { userId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
+    queryKey: ["userProfiles", { userId: user?.userId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(user?.userId!),
   });
 
   const { data: targetProfile, isLoading: isTargetProfileLoading } = useQuery({
@@ -33,7 +33,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
     queryFn: () =>
       clientApi.chats.getChatsByUserIdAndTargetUserId({
         targetUserId: showChatUserId,
-        userId: userId!,
+        userId: user?.userId!,
       }),
   });
 
@@ -50,7 +50,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
       console.log("connected socket : ", socket.connected);
       socket.emit(
         "enterRoom",
-        userId,
+        user?.userId,
         targetProfile!.userId,
         userProfile!.nickname,
         () => {
@@ -106,7 +106,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
       </header>
       <ChatLogs
         messageEndRef={messageEndRef}
-        userId={userId!}
+        userId={user?.userId!}
         chatLogs={chatLogs!}
         targetProfile={targetProfile!}
       />
@@ -114,7 +114,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
         handlehandleScrollAtBottom={handleScrollAtBottom}
         roomId={roomId!}
         targetUserId={showChatUserId}
-        userId={userId!}
+        userId={user?.userId!}
       />
     </div>
   );
