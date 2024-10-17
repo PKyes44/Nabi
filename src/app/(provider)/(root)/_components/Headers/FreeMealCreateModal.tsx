@@ -1,6 +1,6 @@
 import { useModal } from "@/zustand/modal.store";
 import Modal from "../../../../../components/Modal/Modal";
-import CreateFreeMealForm from "../../../../../components/Modal/components/CreateFreeMealForm";
+import CreateFreeMealForm from "../../(home)/_components/FreeMeals/CreateFreeMealForm";
 
 function FreeMealCreateModal() {
   const activeModal = useModal((state) => state.activeModal);
