@@ -82,23 +82,6 @@ const getGroupOfPageRecruits = async (page: number, offset: number) => {
   return data;
 };
 
-const getPaginatedRecruits = async (
-  recruitArr: { recruitId: string }[],
-  page: number
-) => {
-  const recruitIds = recruitArr.map((recruitId) => recruitId.recruitId);
-  const response = await supabase
-    .from("recruits")
-    .select("*")
-    .in("recruitId", recruitIds)
-    .order("createdAt", { ascending: false })
-    // 3개씩 보여주기
-    .range(page * 3, page * 3 + 2);
-  const recruits = response.data;
-
-  return recruits;
-};
-
 const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
   const query =
     "*, userProfiles(*), replies!replies_recruitId_fkey(*,userProfiles!replies_recipientId_fkey(*))";
