@@ -5,7 +5,10 @@ import { Recruits } from "@/types/customDatabase";
 const createRecruit = async (data: Recruits["Insert"]) => {
   const { data: recruitData, error } = await supabase
     .from("recruits")
-    .insert(data);
+    .insert(data)
+    .select("*")
+    .returns<Recruits["Insert"]>()
+    .single();
   if (error) throw new Error(error.message);
 
   return recruitData;

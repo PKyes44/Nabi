@@ -189,6 +189,42 @@ export type Database = {
           },
         ]
       }
+      regularSponsorship: {
+        Row: {
+          created_at: string
+          recipientId: string
+          regularSponsorshipId: string
+          sponsorId: string
+        }
+        Insert: {
+          created_at?: string
+          recipientId?: string
+          regularSponsorshipId?: string
+          sponsorId?: string
+        }
+        Update: {
+          created_at?: string
+          recipientId?: string
+          regularSponsorshipId?: string
+          sponsorId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regularSponsorship_recipientId_fkey"
+            columns: ["recipientId"]
+            isOneToOne: false
+            referencedRelation: "userProfiles"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "regularSponsorship_sponsorId_fkey"
+            columns: ["sponsorId"]
+            isOneToOne: false
+            referencedRelation: "userProfiles"
+            referencedColumns: ["userId"]
+          },
+        ]
+      }
       replies: {
         Row: {
           content: string

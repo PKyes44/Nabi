@@ -25,7 +25,10 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
         <FreeMeals />
         <div className="col-span-2">
           <CreateRecruitButton />
-          <RecruitList initialRecruitList={initialRecruitList!} />
+          <RecruitList
+            initialRecruitList={initialRecruitList!}
+            userId={null!}
+          />
         </div>
         <Users page={page} />
       </div>
