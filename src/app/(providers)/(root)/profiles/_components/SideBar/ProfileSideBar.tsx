@@ -1,11 +1,12 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
-import { UserProfiles } from "@/types/customDatabase";
+import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
+import ApplicantList from "./ApplicantList";
 
 interface ProfileSideBarProps {
-  profile: UserProfiles["Row"];
+  profile: Tables<"userProfiles">;
 }
 
 function ProfileSideBar({ profile }: ProfileSideBarProps) {
@@ -18,14 +19,18 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     enabled: profile.role === "sponsor" && user?.userId === profile.userId,
   });
 
-  // 다른 유저 프로필 봤을 때 최근 후원자|후원아동 불러오기
-  const { data: recentlySponsorships } = useQuery({
-    queryKey: ["recruits", { profile }],
-    queryFn: () =>
-      clientApi.sponsorMeets.getRecentlySponsorship(
-        profile.userId,
-        profile.role
-      ),
+  // 다른 유저 프로필 봤을 때 최근 후원아동 불러오기
+  const { data: recentlyRecipients } = useQuery({
+    queryKey: ["sponsorMeets", { profile }],
+    queryFn: () => clientApi.sponsorMeets.getRecentlyRecipients(profile.userId),
+    enabled: profile.role === "sponsor",
+  });
+
+  // 다른 유저 프로필 봤을 때 최근 후원자 불러오기
+  const { data: recentlySponsors } = useQuery({
+    queryKey: ["recipientMeets", { profile }],
+    queryFn: () => clientApi.recipientMeets.getRecentlySponsors(profile.userId),
+    enabled: profile.role === "recipient",
   });
 
   return (
@@ -39,72 +44,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                 className="flex flex-col gap-y-2 h-full bg-white py-3 px-2 shadow-md rounded-lg"
                 key={recruit.recruitId}
               >
-                <h3 className="font-light mx-auto text-center">
-                  <span className="font-bold">
-                    {recruit.title.length > 5
-                      ? recruit.title.slice(0, 5) + "..."
-                      : recruit.title}
-                  </span>{" "}
-                  글의 신청자 목록
-                </h3>
-                <br />
-                <div className="text-center">
-                  <section>
-                    {/* <strong className="font-medium">
-                      신청한 후원자 목록 (
-                      {
-                        recruit.sponsorMeets.filter(
-                          (sponsor) => sponsor.status && sponsor.isApproved
-                        ).length
-                      }
-                      /{recruit.maxSponsorRecruits})
-                    </strong> */}
-
-                    {/* <ul className="flex flex-col gap-y-3 ">
-                      <ApprovedUser recruit={recruit} isSponsor />
-
-                      {recruit.maxSponsorRecruits >
-                        recruit.sponsorMeets.filter(
-                          (sponsor) => sponsor.isSponsor && sponsor.isApproved
-                        ).length && (
-                        <NotApprovedUser
-                          recruit={recruit}
-                          profile={profile}
-                          isSponsor
-                        ></NotApprovedUser>
-                      )}
-                    </ul> */}
-                  </section>
-
-                  <br />
-
-                  <section>
-                    {/* <strong className="font-medium">
-                      신청한 아동 목록(
-                      {
-                        recruit.sponsorMeets.filter(
-                          (user) => !user.isSponsor && user.isApproved
-                        ).length
-                      }
-                      /{recruit.maxRecipientRecruits})
-                    </strong>
-
-                    <ul className="mt-2 flex flex-col gap-y-3">
-                      <ApprovedUser recruit={recruit} isSponsor={false} />
-
-                      {recruit.maxRecipientRecruits >
-                        recruit.sponsorMeets.filter(
-                          (user) => !user.isSponsor && user.isApproved
-                        ).length && (
-                        <NotApprovedUser
-                          recruit={recruit}
-                          profile={profile}
-                          isSponsor={false}
-                        ></NotApprovedUser>
-                      )}
-                    </ul> */}
-                  </section>
-                </div>
+                <ApplicantList recruit={recruit} profile={profile} />
               </li>
             ))}
           </ul>
@@ -113,9 +53,9 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
           <>
             <strong>이 후원자가 최근에 후원한 아이들</strong>
             <ul>
-              {recentlySponsorships?.map((recentlySponsorship) => (
-                <li key={recentlySponsorship.userId}>
-                  {recentlySponsorship.userProfiles?.nickname}
+              {recentlyRecipients?.map((recipient) => (
+                <li key={recipient?.userId}>
+                  {recipient.userProfiles?.nickname}
                 </li>
               ))}
             </ul>
@@ -126,10 +66,8 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
         <>
           <strong>이 아동에게 최근 후원한 후원자</strong>
           <ul>
-            {recentlySponsorships?.map((recentlySponsorship) => (
-              <li key={recentlySponsorship.userId}>
-                {recentlySponsorship.userProfiles?.nickname}
-              </li>
+            {recentlySponsors?.map((sponsor) => (
+              <li key={sponsor.userId}>{sponsor.userProfiles?.nickname}</li>
             ))}
           </ul>
         </>
