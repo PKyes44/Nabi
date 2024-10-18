@@ -17,7 +17,7 @@ function Recruit({ recruit }: RecruitProps) {
   return (
     <div className="flex flex-col gap-y-10 relative">
       <RecruitDetails recruit={recruit} />
-      <Replies replies={recruit.replies} />
+      <Replies replies={recruit.replies} recruitId={recruit.recruitId} />
     </div>
   );
 }

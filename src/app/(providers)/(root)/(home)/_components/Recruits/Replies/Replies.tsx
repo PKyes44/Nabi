@@ -1,15 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { Tables } from "@/supabase/database.types";
 import Image from "next/image";
+import CreateRecruitsReply from "./CreateRecruitsReply";
 import ReplyList from "./ReplyList";
 
 type RepliesProps = {
   replies: (Tables<"replies"> & {
     userProfiles: Tables<"userProfiles">;
   })[];
+  recruitId: string;
 };
 
-function Replies({ replies }: RepliesProps) {
+function Replies({ replies, recruitId }: RepliesProps) {
   return (
     <>
       <article className="mt-2">
@@ -37,12 +39,14 @@ function Replies({ replies }: RepliesProps) {
             <span className="font-light text-xs">좋아요 (56)</span>
           </div>
         </div>
-        {/* <CreateRecruitsReply recruitId={recruitId} />  */}
+        <CreateRecruitsReply recruitId={recruitId} />
         {replies ? (
           replies.length !== 0 ? (
             <ReplyList replies={replies} />
           ) : (
-            <p className="text-black/30 mt-5">감사인사가 아직 없습니다</p>
+            <p className="text-black/30 mt-5">
+              후원 받은 아동만 감사인사를 작성 할 수 있습니다
+            </p>
           )
         ) : null}
       </article>
