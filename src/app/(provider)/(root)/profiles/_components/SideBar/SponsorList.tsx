@@ -28,18 +28,29 @@ function SponsorList({ recruit, profile }: SponsorListProps) {
 
       <ul className="flex flex-col gap-y-3 ">
         {/* 승인된 유저는 언제나 보여주기 */}
-        <ApprovedUser meets={recruit.sponsorMeets} />
+        {recruit.sponsorMeets
+          .filter((user) => user.status === "approved")
+          .map((user) => (
+            <li key={user.userId}>
+              <ApprovedUser user={user} />
+            </li>
+          ))}
 
         {/* 인원이 다 차지 않았으면 신청자 보여주기 */}
         {recruit.maxSponsorRecruits >
           recruit.sponsorMeets.filter((user) => user.status === "approved")
-            .length && (
-          <NotApprovedUser
-            meets={recruit.sponsorMeets}
-            recruitId={recruit.recruitId}
-            profile={profile}
-          />
-        )}
+            .length &&
+          recruit.sponsorMeets
+            .filter((user) => user.status === "pending")
+            .map((user) => (
+              <li key={user.userId}>
+                <NotApprovedUser
+                  profile={profile}
+                  recruitId={recruit.recruitId}
+                  user={user}
+                />
+              </li>
+            ))}
       </ul>
     </section>
   );

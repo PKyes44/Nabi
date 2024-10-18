@@ -8,16 +8,15 @@ import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 
-type UserProfiles = Tables<"userProfiles"> | null;
-type SponsorMeets = (Pick<Tables<"sponsorMeets">, "status" | "userId"> & {
-  userProfiles: UserProfiles;
-})[];
-type RecipientMeets = (Pick<Tables<"recipientMeets">, "status" | "userId"> & {
-  userProfiles: UserProfiles;
-})[];
+type Sponsor = Pick<Tables<"sponsorMeets">, "userId" | "status"> & {
+  userProfiles: Tables<"userProfiles"> | null;
+};
+type Recipient = Pick<Tables<"recipientMeets">, "userId" | "status"> & {
+  userProfiles: Tables<"userProfiles"> | null;
+};
 
 type NotApprovedUserProps = {
-  meets: SponsorMeets | RecipientMeets;
+  user: Sponsor | Recipient;
   profile: Tables<"userProfiles">;
   recruitId: string;
 };
@@ -28,7 +27,7 @@ type ApproveType = {
   role: string;
 };
 
-function NotApprovedUser({ profile, meets, recruitId }: NotApprovedUserProps) {
+function NotApprovedUser({ profile, user, recruitId }: NotApprovedUserProps) {
   const queryClient = useQueryClient();
 
   // 수락하기
@@ -55,51 +54,49 @@ function NotApprovedUser({ profile, meets, recruitId }: NotApprovedUserProps) {
     approve(data);
   };
 
-  return meets
-    .filter((user) => user.status === "pending")
-    .map((user) => (
-      <Link
-        href={`/profiles?userId=${user.userId}`}
-        className="flex items-center gap-x-3 justify-center"
-        key={user.userId}
-      >
-        {user.userProfiles?.profileImageUrl ? (
+  return (
+    <Link
+      href={`/profiles?userId=${user.userId}`}
+      className="flex items-center gap-x-3 justify-center"
+      key={user.userId}
+    >
+      {user.userProfiles?.profileImageUrl ? (
+        <img
+          src={user.userProfiles.profileImageUrl}
+          alt="profile image"
+          className="w-7 aspect-square  rounded-lg"
+        />
+      ) : (
+        <div className="w-7 aspect-square rounded-lg grid place-items-center bg-[#f5f5f5]">
           <img
-            src={user.userProfiles.profileImageUrl}
-            alt="profile image"
-            className="w-7 aspect-square  rounded-lg"
+            className="object-cover w-8/12"
+            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+            alt="default profile"
           />
-        ) : (
-          <div className="w-7 aspect-square rounded-lg grid place-items-center bg-[#f5f5f5]">
-            <img
-              className="object-cover w-8/12"
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
-              alt="default profile"
-            />
-          </div>
-        )}
-        <span>
-          {user.userProfiles!.nickname.length < 6
-            ? user.userProfiles?.nickname
-            : user.userProfiles?.nickname.slice(0, 5) + "..."}
-        </span>
-        <Button
-          intent="primary"
-          rounded="sm"
-          textIntent="primary"
-          className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
-          onClick={(e) =>
-            handleClickApprove(e, {
-              userId: user.userId,
-              recruitId,
-              role: user.userProfiles!.role,
-            })
-          }
-        >
-          승인
-        </Button>
-      </Link>
-    ));
+        </div>
+      )}
+      <span>
+        {user.userProfiles!.nickname.length < 6
+          ? user.userProfiles?.nickname
+          : user.userProfiles?.nickname.slice(0, 5) + "..."}
+      </span>
+      <Button
+        intent="primary"
+        rounded="sm"
+        textIntent="primary"
+        className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
+        onClick={(e) =>
+          handleClickApprove(e, {
+            userId: user.userId,
+            recruitId,
+            role: user.userProfiles!.role,
+          })
+        }
+      >
+        승인
+      </Button>
+    </Link>
+  );
 }
 
 export default NotApprovedUser;

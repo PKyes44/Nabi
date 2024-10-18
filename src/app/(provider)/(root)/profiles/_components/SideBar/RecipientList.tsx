@@ -31,16 +31,30 @@ function RecipientList({ recruit, profile }: RecipientListProps) {
 
       <ul className="mt-2 flex flex-col gap-y-3">
         {/* 승인된 유저는 언제나 보여주기 */}
-        <ApprovedUser meets={recruit.recipientMeets} />
+        {recruit.recipientMeets
+          .filter((user) => user.status === "approved")
+          .map((user) => (
+            <li key={user.userId}>
+              <ApprovedUser user={user} />
+            </li>
+          ))}
 
         {/* 인원이 다 차지 않았으면 신청자 보여주기 */}
-        {recruit.maxRecipientRecruits > applicantCount(recruit) && (
-          <NotApprovedUser
-            meets={recruit.recipientMeets}
-            profile={profile}
-            recruitId={recruit.recruitId}
-          ></NotApprovedUser>
-        )}
+        {recruit.maxRecipientRecruits > applicantCount(recruit) &&
+          recruit.maxRecipientRecruits >
+            recruit.recipientMeets.filter((user) => user.status === "approved")
+              .length &&
+          recruit.recipientMeets
+            .filter((user) => user.status === "pending")
+            .map((user) => (
+              <li key={user.userId}>
+                <NotApprovedUser
+                  profile={profile}
+                  recruitId={recruit.recruitId}
+                  user={user}
+                />
+              </li>
+            ))}
       </ul>
     </section>
   );
