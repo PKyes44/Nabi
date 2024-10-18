@@ -5,7 +5,10 @@ import { Recruits } from "@/types/customDatabase";
 const createRecruit = async (data: Recruits["Insert"]) => {
   const { data: recruitData, error } = await supabase
     .from("recruits")
-    .insert(data);
+    .insert(data)
+    .select("*")
+    .returns<Recruits["Insert"]>()
+    .single();
   if (error) throw new Error(error.message);
 
   return recruitData;
@@ -126,7 +129,7 @@ const getInfiniteRecruits = async (page: number) => {
     .from("recruits")
     .select(query)
     .order("createdAt", { ascending: false })
-    .range(page * 5, page * 5 + 5)
+    .range(page * 5, page * 5 + 4)
     .returns<
       (Tables<"recruits"> & {
         userProfiles: Tables<"userProfiles">;
