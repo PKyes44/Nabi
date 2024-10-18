@@ -6,6 +6,7 @@ interface NotifyStore {
   setIsCheckedNotifyList: (isCheckedNotifyList: boolean) => void;
   notifyList: Notify[];
   addNotify: (notifiation: Notify) => void;
+  resetNotifyList: () => void;
 }
 
 export const useNotifyStore = create<NotifyStore>((set) => ({
@@ -17,4 +18,5 @@ export const useNotifyStore = create<NotifyStore>((set) => ({
     set((state) => ({
       notifyList: [...state.notifyList, notify],
     })),
+  resetNotifyList: () => set({ notifyList: [] }),
 }));

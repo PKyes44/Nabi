@@ -55,7 +55,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
 
   return (
     <>
-      <li>
+      <li className="w-10 h-10">
         <button onClick={handleClickShowNotifies}>
           <Image
             width={150}

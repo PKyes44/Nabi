@@ -8,6 +8,7 @@ import regularSponsorShipAPI from "./regularSponsorShip.api";
 import repliesAPI from "./replies.api";
 import roomsAPI from "./rooms.api";
 import sponsorMeetsAPI from "./sponsorMeets.api";
+import sponsorShipAPI from "./sponsorShip.api";
 import storageAPI from "./storage.api";
 import storeDataAPI from "./storeData.api";
 import storeOwnersAPI from "./storeOwners.api";
@@ -19,7 +20,8 @@ const clientApi = {
   recruits: recruitsAPI,
   storage: storageAPI,
   storeOwners: storeOwnersAPI,
-  sponsorShip: regularSponsorShipAPI,
+  regularSponsorShip: regularSponsorShipAPI,
+  sponsorShip: sponsorShipAPI,
   freeMeals: freeMealsAPI,
   rooms: roomsAPI,
   chats: chatsAPI,

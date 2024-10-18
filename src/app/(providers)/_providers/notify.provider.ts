@@ -17,13 +17,13 @@ function NotificationProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     supabase
-      .channel("notifications")
+      .channel("freeMeals")
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "freeMeals" },
         async (payload) => {
-          if (currentUser?.role !== "recipient") return;
           console.log("FreeMeals Table Change received!", payload);
+          if (currentUser?.role !== "recipient") return;
 
           const storeId = payload.new.storeId;
           const storeData = await clientApi.storeData.getStoreDataByStoreId(
@@ -56,7 +56,7 @@ function NotificationProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     supabase
-      .channel("notifications")
+      .channel("chats")
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chats" },
@@ -66,11 +66,74 @@ function NotificationProvider({ children }: PropsWithChildren) {
           const from = payload.new.from;
           const to = payload.new.to;
 
+          console.log(from, to, currentUser?.userId);
+          if (to !== currentUser?.userId) return;
+          console.log("received chat !");
+
           const sendUser = await clientApi.profiles.getProfileByUserId(to);
 
           const title = "새로운 채팅 알림";
           const content = `${sendUser?.nickname}님께서 채팅메시지를 보내셨습니다`;
           const url = `/chats?showChatUserId=${from}`;
+          const notifiedAt = dayjs(payload.commit_timestamp).format(
+            "YYYY-MM-DD HH:mm:ss"
+          );
+
+          const notify: Notify = {
+            title,
+            content,
+            url,
+            notifiedAt,
+          };
+          addNotify(notify);
+          setIsCheckedNotifyList(false);
+        }
+      )
+      .subscribe();
+  }, []);
+
+  useEffect(() => {
+    supabase
+      .channel("sponsorShipOrder")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "sponsorShipOrder" },
+        async (payload) => {
+          console.log("sponsorship order Table Change received!", payload);
+
+          const sponsorShipId = payload.new.sponsorShipId;
+          const sponsorShipData =
+            await clientApi.sponsorShip.getSponsorShipBySponsorShipId(
+              sponsorShipId
+            );
+
+          if (sponsorShipData.sponsorId !== currentUser?.userId) return;
+        }
+      )
+      .subscribe();
+  }, []);
+
+  useEffect(() => {
+    supabase
+      .channel("sponsorShip")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "sponsorShip" },
+        async (payload) => {
+          console.log("sponsorship Table Change received!", payload);
+
+          const recipientId = payload.new.recipientId;
+
+          if (recipientId !== currentUser?.userId) return;
+
+          const sponsorId = payload.new.sponsorId;
+          const sponsorProfile = await clientApi.profiles.getProfileByUserId(
+            sponsorId
+          );
+
+          const title = "새로운 정기 결연 등록";
+          const content = `${sponsorProfile?.nickname}님께서 당신에게 정기후원을 하기로 결정하셨습니다`;
+          const url = "/";
           const notifiedAt = dayjs(payload.commit_timestamp).format(
             "YYYY-MM-DD HH:mm:ss"
           );

@@ -33,7 +33,7 @@ function RegularSponsorShipBillingPage({
       authKey: string;
       price: number;
       recipientId: string;
-    }) => clientApi.sponsorShip.getBillingKey(requestData),
+    }) => clientApi.regularSponsorShip.getBillingKey(requestData),
     onSuccess: (responseData: PaymentResponse) => {
       console.log("success:", responseData);
       setReceipt(responseData);
