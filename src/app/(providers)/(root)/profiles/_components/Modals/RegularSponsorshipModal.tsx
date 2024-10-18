@@ -1,5 +1,5 @@
 "use client";
-import RegularSponsorShip from "@/app/(provider)/(root)/profiles/_components/Modals/RegularSponsorShip";
+import RegularSponsorShip from "@/app/(providers)/(root)/profiles/_components/Modals/RegularSponsorShip";
 import Modal from "@/components/Modal/Modal";
 import { useModal } from "@/zustand/modal.store";
 

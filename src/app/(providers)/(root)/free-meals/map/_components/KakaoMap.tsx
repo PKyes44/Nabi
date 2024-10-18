@@ -4,7 +4,9 @@
 
 import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
+import { ToastType } from "@/types/toast.types";
 import { useModal } from "@/zustand/modal.store";
+import { useToastStore } from "@/zustand/toast.store";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import StoreDetailModal from "./StoreDetailModal";
@@ -37,6 +39,7 @@ function KakaoMap({
     null
   );
   const setActiveModal = useModal((state) => state.setActiveModal);
+  const addToast = useToastStore((state) => state.addToast);
 
   const getStoreDatas = async (map: {
     getLevel: () => any;
@@ -82,7 +85,17 @@ function KakaoMap({
 
   useEffect(() => {
     if (!window.kakao) {
-      alert("지도를 찾을 수 없습니다");
+      const id = crypto.randomUUID();
+      const title = "지도 로딩 실패";
+      const content = "지도를 찾을 수 없습니다.\n홈페이지로 이동됩니다";
+      const status = "start";
+      const toast: ToastType = {
+        id,
+        title,
+        content,
+        status,
+      };
+      addToast(toast);
       return router.replace("/");
     }
 
