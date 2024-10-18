@@ -62,19 +62,15 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         <span className="font-normal text-xs">{createdAt}</span>
       </div>
       {currentUser?.role === "recipient" ? (
-        <>
-          <ApplyToRecipientButton
-            recruitId={recruit.recruitId}
-            authorId={recruit.authorId}
-          />
-        </>
+        <ApplyToRecipientButton
+          recruitId={recruit.recruitId}
+          authorId={recruit.authorId}
+        />
       ) : (
-        <>
-          <ApplyToSponsorButton
-            recruitId={recruit.recruitId}
-            authorId={recruit.authorId}
-          />
-        </>
+        <ApplyToSponsorButton
+          recruitId={recruit.recruitId}
+          authorId={recruit.authorId}
+        />
       )}
       <article className="flex flex-col gap-y-3">
         <h2 className="font-bold text-lg">{recruit.title}</h2>
