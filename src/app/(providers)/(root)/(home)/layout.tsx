@@ -1,16 +1,19 @@
 import Container from "@/components/Container/Container";
-import { PropsWithChildren } from "react";
 import FreeMeals from "./_components/FreeMeals/FreeMeals";
 import Users from "./_components/Users/Users";
 
-interface HomePageLayoutProps {
-  page: string;
-}
+type HomePageLayoutProps = {
+  children: React.ReactNode;
+  params: {
+    searchParams: {
+      page: string;
+    };
+  };
+};
 
-function HomePageLayout({
-  children,
-  page,
-}: PropsWithChildren<HomePageLayoutProps>) {
+function HomePageLayout({ children, params }: HomePageLayoutProps) {
+  const page = params.searchParams?.page;
+
   return (
     <Container
       width="lg"
