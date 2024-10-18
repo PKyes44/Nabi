@@ -102,17 +102,18 @@ const getInfiniteRecruitsByUserId = async (
     .range(page * 5, page * 5 + 4)
     .returns<
       {
-        userId: string;
-        recruits: (Tables<"recruits"> & {
+        recruitId: string;
+        recruits: Tables<"recruits"> & {
           userProfiles: Tables<"userProfiles">;
           replies: (Tables<"replies"> & {
             userProfiles: Tables<"userProfiles">;
           })[];
-        })[];
+        };
       }[]
     >();
+
   const recruits = recruitsData?.map((data) => {
-    return data.recruits!;
+    return data.recruits;
   });
 
   return recruits;
