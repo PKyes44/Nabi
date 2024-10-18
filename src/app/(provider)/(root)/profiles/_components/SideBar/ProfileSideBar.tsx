@@ -20,19 +20,18 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     enabled: profile.role === "sponsor" && currentUserId === profile.userId,
   });
 
-  // 다른 유저 프로필 봤을 때 최근 후원자 불러오기
-  const { data: recentlySponsors } = useQuery({
-    queryKey: ["sponsorMeets", { profile }],
-    queryFn: () => clientApi.sponsorMeets.getRecentlySponsors(profile.userId),
-    enabled: profile.role === "recipient",
-  });
-
   // 다른 유저 프로필 봤을 때 최근 후원아동 불러오기
   const { data: recentlyRecipients } = useQuery({
-    queryKey: ["recipientMeets", { profile }],
-    queryFn: () =>
-      clientApi.recipientMeets.getRecentlyRecipient(profile.userId),
+    queryKey: ["sponsorMeets", { profile }],
+    queryFn: () => clientApi.sponsorMeets.getRecentlyRecipients(profile.userId),
     enabled: profile.role === "sponsor",
+  });
+
+  // 다른 유저 프로필 봤을 때 최근 후원자 불러오기
+  const { data: recentlySponsors } = useQuery({
+    queryKey: ["recipientMeets", { profile }],
+    queryFn: () => clientApi.recipientMeets.getRecentlySponsors(profile.userId),
+    enabled: profile.role === "recipient",
   });
 
   return (
@@ -69,7 +68,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
             <strong>이 후원자가 최근에 후원한 아이들</strong>
             <ul>
               {recentlyRecipients?.map((recipient) => (
-                <li key={recipient.userId}>
+                <li key={recipient?.userId}>
                   {recipient.userProfiles?.nickname}
                 </li>
               ))}

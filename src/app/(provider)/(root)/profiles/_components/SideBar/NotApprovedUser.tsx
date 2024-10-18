@@ -34,7 +34,7 @@ function NotApprovedUser({ profile, meets, recruitId }: NotApprovedUserProps) {
   // 수락하기
   const { mutate: approved } = useMutation({
     mutationFn: ({ userId, recruitId, role }: ApproveType) =>
-      clientApi.sponsorMeets.approvedUser(userId, recruitId, role),
+      clientApi.sponsorMeets.approveUser(userId, recruitId, role),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["myRecruits", { userId: profile.userId }],

@@ -10,34 +10,26 @@ const getRecruitIdByUserId = async (userId: string) => {
   return recruitIds;
 };
 
-const getRecentlySponsors = async (userId: string) => {
-  const { data: recruitIds } = await supabase
-    .from("recipientMeets")
-    .select("recruitId")
+const getRecentlyRecipients = async (userId: string) => {
+  const { data: recentlyRecipientsData, error } = await supabase
+    .from("sponsorMeets")
+    .select(
+      "recruitId, recruits!inner(recruitId, recipientMeets!inner(userId, userProfiles!inner(nickname)))"
+    )
     .eq("userId", userId)
-    .eq("status", "approved");
+    .eq("status", "approved")
+    .order("createdAt", { ascending: false })
+    .limit(5);
 
-  if (recruitIds) {
-    const { data: sponRelationship } = await supabase
-      .from("sponsorMeets")
-      .select("userId, userProfiles(nickname)")
-      .in(
-        "recruitId",
-        recruitIds.map((data) => data.recruitId)
-      )
-      .eq("status", "approved")
-      .order("createdAt", { ascending: false })
-      .limit(5);
-    if (!sponRelationship) return;
-    return sponRelationship;
-  }
+  if (error) throw new Error(error.message);
+
+  const a = recentlyRecipientsData
+    .map((el) => el.recruits)
+    .map((el) => el?.recipientMeets);
+  return a[0];
 };
 
-const approvedUser = async (
-  userId: string,
-  recruitId: string,
-  role: string
-) => {
+const approveUser = async (userId: string, recruitId: string, role: string) => {
   await supabase
     .from(role === "sponsor" ? "sponsorMeets" : "recipientMeets")
     .update({ status: "approved" })
@@ -69,8 +61,8 @@ const insertSponsorMeet = async (
 
 const sponsorMeetsAPI = {
   getRecruitIdByUserId,
-  getRecentlySponsors,
-  approvedUser,
+  getRecentlyRecipients,
+  approveUser,
   getRecipientByUserId,
   insertSponsorMeet,
 };
