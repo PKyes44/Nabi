@@ -3,8 +3,7 @@ import clientApi from "@/api/clientSide/api";
 import { UserProfiles } from "@/types/customDatabase";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
-import RecipientList from "./RecipientList";
-import SponsorList from "./SponsorList";
+import ApplicantList from "./ApplicantList";
 
 interface ProfileSideBarProps {
   profile: UserProfiles["Row"];
@@ -40,27 +39,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
         currentUserId === profile.userId ? (
           // 후원자 본인 프로필
           <ul className="flex flex-col gap-y-8 h-full text-start">
-            {myRecruits?.map((recruit) => (
-              <li
-                className="flex flex-col gap-y-2 h-full bg-white py-3 px-2 shadow-md rounded-lg"
-                key={recruit.recruitId}
-              >
-                <h3 className="font-light mx-auto text-center">
-                  <span className="font-bold">
-                    {recruit.title.length > 5
-                      ? recruit.title.slice(0, 5) + "..."
-                      : recruit.title}
-                  </span>{" "}
-                  글의 신청자 목록
-                </h3>
-                <br />
-                <div className="text-center">
-                  <SponsorList recruit={recruit} profile={profile} />
-                  <br />
-                  <RecipientList recruit={recruit} profile={profile} />
-                </div>
-              </li>
-            ))}
+            <ApplicantList myRecruits={myRecruits!} profile={profile} />
           </ul>
         ) : (
           // 다른 후원자의 프로필
