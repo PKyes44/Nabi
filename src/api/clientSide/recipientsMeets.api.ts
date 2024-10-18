@@ -20,6 +20,14 @@ const getRecentlySponsors = async (userId: string) => {
   return a[0];
 };
 
-const recipientsMeetsAPI = { getRecentlySponsors };
+const approveRecipient = async (userId: string, recruitId: string) => {
+  await supabase
+    .from("recipientMeets")
+    .update({ status: "approved" })
+    .eq("userId", userId)
+    .eq("recruitId", recruitId);
+};
+
+const recipientsMeetsAPI = { getRecentlySponsors, approveRecipient };
 
 export default recipientsMeetsAPI;

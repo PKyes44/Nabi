@@ -29,9 +29,9 @@ const getRecentlyRecipients = async (userId: string) => {
   return a[0];
 };
 
-const approveUser = async (userId: string, recruitId: string, role: string) => {
+const approveSponsor = async (userId: string, recruitId: string) => {
   await supabase
-    .from(role === "sponsor" ? "sponsorMeets" : "recipientMeets")
+    .from("sponsorMeets")
     .update({ status: "approved" })
     .eq("userId", userId)
     .eq("recruitId", recruitId);
@@ -62,7 +62,7 @@ const insertSponsorMeet = async (
 const sponsorMeetsAPI = {
   getRecruitIdByUserId,
   getRecentlyRecipients,
-  approveUser,
+  approveSponsor,
   getRecipientByUserId,
   insertSponsorMeet,
 };
