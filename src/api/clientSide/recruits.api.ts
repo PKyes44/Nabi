@@ -94,7 +94,7 @@ const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
     .select(query)
     .eq("authorId", userId)
     .order("createdAt", { ascending: false })
-    .range(page * 5, page * 5 + 5)
+    .range(page * 5, page * 5 + 4)
     .returns<
       (Tables<"recruits"> & {
         userProfiles: Tables<"userProfiles">;
@@ -115,7 +115,7 @@ const getInfiniteRecruits = async (page: number) => {
     .from("recruits")
     .select(query)
     .order("createdAt", { ascending: false })
-    .range(page * 5, page * 5 + 5)
+    .range(page * 5, page * 5 + 4)
     .returns<
       (Tables<"recruits"> & {
         userProfiles: Tables<"userProfiles">;

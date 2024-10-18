@@ -2,6 +2,7 @@ import authAPI from "./auth.api";
 import chatsAPI from "./chats.api";
 import freeMealsAPI from "./freeMeals.api";
 import profilesAPI from "./profiles.api";
+import recipientMeetsAPI from "./recipientMeets.api";
 import recruitsAPI from "./recruits.api";
 import regularSponsorShipAPI from "./regularSponsorShip.api";
 import repliesAPI from "./replies.api";
@@ -24,6 +25,7 @@ const clientApi = {
   chats: chatsAPI,
   replies: repliesAPI,
   sponsorMeets: sponsorMeetsAPI,
+  recipientMeets: recipientMeetsAPI,
 };
 
 export default clientApi;
