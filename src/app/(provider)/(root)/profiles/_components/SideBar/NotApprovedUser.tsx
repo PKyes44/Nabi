@@ -32,7 +32,7 @@ function NotApprovedUser({ profile, meets, recruitId }: NotApprovedUserProps) {
   const queryClient = useQueryClient();
 
   // 수락하기
-  const { mutate: approved } = useMutation({
+  const { mutate: approve } = useMutation({
     mutationFn: ({ userId, recruitId, role }: ApproveType) => {
       if (role === "sponsor")
         return clientApi.sponsorMeets.approveSponsor(userId, recruitId);
@@ -47,8 +47,12 @@ function NotApprovedUser({ profile, meets, recruitId }: NotApprovedUserProps) {
     },
   });
 
-  const handleClickApproved = (data: ApproveType) => {
-    approved(data);
+  const handleClickApprove = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    data: ApproveType
+  ) => {
+    e.preventDefault();
+    approve(data);
   };
 
   return meets
@@ -84,14 +88,13 @@ function NotApprovedUser({ profile, meets, recruitId }: NotApprovedUserProps) {
           rounded="sm"
           textIntent="primary"
           className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
-          onClick={(e) => {
-            e.preventDefault();
-            handleClickApproved({
+          onClick={(e) =>
+            handleClickApprove(e, {
               userId: user.userId,
               recruitId,
               role: user.userProfiles!.role,
-            });
-          }}
+            })
+          }
         >
           승인
         </Button>

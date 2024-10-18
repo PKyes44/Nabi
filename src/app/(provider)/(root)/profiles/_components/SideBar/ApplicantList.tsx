@@ -3,7 +3,7 @@ import RecipientList from "./RecipientList";
 import SponsorList from "./SponsorList";
 
 interface ApplicantListProps {
-  myRecruits: (Tables<"recruits"> & {
+  recruit: Tables<"recruits"> & {
     sponsorMeets: (Pick<Tables<"sponsorMeets">, "userId" | "status"> & {
       userProfiles: Tables<"userProfiles"> | null;
     })[];
@@ -11,17 +11,14 @@ interface ApplicantListProps {
     recipientMeets: (Pick<Tables<"recipientMeets">, "userId" | "status"> & {
       userProfiles: Tables<"userProfiles"> | null;
     })[];
-  })[];
+  };
 
   profile: Tables<"userProfiles">;
 }
 
-function ApplicantList({ myRecruits, profile }: ApplicantListProps) {
-  return myRecruits?.map((recruit) => (
-    <li
-      className="flex flex-col gap-y-2 h-full bg-white py-3 px-2 shadow-md rounded-lg"
-      key={recruit.recruitId}
-    >
+function ApplicantList({ recruit, profile }: ApplicantListProps) {
+  return (
+    <>
       <h3 className="font-light mx-auto text-center">
         <span className="font-bold">
           {recruit.title.length > 5
@@ -36,8 +33,8 @@ function ApplicantList({ myRecruits, profile }: ApplicantListProps) {
         <br />
         <RecipientList recruit={recruit} profile={profile} />
       </div>
-    </li>
-  ));
+    </>
+  );
 }
 
 export default ApplicantList;

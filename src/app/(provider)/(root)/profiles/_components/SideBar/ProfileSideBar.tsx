@@ -1,12 +1,12 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
-import { UserProfiles } from "@/types/customDatabase";
+import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import ApplicantList from "./ApplicantList";
 
 interface ProfileSideBarProps {
-  profile: UserProfiles["Row"];
+  profile: Tables<"userProfiles">;
 }
 
 function ProfileSideBar({ profile }: ProfileSideBarProps) {
@@ -39,7 +39,14 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
         currentUserId === profile.userId ? (
           // 후원자 본인 프로필
           <ul className="flex flex-col gap-y-8 h-full text-start">
-            <ApplicantList myRecruits={myRecruits!} profile={profile} />
+            {myRecruits?.map((recruit) => (
+              <li
+                className="flex flex-col gap-y-2 h-full bg-white py-3 px-2 shadow-md rounded-lg"
+                key={recruit.recruitId}
+              >
+                <ApplicantList recruit={recruit} profile={profile} />
+              </li>
+            ))}
           </ul>
         ) : (
           // 다른 후원자의 프로필

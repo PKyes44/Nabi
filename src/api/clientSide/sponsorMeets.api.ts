@@ -11,11 +11,11 @@ const getRecruitIdByUserId = async (userId: string) => {
 };
 
 const getRecentlyRecipients = async (userId: string) => {
+  const query =
+    "recruitId, recruits!inner(recruitId, recipientMeets!inner(userId, userProfiles!inner(nickname)))";
   const { data: recentlyRecipientsData, error } = await supabase
     .from("sponsorMeets")
-    .select(
-      "recruitId, recruits!inner(recruitId, recipientMeets!inner(userId, userProfiles!inner(nickname)))"
-    )
+    .select(query)
     .eq("userId", userId)
     .eq("status", "approved")
     .order("createdAt", { ascending: false })
