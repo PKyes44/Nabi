@@ -1,3 +1,4 @@
+import { supabase } from "@/supabase/client";
 import axios from "axios";
 
 const serverClient = axios.create({
@@ -16,8 +17,34 @@ const getBillingKey = async (requestData: {
   return data;
 };
 
+const getMyRegularSponsorships = async (userId: string) => {
+  const { data: myRegularSponsorships } = await supabase
+    .from("regularSponsorship")
+    .select("*")
+    .eq("sponsorId", userId);
+  return myRegularSponsorships;
+};
+
+const addRegularSponsorship = async (data: {
+  sponsorId: string;
+  recipientId: string;
+}) => {
+  await supabase.from("regularSponsorship").insert(data);
+};
+
+const stopRegularSponsorship = async (userId: string, recipientId: string) => {
+  await supabase
+    .from("regularSponsorship")
+    .delete()
+    .eq("recipientId", recipientId)
+    .eq("sponsorId", userId);
+};
+
 const regularSponsorShipAPI = {
   getBillingKey,
+  getMyRegularSponsorships,
+  addRegularSponsorship,
+  stopRegularSponsorship,
 };
 
 export default regularSponsorShipAPI;
