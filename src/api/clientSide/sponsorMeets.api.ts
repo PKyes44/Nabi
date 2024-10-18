@@ -55,9 +55,9 @@ const insertSponsorMeet = async (
 };
 
 const getSponsorMeets = async () => {
-  const response = await supabase.from("sponsorMeets").select("*");
-  const recruitIds = response.data;
-  return recruitIds;
+  const { data } = await supabase.from("sponsorMeets").select("*");
+
+  return data;
 };
 
 const sponsorMeetsAPI = {

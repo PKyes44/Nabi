@@ -2,9 +2,8 @@ import { supabase } from "@/supabase/client";
 import { Database } from "@/supabase/database.types";
 
 const getRecipientMeets = async () => {
-  const response = await supabase.from("recipientMeets").select("*");
-  const recruitIds = response.data;
-  return recruitIds;
+  const { data } = await supabase.from("recipientMeets").select("*");
+  return data;
 };
 
 const insertRecipientMeets = async (
