@@ -2,16 +2,16 @@ import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { Recruits } from "@/types/customDatabase";
 
-const createRecruit = async (
-  data: Recruits["Insert"]
-): Promise<{ recruitId: string }> => {
+const createRecruit = async (data: Recruits["Insert"]) => {
   const { data: recruitData, error } = await supabase
     .from("recruits")
     .insert(data)
-    .select("*");
+    .select("*")
+    .returns<Recruits["Insert"]>()
+    .single();
   if (error) throw new Error(error.message);
 
-  return recruitData[0];
+  return recruitData;
 };
 
 const getRecruits = async () => {

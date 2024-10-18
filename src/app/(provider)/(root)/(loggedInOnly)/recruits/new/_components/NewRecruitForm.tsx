@@ -58,10 +58,6 @@ function NewRecruitForm() {
   >({
     mutationFn: (data) => clientApi.recruits.createRecruit(data),
     onSuccess: (newRecruit) => {
-      queryClient.invalidateQueries({
-        queryKey: ["recruits", { userId: null }],
-      });
-
       const sponsorMeetData = {
         recruitId: newRecruit.recruitId,
         userId: userId,
