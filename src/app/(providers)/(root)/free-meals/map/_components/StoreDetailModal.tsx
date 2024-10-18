@@ -1,4 +1,4 @@
-import StoreDetails from "@/app/(provider)/(root)/free-meals/map/_components/StoreDetails";
+import StoreDetails from "@/app/(providers)/(root)/free-meals/map/_components/StoreDetails";
 import Modal from "@/components/Modal/Modal";
 import { Tables } from "@/supabase/database.types";
 import { useModal } from "@/zustand/modal.store";

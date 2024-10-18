@@ -7,6 +7,8 @@ import { Database } from "@/supabase/database.types";
 import { UserInfo } from "@/types/auth.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { Role } from "@/types/profiles.types";
+import { ToastType } from "@/types/toast.types";
+import { useToastStore } from "@/zustand/toast.store";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
@@ -33,6 +35,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const [nickname, setNickname] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const addToast = useToastStore((state) => state.addToast);
 
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => clientApi.auth.signUp(userInfo),
@@ -53,7 +56,17 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
       insertProfile(insertProfileData);
     },
     onError: (...arg) => {
-      alert("회원가입 실패");
+      const id = crypto.randomUUID();
+      const title = "회원가입 실패";
+      const content = "회원가입에 실패하였습니다";
+      const status = "start";
+      const toast: ToastType = {
+        id,
+        title,
+        content,
+        status,
+      };
+      addToast(toast);
       console.log("error: ", arg);
     },
   });
