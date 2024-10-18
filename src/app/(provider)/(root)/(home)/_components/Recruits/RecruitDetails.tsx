@@ -2,6 +2,7 @@
 import { Tables } from "@/supabase/database.types";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import Image from "next/image";
 import Link from "next/link";
 import ApplyButton from "./ApplyButton";
 import RecruitCount from "./RecruitCount";
@@ -36,16 +37,20 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           className="flex items-center gap-x-5 "
         >
           {recruit.userProfiles.profileImageUrl ? (
-            <img
+            <Image
               src={recruit.userProfiles.profileImageUrl}
               alt="profile image"
               className="w-16 rounded-full aspect-square object-cover"
+              width={46}
+              height={46}
             />
           ) : (
-            <img
+            <Image
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
               alt="profile image"
-              className="w-16 rounded-full aspect-square object-cover"
+              className=" rounded-full aspect-square object-cover"
+              width={46}
+              height={46}
             />
           )}
           <div className="flex flex-col">
@@ -68,7 +73,9 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
           <div className="flex gap-x-2 items-center group relative">
-            <img
+            <Image
+              width={20}
+              height={20}
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Location.png?t=2024-10-15T19%3A39%3A08.745Z"
               alt="location icon"
             />
@@ -78,7 +85,9 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             </span>
           </div>
           <div className="flex gap-x-2 items-center group relative">
-            <img
+            <Image
+              width={20}
+              height={20}
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Date.png"
               alt="date icon"
             />
