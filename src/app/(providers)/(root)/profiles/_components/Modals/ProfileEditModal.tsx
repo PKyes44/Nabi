@@ -1,5 +1,5 @@
 "use client";
-import ProfileEditForm from "@/app/(provider)/(root)/profiles/_components/ProfileEditForm";
+import ProfileEditForm from "@/app/(providers)/(root)/profiles/_components/ProfileEditForm";
 import Modal from "@/components/Modal/Modal";
 import { useModal } from "@/zustand/modal.store";
 

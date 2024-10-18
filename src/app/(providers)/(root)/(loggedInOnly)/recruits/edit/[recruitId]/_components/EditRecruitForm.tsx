@@ -3,7 +3,9 @@ import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
+import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useToastStore } from "@/zustand/toast.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
@@ -51,6 +53,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const author = useAuthStore((state) => state.currentUser);
   const today = dayjs().format("YYYY-MM-DD");
+  const addToast = useToastStore((state) => state.addToast);
 
   const { data: recruit } = useQuery({
     queryKey: ["recruit"],
@@ -65,7 +68,20 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
     mutationFn: (data) => clientApi.recruits.editRecruit(recruitId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recruits"] });
-      alert("수정되었습니다.");
+
+      const id = crypto.randomUUID();
+      const title = "봉사활동 구인글 수정 성공";
+      const content =
+        "봉사활동 구인글 수정을 완료하였습니다\n홈페이지로 이동됩니다";
+      const status = "start";
+      const toast: ToastType = {
+        id,
+        title,
+        content,
+        status,
+      };
+      addToast(toast);
+
       router.push("/");
     },
     onError: (e) => {

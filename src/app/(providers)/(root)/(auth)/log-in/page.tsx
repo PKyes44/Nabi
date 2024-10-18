@@ -5,6 +5,8 @@ import Container from "@/components/Container/Container";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { UserInfo } from "@/types/auth.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
+import { ToastType } from "@/types/toast.types";
+import { useToastStore } from "@/zustand/toast.store";
 import { useMutation } from "@tanstack/react-query";
 import { ComponentProps, useState } from "react";
 
@@ -20,10 +22,24 @@ const initialErrMsgs = {
 };
 
 function LogInPage() {
+  const addToast = useToastStore((state) => state.addToast);
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
 
   const { mutate: logIn } = useMutation({
     mutationFn: (logInData: UserInfo) => clientApi.auth.logIn(logInData),
+    onSuccess: () => {
+      const id = crypto.randomUUID();
+      const title = "로그인 이벤트";
+      const content = "로그인 버튼을 누르셨습니다";
+      const status = "start";
+      const toast: ToastType = {
+        id,
+        title,
+        content,
+        status,
+      };
+      addToast(toast);
+    },
     onError: (...arg) => {
       setErrMsgs((prevErrMsgs) => ({
         ...prevErrMsgs,
@@ -44,6 +60,7 @@ function LogInPage() {
     }>
   ) => {
     e.preventDefault();
+
     setErrMsgs(initialErrMsgs);
 
     const email = e.target.email.value;
