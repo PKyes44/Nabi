@@ -6,7 +6,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ComponentProps, useState } from "react";
@@ -36,7 +36,7 @@ function CreateFreeMealForm() {
   const queryClient = useQueryClient();
   const [errorMsgs, setErrorMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const sponsor = useAuthStore((state) => state.currentUser);
-  const setActiveModal = useModal((state) => state.setActiveModal);
+  const setActiveModal = useModalStore((state) => state.setActiveModal);
 
   const { data: stores, isLoading } = useQuery({
     queryKey: ["storeOwners", { sponsorId: sponsor?.userId }],

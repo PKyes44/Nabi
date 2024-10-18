@@ -9,7 +9,6 @@ const getStoreDatasBySwLatLngAndNeLatLng = async ({
   swLatLng: LatLng;
   neLatLng: LatLng;
 }) => {
-  console.log(swLatLng, neLatLng);
   const { error, data } = await supabase
     .from("storeDatas")
     .select()
@@ -20,6 +19,19 @@ const getStoreDatasBySwLatLngAndNeLatLng = async ({
   if (error) throw new Error(error.message);
   return data;
 };
+
+const getStoreDataByStoreId = async (storeId: string) => {
+  const { data: storeData, error } = await supabase
+    .from("storeDatas")
+    .select("lat, lng, brandName")
+    .eq("storeId", storeId)
+    .single();
+
+  if (error) throw new Error(error.message);
+
+  return storeData;
+};
+
 const updateStoreData = async (
   updateData: Database["public"]["Tables"]["storeDatas"]["Row"]
 ) => {
@@ -36,6 +48,7 @@ const updateStoreData = async (
 const storeDataAPI = {
   getStoreDatasBySwLatLngAndNeLatLng,
   updateStoreData,
+  getStoreDataByStoreId,
 };
 
 export default storeDataAPI;

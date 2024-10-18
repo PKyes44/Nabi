@@ -5,7 +5,7 @@
 import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
 import { ToastType } from "@/types/toast.types";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -38,7 +38,7 @@ function KakaoMap({
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer | null>(
     null
   );
-  const setActiveModal = useModal((state) => state.setActiveModal);
+  const setActiveModal = useModalStore((state) => state.setActiveModal);
   const addToast = useToastStore((state) => state.addToast);
 
   const getStoreDatas = async (map: {

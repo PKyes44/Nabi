@@ -3,7 +3,7 @@
 import Button from "@/components/Button/Button";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { useRouter } from "next/navigation";
 import ProfileEditModal from "./Modals/ProfileEditModal";
 import RegularSponsorshipModal from "./Modals/RegularSponsorshipModal";
@@ -16,7 +16,7 @@ interface ProfileButtonsProps {
 function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const router = useRouter();
   const user = useAuthStore((state) => state.currentUser);
-  const setActiveModal = useModal((state) => state.setActiveModal);
+  const setActiveModal = useModalStore((state) => state.setActiveModal);
 
   const handleClickProfileEdit = () => {
     setActiveModal(<ProfileEditModal />);

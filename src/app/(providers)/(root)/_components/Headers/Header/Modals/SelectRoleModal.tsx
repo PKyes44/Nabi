@@ -1,12 +1,12 @@
 import Modal from "@/components/Modal/Modal";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { useRouter } from "next/navigation";
 import { FaChildren } from "react-icons/fa6";
 import { MdVolunteerActivism } from "react-icons/md";
 
 function SelectRoleModal() {
   const router = useRouter();
-  const { activeModal, setActiveModal } = useModal();
+  const { activeModal, setActiveModal } = useModalStore();
 
   const handleClickSelectRole = (role: "recipient" | "sponsor") => {
     const href = `/sign-up?role=${role}`;

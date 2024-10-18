@@ -1,14 +1,14 @@
 import StoreDetails from "@/app/(providers)/(root)/free-meals/map/_components/StoreDetails";
 import Modal from "@/components/Modal/Modal";
 import { Tables } from "@/supabase/database.types";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 
 interface StoreDetailModalProps {
   detailData: Tables<"storeDatas">;
 }
 
 function StoreDetailModal({ detailData }: StoreDetailModalProps) {
-  const activeModal = useModal((state) => state.activeModal);
+  const activeModal = useModalStore((state) => state.activeModal);
   return (
     <>
       {activeModal && (

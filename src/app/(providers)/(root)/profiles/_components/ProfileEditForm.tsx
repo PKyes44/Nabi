@@ -5,7 +5,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { EditProfileData } from "@/types/profiles.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useEffect, useState } from "react";
 
@@ -21,7 +21,7 @@ function ProfileEditForm() {
   const queryClient = useQueryClient();
 
   const user = useAuthStore((state) => state.currentUser);
-  const setActiveModal = useModal((state) => state.setActiveModal);
+  const setActiveModal = useModalStore((state) => state.setActiveModal);
 
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const [isClickedPrimaryProfile, setIsClickedPrimaryProfile] = useState(false);
