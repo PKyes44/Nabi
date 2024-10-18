@@ -10,18 +10,16 @@ const getRecruitIdByUserId = async (userId: string) => {
   return recruitIds;
 };
 
-const getRecentlySponsorship = async (userId: string, role: string) => {
-  const meets = role === "sponsor" ? "sponsorMeets" : "recipientMeets";
-
+const getRecentlySponsors = async (userId: string) => {
   const { data: recruitIds } = await supabase
-    .from(meets)
+    .from("recipientMeets")
     .select("recruitId")
     .eq("userId", userId)
     .eq("status", "approved");
 
   if (recruitIds) {
     const { data: sponRelationship } = await supabase
-      .from(role === "sponsor" ? "recipientMeets" : "sponsorMeets")
+      .from("sponsorMeets")
       .select("userId, userProfiles(nickname)")
       .in(
         "recruitId",
@@ -71,7 +69,7 @@ const insertSponsorMeet = async (
 
 const sponsorMeetsAPI = {
   getRecruitIdByUserId,
-  getRecentlySponsorship,
+  getRecentlySponsors,
   approvedUser,
   getRecipientByUserId,
   insertSponsorMeet,

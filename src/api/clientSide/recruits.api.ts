@@ -41,11 +41,11 @@ const getSortedRecruits = async () => {
 };
 
 const getSortedMyRecruits = async (userId: string) => {
+  const query =
+    "*, sponsorMeets(userId, status, userProfiles(*)), recipientMeets(userId, status, userProfiles(*))";
   const response = await supabase
     .from("recruits")
-    .select(
-      "*, sponsorMeets(userId, status, userProfiles(*)), recipientMeets(userId, status, userProfiles(*))"
-    )
+    .select(query)
     .eq("authorId", userId)
     .order("createdAt", { ascending: false });
 
@@ -99,18 +99,23 @@ const getInfiniteRecruitsByUserId = async (
     .eq("userId", userId)
     .eq("status", "approved")
     .order("createdAt", { ascending: false })
-    .range(page * 5, page * 5 + 4);
-
+    .range(page * 5, page * 5 + 4)
+    .returns<
+      {
+        userId: string;
+        recruits: (Tables<"recruits"> & {
+          userProfiles: Tables<"userProfiles">;
+          replies: (Tables<"replies"> & {
+            userProfiles: Tables<"userProfiles">;
+          })[];
+        })[];
+      }[]
+    >();
   const recruits = recruitsData?.map((data) => {
     return data.recruits!;
   });
 
-  return recruits as (Tables<"recruits"> & {
-    userProfiles: Tables<"userProfiles">;
-    replies: (Tables<"replies"> & {
-      userProfiles: Tables<"userProfiles">;
-    })[];
-  })[];
+  return recruits;
 };
 
 const getInfiniteRecruits = async (page: number) => {
