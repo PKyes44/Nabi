@@ -49,17 +49,46 @@ function NewRecruitForm() {
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const author = useAuthStore((state) => state.currentUser);
   const today = dayjs().format("YYYY-MM-DD");
+  const userId = author?.userId;
 
   const { mutate: createRecruit } = useMutation<
-    unknown,
+    { recruitId: string },
     Error,
     Database["public"]["Tables"]["recruits"]["Insert"]
   >({
     mutationFn: (data) => clientApi.recruits.createRecruit(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recruits"] });
+    onSuccess: (newRecruit) => {
+      queryClient.invalidateQueries({
+        queryKey: ["recruits", { userId: null }],
+      });
+
+      const sponsorMeetData = {
+        recruitId: newRecruit.recruitId,
+        userId: userId,
+        status: "approved",
+      };
+
+      insertSponsorMeet(sponsorMeetData);
+
       alert("추가되었습니다.");
       router.push(`/`);
+    },
+    onError: (e) => {
+      alert(e.message);
+    },
+  });
+
+  const { mutate: insertSponsorMeet } = useMutation<
+    unknown,
+    Error,
+    Database["public"]["Tables"]["sponsorMeets"]["Insert"]
+  >({
+    mutationFn: (data) => clientApi.sponsorMeets.insertSponsorMeet(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sponsorMeets"] });
+      queryClient.invalidateQueries({
+        queryKey: ["recruits", { userId: null }],
+      });
     },
     onError: (e) => {
       alert(e.message);
@@ -74,7 +103,6 @@ function NewRecruitForm() {
     e: NewRecruitFormEvent
   ) => {
     e.preventDefault();
-
     if (!author?.userId) return;
 
     const maxSponsorRecruits = +e.target.maxSponsorRecruits.value;
@@ -134,7 +162,7 @@ function NewRecruitForm() {
       title,
       content,
       isEnd,
-      authorId: author.userId,
+      authorId: userId,
     };
 
     createRecruit(recruitData);

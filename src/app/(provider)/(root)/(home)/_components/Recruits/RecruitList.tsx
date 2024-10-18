@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
 import Recruit from "./Recruit";
 
 interface RecruitListProps {
-  userId?: string;
+  userId?: string | null;
   initialRecruitList: (Tables<"recruits"> & {
     userProfiles: Tables<"userProfiles">;
   } & {
@@ -72,16 +72,17 @@ function RecruitList({ initialRecruitList, userId }: RecruitListProps) {
 
   return (
     <ul className="w-full flex flex-col gap-y-4">
-      {recruitsData!.pages[0]!.map((recruit) => {
-        return (
+      {recruitsData.pages.map((page) =>
+        page?.map((recruit) => (
           <li
             key={recruit.recruitId}
             className="bg-white mb-2 p-10 pt-7 shadow-md rounded-md relative"
           >
             <Recruit recruit={recruit} />
           </li>
-        );
-      })}
+        ))
+      )}
+
       {isLoading && <div className="m-auto">Loading...</div>}
       <div ref={observerRef} />
     </ul>
