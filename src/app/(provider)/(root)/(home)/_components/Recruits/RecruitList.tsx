@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
 import Recruit from "./Recruit";
 
 interface RecruitListProps {
-  userId?: string;
+  profile?: Tables<"userProfiles">;
   initialRecruitList: (Tables<"recruits"> & {
     userProfiles: Tables<"userProfiles">;
   } & {
@@ -18,7 +18,7 @@ interface RecruitListProps {
   })[];
 }
 
-function RecruitList({ initialRecruitList, userId }: RecruitListProps) {
+function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
@@ -27,12 +27,13 @@ function RecruitList({ initialRecruitList, userId }: RecruitListProps) {
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["recruits", { userId }],
+    queryKey: ["infinite recruits", { profile }],
     queryFn: ({ pageParam }) => {
-      if (userId)
+      if (profile)
         return clientApi.recruits.getInfiniteRecruitsByUserId(
           pageParam,
-          userId
+          profile.userId,
+          profile.role
         );
 
       return clientApi.recruits.getInfiniteRecruits(pageParam);
@@ -40,6 +41,7 @@ function RecruitList({ initialRecruitList, userId }: RecruitListProps) {
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage) return undefined;
       if (!pages) return undefined;
+      if (!pages.length) return undefined;
       return pages.length;
     },
     refetchOnMount: false,

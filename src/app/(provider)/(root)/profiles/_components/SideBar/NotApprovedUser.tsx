@@ -3,42 +3,38 @@
 import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { Tables } from "@/supabase/database.types";
-import { UserProfiles } from "@/types/customDatabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 
-type userProfiles = Tables<"userProfiles"> | null;
-type SponsorMeets = (Pick<
-  Tables<"sponsorMeets">,
-  "isApproved" | "userId" | "isSponsor"
-> & {
-  userProfiles: userProfiles;
+type UserProfiles = Tables<"userProfiles"> | null;
+type SponsorMeets = (Pick<Tables<"sponsorMeets">, "status" | "userId"> & {
+  userProfiles: UserProfiles;
 })[];
-type Recruit = Tables<"recruits"> & { sponsorMeets: SponsorMeets };
+type RecipientMeets = (Pick<Tables<"recipientMeets">, "status" | "userId"> & {
+  userProfiles: UserProfiles;
+})[];
 
 type NotApprovedUserProps = {
-  recruit: Recruit;
-  profile: UserProfiles["Row"];
-  isSponsor: boolean;
+  meets: SponsorMeets | RecipientMeets;
+  profile: Tables<"userProfiles">;
+  recruitId: string;
 };
-function NotApprovedUser({
-  recruit,
-  profile,
-  isSponsor,
-}: NotApprovedUserProps) {
+
+type ApproveType = {
+  userId: string;
+  recruitId: string;
+  role: string;
+};
+
+function NotApprovedUser({ profile, meets, recruitId }: NotApprovedUserProps) {
   const queryClient = useQueryClient();
 
   // 수락하기
   const { mutate: approved } = useMutation({
-    mutationFn: ({
-      userId,
-      recruitId,
-    }: {
-      userId: string;
-      recruitId: string;
-    }) => clientApi.sponsorMeets.approvedUser(userId, recruitId),
+    mutationFn: ({ userId, recruitId, role }: ApproveType) =>
+      clientApi.sponsorMeets.approvedUser(userId, recruitId, role),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["myRecruits", { userId: profile.userId }],
@@ -46,16 +42,12 @@ function NotApprovedUser({
     },
   });
 
-  const handleClickApproved = (userId: string, recruitId: string) => {
-    const data = {
-      userId,
-      recruitId,
-    };
+  const handleClickApproved = (data: ApproveType) => {
     approved(data);
   };
 
-  return recruit.sponsorMeets
-    .filter((user) => user.isSponsor === isSponsor && !user.isApproved)
+  return meets
+    .filter((user) => user.status === "pending")
     .map((user) => (
       <Link
         href={`/profiles?userId=${user.userId}`}
@@ -89,7 +81,11 @@ function NotApprovedUser({
           className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
           onClick={(e) => {
             e.preventDefault();
-            handleClickApproved(user.userId, recruit.recruitId);
+            handleClickApproved({
+              userId: user.userId,
+              recruitId,
+              role: user.userProfiles!.role,
+            });
           }}
         >
           승인

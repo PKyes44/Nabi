@@ -18,7 +18,6 @@ function Navigation() {
     setAuthType(type);
     setIsShowSelectRoleModal(true);
   };
-  console.log(authInitialized, isLoggedIn);
   return (
     <nav>
       <ul className="flex gap-x-5 items-center">

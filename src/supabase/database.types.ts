@@ -100,6 +100,45 @@ export type Database = {
           },
         ]
       }
+      recipientMeets: {
+        Row: {
+          createdAt: string
+          meetId: string
+          recruitId: string
+          status: string
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          meetId?: string
+          recruitId?: string
+          status: string
+          userId?: string
+        }
+        Update: {
+          createdAt?: string
+          meetId?: string
+          recruitId?: string
+          status?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recipientMeets_recipientId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "userProfiles"
+            referencedColumns: ["userId"]
+          },
+          {
+            foreignKeyName: "recipientMeets_recruitid_fkey"
+            columns: ["recruitId"]
+            isOneToOne: false
+            referencedRelation: "recruits"
+            referencedColumns: ["recruitId"]
+          },
+        ]
+      }
       recruits: {
         Row: {
           authorId: string
@@ -140,7 +179,15 @@ export type Database = {
           title?: string
           volunteeringDate?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "recruits_authorId_fkey"
+            columns: ["authorId"]
+            isOneToOne: false
+            referencedRelation: "userProfiles"
+            referencedColumns: ["userId"]
+          },
+        ]
       }
       replies: {
         Row: {
@@ -220,26 +267,23 @@ export type Database = {
       sponsorMeets: {
         Row: {
           createdAt: string
-          isApproved: boolean
-          isSponsor: boolean
           meetId: string
           recruitId: string
+          status: string
           userId: string
         }
         Insert: {
           createdAt?: string
-          isApproved?: boolean
-          isSponsor?: boolean
           meetId?: string
           recruitId?: string
+          status: string
           userId?: string
         }
         Update: {
           createdAt?: string
-          isApproved?: boolean
-          isSponsor?: boolean
           meetId?: string
           recruitId?: string
+          status?: string
           userId?: string
         }
         Relationships: [

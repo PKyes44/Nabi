@@ -23,8 +23,8 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   // 다른 유저 프로필 봤을 때 최근 후원자|후원아동 불러오기
   const { data: recentlySponsorships } = useQuery({
     queryKey: ["recruits", { profile }],
-    queryFn: () =>
-      clientApi.sponsorMeets.getRecentlySponsorship(
+    queryFn: async () =>
+      await clientApi.sponsorMeets.getRecentlySponsorship(
         profile.userId,
         profile.role
       ),
@@ -56,7 +56,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                       신청한 후원자 목록 (
                       {
                         recruit.sponsorMeets.filter(
-                          (user) => user.isSponsor && user.isApproved
+                          (user) => user.status === "approved"
                         ).length
                       }
                       /{recruit.maxSponsorRecruits})
@@ -64,17 +64,17 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
 
                     <ul className="flex flex-col gap-y-3 ">
                       {/* 승인된 유저는 언제나 보여주기 */}
-                      <ApprovedUser recruit={recruit} isSponsor />
+                      <ApprovedUser meets={recruit.sponsorMeets} />
 
                       {/* 인원이 다 차지 않았으면 신청자 보여주기 */}
                       {recruit.maxSponsorRecruits >
                         recruit.sponsorMeets.filter(
-                          (user) => user.isSponsor && user.isApproved
+                          (user) => user.status === "approved"
                         ).length && (
                         <NotApprovedUser
-                          recruit={recruit}
+                          meets={recruit.sponsorMeets}
+                          recruitId={recruit.recruitId}
                           profile={profile}
-                          isSponsor
                         ></NotApprovedUser>
                       )}
                     </ul>
@@ -86,8 +86,8 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                     <strong className="font-medium">
                       신청한 아동 목록(
                       {
-                        recruit.sponsorMeets.filter(
-                          (user) => !user.isSponsor && user.isApproved
+                        recruit.recipientMeets.filter(
+                          (user) => user.status === "approved"
                         ).length
                       }
                       /{recruit.maxRecipientRecruits})
@@ -95,17 +95,17 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
 
                     <ul className="mt-2 flex flex-col gap-y-3">
                       {/* 승인된 유저는 언제나 보여주기 */}
-                      <ApprovedUser recruit={recruit} isSponsor={false} />
+                      <ApprovedUser meets={recruit.recipientMeets} />
 
                       {/* 인원이 다 차지 않았으면 신청자 보여주기 */}
                       {recruit.maxRecipientRecruits >
-                        recruit.sponsorMeets.filter(
-                          (user) => !user.isSponsor && user.isApproved
+                        recruit.recipientMeets.filter(
+                          (user) => user.status === "approved"
                         ).length && (
                         <NotApprovedUser
-                          recruit={recruit}
+                          meets={recruit.recipientMeets}
                           profile={profile}
-                          isSponsor={false}
+                          recruitId={recruit.recruitId}
                         ></NotApprovedUser>
                       )}
                     </ul>

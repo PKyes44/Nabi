@@ -43,7 +43,9 @@ const getSortedRecruits = async () => {
 const getSortedMyRecruits = async (userId: string) => {
   const response = await supabase
     .from("recruits")
-    .select("*, sponsorMeets(isSponsor, userId, isApproved, userProfiles(*))")
+    .select(
+      "*, sponsorMeets(userId, status, userProfiles(*)), recipientMeets(userId, status, userProfiles(*))"
+    )
     .eq("authorId", userId)
     .order("createdAt", { ascending: false });
 
@@ -82,27 +84,33 @@ const getGroupOfPageRecruits = async (page: number, offset: number) => {
   return data;
 };
 
-const getInfiniteRecruitsByUserId = async (page: number, userId: string) => {
-  const query =
-    "*, userProfiles(*), replies!replies_recruitId_fkey(*,userProfiles!replies_recipientId_fkey(*))";
+const getInfiniteRecruitsByUserId = async (
+  page: number,
+  userId: string,
+  role: string
+) => {
+  // 자신이 승인된 글들과 댓글들
+  const meets = role === "sponsor" ? "sponsorMeets" : "recipientMeets";
+  const query = `recruitId, recruits(*, userProfiles(*), replies(*, userProfiles(*)))`;
 
-  const { data } = await supabase
-    .from("recruits")
+  const { data: recruitsData } = await supabase
+    .from(meets)
     .select(query)
-    .eq("authorId", userId)
+    .eq("userId", userId)
+    .eq("status", "approved")
     .order("createdAt", { ascending: false })
-    .range(page * 5, page * 5 + 5)
-    .returns<
-      (Tables<"recruits"> & {
-        userProfiles: Tables<"userProfiles">;
-      } & {
-        replies: (Tables<"replies"> & {
-          userProfiles: Tables<"userProfiles">;
-        })[];
-      })[]
-    >();
+    .range(page * 5, page * 5 + 4);
 
-  return data;
+  const recruits = recruitsData?.map((data) => {
+    return data.recruits!;
+  });
+
+  return recruits as (Tables<"recruits"> & {
+    userProfiles: Tables<"userProfiles">;
+    replies: (Tables<"replies"> & {
+      userProfiles: Tables<"userProfiles">;
+    })[];
+  })[];
 };
 
 const getInfiniteRecruits = async (page: number) => {
@@ -122,7 +130,6 @@ const getInfiniteRecruits = async (page: number) => {
         })[];
       })[]
     >();
-
   return data;
 };
 

@@ -11,31 +11,38 @@ const getRecruitIdByUserId = async (userId: string) => {
 };
 
 const getRecentlySponsorship = async (userId: string, role: string) => {
+  const meets = role === "sponsor" ? "sponsorMeets" : "recipientMeets";
+
   const { data: recruitIds } = await supabase
-    .from("sponsorMeets")
+    .from(meets)
     .select("recruitId")
     .eq("userId", userId)
-    .eq("isApproved", true);
+    .eq("status", "approved");
 
-  const { data: sponRelationship } = await supabase
-    .from("sponsorMeets")
-    .select("userId, userProfiles(nickname)")
-    .in(
-      "recruitId",
-      recruitIds!.map((data) => data.recruitId)
-    )
-    .eq("isApproved", true)
-    .eq("isSponsor", role === "recipient")
-    .order("createdAt", { ascending: false })
-    .limit(5);
-
-  return sponRelationship;
+  if (recruitIds) {
+    const { data: sponRelationship } = await supabase
+      .from(role === "sponsor" ? "recipientMeets" : "sponsorMeets")
+      .select("userId, userProfiles(nickname)")
+      .in(
+        "recruitId",
+        recruitIds.map((data) => data.recruitId)
+      )
+      .eq("status", "approved")
+      .order("createdAt", { ascending: false })
+      .limit(5);
+    if (!sponRelationship) return;
+    return sponRelationship;
+  }
 };
 
-const approvedUser = async (userId: string, recruitId: string) => {
+const approvedUser = async (
+  userId: string,
+  recruitId: string,
+  role: string
+) => {
   await supabase
-    .from("sponsorMeets")
-    .update({ isApproved: true })
+    .from(role === "sponsor" ? "sponsorMeets" : "recipientMeets")
+    .update({ status: "approved" })
     .eq("userId", userId)
     .eq("recruitId", recruitId);
 };

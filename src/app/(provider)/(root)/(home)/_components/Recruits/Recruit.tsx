@@ -16,8 +16,8 @@ interface RecruitProps {
 function Recruit({ recruit }: RecruitProps) {
   return (
     <div className="flex flex-col gap-y-10">
-      <RecruitDetails recruit={recruit} />
-      <Replies replies={recruit.replies} />
+      <RecruitDetails recruit={recruit!} />
+      <Replies replies={recruit.replies!} />
     </div>
   );
 }

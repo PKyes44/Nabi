@@ -45,6 +45,7 @@ function ApplyButton({ recruitId, authorId }: ApplyButtonProps) {
     const data = {
       recruitId,
       userId,
+      status: "pending",
     };
 
     insertSponsorMeet(data);

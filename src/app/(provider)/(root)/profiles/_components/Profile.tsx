@@ -20,7 +20,10 @@ async function Profile({ userId }: ProfileProps) {
       <div className="flex gap-x-7">
         <div className="flex flex-col gap-y-5">
           <ProfileDetails profile={profile!} showUserId={userId} />
-          <RecruitList initialRecruitList={initialRecruits!} userId={userId!} />
+          <RecruitList
+            initialRecruitList={initialRecruits!}
+            profile={profile!}
+          />
         </div>
 
         <ProfileSideBar profile={profile!} />

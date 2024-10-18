@@ -4,23 +4,21 @@ import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
 
-type userProfiles = Tables<"userProfiles"> | null;
-type SponsorMeets = (Pick<
-  Tables<"sponsorMeets">,
-  "isApproved" | "userId" | "isSponsor"
-> & {
-  userProfiles: userProfiles;
+type UserProfiles = Tables<"userProfiles"> | null;
+type SponsorMeets = (Pick<Tables<"sponsorMeets">, "status" | "userId"> & {
+  userProfiles: UserProfiles;
 })[];
-type Recruit = Tables<"recruits"> & { sponsorMeets: SponsorMeets };
+type RecipientMeets = (Pick<Tables<"recipientMeets">, "status" | "userId"> & {
+  userProfiles: UserProfiles;
+})[];
 
 type ApprovedUserProps = {
-  recruit: Recruit;
-  isSponsor: boolean;
+  meets: SponsorMeets | RecipientMeets;
 };
 
-function ApprovedUser({ recruit, isSponsor }: ApprovedUserProps) {
-  return recruit.sponsorMeets
-    .filter((user) => user.isApproved && user.isSponsor === isSponsor)
+function ApprovedUser({ meets }: ApprovedUserProps) {
+  return meets
+    .filter((user) => user.status === "approved")
     .map((user) => (
       <Link
         href={`/profiles?userId=${user.userId}`}
