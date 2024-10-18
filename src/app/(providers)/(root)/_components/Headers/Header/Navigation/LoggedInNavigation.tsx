@@ -1,18 +1,26 @@
 import clientApi from "@/api/clientSide/api";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
+import { useNotifyStore } from "@/zustand/notify.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import FreeMealCreateModal from "./FreeMealCreateModal";
-import LogOutModal from "./LogOutModal";
+import CreateFreeMealModal from "../Modals/FreeMealCreateModal";
+import LogOutModal from "../Modals/LogOutModal";
+import NotifyListModal from "../Modals/NotifyListModal";
 
 interface LoggedInNavigationProps {
   userId: string;
 }
 
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
-  const { activeModal, setActiveModal } = useModal();
+  const { activeModal, setActiveModal } = useModalStore();
+  const isCheckedNotifyList = useNotifyStore(
+    (state) => state.isCheckedNotifyList
+  );
+  const setIsCheckedNotifyList = useNotifyStore(
+    (state) => state.setIsCheckedNotifyList
+  );
   const [isHoverOnProfile, setIsHoverOnProfile] = useState(false);
   const queryClient = useQueryClient();
   const { data: isStoreOwner } = useQuery({
@@ -32,7 +40,11 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
     queryClient.invalidateQueries({ queryKey: ["recruits"] });
   };
   const handleClickCreateFreeMeal = () => {
-    setActiveModal(<FreeMealCreateModal />);
+    setActiveModal(<CreateFreeMealModal />);
+  };
+  const handleClickShowNotifies = () => {
+    setActiveModal(<NotifyListModal />);
+    setIsCheckedNotifyList(true);
   };
 
   useEffect(() => {
@@ -43,8 +55,23 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
 
   return (
     <>
+      <li className="w-10 h-10">
+        <button onClick={handleClickShowNotifies}>
+          <Image
+            width={150}
+            height={150}
+            className="w-10 h-10 rounded-lg"
+            src={
+              !isCheckedNotifyList
+                ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/NewNotify.png?t=2024-10-18T08%3A33%3A22.480Z"
+                : "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Notify.png"
+            }
+            alt="notify icon"
+          />
+        </button>
+      </li>
       {isStoreOwner && (
-        <li className="w-10">
+        <li className="w-10 h-10">
           <button onClick={handleClickCreateFreeMeal}>
             <Image
               width={150}
@@ -56,20 +83,20 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
           </button>
         </li>
       )}
-      <li className="w-10 z-30 relative" onMouseOver={handleHoverOnProfile}>
+      <li className="z-30" onMouseOver={handleHoverOnProfile}>
         <Link
           href={`/profiles?userId=${userId}`}
           onClick={handleClickLinkToProfile}
         >
           <Image
-            width={100}
-            height={100}
+            width={150}
+            height={150}
             src={
               profile?.profileImageUrl ||
               "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
             }
             alt="profile image"
-            className="w-full aspect-square object-cover rounded-lg"
+            className="w-10 aspect-square object-cover rounded-lg"
           />
         </Link>
       </li>

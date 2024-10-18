@@ -27,13 +27,14 @@ function RegularSponsorShipBillingPage({
 }: RegularSponsorShipBillingPageProps) {
   const router = useRouter();
   const [receipt, setReceipt] = useState<PaymentResponse | null>(null);
+
   const { mutate: getBillingKey } = useMutation({
     mutationFn: (requestData: {
       customerKey: string;
       authKey: string;
       price: number;
       recipientId: string;
-    }) => clientApi.sponsorShip.getBillingKey(requestData),
+    }) => clientApi.regularSponsorShip.getBillingKey(requestData),
     onSuccess: (responseData: PaymentResponse) => {
       console.log("success:", responseData);
       setReceipt(responseData);
@@ -43,6 +44,10 @@ function RegularSponsorShipBillingPage({
       router.replace(`?code=${data.code}&message=${data.message}`);
     },
   });
+
+  const handleClickLinkToProfile = () => {
+    router.replace(`/profiles?userId=${recipientId}`);
+  };
 
   useEffect(() => {
     const requestData = {
@@ -68,13 +73,13 @@ function RegularSponsorShipBillingPage({
           <h2 className="font-extrabold text-2xl text-center">결제 완료</h2>
         </div>
         <div className="w-full flex flex-col gap-y-5 text-black">
-          <div>
+          <div className="flex flex-col">
             <span className="font-bold">결제코드</span>
             <span>{receipt?.orderId}</span>
           </div>
 
-          <div className="flex gap-x-10">
-            <div>
+          <div className="flex gap-x-32">
+            <div className="flex flex-col">
               <span className="font-bold">결제명</span>
               <span>{receipt?.orderName}</span>
             </div>
@@ -94,6 +99,7 @@ function RegularSponsorShipBillingPage({
             <p>{dayjs(receipt?.approvedAt).format("YYYY-MM-DD HH:mm:ss")}</p>
           </div>
           <ButtonGroup
+            onClick={handleClickLinkToProfile}
             intent="primary"
             textIntent="primary"
             className="ml-auto"

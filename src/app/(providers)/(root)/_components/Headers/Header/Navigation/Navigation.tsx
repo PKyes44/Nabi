@@ -1,22 +1,22 @@
 "use client";
 
 import { useAuthStore } from "@/zustand/auth.store";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 import Link from "next/link";
+import SelectRoleModal from "../Modals/SelectRoleModal";
 import LoggedInNavigation from "./LoggedInNavigation";
-import SelectRoleModal from "./SelectRoleModal";
 
 function Navigation() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const authInitialized = useAuthStore((state) => state.isAuthInitialized);
   const user = useAuthStore((state) => state.currentUser);
-  const setActiveModal = useModal((state) => state.setActiveModal);
+  const setActiveModal = useModalStore((state) => state.setActiveModal);
   const handleClickSignUp = () => {
     setActiveModal(<SelectRoleModal />);
   };
   return (
     <nav>
-      <ul className="flex gap-x-5 items-center">
+      <ul className="flex gap-x-5 items-center justify-center">
         {authInitialized ? (
           isLoggedIn ? (
             <LoggedInNavigation userId={user?.userId!} />

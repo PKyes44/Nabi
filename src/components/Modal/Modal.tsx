@@ -1,4 +1,5 @@
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
+import { useNotifyStore } from "@/zustand/notify.store";
 import { cva, VariantProps } from "class-variance-authority";
 import { ComponentProps, PropsWithChildren } from "react";
 
@@ -24,10 +25,16 @@ type PassedModalProps = {
 type ModalProps = PassedModalProps & ModalVariant;
 
 function Modal({ isDim, className, children }: PropsWithChildren<ModalProps>) {
-  const setActiveModal = useModal((state) => state.setActiveModal);
+  const setActiveModal = useModalStore((state) => state.setActiveModal);
+  const activeModal = useModalStore((state) => state.activeModal);
+  const resetNotifyList = useNotifyStore((state) => state.resetNotifyList);
 
   const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
     if (e.target === e.currentTarget) {
+      if (activeModal?.type.name === "NotifyListModal") {
+        console.log("reseted Notify List");
+        resetNotifyList();
+      }
       setActiveModal(null);
     }
   };

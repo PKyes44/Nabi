@@ -1,7 +1,7 @@
 import Container from "@/components/Container/Container";
 import Image from "next/image";
 import Link from "next/link";
-import Navigation from "./Navigation";
+import Navigation from "./Navigation/Navigation";
 
 function Header() {
   return (

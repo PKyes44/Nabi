@@ -1,15 +1,15 @@
 "use client";
 
+import Modal from "@/components/Modal/Modal";
 import { supabase } from "@/supabase/client";
 import { ToastType } from "@/types/toast.types";
-import { useModal } from "@/zustand/modal.store";
+import { useModalStore } from "@/zustand/modal.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { PropsWithChildren } from "react";
-import Modal from "../../../../../components/Modal/Modal";
 
 function LogOutModal({ children }: PropsWithChildren) {
   const addToast = useToastStore((state) => state.addToast);
-  const { activeModal, setActiveModal } = useModal();
+  const { activeModal, setActiveModal } = useModalStore();
 
   const handleClickLogOut = async () => {
     await supabase.auth.signOut();

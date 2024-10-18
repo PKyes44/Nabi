@@ -5,7 +5,7 @@ interface ModalStore {
   setActiveModal: (activeModal: JSX.Element | null) => void;
 }
 
-export const useModal = create<ModalStore>((set) => ({
+export const useModalStore = create<ModalStore>((set) => ({
   activeModal: null,
   setActiveModal: (activeModal: JSX.Element | null) => set({ activeModal }),
 }));
