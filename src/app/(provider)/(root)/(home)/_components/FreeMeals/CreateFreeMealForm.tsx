@@ -6,7 +6,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useFreeMealCreateModalStore } from "@/zustand/modals/freeMealCreateModal.store";
+import { useModal } from "@/zustand/modal.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ComponentProps, useState } from "react";
@@ -35,14 +35,12 @@ const initialErrMsgs: InitialErrMsgs = {
 function CreateFreeMealForm() {
   const queryClient = useQueryClient();
   const [errorMsgs, setErrorMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
-  const sponsorId = useAuthStore((state) => state.currentUserId);
-  const setIsFreeMealCreateModal = useFreeMealCreateModalStore(
-    (state) => state.setIsFreeMealCreateModal
-  );
+  const sponsor = useAuthStore((state) => state.currentUser);
+  const setActiveModal = useModal((state) => state.setActiveModal);
 
   const { data: stores, isLoading } = useQuery({
-    queryKey: ["storeOwners", { sponsorId }],
-    queryFn: () => clientApi.storeOwners.getStoreByUserId(sponsorId!),
+    queryKey: ["storeOwners", { sponsorId: sponsor?.userId }],
+    queryFn: () => clientApi.storeOwners.getStoreByUserId(sponsor?.userId!),
   });
   const { mutate: insertFreeMeal } = useMutation({
     mutationFn: (
@@ -51,7 +49,7 @@ function CreateFreeMealForm() {
     onSuccess: (...arg) => {
       queryClient.invalidateQueries({ queryKey: ["freeMeals"] });
       console.log("success: ", arg);
-      setIsFreeMealCreateModal(false);
+      setActiveModal(null);
     },
     onError: (...arg) => {
       console.log("error: ", arg);
@@ -65,7 +63,7 @@ function CreateFreeMealForm() {
 
     setErrorMsgs(initialErrMsgs);
 
-    if (!sponsorId) return;
+    if (!sponsor?.userId) return;
 
     const storeId = e.target.storeId.value;
     const date = e.target.date.value;
@@ -90,7 +88,7 @@ function CreateFreeMealForm() {
 
     const insertFreeMealData: Database["public"]["Tables"]["freeMeals"]["Insert"] =
       {
-        sponsorId,
+        sponsorId: sponsor.userId,
         storeId,
         freeMealDate,
         maxServingCount,

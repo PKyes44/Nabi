@@ -12,10 +12,10 @@ function UpdateRecruitButton({
   authorId,
   recruitId,
 }: UpdateRecruitButtonProps) {
-  const userId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
   return (
     <>
-      {userId === authorId && (
+      {user?.userId === authorId && (
         <Link
           href={`recruits/${recruitId}/edit`}
           className="border border-black text-sm absolute rounded-md py-1 px-2 -right-1  bg-white"

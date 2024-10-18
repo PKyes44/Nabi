@@ -11,7 +11,9 @@ interface LinkToStoreMapButtonProps {
 function LinkToStoreMapButton({ storeDatas }: LinkToStoreMapButtonProps) {
   const router = useRouter();
   const handleClickLinkToStoreMap = (lat: number, lng: number) => {
-    router.push(`/free-meals/map?lat=${lat}&lng=${lng}`);
+    router.push(
+      `/free-meals/map?lat=${lat}&lng=${lng}&brandName=${storeDatas.brandName}`
+    );
   };
   return (
     <ButtonGroup

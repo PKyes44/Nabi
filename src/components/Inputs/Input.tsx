@@ -43,7 +43,13 @@ function Input({
   ...props
 }: InputProps) {
   return (
-    <div className={`${inputVariant({ intent, rounded })} ${innerClassName}`}>
+    <div
+      className={inputVariant({
+        intent,
+        rounded,
+        className: innerClassName,
+      })}
+    >
       <input
         id={inputId}
         className={`${inputClassName} w-full outline-none bg-transparent`}

@@ -9,6 +9,7 @@ const getStoreDatasBySwLatLngAndNeLatLng = async ({
   swLatLng: LatLng;
   neLatLng: LatLng;
 }) => {
+  console.log(swLatLng, neLatLng);
   const { error, data } = await supabase
     .from("storeDatas")
     .select()

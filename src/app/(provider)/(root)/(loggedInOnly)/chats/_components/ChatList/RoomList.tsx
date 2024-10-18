@@ -10,11 +10,12 @@ interface RoomListProps {
 }
 
 function RoomList({ showChatUserId }: RoomListProps) {
-  const userId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
 
   const { data: rooms, isLoading } = useQuery({
     queryKey: ["rooms"],
-    queryFn: () => clientApi.rooms.getRoomsWithTargetUserByUserId(userId!),
+    queryFn: () =>
+      clientApi.rooms.getRoomsWithTargetUserByUserId(user?.userId!),
   });
 
   if (isLoading) return <span>채팅방 불러오는 중 ..</span>;

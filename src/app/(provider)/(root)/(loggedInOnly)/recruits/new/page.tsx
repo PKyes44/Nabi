@@ -1,9 +1,9 @@
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
 import NewRecruitForm from "./_components/NewRecruitForm";
 
 function NewRecruitPage() {
   return (
-    <Page width="lg" isMain={false} className="h-full py-20">
+    <Container width="lg" isMain={false} className="h-full py-20">
       <div className="bg-white p-10 rounded-md">
         <h1 className="mb-10 text-3xl font-bold">봉사활동 구인 글 작성하기</h1>
         <p>
@@ -13,7 +13,7 @@ function NewRecruitPage() {
         </p>
         <NewRecruitForm />
       </div>
-    </Page>
+    </Container>
   );
 }
 

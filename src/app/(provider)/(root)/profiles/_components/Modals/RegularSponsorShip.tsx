@@ -3,7 +3,6 @@
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
-import Page from "@/components/Page/Page";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -22,12 +21,12 @@ function RegularSponsorShip() {
   const [price, setPrice] = useState("10000");
   const [priceErrorMsg, setPriceErrorMsg] = useState<string | null>(null);
 
-  const userId = useAuthStore((state) => state.currentUserId);
+  const currentUser = useAuthStore((state) => state.currentUser);
   const recipientId = params.get("userId");
 
   const { data: userProfile } = useQuery({
-    queryKey: ["userProfiles", { userId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
+    queryKey: ["userProfiles", { userId: currentUser?.userId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(currentUser?.userId!),
   });
   const { data: user } = useQuery({
     queryKey: ["users"],
@@ -37,12 +36,12 @@ function RegularSponsorShip() {
   useEffect(() => {
     (async () => {
       try {
-        if (!userId) return;
+        if (!currentUser) return;
 
         const tossPayments = await loadTossPayments(clientKey!);
 
         const payment = tossPayments.payment({
-          customerKey: userId,
+          customerKey: currentUser.userId,
         });
 
         setPayment(payment);
@@ -50,7 +49,7 @@ function RegularSponsorShip() {
         console.error("Error fetching payment:", error);
       }
     })();
-  }, [userId]);
+  }, [currentUser]);
 
   async function requestBillingAuth() {
     if (!payment || !user || !userProfile) return;
@@ -73,22 +72,24 @@ function RegularSponsorShip() {
   };
 
   return (
-    <Page isMain width="md">
-      <div className="wrapper">
-        <div className="box_section">
-          <h1>정기 결제</h1>
-          <InputGroup
-            value={price}
-            errorText={priceErrorMsg}
-            onChange={handleChangePrice}
-            label="후원금액"
-            helpText="최소 후원 금액은 10,000₩입니다"
-            type="number"
-          />
-          <ButtonGroup onClick={requestBillingAuth} value="정기 후원하기" />
-        </div>
-      </div>
-    </Page>
+    <div className="flex flex-col gap-y-[70px] py-10 justify-between">
+      <h1 className="font-bold text-3xl text-center">정기 후원하기</h1>
+      <InputGroup
+        value={price}
+        errorText={priceErrorMsg}
+        onChange={handleChangePrice}
+        label="후원금액"
+        helpText="최소 후원 금액은 10,000₩입니다"
+        type="number"
+      />
+      <ButtonGroup
+        onClick={requestBillingAuth}
+        intent="primary"
+        textIntent="primary"
+        className="w-full py-3.5 text-lg"
+        value="정기 후원하기"
+      />
+    </div>
   );
 }
 

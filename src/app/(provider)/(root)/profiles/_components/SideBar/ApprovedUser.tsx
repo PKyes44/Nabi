@@ -1,5 +1,6 @@
 "use client";
 import { Tables } from "@/supabase/database.types";
+import Image from "next/image";
 import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
@@ -28,14 +29,18 @@ function ApprovedUser({ recruit, isSponsor }: ApprovedUserProps) {
         key={user.userId}
       >
         {user.userProfiles?.profileImageUrl ? (
-          <img
+          <Image
+            width={100}
+            height={100}
             src={user.userProfiles.profileImageUrl}
             alt="profile image"
             className="w-7 aspect-square  rounded-lg"
           />
         ) : (
           <div className="w-7 aspect-square rounded-lg grid place-items-center bg-[#f5f5f5]">
-            <img
+            <Image
+              height={100}
+              width={100}
               className="object-cover w-8/12"
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
               alt="default profile"

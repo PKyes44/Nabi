@@ -7,6 +7,7 @@ import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 import { ComponentProps } from "react";
 
 interface SubmitReplyForm {
@@ -17,7 +18,7 @@ type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
 
 function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
   const queryClient = useQueryClient();
-  const recipientId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
 
   const { data: recipient } = useQuery({
     queryKey: ["sponsorMeets", { recruitId }],
@@ -39,8 +40,8 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     },
   });
 
-  if (!recipientId) return null;
-  if (recipient?.userId !== recipientId) return null;
+  if (!user?.userId) return null;
+  if (recipient?.userId !== user.userId) return null;
 
   const handleSubmitReplyForm: ComponentProps<"form">["onSubmit"] = (
     e: SubmitReplyFormEvent
@@ -53,7 +54,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     const data = {
       content,
       recruitId,
-      recipientId,
+      recipientId: user.userId,
     };
 
     createReply(data);
@@ -63,19 +64,16 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
   if (recipient && recipient.userProfiles!.role === "recipient")
     return (
       <div className=" pb-5 mb-5 text-xs flex items-center mt-4 gap-x-3">
-        {recipient.userProfiles?.profileImageUrl ? (
-          <img
-            src={recipient.userProfiles?.profileImageUrl}
-            alt="profile image"
-            className="w-7 aspect-square object-cover rounded-full"
-          />
-        ) : (
-          <img
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
-            alt=""
-            className="w-7 aspect-square object-cover rounded-full"
-          />
-        )}
+        <Image
+          width={100}
+          height={100}
+          src={
+            recipient.userProfiles?.profileImageUrl ||
+            "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+          }
+          alt="profile image"
+          className="w-7 aspect-square object-cover rounded-full"
+        />
         <form className="relative" onSubmit={handleSubmitReplyForm}>
           <InputGroup
             type="text"
@@ -86,7 +84,9 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
             placeholder="댓글을 입력해주세요"
           />
           <Button className="absolute top-1/4 right-3" intent="none" size="xs">
-            <img
+            <Image
+              width={100}
+              height={100}
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Send.png?t=2024-10-15T20%3A30%3A14.946Z"
               alt="send icon"
             />

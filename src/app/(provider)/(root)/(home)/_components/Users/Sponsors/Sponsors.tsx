@@ -2,6 +2,7 @@
 
 import clientApi from "@/api/clientSide/api";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import User from "../User";
 
 function Sponsors() {
@@ -16,7 +17,9 @@ function Sponsors() {
   return (
     <article className="bg-white h-[320px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
       <h2 className="flex items-center gap-x-2 text-center mx-auto font-semibold">
-        <img
+        <Image
+          width={100}
+          height={100}
           className="w-5 aspect-square"
           src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Crown.png?t=2024-10-15T23%3A41%3A11.949Z"
           alt="hot icon"

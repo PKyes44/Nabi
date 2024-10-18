@@ -4,6 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import socket from "@/socket/socket";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import ChatForm from "./ChatForm";
 import ChatLogs from "./ChatLogs/ChatLogs";
@@ -14,13 +15,13 @@ interface ChatScreenProps {
 
 function ChatScreen({ showChatUserId }: ChatScreenProps) {
   const messageEndRef = useRef<HTMLUListElement | null>(null);
-  const userId = useAuthStore((state) => state.currentUserId);
+  const user = useAuthStore((state) => state.currentUser);
   const queryClient = useQueryClient();
   const [roomId, setRoomId] = useState(null);
 
   const { data: userProfile, isLoading: isUserProfileLoading } = useQuery({
-    queryKey: ["userProfiles", { userId }],
-    queryFn: () => clientApi.profiles.getProfileByUserId(userId!),
+    queryKey: ["userProfiles", { userId: user?.userId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(user?.userId!),
   });
 
   const { data: targetProfile, isLoading: isTargetProfileLoading } = useQuery({
@@ -33,24 +34,22 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
     queryFn: () =>
       clientApi.chats.getChatsByUserIdAndTargetUserId({
         targetUserId: showChatUserId,
-        userId: userId!,
+        userId: user?.userId!,
       }),
   });
 
   const handleScrollAtBottom = () => {
     if (!messageEndRef || !messageEndRef.current) return;
     messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
-    console.log("handleScrollAtBottom");
   };
 
   useEffect(() => {
     if (!targetProfile || !userProfile || !socket.connected) return;
     handleScrollAtBottom();
     if (socket.connected) {
-      console.log("connected socket : ", socket.connected);
       socket.emit(
         "enterRoom",
-        userId,
+        user?.userId,
         targetProfile!.userId,
         userProfile!.nickname,
         () => {
@@ -61,14 +60,10 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
 
     socket.on("returnRoomId", (roomId) => {
       setRoomId(roomId);
-      console.log("roomId", roomId);
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
     });
 
     socket.on("newMessage", (targetUserId) => {
-      console.log("newMessage");
-      console.log(targetUserId === showChatUserId);
-
       queryClient.invalidateQueries({
         queryKey: ["chats", { targetUserId }],
       });
@@ -89,7 +84,9 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
     <div className="grow border border-black h-[450px] relative">
       <header className="border-b border-black px-5 py-3 flex gap-x-4 items-center">
         {targetProfile?.profileImageUrl ? (
-          <img
+          <Image
+            height={100}
+            width={100}
             src={targetProfile!.profileImageUrl}
             alt="profile image"
             className="w-10 aspect-square rounded-xl"
@@ -106,7 +103,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
       </header>
       <ChatLogs
         messageEndRef={messageEndRef}
-        userId={userId!}
+        userId={user?.userId!}
         chatLogs={chatLogs!}
         targetProfile={targetProfile!}
       />
@@ -114,7 +111,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
         handlehandleScrollAtBottom={handleScrollAtBottom}
         roomId={roomId!}
         targetUserId={showChatUserId}
-        userId={userId!}
+        userId={user?.userId!}
       />
     </div>
   );

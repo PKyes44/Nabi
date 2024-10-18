@@ -1,5 +1,7 @@
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
+import dayjs from "dayjs";
+import Image from "next/image";
 
 interface FailPageProps {
   searchParams: {
@@ -14,11 +16,13 @@ export default function FailPage({
   console.log(message, code); //
 
   return (
-    <Page isMain width="md" className="pt-10 flex flex-col items-center">
+    <Container isMain width="md" className="pt-10 flex flex-col items-center">
       <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
         <div className="flex items-center gap-x-3">
-          <img
-            width="40px"
+          <Image
+            width={150}
+            height={150}
+            className="w-40"
             src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/FailPayment.png"
             alt="에러 이미지"
           />
@@ -26,29 +30,20 @@ export default function FailPage({
         </div>
         <div className="w-full flex flex-col gap-y-5 text-black">
           <div>
-            <p className="font-bold">결제코드</p>
-            <p>0dcdafba-bcb4-4361-a24e-ffc044781aea</p>
+            <p className="font-bold">결제 실패 코드</p>
+            <p>{code}</p>
           </div>
 
           <div className="flex gap-x-10">
             <div>
-              <p className="font-bold">결제명</p>
-              <p>나비 : 익명의 후원자1님의 정기후원</p>
-            </div>
-            <div>
-              <p className="font-bold">후원금액</p>
-              <p>10,000원</p>
+              <p className="font-bold">결제 실패 메시지</p>
+              <span>{message}</span>
             </div>
           </div>
 
           <div>
-            <p className="font-bold">카드번호</p>
-            <p>3212-****-****-***5</p>
-          </div>
-
-          <div>
-            <p className="font-bold">결제일</p>
-            <p>2024-10-19 02:01</p>
+            <p className="font-bold">결제 실패 일시</p>
+            <p>{dayjs().format("YYYY-MM-DD HH:mm:ss")}</p>
           </div>
           <ButtonGroup
             intent="none"
@@ -57,6 +52,6 @@ export default function FailPage({
           />
         </div>
       </div>
-    </Page>
+    </Container>
   );
 }

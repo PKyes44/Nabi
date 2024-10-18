@@ -1,7 +1,7 @@
 import { cva, VariantProps } from "class-variance-authority";
 import { PropsWithChildren } from "react";
 
-const pageVariant = cva("m-auto", {
+const containerVariant = cva("m-auto", {
   variants: {
     width: {
       sm: "max-w-[600px] px-5",
@@ -21,18 +21,18 @@ const pageVariant = cva("m-auto", {
   },
 });
 
-type PageVariant = VariantProps<typeof pageVariant>;
-type pageProps = {
+type ContainerVariant = VariantProps<typeof containerVariant>;
+type containerProps = {
   className?: string;
 };
-type PageProps = PageVariant & PropsWithChildren<pageProps>;
+type ContainerProps = ContainerVariant & PropsWithChildren<containerProps>;
 
-function Page({ width, isMain, className, children }: PageProps) {
+function Container({ width, isMain, className, children }: ContainerProps) {
   return (
-    <div className={`${pageVariant({ width, isMain })} ${className} `}>
+    <div className={`${containerVariant({ width, isMain })} ${className} `}>
       {children}
     </div>
   );
 }
 
-export default Page;
+export default Container;

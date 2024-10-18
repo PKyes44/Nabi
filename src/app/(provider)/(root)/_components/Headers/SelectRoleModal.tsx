@@ -1,40 +1,23 @@
-import useSelectRoleModalStore from "@/zustand/modals/selectRoleModal.store";
+import Modal from "@/components/Modal/Modal";
+import { useModal } from "@/zustand/modal.store";
 import { useRouter } from "next/navigation";
-import { ComponentProps, PropsWithChildren } from "react";
 import { FaChildren } from "react-icons/fa6";
 import { MdVolunteerActivism } from "react-icons/md";
-import Modal from "./Modal";
 
-function SelectRoleModal({ children }: PropsWithChildren) {
+function SelectRoleModal() {
   const router = useRouter();
-  const authType = useSelectRoleModalStore((state) => state.authType);
-  const isShowSelectRoleModal = useSelectRoleModalStore(
-    (state) => state.isShowSelectRoleModal
-  );
-  const setIsShowSelectRoleModal = useSelectRoleModalStore(
-    (state) => state.setIsShowSelectRoleModal
-  );
-  const baseHref = `/${authType}`;
+  const { activeModal, setActiveModal } = useModal();
 
   const handleClickSelectRole = (role: "recipient" | "sponsor") => {
-    const href = baseHref + `?role=${role}`;
-    setIsShowSelectRoleModal(false);
+    const href = `/sign-up?role=${role}`;
     router.push(href);
-  };
-
-  const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
-    if (e.target === e.currentTarget) {
-      setIsShowSelectRoleModal(false);
-    }
+    setActiveModal(null);
   };
 
   return (
     <>
-      {isShowSelectRoleModal && (
-        <Modal
-          onClickFn={handleClickOutOfRange}
-          className="flex gap-x-10 items-center justify-center"
-        >
+      {activeModal && (
+        <Modal className="flex gap-x-10 items-center justify-center">
           <button
             onClick={() => handleClickSelectRole("recipient")}
             className="w-72 aspect-square bg-white border border-gray-500 rounded-xl p-5 pt-10 pb-2"
@@ -64,7 +47,6 @@ function SelectRoleModal({ children }: PropsWithChildren) {
           </button>
         </Modal>
       )}
-      {children}
     </>
   );
 }

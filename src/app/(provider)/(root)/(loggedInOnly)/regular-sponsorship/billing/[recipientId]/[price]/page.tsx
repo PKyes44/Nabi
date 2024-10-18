@@ -2,9 +2,11 @@
 
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import Page from "@/components/Page/Page";
+import Container from "@/components/Container/Container";
 import { PaymentResponse } from "@/types/paymentResponse.types";
 import { useMutation } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -52,43 +54,44 @@ function RegularSponsorShipBillingPage({
     getBillingKey(requestData);
   }, []);
 
-  console.log(receipt); //
-
   return (
-    <Page isMain className="pt-10 flex flex-col">
+    <Container isMain className="pt-10 flex flex-col">
       <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
         <div className="flex items-center gap-x-3">
-          <img
-            width="40px"
+          <Image
+            height={100}
+            width={100}
+            alt="success payment icon"
+            className="w-10"
             src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/SuccessPayment.png"
           />
           <h2 className="font-extrabold text-2xl text-center">결제 완료</h2>
         </div>
         <div className="w-full flex flex-col gap-y-5 text-black">
           <div>
-            <p className="font-bold">결제코드</p>
-            <p>0dcdafba-bcb4-4361-a24e-ffc044781aea</p>
+            <span className="font-bold">결제코드</span>
+            <span>{receipt?.orderId}</span>
           </div>
 
           <div className="flex gap-x-10">
             <div>
-              <p className="font-bold">결제명</p>
-              <p>나비 : 익명의 후원자1님의 정기후원</p>
+              <span className="font-bold">결제명</span>
+              <span>{receipt?.orderName}</span>
             </div>
             <div>
               <p className="font-bold">후원금액</p>
-              <p>10,000원</p>
+              <p>{receipt?.amount.toLocaleString()}원</p>
             </div>
           </div>
 
           <div>
             <p className="font-bold">카드번호</p>
-            <p>3212-****-****-***5</p>
+            <p>{receipt?.card.number}</p>
           </div>
 
           <div>
             <p className="font-bold">결제일</p>
-            <p>2024-10-19 02:01</p>
+            <p>{dayjs(receipt?.approvedAt).format("YYYY-MM-DD HH:mm:ss")}</p>
           </div>
           <ButtonGroup
             intent="primary"
@@ -98,7 +101,7 @@ function RegularSponsorShipBillingPage({
           />
         </div>
       </div>
-    </Page>
+    </Container>
   );
 }
 

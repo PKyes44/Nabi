@@ -3,24 +3,25 @@
 import clientApi from "@/api/clientSide/api";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useRouter } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
 
 function AuthProvider({ children }: PropsWithChildren) {
+  const router = useRouter();
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const setAuthInitialized = useAuthStore((state) => state.setAuthInitialized);
-  const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
-  const setRoleType = useAuthStore((state) => state.setRoleType);
-  const userId = useAuthStore((state) => state.currentUserId);
+  const setUser = useAuthStore((state) => state.setCurrentUser);
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_name, session) => {
+    supabase.auth.onAuthStateChange(async (_eventName, session) => {
       if (session) {
-        console.log(session);
         const userId = session.user.id;
-        setCurrentUserId(userId);
+        const response = await clientApi.profiles.getProfileByUserId(userId);
+        const role = response?.role as "sponsor" | "recipient";
+        setUser({ userId, role });
         setIsLoggedIn(true);
       } else {
-        setCurrentUserId(null);
+        setUser(null);
         setIsLoggedIn(false);
       }
       setAuthInitialized();
@@ -28,13 +29,10 @@ function AuthProvider({ children }: PropsWithChildren) {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      if (!userId) return;
-      const response = await clientApi.profiles.getProfileByUserId(userId);
-      const roleType = response?.role as "sponsor" | "recipient";
-      setRoleType(roleType);
-    })();
-  }, [userId]);
+    supabase.auth.onAuthStateChange(async (eventName) => {
+      if (eventName === "SIGNED_IN") router.replace("/");
+    });
+  }, []);
 
   return children;
 }

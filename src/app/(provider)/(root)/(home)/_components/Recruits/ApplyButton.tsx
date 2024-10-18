@@ -2,9 +2,8 @@
 
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import { Database } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 interface ApplyButtonProps {
   recruitId: string;
@@ -12,47 +11,46 @@ interface ApplyButtonProps {
 }
 
 function ApplyButton({ recruitId, authorId }: ApplyButtonProps) {
-  const queryClient = useQueryClient();
-  const userId = useAuthStore((state) => state.currentUserId);
+  // const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.currentUser);
 
   const { data } = useQuery({
-    queryKey: ["sponsorMeets", userId],
-    queryFn: () => clientApi.sponsorMeets.getRecruitIdByUserId(userId!),
+    queryKey: ["sponsorMeets", { userId: user?.userId }],
+    queryFn: () => clientApi.sponsorMeets.getRecruitIdByUserId(user?.userId!),
   });
 
-  const { mutate: insertSponsorMeet } = useMutation<
-    unknown,
-    Error,
-    Database["public"]["Tables"]["sponsorMeets"]["Insert"]
-  >({
-    mutationFn: (data) => clientApi.sponsorMeets.insertSponsorMeet(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["sponsorMeets"] });
-      alert("신청되었습니다");
-    },
-    onError: (e) => {
-      alert(e.message);
-    },
-  });
+  // const { mutate: insertSponsorMeet } = useMutation<
+  //   unknown,
+  //   Error,
+  //   Database["public"]["Tables"]["sponsorMeets"]["Insert"]
+  // >({
+  //   mutationFn: (data) => clientApi.sponsorMeets.insertSponsorMeet(data),
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["sponsorMeets"] });
+  //     alert("신청되었습니다");
+  //   },
+  //   onError: (e) => {
+  //     alert(e.message);
+  //   },
+  // });
 
-  if (!userId) return null;
+  if (!user?.userId) return null;
 
   const hasApplied = data?.some(
     (application) => application.recruitId === recruitId
   );
 
   const handleClickApplyButton = () => {
-    const data = {
-      recruitId,
-      userId,
-    };
-
-    insertSponsorMeet(data);
+    // const data = {
+    //   recruitId,
+    //   userId: user.userId,
+    // };
+    // insertSponsorMeet(data);
   };
 
   return (
     <>
-      {userId !== authorId &&
+      {user.userId !== authorId &&
         (!hasApplied ? (
           <ButtonGroup
             intent="primary"

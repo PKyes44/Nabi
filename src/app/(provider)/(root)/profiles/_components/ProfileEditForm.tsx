@@ -5,7 +5,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { EditProfileData } from "@/types/profiles.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useProfileEditModalStore } from "@/zustand/modals/profileEditModal.store";
+import { useModal } from "@/zustand/modal.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useEffect, useState } from "react";
 
@@ -20,10 +20,8 @@ const initialErrMsgs = {
 function ProfileEditForm() {
   const queryClient = useQueryClient();
 
-  const showUserId = useAuthStore((state) => state.currentUserId);
-  const setIsShowProfileEditModal = useProfileEditModalStore(
-    (state) => state.setIsShowProfileEditModal
-  );
+  const user = useAuthStore((state) => state.currentUser);
+  const setActiveModal = useModal((state) => state.setActiveModal);
 
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const [isClickedPrimaryProfile, setIsClickedPrimaryProfile] = useState(false);
@@ -32,7 +30,7 @@ function ProfileEditForm() {
   // useMutation사용해서 기본 이미지로 변경하는 함수
   const { mutate: setPrimaryImage } = useMutation({
     mutationFn: (type: string) =>
-      clientApi.profiles.setPrimaryImage(showUserId!, type),
+      clientApi.profiles.setPrimaryImage(user?.userId!, type),
   });
 
   // useMutation사용해서 프로필수정하는 함수
@@ -41,9 +39,9 @@ function ProfileEditForm() {
       clientApi.profiles.editProfile(profileData),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["userProfiles", { showUserId }],
+        queryKey: ["userProfiles", { showUserId: user?.userId }],
       });
-      setIsShowProfileEditModal(false);
+      setActiveModal(null);
     },
   });
 
@@ -60,7 +58,7 @@ function ProfileEditForm() {
       setErrMsgs(initialErrMsgs);
 
       const nickname = e.target.nickname.value;
-      if (!showUserId) return;
+      if (!user?.userId) return;
 
       if (isClickedPrimaryProfile) setPrimaryImage("profile");
       if (isClickedPrimaryBg) setPrimaryImage("background");
@@ -69,7 +67,7 @@ function ProfileEditForm() {
       const bgImg = e.target.backgroundImg.files?.[0];
 
       const profileData: EditProfileData = {
-        userId: showUserId,
+        userId: user.userId,
         nickname,
         profileImg,
         bgImg,

@@ -36,23 +36,16 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           href={`/profiles?userId=${recruit.authorId}`}
           className="flex items-center gap-x-5 "
         >
-          {recruit.userProfiles.profileImageUrl ? (
-            <Image
-              src={recruit.userProfiles.profileImageUrl}
-              alt="profile image"
-              className="w-16 rounded-full aspect-square object-cover"
-              width={46}
-              height={46}
-            />
-          ) : (
-            <Image
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
-              alt="profile image"
-              className=" rounded-full aspect-square object-cover"
-              width={46}
-              height={46}
-            />
-          )}
+          <Image
+            width={300}
+            height={300}
+            src={
+              recruit.userProfiles.profileImageUrl ||
+              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
+            }
+            alt="profile image"
+            className="w-16 rounded-full aspect-square object-cover"
+          />
           <div className="flex flex-col">
             <span className="font-extrabold">
               {recruit.userProfiles.nickname}
@@ -74,8 +67,9 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         <div className="flex gap-x-4">
           <div className="flex gap-x-2 items-center group relative">
             <Image
-              width={20}
-              height={20}
+              width={150}
+              height={150}
+              className="w-4 aspect-square"
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Location.png?t=2024-10-15T19%3A39%3A08.745Z"
               alt="location icon"
             />
@@ -86,8 +80,9 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           </div>
           <div className="flex gap-x-2 items-center group relative">
             <Image
-              width={20}
-              height={20}
+              width={150}
+              height={150}
+              className="w-4 aspect-square"
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Date.png"
               alt="date icon"
             />
