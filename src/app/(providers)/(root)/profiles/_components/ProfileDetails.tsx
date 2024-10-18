@@ -13,7 +13,7 @@ interface ProfileDetailsProps {
 function ProfileDetails({ showUserId, profile }: ProfileDetailsProps) {
   return (
     <section className="border border-gray-100 w-[900px] h-[400px] bg-white rounded-lg overflow-hidden">
-      {profile.bgImageUrl ? (
+      {profile?.bgImageUrl ? (
         <Image
           width={100}
           height={100}
@@ -30,15 +30,15 @@ function ProfileDetails({ showUserId, profile }: ProfileDetailsProps) {
             width={300}
             height={300}
             alt="profile image"
-            className="w-32 aspect-square object-cover"
+            className="w-32 aspect-square object-cover  rounded-full"
             src={
-              profile.profileImageUrl ||
+              profile?.profileImageUrl ||
               "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
             }
           />
           <div className="flex flex-col">
-            <span className="text-2xl font-bold">{profile.nickname}</span>
-            <span>{profile.role === "sponsor" ? "후원자" : "후원아동"}</span>
+            <span className="text-2xl font-bold">{profile?.nickname}</span>
+            <span>{profile?.role === "sponsor" ? "후원자" : "후원아동"}</span>
           </div>
         </article>
         <ProfileButtons profile={profile} showUserId={showUserId} />

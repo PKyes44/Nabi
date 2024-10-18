@@ -10,6 +10,8 @@ import { PropsWithChildren, useEffect } from "react";
 
 function NotificationProvider({ children }: PropsWithChildren) {
   const currentUser = useAuthStore((state) => state.currentUser);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
   const addNotify = useNotifyStore((state) => state.addNotify);
   const setIsCheckedNotifyList = useNotifyStore(
     (state) => state.setIsCheckedNotifyList
@@ -66,7 +68,6 @@ function NotificationProvider({ children }: PropsWithChildren) {
           const from = payload.new.from;
           const to = payload.new.to;
 
-          console.log(from, to, currentUser?.userId);
           if (to !== currentUser?.userId) return;
           console.log("received chat !");
 
@@ -100,14 +101,41 @@ function NotificationProvider({ children }: PropsWithChildren) {
         { event: "INSERT", schema: "public", table: "sponsorShipOrder" },
         async (payload) => {
           console.log("sponsorship order Table Change received!", payload);
-
           const sponsorShipId = payload.new.sponsorShipId;
           const sponsorShipData =
             await clientApi.sponsorShip.getSponsorShipBySponsorShipId(
               sponsorShipId
             );
+          const { data: user } = await supabase.auth.getUser();
 
-          if (sponsorShipData.sponsorId !== currentUser?.userId) return;
+          if (!user) return;
+          if (user.user?.id !== sponsorShipData.sponsorId) return;
+
+          const recipientId = sponsorShipData.recipientId;
+          const recipientProfile = await clientApi.profiles.getProfileByUserId(
+            recipientId
+          );
+
+          const title = "정기후원 결제 알림";
+          const content = `${
+            recipientProfile!.nickname.length < 6
+              ? recipientProfile?.nickname
+              : recipientProfile?.nickname.slice(0, 5) + "..."
+          }님을 위한 정기후원 결제가 완료되었습니다`;
+          const url = "/";
+          const notifiedAt = dayjs(payload.commit_timestamp).format(
+            "YYYY-MM-DD HH:mm:ss"
+          );
+
+          const notify: Notify = {
+            title,
+            content,
+            url,
+            notifiedAt,
+          };
+          console.log("notify: ", notify);
+          addNotify(notify);
+          setIsCheckedNotifyList(false);
         }
       )
       .subscribe();

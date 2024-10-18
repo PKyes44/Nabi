@@ -15,6 +15,8 @@ async function Profile({ userId }: ProfileProps) {
     userId
   );
 
+  if (!profile) return <span>데이터가 없습니다</span>;
+
   return (
     <>
       <div className="flex gap-x-7">
