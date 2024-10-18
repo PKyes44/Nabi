@@ -8,8 +8,6 @@ import Image from "next/image";
 function CreateRecruitButton() {
   const currentUser = useAuthStore((state) => state.currentUser);
 
-  console.log(currentUser?.role);
-
   return (
     <>
       {currentUser?.role !== "recipient" && (
