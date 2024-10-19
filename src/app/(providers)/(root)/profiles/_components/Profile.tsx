@@ -1,36 +1,22 @@
 import serverApi from "@/api/serverSide/api";
-import RecruitList from "../../(home)/_components/Recruits/RecruitList";
+import { Tables } from "@/supabase/database.types";
+import FeedList from "./FeedList";
 import ProfileDetails from "./ProfileDetails";
-import ProfileSideBar from "./SideBar/ProfileSideBar";
 
 interface ProfileProps {
-  userId: string;
+  profile: Tables<"userProfiles">;
 }
 
-async function Profile({ userId }: ProfileProps) {
-  // 선택한 유저의 프로필
-  const profile = await serverApi.profiles.getProfileByUserId(userId!);
-  const initialRecruits = await serverApi.recruits.getInfiniteRecruitsByUserId(
-    0,
-    userId
-  );
+async function Profile({ profile }: ProfileProps) {
+  const initialFeeds = await serverApi.feeds.getFeedsByUserId(profile.userId);
 
   if (!profile) return <span>데이터가 없습니다</span>;
 
   return (
-    <>
-      <div className="flex gap-x-7">
-        <div className="flex flex-col gap-y-5">
-          <ProfileDetails profile={profile!} showUserId={userId} />
-          <RecruitList
-            initialRecruitList={initialRecruits!}
-            profile={profile!}
-          />
-        </div>
-
-        <ProfileSideBar profile={profile!} />
-      </div>
-    </>
+    <div className="flex flex-col gap-y-5 w-[900px] ">
+      <ProfileDetails profile={profile!} showUserId={profile.userId} />
+      <FeedList userId={profile.userId} initialFeeds={initialFeeds} />
+    </div>
   );
 }
 

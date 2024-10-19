@@ -1,23 +1,19 @@
-import { Tables } from "@/supabase/database.types";
+import { RecruitItem } from "@/types/recruits.types";
 import "dayjs/locale/ko";
 import RecruitDetails from "./RecruitDetails";
 import Replies from "./Replies/Replies";
 
 interface RecruitProps {
-  recruit: Tables<"recruits"> & {
-    userProfiles: Tables<"userProfiles">;
-  } & {
-    replies: (Tables<"replies"> & {
-      userProfiles: Tables<"userProfiles">;
-    })[];
-  };
+  recruit: RecruitItem;
 }
 
 function Recruit({ recruit }: RecruitProps) {
   return (
-    <div className="flex flex-col gap-y-10">
-      <RecruitDetails recruit={recruit!} />
-      <Replies recruitId={recruit.recruitId} replies={recruit.replies!} />
+    <div className="bg-white mb-2 p-10 pt-7 shadow-md rounded-md relative">
+      <article className="flex flex-col gap-y-10">
+        <RecruitDetails recruit={recruit!} />
+        <Replies recruitId={recruit.recruitId} replies={recruit.replies} />
+      </article>
     </div>
   );
 }

@@ -1,12 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Tables } from "@/supabase/database.types";
-import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Image from "next/image";
 import Link from "next/link";
-import ApplyToRecipientButton from "./ApplyToRecipientButton";
-import ApplyToSponsorButton from "./ApplyToSponsorButton";
+import ApplyButtons from "./ApplyButtons";
 import OthersButton from "./OthersButton";
 import RecruitCount from "./RecruitCount";
 
@@ -15,8 +13,6 @@ interface RecruitDetailsProps {
 }
 
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
-  const currentUser = useAuthStore((state) => state.currentUser);
-
   let createdAt =
     Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "days")) + "일 전";
   if (+createdAt.split("일 전")[0] === 0)
@@ -63,17 +59,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           />
         </div>
       </div>
-      {currentUser?.role === "recipient" ? (
-        <ApplyToRecipientButton
-          recruitId={recruit.recruitId}
-          authorId={recruit.authorId}
-        />
-      ) : (
-        <ApplyToSponsorButton
-          recruitId={recruit.recruitId}
-          authorId={recruit.authorId}
-        />
-      )}
+      <ApplyButtons recruit={recruit} />
       <article className="flex flex-col gap-y-3">
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>

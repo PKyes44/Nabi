@@ -55,7 +55,6 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
         email,
         role,
       };
-      console.log(insertProfileData);
       insertProfile(insertProfileData);
     },
     onError: (...arg) => {
