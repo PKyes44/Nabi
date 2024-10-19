@@ -7,8 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import ApplyToRecipientButton from "./ApplyToRecipientButton";
 import ApplyToSponsorButton from "./ApplyToSponsorButton";
+import OthersButton from "./OthersButton";
 import RecruitCount from "./RecruitCount";
-import UpdateRecruitButton from "./UpdateRecruitButton";
 
 interface RecruitDetailsProps {
   recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
@@ -55,12 +55,12 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             </span>
           </div>
         </Link>
-        <div className="flex flex-col items-end gap-y-2">
-          <UpdateRecruitButton
+        <div className="flex items-center gap-x-2">
+          <span className="font-normal text-xs">{createdAt}</span>
+          <OthersButton
             authorId={recruit.authorId}
             recruitId={recruit.recruitId}
           />
-          <span className="font-normal text-xs">{createdAt}</span>
         </div>
       </div>
       {currentUser?.role === "recipient" ? (
