@@ -1,4 +1,5 @@
 "use client";
+
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import Container from "@/components/Container/Container";
@@ -6,6 +7,7 @@ import InputGroup from "@/components/Inputs/InputGroup";
 import { UserInfo } from "@/types/auth.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { ToastType } from "@/types/toast.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useMutation } from "@tanstack/react-query";
 import { ComponentProps, useState } from "react";
@@ -24,10 +26,18 @@ const initialErrMsgs = {
 function LogInPage() {
   const addToast = useToastStore((state) => state.addToast);
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
 
   const { mutate: logIn } = useMutation({
     mutationFn: (logInData: UserInfo) => clientApi.auth.logIn(logInData),
-    onSuccess: () => {
+    onSuccess: async (userId) => {
+      const response = await clientApi.profiles.getProfileByUserId(userId);
+      const role = response?.role as "sponsor" | "recipient";
+      const user = {
+        userId,
+        role,
+      };
+      setCurrentUser(user);
       const id = crypto.randomUUID();
       const title = "로그인 성공";
       const content = "로그인에 성공하였습니다";

@@ -12,7 +12,7 @@ const logIn = async (logInData: UserInfo) => {
   const { data, error } = await supabase.auth.signInWithPassword(logInData);
   if (error) throw new Error(error.message);
 
-  return data;
+  return data.user.id;
 };
 
 const getUser = async () => {
