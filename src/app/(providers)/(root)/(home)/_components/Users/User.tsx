@@ -32,7 +32,7 @@ function User({ user }: RecipientProps) {
           />
         </div>
       )}
-      <span>{user.nickname}</span>
+      <span className="line-clamp-4">{user.nickname}</span>
     </Link>
   );
 }
