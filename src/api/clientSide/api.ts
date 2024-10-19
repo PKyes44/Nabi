@@ -4,6 +4,7 @@ import freeMealsAPI from "./freeMeals.api";
 import profilesAPI from "./profiles.api";
 import recipientsMeetsAPI from "./recipientsMeets.api";
 import recruitsAPI from "./recruits.api";
+import thumbUpAPI from "./recruitThumbUps.api";
 import regularSponsorShipAPI from "./regularSponsorShip.api";
 import repliesAPI from "./replies.api";
 import roomsAPI from "./rooms.api";
@@ -28,6 +29,7 @@ const clientApi = {
   replies: repliesAPI,
   sponsorMeets: sponsorMeetsAPI,
   recipientMeets: recipientsMeetsAPI,
+  recruitThumbUps: thumbUpAPI,
 };
 
 export default clientApi;

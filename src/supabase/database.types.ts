@@ -189,6 +189,42 @@ export type Database = {
           },
         ]
       }
+      recruitThumbUps: {
+        Row: {
+          createdAt: string
+          recruitId: string
+          tId: string
+          userId: string
+        }
+        Insert: {
+          createdAt?: string
+          recruitId?: string
+          tId?: string
+          userId?: string
+        }
+        Update: {
+          createdAt?: string
+          recruitId?: string
+          tId?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recruitThumbUps_recruitId_fkey"
+            columns: ["recruitId"]
+            isOneToOne: false
+            referencedRelation: "recruits"
+            referencedColumns: ["recruitId"]
+          },
+          {
+            foreignKeyName: "recruitThumbUps_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "userProfiles"
+            referencedColumns: ["userId"]
+          },
+        ]
+      }
       regularSponsorship: {
         Row: {
           created_at: string
