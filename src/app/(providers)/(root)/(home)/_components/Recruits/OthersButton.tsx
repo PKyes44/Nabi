@@ -19,7 +19,10 @@ function OthersButton({ authorId, recruitId }: UpdateRecruitButtonProps) {
 
   const { mutate: deleteRecruit } = useMutation({
     mutationFn: () => clientApi.recruits.deleteRecruitByRecruitId(recruitId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["recruits"] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["recruits", { page: "homepage" }],
+      }),
   });
 
   const handleToggleOthers = () => {

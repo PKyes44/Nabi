@@ -193,10 +193,7 @@ function KakaoMap({
         map,
         "bounds_changed",
         async function () {
-          console.log("changed bounds 1");
-
           router.push("/free-meals/map");
-          // setCurrentStore(null);
 
           const bounds = map.getBounds();
 
@@ -214,8 +211,6 @@ function KakaoMap({
           clientApi.storeData
             .getStoreDatasBySwLatLngAndNeLatLng(requestData)
             .then((res) => {
-              console.log("changed bounds 5");
-              console.log("changeBound: ", res);
               cluster.clear();
               res?.forEach((data) => {
                 const storeData = {
@@ -245,9 +240,6 @@ function KakaoMap({
         .getStoreDatasBySwLatLngAndNeLatLng(requestData)
         .then((res) => {
           if (res.length === 0) return console.log("storeData is ", res.length);
-          console.log("storeDatas is ", res.length);
-
-          console.log("is selected store :", isSelectedStore);
           if (isSelectedStore) {
             console.log("show selected store");
             const storeData = res?.find(

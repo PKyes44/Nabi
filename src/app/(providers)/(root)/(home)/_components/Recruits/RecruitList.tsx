@@ -8,7 +8,6 @@ import { useEffect, useRef } from "react";
 import Recruit from "./Recruit";
 
 interface RecruitListProps {
-  profile?: Tables<"userProfiles">;
   initialRecruitList: (Tables<"recruits"> & {
     userProfiles: Tables<"userProfiles">;
   } & {
@@ -18,7 +17,7 @@ interface RecruitListProps {
   })[];
 }
 
-function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
+function RecruitList({ initialRecruitList }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
@@ -28,17 +27,9 @@ function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
     isLoading,
   } = useInfiniteQuery({
     initialData: { pages: [initialRecruitList || []], pageParams: [0] },
-    queryKey: ["recruits", { profile }],
-    queryFn: ({ pageParam }) => {
-      if (profile)
-        return clientApi.recruits.getInfiniteRecruitsByUserId(
-          pageParam,
-          profile.userId,
-          profile.role
-        );
-
-      return clientApi.recruits.getInfiniteRecruits(pageParam);
-    },
+    queryKey: ["recruits", { page: "homepage" }],
+    queryFn: ({ pageParam }) =>
+      clientApi.recruits.getInfiniteRecruits(pageParam),
     getNextPageParam: (lastPage, pages) => {
       if (!lastPage) return;
       if (!pages) return;
@@ -74,10 +65,7 @@ function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
     <ul className="w-full flex flex-col gap-y-4">
       {recruitsData.pages.map((page) =>
         page?.map((recruit) => (
-          <li
-            key={recruit.recruitId}
-            className="bg-white mb-2 p-10 pt-7 shadow-md rounded-md relative"
-          >
+          <li key={recruit.recruitId}>
             <Recruit recruit={recruit} />
           </li>
         ))

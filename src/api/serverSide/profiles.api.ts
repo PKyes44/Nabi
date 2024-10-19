@@ -23,9 +23,9 @@ const getProfilesFilterByRoleAndSponsorShipCount = async (
   > = bubbleSort(data!);
   return orderedData;
 };
-function bubbleSort(
+const bubbleSort = (
   arr: (Tables<"userProfiles"> & { sponsorShip: { count: number }[] })[]
-) {
+) => {
   const newArr = arr;
   for (let x = 0; x < newArr.length; x++) {
     for (let y = 1; y < newArr.length - x; y++) {
@@ -36,7 +36,7 @@ function bubbleSort(
   }
 
   return newArr;
-}
+};
 
 const getProfileByUserId = async (userId: string) => {
   try {

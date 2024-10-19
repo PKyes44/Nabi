@@ -32,7 +32,6 @@ function Modal({ isDim, className, children }: PropsWithChildren<ModalProps>) {
   const handleClickOutOfRange: ComponentProps<"div">["onClick"] = (e) => {
     if (e.target === e.currentTarget) {
       if (activeModal?.type.name === "NotifyListModal") {
-        console.log("reseted Notify List");
         resetNotifyList();
       }
       setActiveModal(null);

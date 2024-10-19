@@ -86,13 +86,11 @@ function CreateFreeMealForm() {
     const freeMealDate = day.format("YYYY-MM-DD HH:mm");
 
     const insertFreeMealData = {
-      // sponsorId: sponsor.userId,
       sponsorId: sponsor.userId,
       storeId,
       freeMealDate,
       maxServingCount,
     };
-    console.log(insertFreeMealData);
     insertFreeMeal(insertFreeMealData);
   };
 
