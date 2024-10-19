@@ -7,7 +7,7 @@ interface RecipientListProps {
 }
 
 function RecipientList({ page }: RecipientListProps) {
-  const { data: recipients, isLoading } = useQuery({
+  const { data: recipients } = useQuery({
     queryKey: ["userProfiles"],
     queryFn: () =>
       clientApi.profiles.getProfilesFilterByRoleAndSponsorShipCount(
