@@ -2,6 +2,15 @@ import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { Recruits } from "@/types/customDatabase";
 
+const deleteRecruitByRecruitId = async (recruitId: string) => {
+  const { error } = await supabase
+    .from("recruits")
+    .delete()
+    .eq("recruitId", recruitId);
+
+  if (error) throw new Error(error.message);
+};
+
 const createRecruit = async (data: Recruits["Insert"]) => {
   const { data: recruitData, error } = await supabase
     .from("recruits")
@@ -152,6 +161,7 @@ const recruitsAPI = {
   getSortedRecruits,
   getInfiniteRecruitsByUserId,
   getGroupOfPageRecruits,
+  deleteRecruitByRecruitId,
 };
 
 export default recruitsAPI;
