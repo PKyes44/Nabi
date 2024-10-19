@@ -56,7 +56,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   const addToast = useToastStore((state) => state.addToast);
 
   const { data: recruit, isLoading } = useQuery({
-    queryKey: ["recruits"],
+    queryKey: ["recruits", { recruitId }],
     queryFn: () => clientApi.recruits.getRecruit(recruitId),
   });
 

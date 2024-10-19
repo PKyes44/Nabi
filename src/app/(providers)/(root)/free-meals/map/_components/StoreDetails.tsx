@@ -1,7 +1,9 @@
 import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
 import { Database, Tables } from "@/supabase/database.types";
+import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useToastStore } from "@/zustand/toast.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface StoreDetailModalProps {
@@ -11,6 +13,7 @@ interface StoreDetailModalProps {
 function StoreDetails({ detailData: storeDetailData }: StoreDetailModalProps) {
   const user = useAuthStore((state) => state.currentUser);
   const queryClient = useQueryClient();
+  const addToast = useToastStore((state) => state.addToast);
 
   const { data: isStoreOwner } = useQuery({
     queryKey: [
@@ -31,6 +34,17 @@ function StoreDetails({ detailData: storeDetailData }: StoreDetailModalProps) {
       queryClient.invalidateQueries({
         queryKey: ["storeOwners"],
       });
+      const id = crypto.randomUUID();
+      const title = "새로운 점주 등록";
+      const content = "점주 등록을 완료하였습니다";
+      const status = "start";
+      const toast: ToastType = {
+        id,
+        title,
+        content,
+        status,
+      };
+      addToast(toast);
     },
   });
   const handleClickRegistOwner = () => {

@@ -45,9 +45,6 @@ function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
 
       return pages.length;
     },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
     initialPageParam: 0,
   });
 
