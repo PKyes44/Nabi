@@ -37,18 +37,6 @@ const approveSponsor = async (userId: string, recruitId: string) => {
     .eq("recruitId", recruitId);
 };
 
-const getRecipientByUserId = async (recruitId: string) => {
-  const query = "userId, userProfiles!sponsorMeets_userId_fkey(*)";
-  const { data } = await supabase
-    .from("sponsorMeets")
-    .select(query)
-    .eq("recruitId", recruitId)
-    .eq("isApproved", true)
-    .eq("isSponsor", false)
-    .single();
-  return data;
-};
-
 const insertSponsorMeet = async (
   data: Database["public"]["Tables"]["sponsorMeets"]["Insert"]
 ) => {
@@ -69,7 +57,6 @@ const sponsorMeetsAPI = {
   getRecruitIdByUserId,
   getRecentlyRecipients,
   approveSponsor,
-  getRecipientByUserId,
   insertSponsorMeet,
   getSponsorMeets,
 };

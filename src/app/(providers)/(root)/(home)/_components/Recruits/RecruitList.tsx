@@ -28,7 +28,7 @@ function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
     isLoading,
   } = useInfiniteQuery({
     initialData: { pages: [initialRecruitList || []], pageParams: [0] },
-    queryKey: ["recruits"],
+    queryKey: ["recruits", { profile }],
     queryFn: ({ pageParam }) => {
       if (profile)
         return clientApi.recruits.getInfiniteRecruitsByUserId(
