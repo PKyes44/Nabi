@@ -16,9 +16,13 @@ function AuthProvider({ children }: PropsWithChildren) {
     supabase.auth.onAuthStateChange(async (_eventName, session) => {
       if (session) {
         const userId = session.user.id;
-        const response = await clientApi.profiles.getProfileByUserId(userId);
-        const role = response?.role as "sponsor" | "recipient";
-        setUser({ userId, role });
+        try {
+          const response = await clientApi.profiles.getProfileByUserId(userId);
+          const role = response?.role as "sponsor" | "recipient";
+          setUser({ userId, role });
+        } catch (e) {
+          console.log(e);
+        }
         setIsLoggedIn(true);
       } else {
         setUser(null);
