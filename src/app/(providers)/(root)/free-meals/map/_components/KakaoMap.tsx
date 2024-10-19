@@ -9,6 +9,7 @@ import { Tables } from "@/supabase/database.types";
 import { ToastType } from "@/types/toast.types";
 import { useModalStore } from "@/zustand/modal.store";
 import { useToastStore } from "@/zustand/toast.store";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { ComponentProps, useEffect, useRef, useState } from "react";
 import StoreDetailModal from "./StoreDetailModal";
@@ -43,11 +44,11 @@ interface KakaoMapProps {
   lng: number;
   brandName: string;
 }
-type CurrentStore = {
-  lat: number;
-  lng: number;
-  brandName: string;
-} | null;
+type CurrentStore =
+  | (Tables<"storeDatas"> & {
+      isRegisted: boolean;
+    })
+  | null;
 
 function KakaoMap({
   lat = 33.450701,
@@ -58,6 +59,12 @@ function KakaoMap({
     lat,
     lng,
     brandName,
+    isRegisted: true,
+    address: "",
+    createdAt: "",
+    phoneNumber: "",
+    storeId: "",
+    storeType: "",
   });
   const mapRef = useRef<HTMLDivElement>(null);
   const location = useGeolocation();
@@ -68,22 +75,25 @@ function KakaoMap({
   const addToast = useToastStore((state) => state.addToast);
 
   const createMarker = (
-    storeData: Tables<"storeDatas">,
-    clusterer: kakao.maps.MarkerClusterer
+    storeData: CurrentStore,
+    currentCluerster: kakao.maps.MarkerClusterer
   ) => {
+    if (!currentCluerster)
+      return console.log("currentCluerster is", currentCluerster);
+
     const markerPosition = new window.kakao.maps.LatLng(
-      storeData.lat,
-      storeData.lng
+      storeData!.lat,
+      storeData!.lng
     );
 
     const marker = new window.kakao.maps.Marker({
       position: markerPosition,
     });
 
-    clusterer.addMarker(marker, false);
+    currentCluerster.addMarker(marker, false);
 
     window.kakao.maps.event.addListener(marker, "click", () => {
-      setActiveModal(<StoreDetailModal detailData={storeData} />);
+      setActiveModal(<StoreDetailModal detailData={storeData!} />);
     });
   };
 
@@ -111,10 +121,16 @@ function KakaoMap({
   };
 
   const handleClickSearchStore = (result: SearchResult) => {
-    const clickedStore = {
+    const clickedStore: CurrentStore = {
       lat: result.y,
       lng: result.x,
       brandName: result.place_name,
+      address: result.address_name,
+      createdAt: dayjs().format("YYYY-MM-DD HH:mm"),
+      phoneNumber: result.phone,
+      storeId: result.id,
+      storeType: result.category_group_name,
+      isRegisted: false,
     };
     setCurrentStore(clickedStore);
 
@@ -151,6 +167,7 @@ function KakaoMap({
           : { lat: 33.450701, lng: 126.570667 };
       const isSelectedStore =
         currentStore && !isNaN(currentStore?.lat) && !isNaN(currentStore.lng);
+
       if (isSelectedStore) {
         mapLevel = 0;
         mapCenter = { lat: currentStore.lat, lng: currentStore.lng };
@@ -162,8 +179,9 @@ function KakaoMap({
         level: mapLevel,
       };
       const map = new window.kakao.maps.Map(mapRef.current, options);
-      const newClusterer = new kakao.maps.MarkerClusterer({
-        map: map!,
+
+      const cluster = new kakao.maps.MarkerClusterer({
+        map,
         markers: [],
         gridSize: 100,
         averageCenter: true,
@@ -171,52 +189,14 @@ function KakaoMap({
         disableClickZoom: true,
       });
 
-      const bounds = map.getBounds();
-
-      const swLatLng = bounds.getSouthWest();
-      const neLatLng = bounds.getNorthEast();
-
-      if (isNaN(swLatLng.La) || isNaN(swLatLng.Ma))
-        return console.log("map is undefined");
-      if (isNaN(neLatLng.La) || isNaN(neLatLng.Ma)) return;
-
-      const requestData = {
-        swLatLng,
-        neLatLng,
-      };
-      const storeDatas =
-        await clientApi.storeData.getStoreDatasBySwLatLngAndNeLatLng(
-          requestData
-        );
-      console.log("storeDatas: ", storeDatas);
-      const isSelectedStoreOnHome =
-        currentStore && !isNaN(currentStore.lat) && !isNaN(currentStore.lng);
-
-      if (isSelectedStoreOnHome) {
-        const selectedStore = storeDatas?.find(
-          (store) =>
-            store.lat === currentStore.lat &&
-            store.lng === currentStore.lng &&
-            store.brandName === currentStore.brandName
-        );
-        if (!selectedStore) return;
-        createMarker(selectedStore, newClusterer);
-        // return setActiveModal(<StoreDetailModal detailData={selectedStore} />);
-        return;
-      }
-
-      newClusterer.clear();
-      storeDatas?.forEach((data) => {
-        createMarker(data, newClusterer);
-      });
-
       window.kakao.maps.event.addListener(
         map,
         "bounds_changed",
         async function () {
-          newClusterer.clear();
+          console.log("changed bounds 1");
+
           router.push("/free-meals/map");
-          setCurrentStore(null);
+          // setCurrentStore(null);
 
           const bounds = map.getBounds();
 
@@ -231,34 +211,90 @@ function KakaoMap({
             swLatLng,
             neLatLng,
           };
-          const storeDatas =
-            await clientApi.storeData.getStoreDatasBySwLatLngAndNeLatLng(
-              requestData
-            );
-          console.log("storeDatas: ", storeDatas);
+          clientApi.storeData
+            .getStoreDatasBySwLatLngAndNeLatLng(requestData)
+            .then((res) => {
+              console.log("changed bounds 5");
+              console.log("changeBound: ", res);
+              cluster.clear();
+              res?.forEach((data) => {
+                const storeData = {
+                  ...data,
+                  isRegisted: true,
+                };
+                createMarker(storeData, cluster);
+              });
+            });
+        }
+      );
 
-          const isSelectedStoreOnHome =
-            currentStore &&
-            !isNaN(currentStore.lat) &&
-            !isNaN(currentStore.lng);
-          if (isSelectedStoreOnHome) {
-            const selectedStore = storeDatas?.find(
+      const bounds = map.getBounds();
+
+      const swLatLng = bounds.getSouthWest();
+      const neLatLng = bounds.getNorthEast();
+
+      if (isNaN(swLatLng.La) || isNaN(swLatLng.Ma))
+        return console.log("map is undefined");
+      if (isNaN(neLatLng.La) || isNaN(neLatLng.Ma)) return;
+
+      const requestData = {
+        swLatLng,
+        neLatLng,
+      };
+      clientApi.storeData
+        .getStoreDatasBySwLatLngAndNeLatLng(requestData)
+        .then((res) => {
+          if (res.length === 0) return console.log("storeData is ", res.length);
+          console.log("storeDatas is ", res.length);
+
+          console.log("is selected store :", isSelectedStore);
+          if (isSelectedStore) {
+            console.log("show selected store");
+            const storeData = res?.find(
               (store) =>
-                store.lat === currentStore.lat &&
-                store.lng === currentStore.lng &&
+                Math.floor(store.lat) === Math.floor(currentStore.lat) &&
+                Math.floor(store.lng) === Math.floor(currentStore.lng) &&
                 store.brandName === currentStore.brandName
             );
-            if (!selectedStore) return;
-            createMarker(selectedStore, newClusterer);
+
+            let selectedStore: CurrentStore = {
+              address: currentStore.address,
+              brandName: currentStore.brandName,
+              lat: currentStore.lat,
+              lng: currentStore.lng,
+              createdAt: currentStore.createdAt,
+              phoneNumber: currentStore.phoneNumber,
+              storeId: currentStore.storeId,
+              storeType: currentStore.storeType,
+              isRegisted: false,
+            };
+            if (storeData) {
+              selectedStore = {
+                address: storeData.address,
+                brandName: storeData.brandName,
+                lat: storeData.lat,
+                lng: storeData.lng,
+                createdAt: storeData.createdAt,
+                phoneNumber: storeData.createdAt,
+                storeId: storeData.storeId,
+                storeType: storeData.storeType,
+                isRegisted: true,
+              };
+            }
+            cluster.clear();
+            createMarker(selectedStore, cluster);
             // return setActiveModal(<StoreDetailModal detailData={selectedStore} />);
             return;
           }
-
-          storeDatas?.forEach((data) => {
-            createMarker(data, newClusterer);
+          cluster.clear();
+          return res?.forEach((data) => {
+            const storeData = {
+              ...data,
+              isRegisted: true,
+            };
+            createMarker(storeData, cluster);
           });
-        }
-      );
+        });
     });
   }, [location, currentStore]);
 

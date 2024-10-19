@@ -24,7 +24,7 @@ const getStoreByUserId = async (userId: string) => {
   return data;
 };
 
-const isStoreOwnerByUserId = async (userId: string | null) => {
+const checkIsStoreOwnerByUserId = async (userId: string | null) => {
   if (!userId) return null;
   const { error, data } = await supabase
     .from("storeOwners")
@@ -36,7 +36,7 @@ const isStoreOwnerByUserId = async (userId: string | null) => {
   return true;
 };
 
-const isStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
+const checkIsStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
   if (!storeId) return;
 
   const { error, data } = await supabase
@@ -49,10 +49,36 @@ const isStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
   return true;
 };
 
+const checkIsStoreOwnerByStoreIdAndUserId = async ({
+  storeId,
+  userId,
+}: {
+  storeId: string;
+  userId: string;
+}) => {
+  if (!storeId) return;
+
+  const { error, data } = await supabase
+    .from("storeOwners")
+    .select()
+    .eq("storeId", storeId)
+    .eq("sponsorId", userId);
+  if (error) throw new Error(error.message);
+
+  if (data.length === 0) return false;
+  return true;
+};
+
+const deleteStoreOwnerByStoreId = async (storeId: string) => {
+  await supabase.from("storeOwners").delete().eq("storeId", storeId);
+};
+
 const storeOwnersAPI = {
+  deleteStoreOwnerByStoreId,
+  checkIsStoreOwnerByStoreIdAndUserId,
   insertStoreOwner,
   getStoreByUserId,
-  isStoreOwnerByStoreId,
-  isStoreOwnerByUserId,
+  checkIsStoreOwnerByStoreId,
+  checkIsStoreOwnerByUserId,
 };
 export default storeOwnersAPI;

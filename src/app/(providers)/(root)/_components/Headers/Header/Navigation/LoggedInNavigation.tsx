@@ -27,7 +27,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const queryClient = useQueryClient();
   const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners"],
-    queryFn: () => clientApi.storeOwners.isStoreOwnerByUserId(userId),
+    queryFn: () => clientApi.storeOwners.checkIsStoreOwnerByUserId(userId),
   });
   const { data: profile } = useQuery({
     queryKey: ["userProfiles", { userId }],

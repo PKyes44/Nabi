@@ -4,7 +4,9 @@ import { Tables } from "@/supabase/database.types";
 import { useModalStore } from "@/zustand/modal.store";
 
 interface StoreDetailModalProps {
-  detailData: Tables<"storeDatas">;
+  detailData: Tables<"storeDatas"> & {
+    isRegisted: boolean;
+  };
 }
 
 function StoreDetailModal({ detailData }: StoreDetailModalProps) {

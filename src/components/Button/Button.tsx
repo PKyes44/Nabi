@@ -16,7 +16,8 @@ const buttonVariant = cva("", {
       default: "bg-black",
       primary: "bg-yellow-300",
       none: "bg-none",
-      disabled: "bg-[#dddddd] bg-opacity-80 text-[#999999]",
+      disabled: "bg-[#dddddd] bg-opacity-80",
+      red: "bg-red-200 bg-opacity-80 ",
     },
     rounded: {
       none: "rounded-none",
@@ -28,6 +29,8 @@ const buttonVariant = cva("", {
       default: "text-white",
       black: "text-black",
       primary: "text-yellow-400",
+      red: "text-red-400",
+      disabled: " text-[#999999]",
     },
   },
   compoundVariants: [
@@ -40,6 +43,16 @@ const buttonVariant = cva("", {
     {
       textIntent: "primary",
       intent: "primary",
+      className: "bg-opacity-40 font-bold",
+    },
+    {
+      textIntent: "red",
+      intent: "red",
+      className: "bg-opacity-40 font-bold",
+    },
+    {
+      textIntent: "disabled",
+      intent: "disabled",
       className: "bg-opacity-40 font-bold",
     },
     { outline: true, className: "bg-opacity-5" },

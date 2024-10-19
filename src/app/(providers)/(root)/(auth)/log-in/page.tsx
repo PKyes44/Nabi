@@ -29,8 +29,8 @@ function LogInPage() {
     mutationFn: (logInData: UserInfo) => clientApi.auth.logIn(logInData),
     onSuccess: () => {
       const id = crypto.randomUUID();
-      const title = "로그인 이벤트";
-      const content = "로그인 버튼을 누르셨습니다";
+      const title = "로그인 성공";
+      const content = "로그인에 성공하였습니다";
       const status = "start";
       const toast: ToastType = {
         id,
