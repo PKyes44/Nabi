@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 import { LatLng } from "@/types/address.types";
 
 const getStoreDatasBySwLatLngAndNeLatLng = async ({
@@ -15,7 +15,8 @@ const getStoreDatasBySwLatLngAndNeLatLng = async ({
     .gte("lat", swLatLng.Ma)
     .gte("lng", swLatLng.La)
     .lte("lat", neLatLng.Ma)
-    .lte("lng", neLatLng.La);
+    .lte("lng", neLatLng.La)
+    .returns<Tables<"storeDatas">[]>();
   if (error) throw new Error(error.message);
   return data;
 };
