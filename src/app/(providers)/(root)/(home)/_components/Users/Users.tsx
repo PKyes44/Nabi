@@ -14,7 +14,7 @@ function Users({ page = "1" }: UsersProps) {
 
   return (
     <>
-      {!user ? (
+      {user ? (
         role === "recipient" ? (
           <Sponsors />
         ) : (

@@ -42,7 +42,6 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
     setActiveModal(<CreateFreeMealModal />);
   };
   const handleClickShowNotifies = () => {
-    // setActiveModal(<NotifyListModal />);
     setIsClickedNotifyList(!isClickedNotifyList);
     setIsCheckedNotifyList(true);
   };
