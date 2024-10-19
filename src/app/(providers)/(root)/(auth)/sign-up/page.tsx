@@ -3,11 +3,12 @@ import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import Container from "@/components/Container/Container";
 import InputGroup from "@/components/Inputs/InputGroup";
-import { Database } from "@/supabase/database.types";
+import { TablesInsert } from "@/supabase/database.types";
 import { UserInfo } from "@/types/auth.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { Role } from "@/types/profiles.types";
 import { ToastType } from "@/types/toast.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -36,6 +37,7 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
   const [nickname, setNickname] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const addToast = useToastStore((state) => state.addToast);
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
 
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => clientApi.auth.signUp(userInfo),
@@ -47,12 +49,13 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
 
       const userId = userData.user!.id;
 
-      const insertProfileData = {
+      const insertProfileData: TablesInsert<"userProfiles"> = {
         userId,
         nickname,
         email,
         role,
       };
+      console.log(insertProfileData);
       insertProfile(insertProfileData);
     },
     onError: (...arg) => {
@@ -67,16 +70,46 @@ function SignUpPage({ searchParams: { role } }: SignUpPageProps) {
         status,
       };
       addToast(toast);
-      console.log("error: ", arg);
+      console.log("sign up error: ", arg);
     },
   });
 
   const { mutate: insertProfile } = useMutation({
-    mutationFn: (
-      insertProfileData: Database["public"]["Tables"]["userProfiles"]["Insert"]
-    ) => clientApi.profiles.insertProfile(insertProfileData),
-    onSuccess: () => {
+    mutationFn: (insertProfileData: TablesInsert<"userProfiles">) =>
+      clientApi.profiles.insertProfile(insertProfileData),
+    onSuccess: (data) => {
+      const user = {
+        userId: data.userId,
+        role: data.role,
+      };
+      setCurrentUser(user);
+
+      const id = crypto.randomUUID();
+      const title = "회원가입 성공";
+      const content = "회원가입에 성공하였습니다";
+      const status = "start";
+      const toast: ToastType = {
+        id,
+        title,
+        content,
+        status,
+      };
+      addToast(toast);
       router.replace("/");
+    },
+    onError: (...arg) => {
+      const id = crypto.randomUUID();
+      const title = "회원가입 실패";
+      const content = "회원가입에 실패하였습니다";
+      const status = "start";
+      const toast: ToastType = {
+        id,
+        title,
+        content,
+        status,
+      };
+      addToast(toast);
+      console.log("insert profile error : ", arg);
     },
   });
 

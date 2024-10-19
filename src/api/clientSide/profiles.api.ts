@@ -12,7 +12,9 @@ const baseURL =
 const insertProfile = async (insertProfileData: UserProfiles["Insert"]) => {
   const { data, error } = await supabase
     .from(TABLE_PROFILES)
-    .insert(insertProfileData);
+    .insert(insertProfileData)
+    .select()
+    .single();
 
   if (error) throw new Error(error.message);
 
