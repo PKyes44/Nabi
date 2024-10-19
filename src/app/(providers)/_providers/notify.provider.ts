@@ -3,13 +3,11 @@
 import clientApi from "@/api/clientSide/api";
 import { supabase } from "@/supabase/client";
 import { Notify } from "@/types/notify.types";
-import { useAuthStore } from "@/zustand/auth.store";
 import { useNotifyStore } from "@/zustand/notify.store";
 import dayjs from "dayjs";
 import { PropsWithChildren, useEffect } from "react";
 
 function NotificationProvider({ children }: PropsWithChildren) {
-  const currentUser = useAuthStore((state) => state.currentUser);
   const addNotify = useNotifyStore((state) => state.addNotify);
   const setIsCheckedNotifyList = useNotifyStore(
     (state) => state.setIsCheckedNotifyList
