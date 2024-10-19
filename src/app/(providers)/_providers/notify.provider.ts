@@ -66,7 +66,12 @@ function NotificationProvider({ children }: PropsWithChildren) {
           const from = payload.new.from;
           const to = payload.new.to;
 
-          if (to !== currentUser?.userId) return;
+          if (to !== currentUser?.userId)
+            return console.log(
+              to !== currentUser?.userId,
+              to,
+              currentUser?.userId
+            );
           console.log("received chat !");
 
           const sendUser = await clientApi.profiles.getProfileByUserId(to);

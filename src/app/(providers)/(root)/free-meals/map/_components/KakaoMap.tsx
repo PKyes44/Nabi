@@ -105,7 +105,7 @@ function KakaoMap({
       status: kakao.maps.services.Status
     ) {
       if (status === kakao.maps.services.Status.OK) {
-        setSearchList(result.slice(0, 6));
+        setSearchList(result.slice(0, 5));
       }
     };
     if (keyword.length === 0) return;
@@ -309,7 +309,8 @@ function KakaoMap({
 
   return (
     <div ref={mapRef} className="w-screen h-screen relative">
-      <div className="bg-white w-80 h-96 absolute z-[2] top-24 left-16 px-4 py-4 rounded-lg shadow-md">
+      <div className="flex flex-col gap-y-2 bg-white w-80 h-96 absolute z-[2] top-24 left-16 px-4 py-4 rounded-lg shadow-md">
+        <h2 className="font-bold text-lg">매장 검색하기</h2>
         <form className="flex items-start" onClick={handleSubmitSearchStore}>
           <Input
             inputId="search"
