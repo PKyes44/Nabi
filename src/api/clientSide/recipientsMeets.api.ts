@@ -54,7 +54,7 @@ const getRecipientByRecruitId = async (recruitId: string) => {
     .eq("recruitId", recruitId)
     .eq("status", "approved")
     .returns<{
-      userId: Pick<Tables<"userProfiles">, "userId">;
+      userId: string;
       userProfiles: Tables<"userProfiles">;
     } | null>();
 

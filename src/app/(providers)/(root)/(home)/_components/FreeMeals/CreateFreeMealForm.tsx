@@ -3,7 +3,7 @@
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
-import { Database } from "@/supabase/database.types";
+import { TablesInsert } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
@@ -43,9 +43,8 @@ function CreateFreeMealForm() {
     queryFn: () => clientApi.storeOwners.getStoreByUserId(sponsor?.userId!),
   });
   const { mutate: insertFreeMeal } = useMutation({
-    mutationFn: (
-      insertData: Database["public"]["Tables"]["freeMeals"]["Insert"]
-    ) => clientApi.freeMeals.insertFreeMeals(insertData),
+    mutationFn: (insertData: TablesInsert<"freeMeals">) =>
+      clientApi.freeMeals.insertFreeMeals(insertData),
     onSuccess: (...arg) => {
       queryClient.invalidateQueries({ queryKey: ["freeMeals"] });
       console.log("success: ", arg);
@@ -86,13 +85,13 @@ function CreateFreeMealForm() {
       );
     const freeMealDate = day.format("YYYY-MM-DD HH:mm");
 
-    const insertFreeMealData: Database["public"]["Tables"]["freeMeals"]["Insert"] =
-      {
-        sponsorId: sponsor.userId,
-        storeId,
-        freeMealDate,
-        maxServingCount,
-      };
+    const insertFreeMealData = {
+      // sponsorId: sponsor.userId,
+      sponsorId: sponsor.userId,
+      storeId,
+      freeMealDate,
+      maxServingCount,
+    };
     console.log(insertFreeMealData);
     insertFreeMeal(insertFreeMealData);
   };

@@ -20,7 +20,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   });
 
   // 다른 유저 프로필 봤을 때 최근 후원아동 불러오기
-  const { data: recentlyRecipients } = useQuery({
+  const { data: recentlyRecipients, isLoading } = useQuery({
     queryKey: ["sponsorMeets", { profile }],
     queryFn: () => clientApi.sponsorMeets.getRecentlyRecipients(profile.userId),
     enabled: profile.role === "sponsor",
@@ -32,6 +32,8 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     queryFn: () => clientApi.recipientMeets.getRecentlySponsors(profile.userId),
     enabled: profile.role === "recipient",
   });
+
+  if (isLoading) return <span>데이터 로딩 중 ..</span>;
 
   return (
     <article className="grow h-full rounded-lg text-center">
@@ -55,7 +57,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
             <ul>
               {recentlyRecipients?.map((recipient) => (
                 <li key={recipient?.userId}>
-                  {recipient.userProfiles?.nickname}
+                  {recipient.userProfiles[0].nickname}
                 </li>
               ))}
             </ul>
@@ -67,7 +69,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
           <strong>이 아동에게 최근 후원한 후원자</strong>
           <ul>
             {recentlySponsors?.map((sponsor) => (
-              <li key={sponsor.userId}>{sponsor.userProfiles?.nickname}</li>
+              <li key={sponsor.userId}>{sponsor.userProfiles[0].nickname}</li>
             ))}
           </ul>
         </>

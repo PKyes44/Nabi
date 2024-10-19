@@ -1,9 +1,8 @@
-import { Tables } from "@/supabase/database.types";
 import { Role } from "@/types/profiles.types";
 import { create } from "zustand";
 
 type CurrentUser = {
-  userId: Pick<Tables<"userProfiles">, "userId"> | string;
+  userId: string;
   role: Role;
 };
 
