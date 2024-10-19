@@ -1,6 +1,7 @@
 import clientApi from "@/api/clientSide/api";
 import { supabase } from "@/supabase/client";
 import { ToastType } from "@/types/toast.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { useNotifyStore } from "@/zustand/notify.store";
 import { useToastStore } from "@/zustand/toast.store";
@@ -24,6 +25,8 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const setIsCheckedNotifyList = useNotifyStore(
     (state) => state.setIsCheckedNotifyList
   );
+  const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
+
   const queryClient = useQueryClient();
   const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners"],
@@ -47,8 +50,9 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   };
   const handleClickLogOut = () => {
     supabase.auth.signOut();
+    setCurrentUser(null);
     const toast: ToastType = {
-      title: "로그아웃 이벤트",
+      title: "로그아웃 성공",
       content: "성공적으로 로그아웃되었습니다",
       status: "start",
       id: crypto.randomUUID(),
