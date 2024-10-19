@@ -1,4 +1,5 @@
 import { supabase } from "@/supabase/client";
+import { Database } from "@/supabase/database.types";
 
 const getRecentlySponsors = async (userId: string) => {
   const query =
@@ -28,6 +29,27 @@ const approveRecipient = async (userId: string, recruitId: string) => {
     .eq("recruitId", recruitId);
 };
 
-const recipientsMeetsAPI = { getRecentlySponsors, approveRecipient };
+const insertRecipientMeet = async (
+  data: Database["public"]["Tables"]["recipientMeets"]["Insert"]
+) => {
+  const { error } = await supabase.from("recipientMeets").insert(data);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+const getRecipientMeets = async () => {
+  const { data } = await supabase.from("recipientMeets").select("*");
+
+  return data;
+};
+
+const recipientsMeetsAPI = {
+  getRecipientMeets,
+  insertRecipientMeet,
+  getRecentlySponsors,
+  approveRecipient,
+};
 
 export default recipientsMeetsAPI;

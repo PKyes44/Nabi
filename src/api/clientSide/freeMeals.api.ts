@@ -15,6 +15,7 @@ const getFreeMealsWithStoreData = async () => {
   const { error, data } = await supabase
     .from(TABLE_FREE_MEALS)
     .select(query)
+    .order("createdAt", { ascending: false })
     .returns<
       (Tables<"freeMeals"> & {
         storeDatas: Tables<"storeDatas">;

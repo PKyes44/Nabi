@@ -31,10 +31,6 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
 
   return (
     <>
-      <UpdateRecruitButton
-        authorId={recruit.authorId}
-        recruitId={recruit.recruitId}
-      />
       <div className="flex items-center justify-between mt-4">
         <Link
           href={`/profiles?userId=${recruit.authorId}`}
@@ -59,7 +55,13 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             </span>
           </div>
         </Link>
-        <span className="font-normal text-xs">{createdAt}</span>
+        <div className="flex flex-col items-end gap-y-2">
+          <UpdateRecruitButton
+            authorId={recruit.authorId}
+            recruitId={recruit.recruitId}
+          />
+          <span className="font-normal text-xs">{createdAt}</span>
+        </div>
       </div>
       {currentUser?.role === "recipient" ? (
         <ApplyToRecipientButton

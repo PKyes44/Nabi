@@ -27,7 +27,7 @@ function ApplyToRecipientButton({
     Error,
     Database["public"]["Tables"]["recipientMeets"]["Insert"]
   >({
-    mutationFn: (data) => clientApi.recipientMeets.insertRecipientMeets(data),
+    mutationFn: (data) => clientApi.recipientMeets.insertRecipientMeet(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recipientMeets"] });
       alert("작성자가 승인을 하면 신청이 완료됩니다.");

@@ -8,11 +8,7 @@ import { useEffect, useRef } from "react";
 import Recruit from "./Recruit";
 
 interface RecruitListProps {
-<<<<<<< HEAD:src/app/(provider)/(root)/(home)/_components/Recruits/RecruitList.tsx
   profile?: Tables<"userProfiles">;
-=======
-  userId?: string | null;
->>>>>>> develop:src/app/(providers)/(root)/(home)/_components/Recruits/RecruitList.tsx
   initialRecruitList: (Tables<"recruits"> & {
     userProfiles: Tables<"userProfiles">;
   } & {
@@ -26,12 +22,13 @@ function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
   const observerRef = useRef(null);
 
   const {
-    data: recruitsData = { pages: [initialRecruitList || []] },
+    data: recruitsData,
     fetchNextPage,
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["infinite recruits", { profile }],
+    initialData: { pages: [initialRecruitList || []], pageParams: [0] },
+    queryKey: ["recruits"],
     queryFn: ({ pageParam }) => {
       if (profile)
         return clientApi.recruits.getInfiniteRecruitsByUserId(
@@ -43,9 +40,9 @@ function RecruitList({ initialRecruitList, profile }: RecruitListProps) {
       return clientApi.recruits.getInfiniteRecruits(pageParam);
     },
     getNextPageParam: (lastPage, pages) => {
-      if (!lastPage) return undefined;
-      if (!pages) return undefined;
-      if (!pages.length) return undefined;
+      if (!lastPage) return;
+      if (!pages) return;
+
       return pages.length;
     },
     refetchOnMount: false,

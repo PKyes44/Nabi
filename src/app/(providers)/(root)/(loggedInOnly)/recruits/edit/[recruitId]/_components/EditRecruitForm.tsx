@@ -56,7 +56,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   const addToast = useToastStore((state) => state.addToast);
 
   const { data: recruit, isLoading } = useQuery({
-    queryKey: ["recruit"],
+    queryKey: ["recruits"],
     queryFn: () => clientApi.recruits.getRecruit(recruitId),
   });
 
@@ -67,8 +67,6 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   >({
     mutationFn: (data) => clientApi.recruits.editRecruit(recruitId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recruits"] });
-
       const id = crypto.randomUUID();
       const title = "봉사활동 구인글 수정 성공";
       const content =
@@ -81,7 +79,9 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
         status,
       };
       addToast(toast);
-
+      queryClient.invalidateQueries({
+        queryKey: ["recruits"],
+      });
       router.push("/");
     },
     onError: (e) => {
