@@ -23,7 +23,18 @@ function NotificationProvider({ children }: PropsWithChildren) {
         { event: "INSERT", schema: "public", table: "freeMeals" },
         async (payload) => {
           console.log("FreeMeals Table Change received!", payload);
-          if (currentUser?.role !== "recipient") return;
+
+          const { data: user } = await supabase.auth.getUser();
+
+          if (!user) return;
+
+          const profile = await clientApi.profiles.getProfileByUserId(
+            user.user?.id!
+          );
+
+          if (!profile) return;
+
+          if (profile.role !== "recipient") return;
 
           const storeId = payload.new.storeId;
           const storeData = await clientApi.storeData.getStoreDataByStoreId(
@@ -66,12 +77,11 @@ function NotificationProvider({ children }: PropsWithChildren) {
           const from = payload.new.from;
           const to = payload.new.to;
 
-          if (to !== currentUser?.userId)
-            return console.log(
-              to !== currentUser?.userId,
-              to,
-              currentUser?.userId
-            );
+          const { data: user } = await supabase.auth.getUser();
+
+          if (!user) return;
+          if (user.user?.id !== to) return;
+
           console.log("received chat !");
 
           const sendUser = await clientApi.profiles.getProfileByUserId(to);
@@ -155,7 +165,11 @@ function NotificationProvider({ children }: PropsWithChildren) {
 
           const recipientId = payload.new.recipientId;
 
-          if (recipientId !== currentUser?.userId) return;
+          const { data: user } = await supabase.auth.getUser();
+
+          if (!user) return;
+
+          if (recipientId !== user.user?.id) return;
 
           const sponsorId = payload.new.sponsorId;
           const sponsorProfile = await clientApi.profiles.getProfileByUserId(
