@@ -19,7 +19,8 @@ function AuthProvider({ children }: PropsWithChildren) {
         try {
           const response = await clientApi.profiles.getProfileByUserId(userId);
           const role = response?.role as "sponsor" | "recipient";
-          setUser({ userId, role });
+          const user = { userId, role };
+          setUser(user);
         } catch (e) {
           console.log(e);
         }
