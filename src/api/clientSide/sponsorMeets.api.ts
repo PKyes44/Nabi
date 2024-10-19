@@ -23,10 +23,10 @@ const getRecentlyRecipients = async (userId: string) => {
 
   if (error) throw new Error(error.message);
 
-  const a = recentlyRecipientsData
-    .map((el) => el.recruits)
-    .map((el) => el?.recipientMeets);
-  return a[0];
+  const recipients = recentlyRecipientsData
+    .flatMap((recruitsData) => recruitsData.recruits)
+    .map((recipientData) => recipientData?.recipientMeets);
+  return recipients[0];
 };
 
 const approveSponsor = async (userId: string, recruitId: string) => {

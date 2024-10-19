@@ -4,6 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import Container from "@/components/Container/Container";
 import { PaymentResponse } from "@/types/paymentResponse.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -27,6 +28,19 @@ function RegularSponsorShipBillingPage({
 }: RegularSponsorShipBillingPageProps) {
   const router = useRouter();
   const [receipt, setReceipt] = useState<PaymentResponse | null>(null);
+  const user = useAuthStore((state) => state.currentUser);
+
+  const { mutate: addRegularSponsorShipTable } = useMutation({
+    mutationFn: () => {
+      if (!user) return Promise.resolve();
+
+      const data = {
+        sponsorId: user.userId,
+        recipientId,
+      };
+      return clientApi.regularSponsorShip.addRegularSponsorship(data);
+    },
+  });
 
   const { mutate: getBillingKey } = useMutation({
     mutationFn: (requestData: {
@@ -38,6 +52,7 @@ function RegularSponsorShipBillingPage({
     onSuccess: (responseData: PaymentResponse) => {
       console.log("success:", responseData);
       setReceipt(responseData);
+      addRegularSponsorShipTable();
     },
     onError: (data: { message: string; code: string }) => {
       console.log("error: ", data);

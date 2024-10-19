@@ -4,7 +4,7 @@ import { Database } from "@/supabase/database.types";
 const getRecentlySponsors = async (userId: string) => {
   const query =
     "recruitId, recruits!inner(recruitId, sponsorMeets!inner(status, userId, userProfiles!inner(nickname)))";
-  const { data: recentlyRecipientsData, error } = await supabase
+  const { data: recentlySponsorsData, error } = await supabase
     .from("recipientMeets")
     .select(query)
     .eq("userId", userId)
@@ -15,10 +15,10 @@ const getRecentlySponsors = async (userId: string) => {
 
   if (error) throw new Error(error.message);
 
-  const a = recentlyRecipientsData
-    .map((el) => el.recruits)
-    .map((el) => el?.sponsorMeets);
-  return a[0];
+  const sponsors = recentlySponsorsData
+    .flatMap((recruitsData) => recruitsData.recruits)
+    .map((sponsorsData) => sponsorsData.sponsorMeets);
+  return sponsors[0];
 };
 
 const approveRecipient = async (userId: string, recruitId: string) => {
