@@ -17,8 +17,8 @@ function UpdateRecruitButton({
     <>
       {user?.userId === authorId && (
         <Link
-          href={`recruits/${recruitId}/edit`}
-          className="border border-black text-sm absolute rounded-md py-1 px-2 -right-1  bg-white"
+          href={`recruits/edit/${recruitId}`}
+          className="w-20 text-center border border-black text-sm rounded-md py-1 px-2  bg-white"
         >
           수정하기
         </Link>

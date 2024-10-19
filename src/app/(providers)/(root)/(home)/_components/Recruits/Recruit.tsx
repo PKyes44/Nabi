@@ -15,15 +15,9 @@ interface RecruitProps {
 
 function Recruit({ recruit }: RecruitProps) {
   return (
-<<<<<<< HEAD:src/app/(provider)/(root)/(home)/_components/Recruits/Recruit.tsx
     <div className="flex flex-col gap-y-10">
       <RecruitDetails recruit={recruit!} />
-      <Replies replies={recruit.replies!} />
-=======
-    <div className="flex flex-col gap-y-10 relative">
-      <RecruitDetails recruit={recruit} />
-      <Replies replies={recruit.replies} recruitId={recruit.recruitId} />
->>>>>>> develop:src/app/(providers)/(root)/(home)/_components/Recruits/Recruit.tsx
+      <Replies recruitId={recruit.recruitId} replies={recruit.replies!} />
     </div>
   );
 }

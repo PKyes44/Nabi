@@ -5,7 +5,9 @@ import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { Database } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
+import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useToastStore } from "@/zustand/toast.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
@@ -50,6 +52,7 @@ function NewRecruitForm() {
   const author = useAuthStore((state) => state.currentUser);
   const today = dayjs().format("YYYY-MM-DD");
   const userId = author?.userId;
+  const addToast = useToastStore((state) => state.addToast);
 
   const { mutate: createRecruit } = useMutation<
     { recruitId: string },
@@ -65,9 +68,18 @@ function NewRecruitForm() {
       };
 
       insertSponsorMeet(sponsorMeetData);
-
-      alert("추가되었습니다.");
+      const toast: ToastType = {
+        id: crypto.randomUUID(),
+        title: "봉사자 구인 글 작성 완료",
+        content: "봉사자 구인 글 작성을 완료했습니다\n홈페이지로 이동합니다",
+        status: "running",
+      };
+      addToast(toast);
       router.push(`/`);
+      queryClient.invalidateQueries({
+        queryKey: ["recruits"],
+        exact: true,
+      });
     },
     onError: (e) => {
       alert(e.message);
@@ -82,8 +94,9 @@ function NewRecruitForm() {
     mutationFn: (data) => clientApi.sponsorMeets.insertSponsorMeet(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sponsorMeets"] });
+
       queryClient.invalidateQueries({
-        queryKey: ["recruits", { userId: null }],
+        queryKey: ["recruits"],
       });
     },
     onError: (e) => {
@@ -228,7 +241,7 @@ function NewRecruitForm() {
         <p className="mb-1">내용</p>
         <textarea
           name="content"
-          className={`bg-[#f5f5f5] resize-none w-full h-60 p-3 ${
+          className={`bg-[#f5f5f5] resize-none w-full h-60 p-3 outline-none border border-gray-200 rounded-sm ${
             errMsgs.content && "border-red-500"
           }`}
         />

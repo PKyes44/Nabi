@@ -1,27 +1,29 @@
 import clientApi from "@/api/clientSide/api";
+import { supabase } from "@/supabase/client";
+import { ToastType } from "@/types/toast.types";
 import { useModalStore } from "@/zustand/modal.store";
 import { useNotifyStore } from "@/zustand/notify.store";
+import { useToastStore } from "@/zustand/toast.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CreateFreeMealModal from "../Modals/FreeMealCreateModal";
-import LogOutModal from "../Modals/LogOutModal";
-import NotifyListModal from "../Modals/NotifyListModal";
+import NotifyList from "../NotifyList";
 
 interface LoggedInNavigationProps {
   userId: string;
 }
 
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
-  const { activeModal, setActiveModal } = useModalStore();
+  const [isClickedNotifyList, setIsClickedNotifyList] = useState(false);
+  const setActiveModal = useModalStore((state) => state.setActiveModal);
   const isCheckedNotifyList = useNotifyStore(
     (state) => state.isCheckedNotifyList
   );
   const setIsCheckedNotifyList = useNotifyStore(
     (state) => state.setIsCheckedNotifyList
   );
-  const [isHoverOnProfile, setIsHoverOnProfile] = useState(false);
   const queryClient = useQueryClient();
   const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners"],
@@ -31,11 +33,8 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
     queryKey: ["userProfiles", { userId }],
     queryFn: () => clientApi.profiles.getProfileByUserId(userId),
   });
+  const addToast = useToastStore((state) => state.addToast);
 
-  const handleHoverOnProfile = () => {
-    setIsHoverOnProfile(true);
-    setActiveModal(<LogOutModal />);
-  };
   const handleClickLinkToProfile = () => {
     queryClient.invalidateQueries({ queryKey: ["recruits"] });
   };
@@ -43,19 +42,24 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
     setActiveModal(<CreateFreeMealModal />);
   };
   const handleClickShowNotifies = () => {
-    setActiveModal(<NotifyListModal />);
+    // setActiveModal(<NotifyListModal />);
+    setIsClickedNotifyList(!isClickedNotifyList);
     setIsCheckedNotifyList(true);
   };
-
-  useEffect(() => {
-    if (!activeModal) {
-      setIsHoverOnProfile(false);
-    }
-  }, [isHoverOnProfile, activeModal]);
+  const handleClickLogOut = () => {
+    supabase.auth.signOut();
+    const toast: ToastType = {
+      title: "로그아웃 이벤트",
+      content: "성공적으로 로그아웃되었습니다",
+      status: "start",
+      id: crypto.randomUUID(),
+    };
+    addToast(toast);
+  };
 
   return (
     <>
-      <li className="w-10 h-10">
+      <li className="w-10 h-10 relative">
         <button onClick={handleClickShowNotifies}>
           <Image
             width={150}
@@ -69,6 +73,11 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
             alt="notify icon"
           />
         </button>
+        {isClickedNotifyList && (
+          <div className="absolute top-14 left-1/2 -translate-x-1/2">
+            <NotifyList />
+          </div>
+        )}
       </li>
       {isStoreOwner && (
         <li className="w-10 h-10">
@@ -83,7 +92,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
           </button>
         </li>
       )}
-      <li className="z-30" onMouseOver={handleHoverOnProfile}>
+      <li className="z-30 group relative">
         <Link
           href={`/profiles?userId=${userId}`}
           onClick={handleClickLinkToProfile}
@@ -99,6 +108,16 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
             className="w-10 aspect-square object-cover rounded-lg"
           />
         </Link>
+        <div className="absolute left-1/2 -translate-x-1/2 w-28 invisible group-hover:visible">
+          <div className="mt-3 border border-gray-200 rounded-lg shadow-sm bg-white py-1.5 px-2">
+            <button
+              onClick={handleClickLogOut}
+              className="text-center w-full text-sm"
+            >
+              로그아웃
+            </button>
+          </div>
+        </div>
       </li>
     </>
   );

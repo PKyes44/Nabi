@@ -10,8 +10,6 @@ import { PropsWithChildren, useEffect } from "react";
 
 function NotificationProvider({ children }: PropsWithChildren) {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
   const addNotify = useNotifyStore((state) => state.addNotify);
   const setIsCheckedNotifyList = useNotifyStore(
     (state) => state.setIsCheckedNotifyList

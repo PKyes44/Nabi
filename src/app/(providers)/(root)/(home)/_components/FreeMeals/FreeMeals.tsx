@@ -1,10 +1,26 @@
-import serverApi from "@/api/serverSide/api";
+"use client";
+
+import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
+import { Tables } from "@/supabase/database.types";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import FreeMeal from "./FreeMeal";
 
-async function FreeMeals() {
-  const freeMeals = await serverApi.freeMeals.getFreeMealsWithStoreData();
+interface FreeMealsProps {
+  initialFreeMeals: (Tables<"freeMeals"> & {
+    storeDatas: Tables<"storeDatas">;
+  } & {
+    userProfiles: Tables<"userProfiles">;
+  })[];
+}
+
+function FreeMeals({ initialFreeMeals }: FreeMealsProps) {
+  const { data: freeMeals } = useQuery({
+    initialData: initialFreeMeals,
+    queryKey: ["freeMeals"],
+    queryFn: () => clientApi.freeMeals.getFreeMealsWithStoreData(),
+  });
 
   return (
     <div className="flex flex-col gap-y-2">

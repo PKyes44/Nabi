@@ -20,7 +20,6 @@ function Pagination({ page }: PaginationProps) {
       queryKey: ["userProfiles", { role: "recipient" }],
     });
   };
-
   return (
     <nav className="m-auto text-sm">
       <ul className="flex gap-x-2">

@@ -7,7 +7,7 @@ interface RecipientListProps {
 }
 
 function RecipientList({ page }: RecipientListProps) {
-  const { data: recipients } = useQuery({
+  const { data: recipients, isLoading } = useQuery({
     queryKey: ["userProfiles"],
     queryFn: () =>
       clientApi.profiles.getProfilesFilterByRoleAndSponsorShipCount(
@@ -15,7 +15,7 @@ function RecipientList({ page }: RecipientListProps) {
       ),
   });
 
-  const startNum = page === 1 ? 0 : (page - 1) * 5 + 1;
+  const startNum = page === 1 ? 0 : (page - 1) * 5;
   const endNum = page === 1 ? 5 : page * 5;
 
   return (
