@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 
 const getRecentlySponsors = async (userId: string) => {
   const query =
@@ -40,9 +40,25 @@ const insertRecipientMeet = async (
 };
 
 const getRecipientMeets = async () => {
-  const { data } = await supabase.from("recipientMeets").select("*");
+  const { data: recipientMeets } = await supabase
+    .from("recipientMeets")
+    .select("*");
 
-  return data;
+  return recipientMeets;
+};
+
+const getRecipientByRecruitId = async (recruitId: string) => {
+  const { data: recipient } = await supabase
+    .from("sponsorMeets")
+    .select("userId, userProfiles(*)")
+    .eq("recruitId", recruitId)
+    .eq("status", "approved")
+    .returns<{
+      userId: Pick<Tables<"userProfiles">, "userId">;
+      userProfiles: Tables<"userProfiles">;
+    } | null>();
+
+  return recipient;
 };
 
 const recipientsMeetsAPI = {
@@ -50,6 +66,7 @@ const recipientsMeetsAPI = {
   insertRecipientMeet,
   getRecentlySponsors,
   approveRecipient,
+  getRecipientByRecruitId,
 };
 
 export default recipientsMeetsAPI;

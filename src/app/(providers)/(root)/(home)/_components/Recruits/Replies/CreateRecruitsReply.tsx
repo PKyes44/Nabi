@@ -22,7 +22,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
 
   const { data: recipient } = useQuery({
     queryKey: ["sponsorMeets", { recruitId }],
-    queryFn: () => clientApi.sponsorMeets.getRecipientByUserId(recruitId!),
+    queryFn: () => clientApi.recipientMeets.getRecipientByRecruitId(recruitId!),
   });
 
   // 만들기
@@ -54,21 +54,21 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     const data = {
       content,
       recruitId,
-      recipientId: user.userId,
+      recipientId: user.userId as string,
     };
 
     createReply(data);
     e.target.content.value = "";
   };
 
-  if (recipient && recipient.userProfiles!.role === "recipient")
+  if (recipient && recipient.userProfiles.role === "recipient")
     return (
       <div className=" pb-5 mb-5 text-xs flex items-center mt-4 gap-x-3">
         <Image
           width={100}
           height={100}
           src={
-            recipient.userProfiles?.profileImageUrl ||
+            recipient.userProfiles.profileImageUrl ||
             "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
           }
           alt="profile image"

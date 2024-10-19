@@ -1,16 +1,19 @@
+import { Tables } from "@/supabase/database.types";
 import { Role } from "@/types/profiles.types";
 import { create } from "zustand";
+
+type CurrentUser = {
+  userId: Pick<Tables<"userProfiles">, "userId"> | string;
+  role: Role;
+};
 
 type AuthStore = {
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   isAuthInitialized: boolean;
   setAuthInitialized: () => void;
-  currentUser: {
-    userId: string;
-    role: Role;
-  } | null;
-  setCurrentUser: (currentUser: { userId: string; role: Role } | null) => void;
+  currentUser: CurrentUser | null;
+  setCurrentUser: (currentUser: CurrentUser | null) => void;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -19,6 +22,5 @@ export const useAuthStore = create<AuthStore>((set) => ({
   isAuthInitialized: false,
   setAuthInitialized: () => set({ isAuthInitialized: true }),
   currentUser: null,
-  setCurrentUser: (currentUser: { userId: string; role: Role } | null) =>
-    set({ currentUser }),
+  setCurrentUser: (currentUser: CurrentUser | null) => set({ currentUser }),
 }));
