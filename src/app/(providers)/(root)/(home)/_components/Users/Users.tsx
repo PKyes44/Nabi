@@ -10,11 +10,12 @@ interface UsersProps {
 
 function Users({ page = "1" }: UsersProps) {
   const user = useAuthStore((state) => state.currentUser);
+  const role = user?.role;
 
   return (
     <>
-      {!user?.userId ? (
-        user?.role === "recipient" ? (
+      {!user ? (
+        role === "recipient" ? (
           <Sponsors />
         ) : (
           <Recipients page={+page} />

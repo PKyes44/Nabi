@@ -15,22 +15,25 @@ function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (_eventName, session) => {
       if (session) {
-        const userId = session.user.id;
-        try {
-          const response = await clientApi.profiles.getProfileByUserId(userId);
-          const role = response?.role as "sponsor" | "recipient";
-          const user = { userId, role };
-          console.log(user);
-          setUser(user);
-        } catch (e) {
-          console.log(e);
-        }
         setIsLoggedIn(true);
       } else {
         setUser(null);
         setIsLoggedIn(false);
       }
       setAuthInitialized();
+    });
+  }, []);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(async (_eventName, session) => {
+      if (session) {
+        const userId = session.user.id;
+        const response = await clientApi.profiles.getProfileByUserId(userId);
+        const role = response?.role as "sponsor" | "recipient";
+        const user = { userId, role };
+        console.log("login session: ", user);
+        setUser(user);
+      }
     });
   }, []);
 
