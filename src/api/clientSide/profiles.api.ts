@@ -101,6 +101,7 @@ const getProfilesFilterByRoleAndSponsorShipCount = async (
     (Tables<"userProfiles"> & { sponsorShip: { count: number }[] })[],
     "sponsorShip"
   > = bubbleSort(data!);
+
   return orderedData;
 };
 
@@ -128,7 +129,6 @@ const getNavigationCount = async (role: "recipient" | "sponsor") => {
   if (error) throw new Error(error.message);
 
   if (data! <= 5) return 1;
-
   return Math.ceil(data! / 5);
 };
 

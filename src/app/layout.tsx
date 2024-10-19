@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Paperlogy } from "./font/paperlogy/paperlogy";
+import { Paperlogy } from "../font/paperlogy/paperlogy";
 import "./globals.css";
 
 export const metadata: Metadata = {

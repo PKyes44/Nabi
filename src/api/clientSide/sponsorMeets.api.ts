@@ -10,36 +10,28 @@ const getRecruitIdByUserId = async (userId: string) => {
   return recruitIds;
 };
 
-const getRecentlySponsors = async (userId: string) => {
-  const { data: recruitIds } = await supabase
-    .from("recipientMeets")
-    .select("recruitId")
+const getRecentlyRecipients = async (userId: string) => {
+  const query =
+    "recruitId, recruits!inner(recruitId, recipientMeets!inner(userId, userProfiles!inner(nickname)))";
+  const { data: recentlyRecipientsData, error } = await supabase
+    .from("sponsorMeets")
+    .select(query)
     .eq("userId", userId)
-    .eq("status", "approved");
+    .eq("status", "approved")
+    .order("createdAt", { ascending: false })
+    .limit(5);
 
-  if (recruitIds) {
-    const { data: sponRelationship } = await supabase
-      .from("sponsorMeets")
-      .select("userId, userProfiles(nickname)")
-      .in(
-        "recruitId",
-        recruitIds.map((data) => data.recruitId)
-      )
-      .eq("status", "approved")
-      .order("createdAt", { ascending: false })
-      .limit(5);
-    if (!sponRelationship) return;
-    return sponRelationship;
-  }
+  if (error) throw new Error(error.message);
+
+  const recipients = recentlyRecipientsData
+    .flatMap((recruitsData) => recruitsData.recruits)
+    .map((recipientData) => recipientData?.recipientMeets);
+  return recipients[0];
 };
 
-const approvedUser = async (
-  userId: string,
-  recruitId: string,
-  role: string
-) => {
+const approveSponsor = async (userId: string, recruitId: string) => {
   await supabase
-    .from(role === "sponsor" ? "sponsorMeets" : "recipientMeets")
+    .from("sponsorMeets")
     .update({ status: "approved" })
     .eq("userId", userId)
     .eq("recruitId", recruitId);
@@ -67,12 +59,19 @@ const insertSponsorMeet = async (
   }
 };
 
+const getSponsorMeets = async () => {
+  const { data } = await supabase.from("sponsorMeets").select("*");
+
+  return data;
+};
+
 const sponsorMeetsAPI = {
   getRecruitIdByUserId,
-  getRecentlySponsors,
-  approvedUser,
+  getRecentlyRecipients,
+  approveSponsor,
   getRecipientByUserId,
   insertSponsorMeet,
+  getSponsorMeets,
 };
 
 export default sponsorMeetsAPI;
