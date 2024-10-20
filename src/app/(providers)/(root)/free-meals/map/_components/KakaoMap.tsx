@@ -76,10 +76,24 @@ function KakaoMap({
 
   const createMarker = (
     storeData: CurrentStore,
-    currentCluerster: kakao.maps.MarkerClusterer
+    currentCluerster: kakao.maps.MarkerClusterer,
+    isRegisted: boolean
   ) => {
     if (!currentCluerster)
       return console.log("currentCluerster is", currentCluerster);
+
+    const imageSrc = isRegisted
+        ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Shop.png"
+        : "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/DisabledShop.png?t=2024-10-20T00%3A26%3A11.454Z", // 마커이미지의 주소입니다
+      imageSize = new kakao.maps.Size(40, 43), // 마커이미지의 크기입니다
+      imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imageOption
+    );
 
     const markerPosition = new window.kakao.maps.LatLng(
       storeData!.lat,
@@ -87,6 +101,7 @@ function KakaoMap({
     );
 
     const marker = new window.kakao.maps.Marker({
+      image: markerImage,
       position: markerPosition,
     });
 
@@ -217,7 +232,7 @@ function KakaoMap({
                   ...data,
                   isRegisted: true,
                 };
-                createMarker(storeData, cluster);
+                createMarker(storeData, cluster, true);
               });
             });
         }
@@ -274,7 +289,7 @@ function KakaoMap({
               };
             }
             cluster.clear();
-            createMarker(selectedStore, cluster);
+            createMarker(selectedStore, cluster, !!storeData);
             // return setActiveModal(<StoreDetailModal detailData={selectedStore} />);
             return;
           }
@@ -284,7 +299,7 @@ function KakaoMap({
               ...data,
               isRegisted: true,
             };
-            createMarker(storeData, cluster);
+            createMarker(storeData, cluster, true);
           });
         });
     });
