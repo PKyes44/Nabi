@@ -24,8 +24,7 @@ const getStoreByUserId = async (userId: string) => {
   return data;
 };
 
-const checkIsStoreOwnerByUserId = async (userId: string | null) => {
-  if (!userId) return null;
+const checkIsStoreOwnerByUserId = async (userId: string) => {
   const { error, data } = await supabase
     .from("storeOwners")
     .select()
