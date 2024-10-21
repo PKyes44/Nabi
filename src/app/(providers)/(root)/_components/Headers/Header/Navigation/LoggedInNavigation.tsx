@@ -8,6 +8,7 @@ import { useToastStore } from "@/zustand/toast.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CreateFreeMealModal from "../Modals/FreeMealCreateModal";
 import NotifyList from "../NotifyList";
@@ -17,6 +18,7 @@ interface LoggedInNavigationProps {
 }
 
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
+  const router = useRouter();
   const [isClickedNotifyList, setIsClickedNotifyList] = useState(false);
   const setActiveModal = useModalStore((state) => state.setActiveModal);
   const isCheckedNotifyList = useNotifyStore(
@@ -50,6 +52,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   };
   const handleClickLogOut = () => {
     supabase.auth.signOut();
+    router.replace("/");
     setCurrentUser(null);
     const toast: ToastType = {
       title: "로그아웃 성공",
