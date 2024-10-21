@@ -147,7 +147,6 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                   recentlyRecipients.map((recentlyData, idx) => {
                     const recipient =
                       recentlyData.recruits.recipientMeets[0].userProfiles;
-                    console.log(recipient);
                     return (
                       <li key={idx}>
                         <Link

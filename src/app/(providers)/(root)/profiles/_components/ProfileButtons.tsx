@@ -41,6 +41,9 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
       queryClient.invalidateQueries({
         queryKey: ["regularSponsorship", { currentUserId: user?.userId }],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["regularSponsorShips", { profile }],
+      });
     },
   });
 
