@@ -2,8 +2,7 @@ import { supabase } from "@/supabase/client";
 import { Database, Tables } from "@/supabase/database.types";
 
 const getRecentlySponsors = async (userId: string) => {
-  const query =
-    "*, recruits!recipientMeets_recruitId_fkey(*, sponsorMeets(*, userProfiles(*)))";
+  const query = "*, recruits(*, sponsorMeets(*, userProfiles(*)))";
 
   const { data: recentlySponsorsData, error } = await supabase
     .from("recipientMeets")
