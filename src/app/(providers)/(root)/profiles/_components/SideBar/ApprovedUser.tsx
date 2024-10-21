@@ -38,9 +38,9 @@ function ApprovedUser({ user }: ApprovedUserProps) {
         </div>
       )}
       <span>
-        {user.userProfiles!.nickname.length < 6
+        {user.userProfiles!.nickname.length < 10
           ? user.userProfiles?.nickname
-          : user.userProfiles?.nickname.slice(0, 5) + "..."}
+          : user.userProfiles?.nickname.slice(0, 10) + "..."}
       </span>
       <button
         onClick={(e) => e.preventDefault()}

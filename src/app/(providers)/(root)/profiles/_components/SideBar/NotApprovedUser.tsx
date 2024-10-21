@@ -30,7 +30,6 @@ type ApproveType = {
 function NotApprovedUser({ profile, user, recruitId }: NotApprovedUserProps) {
   const queryClient = useQueryClient();
 
-  // 수락하기
   const { mutate: approve } = useMutation({
     mutationFn: ({ userId, recruitId, role }: ApproveType) => {
       if (role === "sponsor")
@@ -42,6 +41,9 @@ function NotApprovedUser({ profile, user, recruitId }: NotApprovedUserProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["myRecruits", { userId: profile.userId }],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["recruits", { page: "homepage" }],
       });
     },
   });

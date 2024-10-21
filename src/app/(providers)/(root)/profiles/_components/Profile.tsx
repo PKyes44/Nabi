@@ -13,7 +13,7 @@ async function Profile({ profile }: ProfileProps) {
   if (!profile) return <span>데이터가 없습니다</span>;
 
   return (
-    <div className="flex flex-col gap-y-5 w-[900px] ">
+    <div className="flex flex-col gap-y-5 w-[850px] ">
       <ProfileDetails profile={profile!} showUserId={profile.userId} />
       <FeedList userId={profile.userId} initialFeeds={initialFeeds} />
     </div>

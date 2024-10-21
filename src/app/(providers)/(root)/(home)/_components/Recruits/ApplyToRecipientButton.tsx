@@ -28,10 +28,8 @@ function ApplyToRecipientButton({
     Database["public"]["Tables"]["recipientMeets"]["Insert"]
   >({
     mutationFn: (data) => clientApi.recipientMeets.insertRecipientMeet(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recipientMeets"] });
-      alert("작성자가 승인을 하면 신청이 완료됩니다.");
-    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["recipientMeets"] }),
     onError: (e) => {
       alert(e.message);
     },
@@ -62,23 +60,23 @@ function ApplyToRecipientButton({
             userStatus.status === "pending" ? (
               <ButtonGroup
                 intent="disabled"
-                textIntent="black"
-                value="승인 확인 중"
+                textIntent="disabled"
+                value="승인 대기 중"
                 className="ml-auto"
                 disabled
               />
             ) : userStatus.status === "approved" ? (
               <ButtonGroup
-                intent="disabled"
-                textIntent="black"
+                intent="green"
+                textIntent="green"
                 value="승인됨"
                 className="ml-auto"
                 disabled
               />
             ) : userStatus.status === "rejected" ? (
               <ButtonGroup
-                intent="disabled"
-                textIntent="black"
+                intent="red"
+                textIntent="red"
                 value="거절됨"
                 className="ml-auto"
                 disabled
@@ -90,7 +88,7 @@ function ApplyToRecipientButton({
               intent="primary"
               textIntent="primary"
               className="ml-auto"
-              value="후원 요청 하기"
+              value="후원 신청"
             />
           )}
         </>

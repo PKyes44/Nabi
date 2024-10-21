@@ -24,7 +24,7 @@ function ApplicantList({ recruit, profile }: ApplicantListProps) {
           {recruit.title.length > 5
             ? recruit.title.slice(0, 5) + "..."
             : recruit.title}
-        </span>{" "}
+        </span>
         글의 신청자 목록
       </h3>
       <br />

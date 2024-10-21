@@ -32,7 +32,10 @@ function RecipientList({ recruit, profile }: RecipientListProps) {
       <ul className="mt-2 flex flex-col gap-y-3">
         {/* 승인된 유저는 언제나 보여주기 */}
         {recruit.recipientMeets
-          .filter((user) => user.status === "approved")
+          .filter(
+            (user) =>
+              user.status === "approved" && recruit.authorId !== user.userId
+          )
           .map((user) => (
             <li key={user.userId}>
               <ApprovedUser user={user} />

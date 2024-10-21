@@ -18,6 +18,7 @@ const buttonVariant = cva("", {
       none: "bg-none",
       disabled: "bg-[#dddddd] bg-opacity-80",
       red: "bg-red-200 bg-opacity-80 ",
+      green: "bg-green-200 bg-opacity-80",
     },
     rounded: {
       none: "rounded-none",
@@ -31,6 +32,7 @@ const buttonVariant = cva("", {
       primary: "text-yellow-400",
       red: "text-red-400",
       disabled: " text-[#999999]",
+      green: "text-green-400",
     },
   },
   compoundVariants: [
@@ -53,6 +55,11 @@ const buttonVariant = cva("", {
     {
       textIntent: "disabled",
       intent: "disabled",
+      className: "bg-opacity-40 font-bold",
+    },
+    {
+      intent: "green",
+      textIntent: "green",
       className: "bg-opacity-40 font-bold",
     },
     { outline: true, className: "bg-opacity-5" },
