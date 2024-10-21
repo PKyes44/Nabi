@@ -5,15 +5,6 @@ const getRecentlySponsors = async (userId: string) => {
   const query =
     "*, recruits!recipientMeets_recruitId_fkey(*, sponsorMeets(*, userProfiles(*)))";
 
-  // const query = `
-  //   *,
-  //   recruits!sponsorMeets_recruitId_fkey(
-  //     *,
-  //     recipientMeets(
-  //         *, userProfiles(*)
-  //       )
-  //   )`;
-
   const { data: recentlySponsorsData, error } = await supabase
     .from("recipientMeets")
     .select(query)
@@ -36,9 +27,6 @@ const getRecentlySponsors = async (userId: string) => {
 
   if (error) throw new Error(error.message);
 
-  // const sponsors = recentlySponsorsData
-  //   .flatMap((recruitsData) => recruitsData.recruits)
-  //   .map((sponsorsData) => sponsorsData.sponsorMeets);
   return recentlySponsorsData;
 };
 
