@@ -1,16 +1,24 @@
+"use client";
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
+import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import ProfileButtons from "./ProfileButtons";
 
 interface ProfileDetailsProps {
   showUserId: string;
-  profile: Tables<"userProfiles">;
+  initialProfile: Tables<"userProfiles">;
 }
 
-function ProfileDetails({ showUserId, profile }: ProfileDetailsProps) {
+function ProfileDetails({ showUserId, initialProfile }: ProfileDetailsProps) {
+  const { data: profile } = useQuery({
+    queryKey: ["userProfiles", { showUserId }],
+    queryFn: () => clientApi.profiles.getProfileByUserId(showUserId),
+    initialData: initialProfile,
+  });
   return (
     <section className="border border-gray-100 w-[850px] h-[400px] bg-white rounded-lg overflow-hidden">
       {profile?.bgImageUrl ? (
@@ -41,7 +49,7 @@ function ProfileDetails({ showUserId, profile }: ProfileDetailsProps) {
             <span>{profile?.role === "sponsor" ? "후원자" : "후원아동"}</span>
           </div>
         </article>
-        <ProfileButtons profile={profile} showUserId={showUserId} />
+        <ProfileButtons profile={profile!} showUserId={showUserId} />
       </div>
     </section>
   );

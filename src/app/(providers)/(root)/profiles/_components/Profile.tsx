@@ -14,7 +14,7 @@ async function Profile({ profile }: ProfileProps) {
 
   return (
     <div className="flex flex-col gap-y-5 w-[850px] ">
-      <ProfileDetails profile={profile!} showUserId={profile.userId} />
+      <ProfileDetails initialProfile={profile!} showUserId={profile.userId} />
       <FeedList userId={profile.userId} initialFeeds={initialFeeds} />
     </div>
   );
