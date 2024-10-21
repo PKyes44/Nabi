@@ -77,7 +77,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         deadLineDate={dayjs(recruit.deadLineDate).format("YYYY년 MM월 DD일")}
         isHover={isHover}
       />
-      <article className="flex flex-col gap-y-3">
+      <article className="flex flex-col gap-y-3 mt-3">
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
         <div className="flex gap-x-4">
