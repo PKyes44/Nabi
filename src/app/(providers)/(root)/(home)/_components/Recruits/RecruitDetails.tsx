@@ -1,10 +1,14 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 import { Tables } from "@/supabase/database.types";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import ApplyButtons from "./ApplyButtons";
+import DeadLineToast from "./DeadLineToast";
 import OthersButton from "./OthersButton";
 import RecruitCount from "./RecruitCount";
 
@@ -13,6 +17,8 @@ interface RecruitDetailsProps {
 }
 
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
+  const [isHover, setIsHover] = useState(false);
+
   let createdAt =
     Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "days")) + "일 전";
   if (+createdAt.split("일 전")[0] === 0)
@@ -25,8 +31,15 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
     createdAt =
       Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "minutes")) + "분 전";
 
+  const handleActiveToast = () => {
+    setIsHover(true);
+  };
+  const handleInactiveToast = () => {
+    setIsHover(false);
+  };
+
   return (
-    <>
+    <section onMouseOver={handleActiveToast} onMouseOut={handleInactiveToast}>
       <div className="flex items-center justify-between mt-4">
         <Link
           href={`/profiles?userId=${recruit.authorId}`}
@@ -60,6 +73,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
         </div>
       </div>
       <ApplyButtons recruit={recruit} />
+      <DeadLineToast
+        deadLineDate={dayjs(recruit.deadLineDate).format("YYYY년 MM월 DD일")}
+        isHover={isHover}
+      />
       <article className="flex flex-col gap-y-3">
         <h2 className="font-bold text-lg">{recruit.title}</h2>
         <p className="font-normal text-sm mb-5">{recruit.content}</p>
@@ -97,7 +114,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           <RecruitCount recruit={recruit} />
         </div>
       </article>
-    </>
+    </section>
   );
 }
 
