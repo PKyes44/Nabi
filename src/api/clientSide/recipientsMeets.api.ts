@@ -3,7 +3,8 @@ import { Database, Tables } from "@/supabase/database.types";
 
 const getRecentlySponsors = async (userId: string) => {
   const query =
-    "recruitId, recruits!inner(recruitId, sponsorMeets!inner(status, userId, userProfiles!inner(nickname)))";
+    "*, recruits!recipientMeets_recruitId_fkey(*, sponsorMeets(*, userProfiles(*)))";
+
   const { data: recentlySponsorsData, error } = await supabase
     .from("recipientMeets")
     .select(query)
@@ -11,14 +12,22 @@ const getRecentlySponsors = async (userId: string) => {
     .eq("status", "approved")
     .eq("recruits.sponsorMeets.status", "approved")
     .order("createdAt", { ascending: false })
-    .limit(5);
+    .limit(5)
+    .returns<
+      Tables<"recipientMeets"> &
+        {
+          recruits: Tables<"recruits"> & {
+            recipientMeets: Tables<"sponsorMeets"> &
+              {
+                userProfiles: Tables<"userProfiles">;
+              }[];
+          };
+        }[]
+    >();
 
   if (error) throw new Error(error.message);
 
-  const sponsors = recentlySponsorsData
-    .flatMap((recruitsData) => recruitsData.recruits)
-    .map((sponsorsData) => sponsorsData.sponsorMeets);
-  return sponsors[0];
+  return recentlySponsorsData;
 };
 
 const approveRecipient = async (userId: string, recruitId: string) => {

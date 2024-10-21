@@ -13,7 +13,7 @@ const insertStoreOwner = async (
 };
 
 const getStoreByUserId = async (userId: string) => {
-  const query = "*, storeDatas!storeOwners_storeId_fkey(address, brandName)";
+  const query = "*, storeDatas!storeOwners_storeId_fkey(*)";
   const { error, data } = await supabase
     .from("storeOwners")
     .select(query)
