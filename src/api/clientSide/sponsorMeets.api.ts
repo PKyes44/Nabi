@@ -72,12 +72,21 @@ const getSponsorMeets = async () => {
   return data;
 };
 
+const rejectSponsor = async (userId: string, recruitId: string) => {
+  await supabase
+    .from("sponsorMeets")
+    .update({ status: "rejected" })
+    .eq("userId", userId)
+    .eq("recruitId", recruitId);
+};
+
 const sponsorMeetsAPI = {
   getRecruitIdByUserId,
   getRecentlyRecipients,
   approveSponsor,
   insertSponsorMeet,
   getSponsorMeets,
+  rejectSponsor,
 };
 
 export default sponsorMeetsAPI;

@@ -70,12 +70,21 @@ const getRecipientByRecruitId = async (recruitId: string) => {
   return recipient;
 };
 
+const rejectRecipient = async (userId: string, recruitId: string) => {
+  await supabase
+    .from("recipientMeets")
+    .update({ status: "rejected" })
+    .eq("userId", userId)
+    .eq("recruitId", recruitId);
+};
+
 const recipientsMeetsAPI = {
   getRecipientMeets,
   insertRecipientMeet,
   getRecentlySponsors,
   approveRecipient,
   getRecipientByRecruitId,
+  rejectRecipient,
 };
 
 export default recipientsMeetsAPI;
