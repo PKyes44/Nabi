@@ -1,4 +1,5 @@
 import { supabase } from "@/supabase/client";
+import { Tables } from "@/supabase/database.types";
 import axios from "axios";
 
 const serverClient = axios.create({
@@ -20,9 +21,64 @@ const getBillingKey = async (requestData: {
 const getMyRegularSponsorships = async (userId: string) => {
   const { data: myRegularSponsorships } = await supabase
     .from("regularSponsorship")
-    .select("*")
+    .select()
     .eq("sponsorId", userId);
+
   return myRegularSponsorships;
+};
+
+const getSponsorshipBySponsorIdReturnRecipient = async (sponsorId: string) => {
+  const query = `
+  userProfiles!regularSponsorship_recipientId_fkey(*)
+`;
+
+  const { data: myRegularSponsorships } = await supabase
+    .from("regularSponsorship")
+    .select(query)
+    .eq("sponsorId", sponsorId)
+    .returns<
+      {
+        userProfiles: Tables<"userProfiles">;
+      }[]
+    >();
+
+  const recipients: Tables<"userProfiles">[] = myRegularSponsorships?.map(
+    (sponsorShips) => {
+      return {
+        ...sponsorShips.userProfiles,
+      };
+    }
+  ) as Tables<"userProfiles">[];
+
+  return recipients;
+};
+
+const getSponsorshipByRecipientIdReturnSponsor = async (
+  recipientId: string
+) => {
+  const query = `
+  userProfiles!regularSponsorship_sponsorId_fkey(*)
+`;
+
+  const { data: myRegularSponsorships } = await supabase
+    .from("regularSponsorship")
+    .select(query)
+    .eq("recipientId", recipientId)
+    .returns<
+      {
+        userProfiles: Tables<"userProfiles">;
+      }[]
+    >();
+
+  const sponsors: Tables<"userProfiles">[] = myRegularSponsorships?.map(
+    (sponsorShips) => {
+      return {
+        ...sponsorShips.userProfiles,
+      };
+    }
+  ) as Tables<"userProfiles">[];
+
+  return sponsors;
 };
 
 const addRegularSponsorship = async (data: {
@@ -45,6 +101,8 @@ const regularSponsorShipAPI = {
   getMyRegularSponsorships,
   addRegularSponsorship,
   stopRegularSponsorship,
+  getSponsorshipBySponsorIdReturnRecipient,
+  getSponsorshipByRecipientIdReturnSponsor,
 };
 
 export default regularSponsorShipAPI;

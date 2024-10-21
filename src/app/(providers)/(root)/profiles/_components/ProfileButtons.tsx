@@ -86,8 +86,8 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
           (regularSponsorship) => regularSponsorship.recipientId === showUserId
         ) ? (
           <Button
-            intent="primary"
-            textIntent="black"
+            intent="red"
+            textIntent="red"
             className="px-5 py-1.5 rounded-sm text-base font-bold"
             onClick={handleClickStopRegularSponsorship}
           >

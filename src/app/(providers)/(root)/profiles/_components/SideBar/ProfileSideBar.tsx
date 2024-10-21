@@ -28,6 +28,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     enabled: profile.role === "sponsor",
   });
 
+  // 후원자의 후원매장 불러오기
   const { data: ownerData } = useQuery({
     queryKey: ["storeOwners", { profile }],
     queryFn: () => clientApi.storeOwners.getStoreByUserId(profile.userId),
@@ -41,15 +42,91 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     enabled: profile.role === "recipient",
   });
 
+  const { data: regularSpons } = useQuery({
+    queryKey: ["regularSponsorShips", { profile }],
+    queryFn: () => {
+      if (profile.role === "sponsor")
+        return clientApi.regularSponsorShip.getSponsorshipBySponsorIdReturnRecipient(
+          profile.userId
+        );
+
+      if (profile.role === "recipient")
+        return clientApi.regularSponsorShip.getSponsorshipByRecipientIdReturnSponsor(
+          profile.userId
+        );
+    },
+    enabled: !!profile.role,
+  });
+
   if (isLoading) return <span>데이터 로딩 중 ..</span>;
 
   return (
-    <div className="flex flex-col grow">
-      <article className=" rounded-lg text-center">
+    <div className="flex flex-col grow gap-y-4">
+      {regularSpons && regularSpons.length !== 0 && (
+        <article className="text-center bg-white rounded-lg shadow-md py-4 px-7">
+          <h3 className="font-bold">
+            {profile.role === "sponsor"
+              ? "후원 중인 아동 목록"
+              : "후원 중인 후원자"}
+          </h3>
+          <ul className="flex flex-col gap-y-2 pl-7 pr-16 mt-4">
+            {regularSpons?.map((user) => {
+              return (
+                <li key={user.userId}>
+                  <Link
+                    className="grid grid-cols-2"
+                    href={`/profiles?userId=${user.userId}`}
+                  >
+                    <Image
+                      width={300}
+                      height={300}
+                      src={
+                        user.profileImageUrl ||
+                        "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
+                      }
+                      alt="profile image"
+                      className="w-10 m-auto rounded-full aspect-square object-cover"
+                    />
+                    <span className="m-auto auto-rows-max">
+                      {user.nickname}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </article>
+      )}
+      {profile.role === "sponsor" && (
+        <article className="text-center bg-white rounded-lg shadow-md py-4 px-7">
+          <h3 className="font-bold">후원 매장</h3>
+          <span className="text-xs text-gray-400">
+            매장 이름 클릭 시 매장 위치로 이동합니다
+          </span>
+          <ul className="mt-4">
+            {ownerData?.map((store, idx) => {
+              const storeData = store.storeDatas;
+              console.log("store: ", store);
+              return (
+                <li key={idx}>
+                  <Link
+                    href={`/free-meals/map?lat=${storeData.lat}&lng=${storeData.lng}&brandName=${storeData.brandName}`}
+                  >
+                    {storeData.brandName.length < 15
+                      ? storeData.brandName
+                      : storeData.brandName.slice(0, 15) + "..."}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </article>
+      )}
+      <article className="rounded-lg text-center">
         {profile.role === "sponsor" ? (
           user?.userId === profile.userId ? (
             // 후원자 본인 프로필
-            <ul className="flex flex-col gap-y-8 h-full text-start">
+            <ul className="flex flex-col gap-y-4 h-full text-start">
               {myRecruits?.map((recruit) => (
                 <li
                   className="flex flex-col gap-y-2 h-full bg-white py-3 px-2 shadow-md rounded-lg"
@@ -138,33 +215,6 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
             </div>
           )
         )}
-      </article>
-      <article
-        className={`text-center bg-white rounded-lg shadow-md py-4 px-7 ${
-          (recentlyRecipients || recentlySponsors) && "mt-5"
-        }`}
-      >
-        <h3 className="font-bold">후원 매장</h3>
-        <span className="text-xs text-gray-400">
-          매장 이름 클릭 시 매장 위치로 이동합니다
-        </span>
-        <ul className="mt-4">
-          {ownerData?.map((store, idx) => {
-            const storeData = store.storeDatas;
-            console.log("store: ", store);
-            return (
-              <li key={idx}>
-                <Link
-                  href={`/free-meals/map?lat=${storeData.lat}&lng=${storeData.lng}&brandName=${storeData.brandName}`}
-                >
-                  {storeData.brandName.length < 15
-                    ? storeData.brandName
-                    : storeData.brandName.slice(0, 15) + "..."}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
       </article>
     </div>
   );
