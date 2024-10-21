@@ -1,10 +1,8 @@
 "use client";
 
-import clientApi from "@/api/clientSide/api";
-import Button from "@/components/Button/Button";
 import { Tables } from "@/supabase/database.types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import DecisionButton from "./DecisionButton";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -21,41 +19,7 @@ type NotApprovedUserProps = {
   recruitId: string;
 };
 
-type ApproveType = {
-  userId: string;
-  recruitId: string;
-  role: string;
-};
-
 function NotApprovedUser({ profile, user, recruitId }: NotApprovedUserProps) {
-  const queryClient = useQueryClient();
-
-  const { mutate: approve } = useMutation({
-    mutationFn: ({ userId, recruitId, role }: ApproveType) => {
-      if (role === "sponsor")
-        return clientApi.sponsorMeets.approveSponsor(userId, recruitId);
-      if (role === "recipient")
-        return clientApi.recipientMeets.approveRecipient(userId, recruitId);
-      return Promise.resolve();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["myRecruits", { userId: profile.userId }],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["recruits", { page: "homepage" }],
-      });
-    },
-  });
-
-  const handleClickApprove = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    data: ApproveType
-  ) => {
-    e.preventDefault();
-    approve(data);
-  };
-
   return (
     <Link
       href={`/profiles?userId=${user.userId}`}
@@ -82,21 +46,7 @@ function NotApprovedUser({ profile, user, recruitId }: NotApprovedUserProps) {
           ? user.userProfiles?.nickname
           : user.userProfiles?.nickname.slice(0, 5) + "..."}
       </span>
-      <Button
-        intent="primary"
-        rounded="sm"
-        textIntent="primary"
-        className="w-14 !px-0 !py-0.5 border-none bg-black text-white text-sm"
-        onClick={(e) =>
-          handleClickApprove(e, {
-            userId: user.userId,
-            recruitId,
-            role: user.userProfiles!.role,
-          })
-        }
-      >
-        승인
-      </Button>
+      <DecisionButton user={user} profile={profile} recruitId={recruitId} />
     </Link>
   );
 }
