@@ -2,7 +2,6 @@ import clientApi from "@/api/clientSide/api";
 import { supabase } from "@/supabase/client";
 import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useModalStore } from "@/zustand/modal.store";
 import { useNotifyStore } from "@/zustand/notify.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,8 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import CreateFreeMealModal from "../Modals/FreeMealCreateModal";
 import NotifyList from "../NotifyList";
+import CreateFreeMealButton from "./CreateFreeMealButton";
 
 interface LoggedInNavigationProps {
   userId: string;
@@ -20,7 +19,6 @@ interface LoggedInNavigationProps {
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const router = useRouter();
   const [isClickedNotifyList, setIsClickedNotifyList] = useState(false);
-  const setActiveModal = useModalStore((state) => state.setActiveModal);
   const isCheckedNotifyList = useNotifyStore(
     (state) => state.isCheckedNotifyList
   );
@@ -30,10 +28,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
 
   const queryClient = useQueryClient();
-  const { data: isStoreOwner } = useQuery({
-    queryKey: ["storeOwners"],
-    queryFn: () => clientApi.storeOwners.checkIsStoreOwnerByUserId(userId),
-  });
+
   const { data: profile } = useQuery({
     queryKey: ["userProfiles", { userId }],
     queryFn: () => clientApi.profiles.getProfileByUserId(userId),
@@ -42,9 +37,6 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
 
   const handleClickLinkToProfile = () => {
     queryClient.invalidateQueries({ queryKey: ["recruits"] });
-  };
-  const handleClickCreateFreeMeal = () => {
-    setActiveModal(<CreateFreeMealModal />);
   };
   const handleClickShowNotifies = () => {
     setIsClickedNotifyList(!isClickedNotifyList);
@@ -85,19 +77,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
           </div>
         )}
       </li>
-      {isStoreOwner && (
-        <li className="w-10 h-10">
-          <button onClick={handleClickCreateFreeMeal}>
-            <Image
-              width={150}
-              height={150}
-              className="w-10 aspect-square rounded-lg"
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/LinkToFreeMeal%20.png?t=2024-10-15T21%3A07%3A35.956Z"
-              alt="create free-meal post icon"
-            />
-          </button>
-        </li>
-      )}
+      <CreateFreeMealButton userId={userId} />
       <li className="z-30 group relative">
         <Link
           href={`/profiles?userId=${userId}`}
