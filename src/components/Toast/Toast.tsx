@@ -1,14 +1,45 @@
 import { ToastType } from "@/types/toast.types";
 import { useToastStore } from "@/zustand/toast.store";
+import { cva, VariantProps } from "class-variance-authority";
 import { useEffect, useState } from "react";
 
-interface ToastProps {
+const toastVariant = cva("", {
+  variants: {
+    size: {
+      sm: "w-52 h-20 py-0.5",
+      md: "w-96 h-28",
+    },
+    isCenter: {
+      true: "items-center justify-center",
+      false: "items-start justify-start ",
+    },
+    showDistance: {
+      sm: "translate-x-[90px]",
+      md: "translate-x-[430px]",
+    },
+  },
+  compoundVariants: [],
+  defaultVariants: {
+    size: "md",
+    isCenter: false,
+    showDistance: "md",
+  },
+});
+
+type ToastProps = {
   toast: ToastType;
   showTime: number;
   duration: number;
-}
+} & VariantProps<typeof toastVariant>;
 
-function Toast({ toast, duration, showTime }: ToastProps) {
+function Toast({
+  toast,
+  duration,
+  showTime,
+  size,
+  isCenter,
+  showDistance,
+}: ToastProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [isShown, setIsShown] = useState(false);
   const removeToast = useToastStore((state) => state.removeToast);
@@ -48,12 +79,20 @@ function Toast({ toast, duration, showTime }: ToastProps) {
     <>
       {isMounted && (
         <div
-          className={` p-5 flex flex-col items-start justify-start gap-y-1 w-96 h-28 bg-white shadow-xl rounded-lg transition-all duration-300 translate-x-[430px] ${
+          className={`p-5 flex flex-col gap-y-1 ${toastVariant({
+            size,
+            isCenter,
+            showDistance,
+          })} bg-white shadow-xl rounded-lg transition-all duration-300  ${
             isShown && "!translate-x-0"
           }`}
         >
-          <h6 className="font-bold">{toast.title}</h6>
-          <p className="text-base">{toast.content}</p>
+          <h6 className={`font-bold ${size === "sm" && "text-sm"}`}>
+            {toast.title}
+          </h6>
+          <p className={`text-base ${size === "sm" && "!text-xs"}`}>
+            {toast.content}
+          </p>
         </div>
       )}
     </>
