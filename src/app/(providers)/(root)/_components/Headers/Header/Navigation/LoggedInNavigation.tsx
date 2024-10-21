@@ -42,8 +42,8 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
     setIsClickedNotifyList(!isClickedNotifyList);
     setIsCheckedNotifyList(true);
   };
-  const handleClickLogOut = () => {
-    supabase.auth.signOut();
+  const handleClickLogOut = async () => {
+    await supabase.auth.signOut();
     router.replace("/");
     setCurrentUser(null);
     const toast: ToastType = {
