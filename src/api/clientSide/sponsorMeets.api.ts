@@ -1,5 +1,5 @@
 import { supabase } from "@/supabase/client";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 
 const getRecruitIdByUserId = async (userId: string) => {
   const response = await supabase
@@ -10,23 +10,42 @@ const getRecruitIdByUserId = async (userId: string) => {
   return recruitIds;
 };
 
-const getRecentlyRecipients = async (userId: string) => {
-  const query =
-    "recruitId, recruits!inner(recruitId, recipientMeets!inner(userId, userProfiles!inner(nickname)))";
+const getRecentlyRecipients = async (sponsorId: string) => {
+  const query = `
+  *,
+  recruits!sponsorMeets_recruitId_fkey(
+    *,
+    recipientMeets(
+        *, userProfiles(*)
+      )
+  )`;
   const { data: recentlyRecipientsData, error } = await supabase
     .from("sponsorMeets")
     .select(query)
-    .eq("userId", userId)
+    .eq("userId", sponsorId)
     .eq("status", "approved")
     .order("createdAt", { ascending: false })
-    .limit(5);
+    .limit(5)
+    .returns<
+      Tables<"sponsorMeets"> &
+        {
+          recruits: Tables<"recruits"> & {
+            recipientMeets: Tables<"recipientMeets"> &
+              {
+                userProfiles: Tables<"userProfiles">;
+              }[];
+          };
+        }[]
+    >();
 
   if (error) throw new Error(error.message);
 
-  const recipients = recentlyRecipientsData
-    .flatMap((recruitsData) => recruitsData.recruits)
-    .map((recipientData) => recipientData?.recipientMeets);
-  return recipients[0];
+  // const recipients = recentlyRecipientsData
+  //   .flatMap((recruitsData) => recruitsData.recruits)
+  //   .map((recipientData) => recipientData?.recipientMeets);
+
+  console.log("recentlyRecipientsData: ", recentlyRecipientsData);
+  return recentlyRecipientsData;
 };
 
 const approveSponsor = async (userId: string, recruitId: string) => {
