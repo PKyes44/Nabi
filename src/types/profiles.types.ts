@@ -1,3 +1,5 @@
+import { Tables } from "@/supabase/database.types";
+
 export type Role = "sponsor" | "recipient";
 
 export type EditProfileData = {
@@ -5,4 +7,8 @@ export type EditProfileData = {
   nickname?: string;
   profileImg?: File;
   bgImg?: File;
+};
+
+export type WithProfiles<T> = T & {
+  userProfiles: Tables<"userProfiles">;
 };

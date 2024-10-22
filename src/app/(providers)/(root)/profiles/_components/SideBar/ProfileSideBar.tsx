@@ -61,7 +61,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   if (isLoading) return <span>데이터 로딩 중 ..</span>;
 
   return (
-    <div className="flex flex-col grow gap-y-4">
+    <div className="flex flex-col grow gap-y-4 peer">
       {regularSpons && regularSpons.length !== 0 && (
         <article className="text-center bg-white rounded-lg shadow-md py-4 px-7">
           <h3 className="font-bold">
@@ -177,38 +177,61 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
           // 다른 후원아동의 프로필
           recentlySponsors &&
           recentlySponsors?.length !== 0 && (
-            <div className="bg-white rounded-lg shadow-md py-4">
-              <h3 className="mb-4 font-bold">
-                이 후원자가 최근에 후원한 아이들
-              </h3>
+            <div className="bg-white rounded-lg shadow-md py-4 px-5">
+              <h3 className="mb-4 font-bold">최근 후원자</h3>
               <ul>
                 {recentlySponsors &&
-                  recentlySponsors.map((recentlyData, idx) => {
-                    const sponsor =
-                      recentlyData.recruits.recipientMeets[0].userProfiles;
-                    console.log(sponsor);
-                    return (
-                      <li key={idx}>
-                        <Link
-                          className="grid grid-cols-2"
-                          href={`/profiles?userId=${sponsor.userId}`}
-                        >
-                          <Image
-                            width={300}
-                            height={300}
-                            src={
-                              sponsor.profileImageUrl ||
-                              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
-                            }
-                            alt="profile image"
-                            className="w-10 m-auto rounded-full aspect-square object-cover"
-                          />
-                          <span className="m-auto auto-rows-max">
-                            {sponsor.nickname}
-                          </span>
-                        </Link>
-                      </li>
-                    );
+                  recentlySponsors.map((recentlyData) => {
+                    const sponsors = recentlyData.recruits.recipientMeets;
+                    return sponsors?.map((sponsorData) => {
+                      const sponsor = sponsorData.userProfiles;
+                      console.log("sponsor: ", sponsor);
+                      return (
+                        <li key={sponsor.userId}>
+                          <Link
+                            className="grid grid-cols-2"
+                            href={`/profiles?userId=${sponsor.userId}`}
+                          >
+                            <Image
+                              width={300}
+                              height={300}
+                              src={
+                                sponsor.profileImageUrl ||
+                                "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
+                              }
+                              alt="profile image"
+                              className="w-10 m-auto rounded-full aspect-square object-cover"
+                            />
+                            <span className="m-auto auto-rows-max">
+                              {sponsor.nickname}
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    });
+
+                    // (
+                    //   <li key={idx}>
+                    //     <Link
+                    //       className="grid grid-cols-2"
+                    //       href={`/profiles?userId=${sponsor.userId}`}
+                    //     >
+                    //       <Image
+                    //         width={300}
+                    //         height={300}
+                    //         src={
+                    //           sponsor.profileImageUrl ||
+                    //           "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
+                    //         }
+                    //         alt="profile image"
+                    //         className="w-10 m-auto rounded-full aspect-square object-cover"
+                    //       />
+                    //       <span className="m-auto auto-rows-max">
+                    //         {sponsor.nickname}
+                    //       </span>
+                    //     </Link>
+                    //   </li>
+                    // );
                   })}
               </ul>
             </div>

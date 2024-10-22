@@ -15,7 +15,7 @@ interface PaymentSuccessProps {
   url: string;
 }
 
-function PaymentSuccess({
+function PaymentSuccessComponent({
   orderId,
   orderName,
   amount = 10000,
@@ -81,4 +81,4 @@ function PaymentSuccess({
   );
 }
 
-export default PaymentSuccess;
+export default PaymentSuccessComponent;

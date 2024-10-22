@@ -1,7 +1,7 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
-import PaymentSuccess from "@/components/PaymentSuccess/PaymentSuccess";
+import PaymentSuccessComponent from "@/components/PaymentSuccess/PaymentSuccess";
 import { PaymentResponse } from "@/types/paymentResponse.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation } from "@tanstack/react-query";
@@ -68,7 +68,7 @@ function RegularSponsorShipBillingPage({
   }, []);
 
   return (
-    <PaymentSuccess
+    <PaymentSuccessComponent
       url={`/profile?userId=${recipientId}`}
       orderId={receipt?.orderId!}
       orderName={receipt?.orderName!}

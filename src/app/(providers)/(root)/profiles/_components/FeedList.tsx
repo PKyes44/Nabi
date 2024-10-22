@@ -59,7 +59,7 @@ function FeedList({ initialFeeds, userId }: FeedListProps) {
   }, [isLoading, hasNextPage, fetchNextPage]);
 
   return (
-    <ul className="flex flex-col gap-y-5">
+    <ul className="flex flex-col gap-y-5 w-full">
       {feedsData.pages.map((feeds) =>
         feeds?.map((feed) => {
           let recruit: RecruitItem | null = null;
