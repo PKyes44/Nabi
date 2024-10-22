@@ -104,6 +104,8 @@ const getProfilesFilterByRoleAndSponsorShipCount = async (
     "sponsorShip"
   > = bubbleSort(data!);
 
+  console.log("orderedData: ", orderedData);
+
   return orderedData;
 };
 

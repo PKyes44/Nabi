@@ -1,10 +1,6 @@
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
-import axios from "axios";
-
-const serverClient = axios.create({
-  baseURL: "https://port-0-nabi-backend-m29e62geab88e174.sel4.cloudtype.app/",
-});
+import { serverClient } from "../backEndClient";
 
 const getBillingKey = async (requestData: {
   customerKey: string;

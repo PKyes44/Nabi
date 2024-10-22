@@ -12,7 +12,7 @@ import {
 import { useSearchParams } from "next/navigation";
 import { ComponentProps, useEffect, useState } from "react";
 
-const clientKey = process.env.NEXT_PUBLIC_TOSS_PAYMENT_CLIENT_KEY;
+const clientKey = process.env.NEXT_PUBLIC_TOSS_BILLING_CLIENT_KEY;
 if (!clientKey) throw new Error("cannot find toss client key");
 
 function RegularSponsorShip() {

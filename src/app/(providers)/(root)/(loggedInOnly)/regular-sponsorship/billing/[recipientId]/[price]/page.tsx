@@ -1,13 +1,10 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
-import ButtonGroup from "@/components/Button/ButtonGroup";
-import Container from "@/components/Container/Container";
+import PaymentSuccess from "@/components/PaymentSuccess/PaymentSuccess";
 import { PaymentResponse } from "@/types/paymentResponse.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -56,13 +53,9 @@ function RegularSponsorShipBillingPage({
     },
     onError: (data: { message: string; code: string }) => {
       console.log("error: ", data);
-      router.replace(`?code=${data.code}&message=${data.message}`);
+      router.replace(`/fail?code=${data.code}&message=${data.message}`);
     },
   });
-
-  const handleClickLinkToProfile = () => {
-    router.replace(`/profiles?userId=${recipientId}`);
-  };
 
   useEffect(() => {
     const requestData = {
@@ -75,54 +68,14 @@ function RegularSponsorShipBillingPage({
   }, []);
 
   return (
-    <Container isMain className="pt-10 flex flex-col">
-      <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
-        <div className="flex items-center gap-x-3">
-          <Image
-            height={100}
-            width={100}
-            alt="success payment icon"
-            className="w-10"
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/SuccessPayment.png"
-          />
-          <h2 className="font-extrabold text-2xl text-center">결제 완료</h2>
-        </div>
-        <div className="w-full flex flex-col gap-y-5 text-black">
-          <div className="flex flex-col">
-            <span className="font-bold">결제코드</span>
-            <span>{receipt?.orderId}</span>
-          </div>
-
-          <div className="flex gap-x-32">
-            <div className="flex flex-col">
-              <span className="font-bold">결제명</span>
-              <span>{receipt?.orderName}</span>
-            </div>
-            <div>
-              <p className="font-bold">후원금액</p>
-              <p>{receipt?.amount.toLocaleString()}원</p>
-            </div>
-          </div>
-
-          <div>
-            <p className="font-bold">카드번호</p>
-            <p>{receipt?.card.number}</p>
-          </div>
-
-          <div>
-            <p className="font-bold">결제일</p>
-            <p>{dayjs(receipt?.approvedAt).format("YYYY-MM-DD HH:mm:ss")}</p>
-          </div>
-          <ButtonGroup
-            onClick={handleClickLinkToProfile}
-            intent="primary"
-            textIntent="primary"
-            className="ml-auto"
-            value="프로필로 돌아가기"
-          />
-        </div>
-      </div>
-    </Container>
+    <PaymentSuccess
+      url={`/profile?userId=${recipientId}`}
+      orderId={receipt?.orderId!}
+      orderName={receipt?.orderName!}
+      amount={+receipt?.amount!}
+      approvedAt={receipt?.approvedAt!}
+      cardNumber={receipt?.card.number!}
+    />
   );
 }
 
