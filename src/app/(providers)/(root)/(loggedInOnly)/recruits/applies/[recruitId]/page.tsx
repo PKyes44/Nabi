@@ -79,13 +79,7 @@ async function RecruitAppliesPage({
 
   return (
     <Container width="lg" className="flex gap-x-5 py-5">
-      <AppliesSidebar
-        approvedRecipientApplies={approvedRecipientApplies!}
-        approvedSponsorApplies={approvedSponsorApplies!}
-        recruitData={recruitData!}
-        rejectedRecipientApplies={rejectedRecipientApplies!}
-        rejectedSponsorApplies={rejectedSponsorApplies!}
-      />
+      <AppliesSidebar recruitData={recruitData!} />
       <ApplyUsers
         initialPendingRecipientApplies={pendingRecipientApplies!}
         initialPendingSponsorApplies={pendingSponsorApplies!}

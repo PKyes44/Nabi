@@ -13,15 +13,8 @@ interface ProfileSideBarProps {
 function ProfileSideBar({ profile }: ProfileSideBarProps) {
   const user = useAuthStore((state) => state.currentUser);
 
-  // 후원자가 본인 프로필을 봤을 때 모집글 불러오기
-  const { data: myRecruits } = useQuery({
-    queryKey: ["myRecruits", { userId: profile.userId }],
-    queryFn: () => clientApi.recruits.getSortedMyRecruits(profile.userId),
-    enabled: profile.role === "sponsor" && user?.userId === profile.userId,
-  });
-
   // 다른 유저 프로필 봤을 때 최근 후원아동 불러오기
-  const { data: recentlyRecipients, isLoading } = useQuery({
+  const { data: recentlyRecipients } = useQuery({
     queryKey: ["sponsorMeets", { profile }],
     queryFn: () => clientApi.sponsorMeets.getRecentlyRecipients(profile.userId),
     enabled: profile.role === "sponsor",
