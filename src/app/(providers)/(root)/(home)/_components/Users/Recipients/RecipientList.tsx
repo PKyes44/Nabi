@@ -1,6 +1,6 @@
 import clientApi from "@/api/clientSide/api";
+import ProfileItem from "@/components/ProfileItem/ProfileItem";
 import { useQuery } from "@tanstack/react-query";
-import User from "../User";
 
 interface RecipientListProps {
   page: number;
@@ -19,8 +19,6 @@ function RecipientList({ page }: RecipientListProps) {
   const startNum = page === 1 ? 0 : (page - 1) * 5;
   const endNum = page === 1 ? 5 : page * 5;
 
-  console.log("recipients: ", recipients);
-
   return (
     <>
       {recipients && (
@@ -28,7 +26,12 @@ function RecipientList({ page }: RecipientListProps) {
           {recipients?.slice(startNum, endNum).map((recipient) => {
             return (
               <li key={recipient.userId}>
-                <User user={recipient!} />
+                <ProfileItem
+                  className="m-auto"
+                  nickname={recipient.nickname}
+                  userId={recipient.userId}
+                  profileImageUrl={recipient.profileImageUrl}
+                />
               </li>
             );
           })}
