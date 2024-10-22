@@ -39,6 +39,7 @@ function FundCheckOutPage({
   useEffect(() => {
     async function fetchPaymentWidgets() {
       try {
+        console.log("clientKey: ", clientKey);
         const tossPayments = await loadTossPayments(clientKey!);
 
         const widgets = tossPayments.widgets({
