@@ -5,7 +5,6 @@ import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import ApplicantList from "./ApplicantList";
 
 interface ProfileSideBarProps {
   profile: Tables<"userProfiles">;
@@ -124,19 +123,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
       )}
       <article className="rounded-lg text-center">
         {profile.role === "sponsor" ? (
-          user?.userId === profile.userId ? (
-            // 후원자 본인 프로필
-            <ul className="flex flex-col gap-y-4 h-full text-start">
-              {myRecruits?.map((recruit) => (
-                <li
-                  className="flex flex-col gap-y-2 h-full bg-white py-3 px-2 shadow-md rounded-lg"
-                  key={recruit.recruitId}
-                >
-                  <ApplicantList recruit={recruit} profile={profile} />
-                </li>
-              ))}
-            </ul>
-          ) : (
+          user?.userId !== profile.userId ? (
             // 다른 후원자의 프로필
             <div className="bg-white rounded-lg shadow-md py-4 px-5">
               <h3 className="mb-4 font-bold">
@@ -172,7 +159,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                   })}
               </ul>
             </div>
-          )
+          ) : null
         ) : (
           // 다른 후원아동의 프로필
           recentlySponsors &&
@@ -209,29 +196,6 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                         </li>
                       );
                     });
-
-                    // (
-                    //   <li key={idx}>
-                    //     <Link
-                    //       className="grid grid-cols-2"
-                    //       href={`/profiles?userId=${sponsor.userId}`}
-                    //     >
-                    //       <Image
-                    //         width={300}
-                    //         height={300}
-                    //         src={
-                    //           sponsor.profileImageUrl ||
-                    //           "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
-                    //         }
-                    //         alt="profile image"
-                    //         className="w-10 m-auto rounded-full aspect-square object-cover"
-                    //       />
-                    //       <span className="m-auto auto-rows-max">
-                    //         {sponsor.nickname}
-                    //       </span>
-                    //     </Link>
-                    //   </li>
-                    // );
                   })}
               </ul>
             </div>
