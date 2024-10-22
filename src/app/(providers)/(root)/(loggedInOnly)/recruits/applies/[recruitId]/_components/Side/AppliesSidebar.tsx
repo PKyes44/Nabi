@@ -1,23 +1,12 @@
 import { Tables } from "@/supabase/database.types";
-import { WithProfiles } from "@/types/profiles.types";
 import dayjs from "dayjs";
 import OtherInformation from "./OtherInformation";
 
 interface AppliesSidebarProps {
   recruitData: Tables<"recruits">;
-  approvedRecipientApplies: WithProfiles<Tables<"recipientMeets">>[];
-  rejectedRecipientApplies: WithProfiles<Tables<"recipientMeets">>[];
-  approvedSponsorApplies: WithProfiles<Tables<"sponsorMeets">>[];
-  rejectedSponsorApplies: WithProfiles<Tables<"sponsorMeets">>[];
 }
 
-function AppliesSidebar({
-  recruitData,
-  approvedRecipientApplies,
-  rejectedRecipientApplies,
-  approvedSponsorApplies,
-  rejectedSponsorApplies,
-}: AppliesSidebarProps) {
+function AppliesSidebar({ recruitData }: AppliesSidebarProps) {
   return (
     <section className="grow">
       <ul className="flex flex-col gap-y-5">
