@@ -1,7 +1,10 @@
+"use client";
+
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import Container from "@/components/Container/Container";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface FailPageProps {
   searchParams: {
@@ -13,16 +16,15 @@ interface FailPageProps {
 export default function FailPage({
   searchParams: { message, code },
 }: FailPageProps) {
-  console.log(message, code); //
-
+  const router = useRouter();
   return (
     <Container isMain width="md" className="pt-10 flex flex-col items-center">
       <div className="flex flex-col items-center bg-white py-9 px-20 rounded-md gap-y-10 w-[800px]">
         <div className="flex items-center gap-x-3">
           <Image
-            width={150}
-            height={150}
-            className="w-40"
+            width={200}
+            height={200}
+            className="w-10"
             src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/FailPayment.png"
             alt="에러 이미지"
           />
@@ -47,7 +49,8 @@ export default function FailPage({
           </div>
           <ButtonGroup
             intent="none"
-            value="결제화면으로 돌아가기"
+            value="이전화면으로 돌아가기"
+            onClick={() => router.back()}
             className="ml-auto bg-[#ff4d4d42] text-[#E91313] font-bold"
           />
         </div>

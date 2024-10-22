@@ -4,6 +4,7 @@ type buttonGroupProps = {
   value: string;
   errorText?: string | null;
   className?: string;
+  wrapperClassName?: string;
 };
 type ButtonGroupProps = buttonGroupProps & ButtonVariant & ButtonProps;
 
@@ -11,10 +12,11 @@ function ButtonGroup({
   value,
   errorText,
   className,
+  wrapperClassName,
   ...props
 }: ButtonGroupProps) {
   return (
-    <div className={`flex flex-col items-start`}>
+    <div className={`flex flex-col items-start ${wrapperClassName}`}>
       <Button className={className} {...props}>
         {value}
       </Button>

@@ -1,6 +1,7 @@
 import serverApi from "@/api/serverSide/api";
 import Container from "@/components/Container/Container";
 import FreeMeals from "./_components/FreeMeals/FreeMeals";
+import Funds from "./_components/Funds/Funds";
 import CreateRecruitButton from "./_components/Recruits/CreateRecruitButton";
 import RecruitList from "./_components/Recruits/RecruitList";
 import Users from "./_components/Users/Users";
@@ -36,7 +37,14 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
             <CreateRecruitButton />
             <RecruitList initialRecruitList={initialRecruitList!} />
           </div>
-          <Users page={page} />
+          <ul className="flex flex-col gap-y-5">
+            <li>
+              <Users page={page} />
+            </li>
+            <li>
+              <Funds />
+            </li>
+          </ul>
         </div>
       </Container>
     </>
