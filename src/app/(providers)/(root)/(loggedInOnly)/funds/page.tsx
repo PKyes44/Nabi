@@ -24,7 +24,7 @@ function FundCheckOutPage({
   searchParams: { sponAmount = "10000", domain },
 }: FundCheckOutPageProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const [amount, setAmount] = useState({
+  const [amount] = useState({
     currency: "KRW",
     value: +sponAmount,
   });
