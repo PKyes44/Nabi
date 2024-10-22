@@ -1,9 +1,9 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import ProfileItem from "@/components/ProfileItem/ProfileItem";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import User from "../User";
 
 function Sponsors() {
   const { data: sponsors, isLoading } = useQuery({
@@ -30,7 +30,12 @@ function Sponsors() {
         {sponsors!.slice(0, 5).map((sponsor) => {
           return (
             <li key={sponsor.userId}>
-              <User user={sponsor} />
+              <ProfileItem
+                className="m-auto"
+                nickname={sponsor.nickname}
+                userId={sponsor.userId}
+                profileImageUrl={sponsor.profileImageUrl}
+              />
             </li>
           );
         })}
