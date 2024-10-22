@@ -80,6 +80,60 @@ const rejectSponsor = async (userId: string, recruitId: string) => {
     .eq("recruitId", recruitId);
 };
 
+const getPendingSponsorAppliesWithProfileByRecruitId = async (
+  recruitId: string
+) => {
+  const query = "*, userProfiles!sponsorMeets_userId_fkey(*)";
+  const { data, error } = await supabase
+    .from("sponsorMeets")
+    .select(query)
+    .eq("recruitId", recruitId)
+    .eq("status", "pending")
+    .returns<
+      (Tables<"sponsorMeets"> & { userProfiles: Tables<"userProfiles"> })[]
+    >();
+  if (error) throw new Error(error.message);
+
+  return data;
+};
+
+const getApprovedSponsorAppliesWithProfileByRecruitIdAndUserId = async (
+  recruitId: string,
+  userId: string
+) => {
+  const query = "*, userProfiles!sponsorMeets_userId_fkey(*)";
+  const { data, error } = await supabase
+    .from("sponsorMeets")
+    .select(query)
+    .eq("recruitId", recruitId)
+    .eq("status", "approved")
+    .neq("userId", userId)
+    .returns<
+      (Tables<"sponsorMeets"> & { userProfiles: Tables<"userProfiles"> })[]
+    >();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+const getRejectedSponsorAppliesWithProfileByRecruitId = async (
+  recruitId: string
+) => {
+  const query = "*, userProfiles!sponsorMeets_userId_fkey(*)";
+  const { data, error } = await supabase
+    .from("sponsorMeets")
+    .select(query)
+    .eq("recruitId", recruitId)
+    .eq("status", "rejected")
+    .returns<
+      (Tables<"sponsorMeets"> & { userProfiles: Tables<"userProfiles"> })[]
+    >();
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};
+
 const sponsorMeetsAPI = {
   getRecruitIdByUserId,
   getRecentlyRecipients,
@@ -87,6 +141,9 @@ const sponsorMeetsAPI = {
   insertSponsorMeet,
   getSponsorMeets,
   rejectSponsor,
+  getPendingSponsorAppliesWithProfileByRecruitId,
+  getApprovedSponsorAppliesWithProfileByRecruitIdAndUserId,
+  getRejectedSponsorAppliesWithProfileByRecruitId,
 };
 
 export default sponsorMeetsAPI;

@@ -77,6 +77,60 @@ const rejectRecipient = async (userId: string, recruitId: string) => {
     .eq("recruitId", recruitId);
 };
 
+const getPendingRecipientAppliesWithProfileByRecruitId = async (
+  recruitId: string
+) => {
+  const query = "*, userProfiles(*)";
+  const { data, error } = await supabase
+    .from("recipientMeets")
+    .select(query)
+    .eq("recruitId", recruitId)
+    .eq("status", "pending")
+    .returns<
+      (Tables<"recipientMeets"> & { userProfiles: Tables<"userProfiles"> })[]
+    >();
+  if (error) throw new Error(error.message);
+
+  return data;
+};
+
+const getApprovedRecipientAppliesWithProfileByRecruitIdAndUserId = async (
+  recruitId: string,
+  userId: string
+) => {
+  const query = "*, userProfiles(*)";
+  const { data, error } = await supabase
+    .from("recipientMeets")
+    .select(query)
+    .eq("recruitId", recruitId)
+    .eq("status", "approved")
+    .neq("userId", userId)
+    .returns<
+      (Tables<"recipientMeets"> & { userProfiles: Tables<"userProfiles"> })[]
+    >();
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+const getRejectedRecipientAppliesWithProfileByRecruitId = async (
+  recruitId: string
+) => {
+  const query = "*, userProfiles(*)";
+  const { data, error } = await supabase
+    .from("recipientMeets")
+    .select(query)
+    .eq("recruitId", recruitId)
+    .eq("status", "rejected")
+    .returns<
+      (Tables<"recipientMeets"> & { userProfiles: Tables<"userProfiles"> })[]
+    >();
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};
+
 const recipientsMeetsAPI = {
   getRecipientMeets,
   insertRecipientMeet,
@@ -84,6 +138,9 @@ const recipientsMeetsAPI = {
   approveRecipient,
   getRecipientByRecruitId,
   rejectRecipient,
+  getPendingRecipientAppliesWithProfileByRecruitId,
+  getApprovedRecipientAppliesWithProfileByRecruitIdAndUserId,
+  getRejectedRecipientAppliesWithProfileByRecruitId,
 };
 
 export default recipientsMeetsAPI;

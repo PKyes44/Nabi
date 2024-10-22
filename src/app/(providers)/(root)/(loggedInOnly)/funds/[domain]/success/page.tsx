@@ -1,7 +1,7 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
-import PaymentSuccess from "@/components/PaymentSuccess/PaymentSuccess";
+import PaymentSuccessComponent from "@/components/PaymentSuccess/PaymentSuccess";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,7 +56,7 @@ function SuccessPage({
   }, []);
 
   return (
-    <PaymentSuccess
+    <PaymentSuccessComponent
       amount={+responseData?.totalAmount!}
       approvedAt={responseData?.approvedAt}
       cardNumber={responseData?.easyPay.provider}

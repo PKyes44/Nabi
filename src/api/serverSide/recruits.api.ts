@@ -1,6 +1,23 @@
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 
+const getRecruitByRecruitId = async (recruitId: string) => {
+  try {
+    const { data } = await supabase
+      .from("recruits")
+      .select()
+      .eq("recruitId", recruitId)
+      .single();
+
+    const result: Tables<"recruits"> = data;
+
+    return result;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
 const getRecruits = async () => {
   try {
     const query = "*, userProfiles(*)";
@@ -127,6 +144,7 @@ const recruitsAPI = {
   getInfiniteRecruits,
   getRecruits,
   getRecruitsByUserId,
+  getRecruitByRecruitId,
   getGroupOfPageRecruits,
 };
 
