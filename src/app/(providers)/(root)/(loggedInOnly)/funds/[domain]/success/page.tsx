@@ -57,7 +57,7 @@ function SuccessPage({
 
   return (
     <PaymentSuccess
-      amount={+responseData?.totalAmount}
+      amount={+responseData?.totalAmount!}
       approvedAt={responseData?.approvedAt}
       cardNumber={responseData?.easyPay.provider}
       orderId={responseData?.orderId}
