@@ -83,10 +83,12 @@ const options = {
 function DonationChart() {
   return (
     <div className="pt-12">
-      <section className="w-96 h-96 relative">
-        <Doughnut className="w-96 h-96 m-auto" data={data} options={options} />
-        <h2 className="font-bold text-2xl absolute top-[40%] left-[50%] translate-x-[-50%]">
-          영역별 후원 기금 사업
+      <section className="w-64 h-64 relative m-auto">
+        <Doughnut className="w-64 h-64 m-auto" data={data} options={options} />
+        <h2 className="font-bold text-2xl absolute top-[28%] left-[50%] translate-x-[-50%] text-center">
+          영역별
+          <br />
+          후원 기금
         </h2>
       </section>
 
