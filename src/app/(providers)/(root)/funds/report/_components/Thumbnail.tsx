@@ -6,6 +6,7 @@ const thumbnailVariant = cva("", {
   variants: {
     theme: {
       finance: "bg-orange-200",
+      business: "bg-sky-100",
     },
   },
   compoundVariants: [],
@@ -36,7 +37,11 @@ function Thumbnail({
           { theme, className }
         )}`}
       >
-        <div className="bg-orange-300 w-full aspect-square rounded-full absolute -right-24 top-20" />
+        <div
+          className={`${
+            theme === "business" ? "bg-sky-400" : "bg-orange-400"
+          } w-full aspect-square rounded-full absolute -right-24 top-20`}
+        />
         <Image
           className="w-full rounded-full aspect-square absolute -right-20 top-24"
           src={thumbnailSrc}
