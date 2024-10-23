@@ -1,20 +1,43 @@
 "use client";
-import expense from "@/public/finance/expense.json";
+import expenseData from "@/public/finance/expense.json";
 import { ArcElement, Chart, Title, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 Chart.register(ArcElement, Tooltip, Title);
 
-const allExpense =
-  Number(expense.businessExpense) +
-  Number(expense.fund) +
-  Number(expense.other);
+type ExpenseDataType = {
+  [key: string]: string | number;
+};
+
+type ExpenseType = {
+  businessExpense: number;
+  fund: number;
+  other: number;
+};
+
+const convertNumber = (object: ExpenseDataType) => {
+  for (const key in object) {
+    object[key] = Number(object[key]);
+  }
+  return object as ExpenseType;
+};
+const expense = convertNumber(expenseData);
+
+const sumValue = (object: ExpenseType) => {
+  let value = 0;
+  for (const key in object) {
+    value += object[key as keyof ExpenseType];
+  }
+  return value;
+};
+
+const allExpense = sumValue(expense);
 
 const data = {
   labels: ["사업 수행 비용", "모금 비용", "기타"],
   datasets: [
     {
-      data: [expense.businessExpense, expense.fund, expense.other],
+      data: Object.values(expense),
       backgroundColor: ["orange", "skyblue", "gray"],
       borderColor: ["orange", "skyblue", "gray"],
     },
@@ -44,30 +67,19 @@ function ExpenseChart() {
         </h2>
       </section>
       <ul className="w-96 m-auto border-t-2 border-black pt-4">
-        <li className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <div className="bg-orange-500 w-5 h-5" />
-            <p>사업 수행 비용</p>
-          </div>
+        {Object.values(expense).map((label, index) => (
+          <li key={label} className="flex items-center justify-between">
+            <div className="flex items-center gap-x-3">
+              <div
+                style={{ background: data.datasets[0].backgroundColor[index] }}
+                className={`w-5 h-5`}
+              />
+              <p>{data.labels[index]}</p>
+            </div>
 
-          <p>{Number(expense.businessExpense).toLocaleString()}원</p>
-        </li>
-        <li className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <div className="bg-sky-300 w-5 h-5" />
-            <p>모금 비용</p>
-          </div>
-
-          <p>{Number(expense.fund).toLocaleString()}원</p>
-        </li>
-        <li className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <div className="bg-gray-500 w-5 h-5" />
-            <p>기타</p>
-          </div>
-
-          <p>{Number(expense.other).toLocaleString()}원</p>
-        </li>
+            <p>{label.toLocaleString()}원</p>
+          </li>
+        ))}
       </ul>
     </div>
   );

@@ -1,20 +1,42 @@
 "use client";
-import income from "@/public/finance/income.json";
+import incomeData from "@/public/finance/income.json";
 import { ArcElement, Chart, Title, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 Chart.register(ArcElement, Tooltip, Title);
 
-const allIncome =
-  Number(income.donations) +
-  Number(income.otherIncome) +
-  Number(income.incomeFromDonations);
+type IncomeDataType = {
+  [key: string]: string | number;
+};
+
+type IncomeType = {
+  donations: number;
+  otherIncome: number;
+  incomeFromDonations: number;
+};
+
+const convertNumber = (object: IncomeDataType) => {
+  for (const key in object) {
+    object[key] = Number(object[key]);
+  }
+  return object as IncomeType;
+};
+const income = convertNumber(incomeData);
+
+const sumValue = (object: IncomeType) => {
+  let value = 0;
+  for (const key in object) {
+    value += object[key as keyof IncomeType];
+  }
+  return value;
+};
+const allIncome = sumValue(income);
 
 const data = {
   labels: ["기부금", "기부금 외 수입", "기부금 운용을 통한 수입"],
   datasets: [
     {
-      data: [income.donations, income.otherIncome, income.incomeFromDonations],
+      data: Object.values(income),
       backgroundColor: ["orange", "skyblue", "gray"],
       borderColor: ["orange", "skyblue", "gray"],
     },
@@ -46,30 +68,19 @@ function IncomeChart() {
       </section>
 
       <ul className="w-96 m-auto border-t-2 border-black pt-4">
-        <li className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <div className="bg-orange-500 w-5 h-5" />
-            <span>기부금</span>
-          </div>
+        {Object.values(income).map((label, index) => (
+          <li key={label} className="flex items-center justify-between">
+            <div className="flex items-center gap-x-3">
+              <div
+                style={{ background: data.datasets[0].backgroundColor[index] }}
+                className={`w-5 h-5`}
+              />
+              <p>{data.labels[index]}</p>
+            </div>
 
-          <span>{Number(income.donations).toLocaleString()}원</span>
-        </li>
-        <li className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <div className="bg-sky-300 w-5 h-5" />
-            <span>기부금 외 수입</span>
-          </div>
-
-          <span>{Number(income.otherIncome).toLocaleString()}원</span>
-        </li>
-        <li className="flex items-center justify-between">
-          <div className="flex items-center gap-x-3">
-            <div className="bg-gray-500 w-5 h-5" />
-            <span>기부금 운용을 통한 수입</span>
-          </div>
-
-          <span>{Number(income.incomeFromDonations).toLocaleString()}원</span>
-        </li>
+            <p>{label.toLocaleString()}원</p>
+          </li>
+        ))}
       </ul>
     </div>
   );
