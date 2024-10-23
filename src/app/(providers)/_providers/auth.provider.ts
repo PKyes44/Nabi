@@ -3,11 +3,9 @@
 import clientApi from "@/api/clientSide/api";
 import { supabase } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth.store";
-import { useRouter } from "next/navigation";
 import { PropsWithChildren, useEffect, useState } from "react";
 
 function AuthProvider({ children }: PropsWithChildren) {
-  const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -38,13 +36,6 @@ function AuthProvider({ children }: PropsWithChildren) {
       setCurrentUser(currentUser);
     })();
   }, [isLoggedIn]);
-
-  // useEffect(() => {
-  //   supabase.auth.onAuthStateChange(async (eventName) => {
-  //     console.log("eventName: ", eventName);
-  //     if (eventName === "SIGNED_IN") router.replace("/");
-  //   });
-  // }, []);
 
   return children;
 }
