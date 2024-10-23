@@ -77,7 +77,7 @@ function ExpenseChart() {
               <p>{data.labels[index]}</p>
             </div>
 
-            <p>{label.toLocaleString()}원</p>
+            <span>{label.toLocaleString()}원</span>
           </li>
         ))}
       </ul>
