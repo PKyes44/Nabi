@@ -60,9 +60,9 @@ const options = {
 function ExpenseChart() {
   return (
     <div className="pt-12">
-      <section className="w-96 h-96 relative">
-        <Doughnut className="w-96 h-96 m-auto" data={data} options={options} />
-        <h2 className="font-bold text-2xl absolute top-[40%] left-[50%] translate-x-[-50%]">
+      <section className="w-64 h-64 relative m-auto">
+        <Doughnut className="w-64 h-64 m-auto" data={data} options={options} />
+        <h2 className="font-bold text-2xl absolute top-[35%] left-[50%] translate-x-[-50%]">
           2023 지출
         </h2>
       </section>

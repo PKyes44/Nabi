@@ -4,6 +4,7 @@ import { PropsWithChildren } from "react";
 const containerVariant = cva("m-auto", {
   variants: {
     width: {
+      xs: "max-w-[500px] px-5",
       sm: "max-w-[600px] px-5",
       md: "max-w-[800px] px-5",
       lg: "max-w-[1200px] px-5",

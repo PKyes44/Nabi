@@ -1,15 +1,12 @@
-"use client";
-
 import Container from "@/components/Container/Container";
 import Image from "next/image";
 import Link from "next/link";
-import Navigation from "./Navigation/Navigation";
 
-function Header() {
+function ReportHeader() {
   return (
-    <header className="h-16 bg-white fixed top-0 left-0 z-[2] w-screen">
+    <header className="h-16 w-screen bg-white fixed top-0 left-0 z-20">
       <Container
-        width="lg"
+        width="xs"
         isMain={false}
         className="h-full flex items-center justify-between"
       >
@@ -22,11 +19,9 @@ function Header() {
             alt="nabi logo"
           />
         </Link>
-
-        <Navigation />
       </Container>
     </header>
   );
 }
 
-export default Header;
+export default ReportHeader;
