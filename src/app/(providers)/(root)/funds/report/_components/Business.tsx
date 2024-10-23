@@ -1,6 +1,5 @@
 import donationData from "@/public/finance/donation.json";
 import Thumbnail from "./Thumbnail";
-
 type DonationDataType = {
   [key: string]: string | number;
 };
