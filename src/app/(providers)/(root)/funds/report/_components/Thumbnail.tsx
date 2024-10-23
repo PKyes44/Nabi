@@ -1,6 +1,7 @@
 import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
 import { PropsWithChildren } from "react";
+import Marquee from "react-fast-marquee";
 
 const thumbnailVariant = cva("", {
   variants: {
@@ -58,6 +59,13 @@ function Thumbnail({
           src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/hand-1@2x.png"
           alt="hand-1"
         />
+        <Marquee
+          direction="right"
+          className="absolute top-64 left-2 bg-black text-orange-400 font-bold overflow-hidden rounded-3xl h-7"
+        >
+          <span className="mx-10">더 나은 세상을 향해 달리는 중</span>
+          <span>더 나은 세상을 향해 달리는 중</span>
+        </Marquee>
         <Image
           width={100}
           height={100}
