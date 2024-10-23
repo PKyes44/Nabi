@@ -4,40 +4,38 @@ import { ArcElement, Chart, Title, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 Chart.register(ArcElement, Tooltip, Title);
+
 const allIncome =
   Number(income.donations) +
   Number(income.otherIncome) +
   Number(income.incomeFromDonations);
-function IncomeChart() {
-  const data = {
-    labels: ["기부금", "기부금 외 수입", "기부금 운용을 통한 수입"],
-    datasets: [
-      {
-        data: [
-          income.donations,
-          income.otherIncome,
-          income.incomeFromDonations,
-        ],
-        backgroundColor: ["orange", "skyblue", "gray"],
-        borderColor: ["orange", "skyblue", "gray"],
-      },
-    ],
-  };
 
-  const options = {
-    plugins: {
-      title: {
-        position: "bottom" as const,
-        display: true,
-        text: `${allIncome.toLocaleString()}원`,
-        font: {
-          size: 30,
-        },
+const data = {
+  labels: ["기부금", "기부금 외 수입", "기부금 운용을 통한 수입"],
+  datasets: [
+    {
+      data: [income.donations, income.otherIncome, income.incomeFromDonations],
+      backgroundColor: ["orange", "skyblue", "gray"],
+      borderColor: ["orange", "skyblue", "gray"],
+    },
+  ],
+};
+
+const options = {
+  plugins: {
+    title: {
+      position: "bottom" as const,
+      display: true,
+      text: `${allIncome.toLocaleString()}원`,
+      font: {
+        size: 30,
       },
     },
-    cutout: "80%",
-  };
+  },
+  cutout: "80%",
+};
 
+function IncomeChart() {
   return (
     <div className="pt-12">
       <section className="w-96 h-96 relative">

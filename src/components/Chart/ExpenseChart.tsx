@@ -4,36 +4,37 @@ import { ArcElement, Chart, Title, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 Chart.register(ArcElement, Tooltip, Title);
+
 const allExpense =
   Number(expense.businessExpense) +
   Number(expense.fund) +
   Number(expense.other);
-function ExpenseChart() {
-  const data = {
-    labels: ["사업 수행 비용", "모금 비용", "기타"],
-    datasets: [
-      {
-        data: [expense.businessExpense, expense.fund, expense.other],
-        backgroundColor: ["orange", "skyblue", "gray"],
-        borderColor: ["orange", "skyblue", "gray"],
-      },
-    ],
-  };
 
-  const options = {
-    plugins: {
-      title: {
-        position: "bottom" as const,
-        display: true,
-        text: `${allExpense.toLocaleString()}원`,
-        font: {
-          size: 30,
-        },
+const data = {
+  labels: ["사업 수행 비용", "모금 비용", "기타"],
+  datasets: [
+    {
+      data: [expense.businessExpense, expense.fund, expense.other],
+      backgroundColor: ["orange", "skyblue", "gray"],
+      borderColor: ["orange", "skyblue", "gray"],
+    },
+  ],
+};
+
+const options = {
+  plugins: {
+    title: {
+      position: "bottom" as const,
+      display: true,
+      text: `${allExpense.toLocaleString()}원`,
+      font: {
+        size: 30,
       },
     },
-    cutout: "80%",
-  };
-
+  },
+  cutout: "80%",
+};
+function ExpenseChart() {
   return (
     <div className="pt-12">
       <section className="w-96 h-96 relative">
