@@ -39,11 +39,12 @@ function AuthProvider({ children }: PropsWithChildren) {
     })();
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    supabase.auth.onAuthStateChange(async (eventName) => {
-      if (eventName === "SIGNED_IN") router.replace("/");
-    });
-  }, []);
+  // useEffect(() => {
+  //   supabase.auth.onAuthStateChange(async (eventName) => {
+  //     console.log("eventName: ", eventName);
+  //     if (eventName === "SIGNED_IN") router.replace("/");
+  //   });
+  // }, []);
 
   return children;
 }

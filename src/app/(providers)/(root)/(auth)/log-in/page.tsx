@@ -10,6 +10,7 @@ import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 
 interface InitialErrMsgs {
@@ -24,6 +25,7 @@ const initialErrMsgs = {
 };
 
 function LogInPage() {
+  const router = useRouter();
   const addToast = useToastStore((state) => state.addToast);
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const setCurrentUser = useAuthStore((state) => state.setCurrentUser);
@@ -49,6 +51,7 @@ function LogInPage() {
         status,
       };
       addToast(toast);
+      router.replace("/");
     },
     onError: (...arg) => {
       setErrMsgs((prevErrMsgs) => ({
