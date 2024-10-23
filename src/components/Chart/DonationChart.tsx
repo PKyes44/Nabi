@@ -1,45 +1,68 @@
 "use client";
-import expenseData from "@/public/finance/expense.json";
+import donationData from "@/public/finance/donation.json";
 import { ArcElement, Chart, Title, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 Chart.register(ArcElement, Tooltip, Title);
 
-type ExpenseDataType = {
+type DonationDataType = {
   [key: string]: string | number;
 };
 
-type ExpenseType = {
-  businessExpense: number;
-  fund: number;
-  other: number;
+type DonationType = {
+  health: number;
+  education: number;
+  labor: number;
+  culture: number;
+  society: number;
+  safety: number;
+  abode: number;
+  environment: number;
 };
 
-const convertNumber = (object: ExpenseDataType) => {
+const convertNumber = (object: DonationDataType) => {
   for (const key in object) {
     object[key] = Number(object[key]);
   }
-  return object as ExpenseType;
+  return object as DonationType;
 };
-const expense = convertNumber(expenseData);
+const donation = convertNumber(donationData);
 
-const sumValue = (object: ExpenseType) => {
+const sumValue = (object: DonationType) => {
   let value = 0;
   for (const key in object) {
-    value += object[key as keyof ExpenseType];
+    value += object[key as keyof DonationType];
   }
   return value;
 };
 
-const allExpense = sumValue(expense);
+const allDonation = sumValue(donation);
 
 const data = {
-  labels: ["사업 수행 비용", "모금 비용", "기타"],
+  labels: ["건강", "교육", "노동", "문화", "사회참여", "안전", "주거", "환경"],
   datasets: [
     {
-      data: Object.values(expense),
-      backgroundColor: ["orange", "skyblue", "gray"],
-      borderColor: ["orange", "skyblue", "gray"],
+      data: Object.values(donation),
+      backgroundColor: [
+        "orange",
+        "skyblue",
+        "gray",
+        "red",
+        "purple",
+        "yellow",
+        "green",
+        "blue",
+      ],
+      borderColor: [
+        "orange",
+        "skyblue",
+        "gray",
+        "red",
+        "purple",
+        "yellow",
+        "green",
+        "blue",
+      ],
     },
   ],
 };
@@ -49,7 +72,7 @@ const options = {
     title: {
       position: "bottom" as const,
       display: true,
-      text: `${allExpense.toLocaleString()}원`,
+      text: `${allDonation.toLocaleString()}원`,
       font: {
         size: 30,
       },
@@ -57,17 +80,18 @@ const options = {
   },
   cutout: "80%",
 };
-function ExpenseChart() {
+function DonationChart() {
   return (
     <div className="pt-12">
       <section className="w-96 h-96 relative">
         <Doughnut className="w-96 h-96 m-auto" data={data} options={options} />
         <h2 className="font-bold text-2xl absolute top-[40%] left-[50%] translate-x-[-50%]">
-          2023 지출
+          영역별 후원 기금 사업
         </h2>
       </section>
+
       <ul className="w-96 m-auto border-t-2 border-black pt-4">
-        {Object.values(expense).map((label, index) => (
+        {Object.values(donation).map((label, index) => (
           <li key={label} className="flex items-center justify-between">
             <div className="flex items-center gap-x-3">
               <div
@@ -85,4 +109,4 @@ function ExpenseChart() {
   );
 }
 
-export default ExpenseChart;
+export default DonationChart;
