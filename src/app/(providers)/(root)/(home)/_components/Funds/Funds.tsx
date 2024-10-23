@@ -1,5 +1,7 @@
 "use client";
 
+import Button from "@/components/Button/Button";
+import Link from "next/link";
 import Fund from "./Fund";
 
 function Funds() {
@@ -19,6 +21,12 @@ function Funds() {
         <Fund domain="주거" />
         <Fund domain="환경" />
       </section>
+
+      <Link href="/funds/report">
+        <Button className="w-full" intent="primary" textIntent="primary">
+          2023 보고서 보기
+        </Button>
+      </Link>
     </article>
   );
 }

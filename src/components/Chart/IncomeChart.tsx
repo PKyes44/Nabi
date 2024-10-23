@@ -37,10 +37,10 @@ const options = {
 
 function IncomeChart() {
   return (
-    <div className="pt-12">
-      <section className="w-96 h-96 relative">
-        <Doughnut className="w-96 h-96 m-auto" data={data} options={options} />
-        <h2 className="font-bold text-2xl absolute top-[40%] left-[50%] translate-x-[-50%]">
+    <div className="pt-24">
+      <section className="w-64 h-64 relative m-auto">
+        <Doughnut className="w-64 h-64 m-auto" data={data} options={options} />
+        <h2 className="font-bold text-2xl absolute top-[35%] left-[50%] translate-x-[-50%]">
           2023 수입
         </h2>
       </section>
@@ -49,26 +49,26 @@ function IncomeChart() {
         <li className="flex items-center justify-between">
           <div className="flex items-center gap-x-3">
             <div className="bg-orange-500 w-5 h-5" />
-            <p>기부금</p>
+            <span>기부금</span>
           </div>
 
-          <p>{Number(income.donations).toLocaleString()}원</p>
+          <span>{Number(income.donations).toLocaleString()}원</span>
         </li>
         <li className="flex items-center justify-between">
           <div className="flex items-center gap-x-3">
             <div className="bg-sky-300 w-5 h-5" />
-            <p>기부금 외 수입</p>
+            <span>기부금 외 수입</span>
           </div>
 
-          <p>{Number(income.otherIncome).toLocaleString()}원</p>
+          <span>{Number(income.otherIncome).toLocaleString()}원</span>
         </li>
         <li className="flex items-center justify-between">
           <div className="flex items-center gap-x-3">
             <div className="bg-gray-500 w-5 h-5" />
-            <p>기부금 운용을 통한 수입</p>
+            <span>기부금 운용을 통한 수입</span>
           </div>
 
-          <p>{Number(income.incomeFromDonations).toLocaleString()}원</p>
+          <span>{Number(income.incomeFromDonations).toLocaleString()}원</span>
         </li>
       </ul>
     </div>
