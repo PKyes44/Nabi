@@ -24,7 +24,7 @@ function FeedList({ initialFeeds, userId }: FeedListProps) {
     isLoading,
   } = useInfiniteQuery({
     initialData: { pages: [initialFeeds || []], pageParams: [0] },
-    queryKey: ["feeds", { page: "profile" }],
+    queryKey: ["feeds", { page: "profile", userId }],
     queryFn: ({ pageParam }) =>
       clientApi.feeds.getFeedsByUserId(userId, pageParam),
     getNextPageParam: (lastPage, pages) => {
@@ -57,6 +57,8 @@ function FeedList({ initialFeeds, userId }: FeedListProps) {
       }
     };
   }, [isLoading, hasNextPage, fetchNextPage]);
+
+  console.log(feedsData);
 
   return (
     <ul className="flex flex-col gap-y-5 w-full">

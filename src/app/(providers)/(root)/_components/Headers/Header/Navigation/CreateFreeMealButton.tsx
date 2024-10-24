@@ -18,7 +18,7 @@ function CreateFreeMealButton({ userId }: CreateFreeMealButtonProps) {
     setActiveModal(<CreateFreeMealModal />);
   };
 
-  console.log("isStoreOwner: ", isStoreOwner);
+  // console.log("isStoreOwner: ", isStoreOwner);
 
   return (
     <>
