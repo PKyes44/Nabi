@@ -58,8 +58,6 @@ function FeedList({ initialFeeds, userId }: FeedListProps) {
     };
   }, [isLoading, hasNextPage, fetchNextPage]);
 
-  console.log(feedsData);
-
   return (
     <ul className="flex flex-col gap-y-5 w-full">
       {feedsData.pages.map((feeds) =>
