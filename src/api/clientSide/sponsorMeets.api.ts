@@ -44,7 +44,7 @@ const getRecentlyRecipients = async (sponsorId: string) => {
   //   .flatMap((recruitsData) => recruitsData.recruits)
   //   .map((recipientData) => recipientData?.recipientMeets);
 
-  console.log("recentlyRecipientsData: ", recentlyRecipientsData);
+  // console.log("recentlyRecipientsData: ", recentlyRecipientsData);
   return recentlyRecipientsData;
 };
 

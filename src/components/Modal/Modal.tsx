@@ -3,7 +3,7 @@ import { useNotifyStore } from "@/zustand/notify.store";
 import { cva, VariantProps } from "class-variance-authority";
 import { ComponentProps, PropsWithChildren } from "react";
 
-const modalVariant = cva("w-screen h-screen absolute top-0 left-0 z-10 ", {
+const modalVariant = cva("w-screen h-screen fixed top-0 left-0 z-10 ", {
   variants: {
     isDim: {
       true: "bg-black bg-opacity-45",

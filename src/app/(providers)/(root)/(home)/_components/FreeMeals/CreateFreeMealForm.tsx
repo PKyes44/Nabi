@@ -40,7 +40,10 @@ function CreateFreeMealForm() {
 
   const { data: stores, isLoading } = useQuery({
     queryKey: ["storeOwners", { sponsorId: sponsor?.userId }],
-    queryFn: () => clientApi.storeOwners.getStoreByUserId(sponsor?.userId!),
+    queryFn: () => {
+      if (!sponsor) return;
+      return clientApi.storeOwners.getStoreByUserId(sponsor?.userId!);
+    },
   });
   const { mutate: insertFreeMeal } = useMutation({
     mutationFn: (insertData: TablesInsert<"freeMeals">) =>

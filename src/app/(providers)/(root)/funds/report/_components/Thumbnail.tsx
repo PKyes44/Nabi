@@ -27,7 +27,6 @@ type ThumbnailProps = {
 } & ThumbnailVariant;
 
 function Thumbnail({
-  id,
   title,
   thumbnailSrc,
   intro,
