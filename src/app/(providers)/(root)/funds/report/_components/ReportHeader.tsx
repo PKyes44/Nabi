@@ -18,7 +18,7 @@ function ReportHeader() {
       scrollHeight: number;
     };
 
-    let tempFirstSection = scrollHeight / 2 - 30;
+    const tempFirstSection = scrollHeight / 2 - 30;
     if (!firstSection) setFirstSection(tempFirstSection);
     let translateXValue = 0;
 

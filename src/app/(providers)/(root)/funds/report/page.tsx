@@ -12,7 +12,7 @@ function FundReportPage() {
       isMain={false}
       className="pt-16 !overflow-hidden w-screen h-screen"
     >
-      <ProgressBar elementId="report" />
+      <ProgressBar isShown theme={1} translateXValue={100} />
       <div id="report" className="w-full h-full overflow-auto">
         <Finances />
         <Business />
