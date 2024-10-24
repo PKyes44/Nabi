@@ -3,6 +3,8 @@
 import Image from "next/image";
 /* eslint-disable @next/next/no-img-element */
 
+import { useAuthStore } from "@/zustand/auth.store";
+import UsersSkeleton from "../components/UsersSkeleton";
 import Pagination from "./Pagination";
 import RecipientList from "./RecipientList";
 
@@ -11,8 +13,10 @@ interface RecipientsProps {
 }
 
 function Recipients({ page }: RecipientsProps) {
+  const user = useAuthStore((state) => state.currentUser);
+  if (!user) return <UsersSkeleton />;
   return (
-    <article className="bg-white h-[360px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
+    <article className="bg-white h-[320px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
       <h2 className="flex items-center mx-auto gap-x-2 font-bold">
         <Image
           height={100}

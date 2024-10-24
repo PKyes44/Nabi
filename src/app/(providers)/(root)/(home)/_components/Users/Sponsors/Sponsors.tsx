@@ -4,6 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import ProfileItem from "@/components/ProfileItem/ProfileItem";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import UsersSkeleton from "../components/UsersSkeleton";
 
 function Sponsors() {
   const { data: sponsors, isLoading } = useQuery({
@@ -12,7 +13,7 @@ function Sponsors() {
       clientApi.profiles.getProfilesFilterByRoleAndSponsorShipCount("sponsor"),
   });
 
-  if (isLoading) return <span>데이터 불러오는 중 ...</span>;
+  if (isLoading) return <UsersSkeleton />;
 
   return (
     <article className="bg-white h-[320px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
