@@ -38,7 +38,7 @@ function Business() {
   return (
     <Thumbnail
       id="business"
-      className="mt-[calc(240vh-64px)] h-[calc(110vh-64px)]"
+      className="h-[calc(110vh-64px)]"
       thumbnailSrc="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/title-finance.jpg"
       title="사업"
       intro={
