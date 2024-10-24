@@ -1,3 +1,5 @@
+"use client";
+
 import { cva, VariantProps } from "class-variance-authority";
 import Image from "next/image";
 import { PropsWithChildren } from "react";
@@ -17,6 +19,7 @@ const thumbnailVariant = cva("", {
 type ThumbnailVariant = VariantProps<typeof thumbnailVariant>;
 
 type ThumbnailProps = {
+  id: string;
   title: string;
   thumbnailSrc: string;
   intro: JSX.Element;
@@ -24,6 +27,7 @@ type ThumbnailProps = {
 } & ThumbnailVariant;
 
 function Thumbnail({
+  id,
   title,
   thumbnailSrc,
   intro,
