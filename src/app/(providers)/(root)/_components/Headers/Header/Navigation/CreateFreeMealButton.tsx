@@ -11,18 +11,21 @@ interface CreateFreeMealButtonProps {
 function CreateFreeMealButton({ userId }: CreateFreeMealButtonProps) {
   const setActiveModal = useModalStore((state) => state.setActiveModal);
   const { data: isStoreOwner } = useQuery({
-    queryKey: ["storeOwners"],
-    queryFn: () => clientApi.storeOwners.checkIsStoreOwnerByUserId(userId),
+    queryKey: ["storeOwners", { userId }],
+    queryFn: () => {
+      if (!userId) {
+        return null;
+      }
+      return clientApi.storeOwners.checkIsStoreOwnerByUserId(userId);
+    },
   });
   const handleClickCreateFreeMeal = () => {
     setActiveModal(<CreateFreeMealModal />);
   };
 
-  console.log("isStoreOwner: ", isStoreOwner);
-
   return (
     <>
-      {isStoreOwner && (
+      {isStoreOwner?.length !== 0 && (
         <li className="w-10 h-10">
           <button onClick={handleClickCreateFreeMeal}>
             <Image

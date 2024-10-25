@@ -23,7 +23,10 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   // 후원자의 후원매장 불러오기
   const { data: ownerData } = useQuery({
     queryKey: ["storeOwners", { profile }],
-    queryFn: () => clientApi.storeOwners.getStoreByUserId(profile.userId),
+    queryFn: () => {
+      if (!profile.userId) return;
+      return clientApi.storeOwners.getStoreByUserId(profile.userId);
+    },
     enabled: profile.role === "sponsor",
   });
 
