@@ -56,17 +56,19 @@ const getRecipientMeets = async () => {
 };
 
 const getRecipientByRecruitId = async (recruitId: string) => {
-  const { data: recipient } = await supabase
-    .from("sponsorMeets")
+  const { data: recipients } = await supabase
+    .from("recipientMeets")
     .select("userId, userProfiles(*)")
     .eq("recruitId", recruitId)
     .eq("status", "approved")
-    .returns<{
-      userId: string;
-      userProfiles: Tables<"userProfiles">;
-    } | null>();
+    .returns<
+      {
+        userId: string;
+        userProfiles: Tables<"userProfiles">;
+      }[]
+    >();
 
-  return recipient;
+  return recipients;
 };
 
 const rejectRecipient = async (userId: string, recruitId: string) => {
