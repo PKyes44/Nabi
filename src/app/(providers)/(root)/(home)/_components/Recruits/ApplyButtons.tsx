@@ -10,7 +10,11 @@ interface ApplyButtonsProps {
 }
 function ApplyButtons({ recruit }: ApplyButtonsProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
-  return currentUser?.role === "recipient" ? (
+
+  if (!currentUser)
+    return <div className="w-[165px] h-8 bg-gray-200 ml-auto" />;
+
+  return currentUser.role === "recipient" ? (
     <ApplyToRecipientButton
       recruitId={recruit.recruitId}
       authorId={recruit.authorId}

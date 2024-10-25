@@ -1,3 +1,4 @@
+"use client";
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import { Database } from "@/supabase/database.types";
