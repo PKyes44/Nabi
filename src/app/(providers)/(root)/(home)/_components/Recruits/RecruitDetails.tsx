@@ -20,6 +20,7 @@ interface RecruitDetailsProps {
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const [isHover, setIsHover] = useState(false);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   let createdAt =
     Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "days")) + "일 전";
@@ -74,9 +75,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           />
         </div>
       </div>
-      {!isAuthInitialized ? (
-        <div className="w-[165px] h-8 bg-gray-200 ml-auto" />
-      ) : (
+      {!isAuthInitialized || !currentUser ? null : (
         <ApplyButtons recruit={recruit} />
       )}
 
