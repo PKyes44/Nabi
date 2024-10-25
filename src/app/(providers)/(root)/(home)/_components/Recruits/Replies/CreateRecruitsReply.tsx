@@ -19,13 +19,13 @@ type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
 function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.currentUser);
+  const userId = user?.userId;
 
-  const { data: recipient } = useQuery({
-    queryKey: ["sponsorMeets", { recruitId }],
+  const { data: recipients } = useQuery({
+    queryKey: ["recipientMeets", { recruitId }],
     queryFn: () => clientApi.recipientMeets.getRecipientByRecruitId(recruitId!),
   });
 
-  // 만들기
   const { mutate: createReply } = useMutation<
     unknown,
     Error,
@@ -40,9 +40,6 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     },
   });
 
-  if (!user?.userId) return null;
-  if (recipient?.userId !== user.userId) return null;
-
   const handleSubmitReplyForm: ComponentProps<"form">["onSubmit"] = (
     e: SubmitReplyFormEvent
   ) => {
@@ -54,39 +51,45 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     const data = {
       content,
       recruitId,
-      recipientId: user.userId as string,
+      recipientId: userId as string,
     };
 
     createReply(data);
     e.target.content.value = "";
   };
 
-  if (recipient && recipient.userProfiles.role === "recipient")
+  if (recipients?.some((recipient) => recipient.userId === userId)) {
+    const currentUser = recipients.find(
+      (recipient) => recipient.userId === userId
+    );
+
     return (
-      <div className=" pb-5 mb-5 text-xs flex items-center mt-4 gap-x-3">
+      <div className="pb-5 mb-5 text-xs flex items-center mt-4 gap-x-3">
         <Image
           width={100}
           height={100}
           src={
-            recipient.userProfiles.profileImageUrl ||
+            currentUser?.userProfiles.profileImageUrl ||
             "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
           }
           alt="profile image"
           className="w-7 aspect-square object-cover rounded-full"
         />
-        <form className="relative" onSubmit={handleSubmitReplyForm}>
+        <form
+          className="flex items-center gap-x-3"
+          onSubmit={handleSubmitReplyForm}
+        >
           <InputGroup
             type="text"
             name="content"
             intent="comment"
             wrapperClassName="grow"
-            innerClassName="pr-10"
-            placeholder="댓글을 입력해주세요"
+            placeholder="감사인사를 남겨보세요"
           />
-          <Button className="absolute top-1/4 right-3" intent="none" size="xs">
+          <Button intent="none" size="xs">
             <Image
-              width={100}
-              height={100}
+              width={25}
+              height={25}
               src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Send.png?t=2024-10-15T20%3A30%3A14.946Z"
               alt="send icon"
             />
@@ -94,6 +97,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
         </form>
       </div>
     );
+  }
 }
 
 export default CreateRecruitsReply;
