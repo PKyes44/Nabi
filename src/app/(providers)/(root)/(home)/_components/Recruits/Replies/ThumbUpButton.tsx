@@ -17,13 +17,13 @@ function ThumbUpButton({ recruitId }: ThumbsUpProps) {
   const addToast = useToastStore((state) => state.addToast);
 
   const { data: thumbUpCount } = useQuery({
-    queryKey: ["recruitThumbUps"],
+    queryKey: ["recruitThumbUps", { recruitId }],
     queryFn: () =>
       clientApi.recruitThumbUps.getThumbUpCountByRecruitId(recruitId),
   });
 
   const { data: isActivedThumbUp } = useQuery({
-    queryKey: ["recruitThumbUps", { user }],
+    queryKey: ["recruitThumbUps", { recruitId, user }],
     queryFn: () =>
       clientApi.recruitThumbUps.checkIsActivedThumbUpByUserIdAndRecruitId({
         recruitId,
@@ -38,7 +38,12 @@ function ThumbUpButton({ recruitId }: ThumbsUpProps) {
         recruitId,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recruitThumbUps"] });
+      queryClient.invalidateQueries({
+        queryKey: ["recruitThumbUps", { recruitId }],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["recruitThumbUps", { recruitId, user }],
+      });
     },
   });
 
@@ -49,7 +54,12 @@ function ThumbUpButton({ recruitId }: ThumbsUpProps) {
         recruitId,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recruitThumbUps"] });
+      queryClient.invalidateQueries({
+        queryKey: ["recruitThumbUps", { recruitId }],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["recruitThumbUps", { recruitId, user }],
+      });
     },
   });
 
