@@ -33,7 +33,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
   >({
     mutationFn: (data) => clientApi.replies.createReply(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["replies"] });
+      queryClient.invalidateQueries({ queryKey: ["recruits"] });
     },
     onError: (e) => {
       alert(e.message);
