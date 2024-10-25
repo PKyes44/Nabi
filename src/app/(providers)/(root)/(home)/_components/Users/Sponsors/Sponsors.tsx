@@ -16,7 +16,7 @@ function Sponsors() {
   if (isLoading) return <UsersSkeleton />;
 
   return (
-    <article className="bg-white h-[320px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
+    <article className="bg-white h-[360px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
       <h2 className="flex items-center gap-x-2 text-center mx-auto font-semibold">
         <Image
           width={100}
