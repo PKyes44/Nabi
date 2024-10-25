@@ -9,14 +9,14 @@ function Loading() {
   const rightWingStyles = useSpring({
     ref: rightWingRef,
     from: {
-      transform: "rotateX(200deg)",
+      transform: "rotateX(60deg)",
     },
     to: async (next) => {
       await next({
-        transform: "rotateX(60deg)",
+        transform: "rotateX(200deg)",
       });
       await next({
-        transform: "rotateX(200deg)",
+        transform: "rotateX(60deg)",
       });
     },
     config: { mass: 1, tension: 200, friction: 120, duration: 600 },
@@ -25,14 +25,14 @@ function Loading() {
   const leftWingStyles = useSpring({
     ref: leftWingRef,
     from: {
-      transform: "rotateX(110deg)",
+      transform: "rotateX(20deg)",
     },
     to: async (next) => {
       await next({
-        transform: "rotateX(20deg)",
+        transform: "rotateX(110deg)",
       });
       await next({
-        transform: "rotateX(110deg)",
+        transform: "rotateX(20deg)",
       });
     },
     config: { mass: 1, tension: 200, friction: 120, duration: 600 },
