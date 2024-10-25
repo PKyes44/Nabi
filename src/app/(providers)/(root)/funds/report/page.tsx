@@ -3,7 +3,6 @@
 import Container from "@/components/Container/Container";
 import Business from "./_components/Business";
 import Finances from "./_components/Finances";
-import ProgressBar from "./_components/ProgressBar";
 
 function FundReportPage() {
   return (
@@ -12,7 +11,6 @@ function FundReportPage() {
       isMain={false}
       className="pt-16 !overflow-hidden w-screen h-screen"
     >
-      <ProgressBar isShown theme={1} translateXValue={100} />
       <div id="report" className="w-full h-full overflow-auto">
         <Finances />
         <Business />

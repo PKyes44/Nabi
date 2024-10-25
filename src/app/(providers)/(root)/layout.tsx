@@ -6,7 +6,6 @@ function RootLayout({ children }: PropsWithChildren) {
     <div className="bg-[#f5f5f5]">
       <Header />
       {children}
-      {/* <Footer /> */}
     </div>
   );
 }

@@ -11,7 +11,7 @@ const containerVariant = cva("m-auto", {
       full: "w-full",
     },
     isMain: {
-      true: "min-h-[calc(100vh-64px-160px)] mt-16",
+      true: "min-h-[calc(100vh-64px)] mt-16",
       false: "",
     },
   },
