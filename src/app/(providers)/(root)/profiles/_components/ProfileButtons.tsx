@@ -62,7 +62,12 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const handleClickStopRegularSponsorship = () => {
     stopRegularSponsorShip();
   };
-  return (
+  return !user ? (
+    <article className="self-center -mt-5 flex gap-x-3">
+      <div className="w-[102px] h-8 bg-gray-200" />
+      <div className="w-[100px] h-8 bg-gray-200" />
+    </article>
+  ) : (
     <article className="self-center -mt-5 flex gap-x-3">
       {user?.userId === profile.userId ? (
         <Button

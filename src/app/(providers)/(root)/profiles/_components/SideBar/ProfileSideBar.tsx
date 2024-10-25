@@ -83,7 +83,9 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
           <span className="text-xs text-gray-400">
             매장 이름 클릭 시 매장 위치로 이동합니다
           </span>
-          {ownerData?.length !== 0 ? (
+          {!ownerData ? (
+            <div className="m-auto w-48 flex h-5 bg-gray-200 mt-2" />
+          ) : ownerData?.length !== 0 ? (
             <ul className="mt-4">
               {ownerData?.map((store, idx) => {
                 const storeData = store.storeDatas;
