@@ -85,7 +85,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
           </span>
           {!ownerData ? (
             <div className="m-auto w-48 flex h-5 bg-gray-200 mt-2" />
-          ) : ownerData?.length !== 0 ? (
+          ) : ownerData?.length >= 0 ? (
             <ul className="mt-4">
               {ownerData?.map((store, idx) => {
                 const storeData = store.storeDatas;
@@ -119,21 +119,29 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                 이 후원자가 최근에 후원한 아이들
               </h3>
               <ul className="flex flex-col gap-y-2 pl-9">
-                {recentlyRecipients &&
-                  recentlyRecipients.map((recentlyData, idx) => {
-                    const recipient =
-                      recentlyData.recruits.recipientMeets[0].userProfiles;
-                    return (
-                      <li key={idx} className="">
-                        <ProfileItem
-                          className="m-auto"
-                          nickname={recipient.nickname}
-                          userId={recipient.userId}
-                          profileImageUrl={recipient.profileImageUrl}
-                        />
-                      </li>
-                    );
-                  })}
+                {recentlyRecipients
+                  ? recentlyRecipients.map((recentlyData, idx) => {
+                      const recipient =
+                        recentlyData.recruits.recipientMeets[0].userProfiles;
+                      return (
+                        <li key={idx} className="">
+                          <ProfileItem
+                            className="m-auto"
+                            nickname={recipient.nickname}
+                            userId={recipient.userId}
+                            profileImageUrl={recipient.profileImageUrl}
+                          />
+                        </li>
+                      );
+                    })
+                  : Array(5)
+                      .fill(null)
+                      .map((_, index) => (
+                        <li className="flex items-center gap-x-4" key={index}>
+                          <div className="w-10 h-10 rounded-lg bg-gray-200 " />
+                          <div className="w-[100px] h-6 rounded-md bg-gray-200"></div>
+                        </li>
+                      ))}
               </ul>
             </div>
           ) : null
@@ -162,7 +170,9 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                       );
                     })
                   ) : (
-                    <span className="text-sm">후원자가 없습니다</span>
+                    <span key={1} className="text-sm">
+                      후원자가 없습니다
+                    </span>
                   );
                 })}
               </ul>
