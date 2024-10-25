@@ -53,6 +53,18 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     enabled: !!profile.role,
   });
 
+  //후원자가 후원한 아동 목록 ( 후원한 아동만, 아동 중복 제거)
+  const recipientMeets = recentlyRecipients
+    ?.flatMap((recentlyRecipient) => recentlyRecipient.recruits.recipientMeets)
+    .filter((approvedMeet) => approvedMeet.status === "approved")
+    .filter(
+      (approvedMeet, index, callback) =>
+        index ===
+        callback.findIndex(
+          (t) => t.userProfiles.userId === approvedMeet.userProfiles.userId
+        )
+    );
+
   return (
     <div className="flex flex-col grow gap-y-4 peer">
       {regularSpons && regularSpons.length !== 0 && (
@@ -87,7 +99,6 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
             <ul className="mt-4">
               {ownerData?.map((store, idx) => {
                 const storeData = store.storeDatas;
-                console.log("store: ", store);
                 return (
                   <li key={idx}>
                     <Link
@@ -118,9 +129,8 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
               </h3>
               <ul className="flex flex-col gap-y-2 pl-9">
                 {recentlyRecipients &&
-                  recentlyRecipients.map((recentlyData, idx) => {
-                    const recipient =
-                      recentlyData.recruits.recipientMeets[0].userProfiles;
+                  recipientMeets?.map((recentlyData, idx) => {
+                    const recipient = recentlyData.userProfiles;
                     return (
                       <li key={idx} className="">
                         <ProfileItem
@@ -143,7 +153,6 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
               <ul>
                 {recentlySponsors.map((recentlyData) => {
                   const sponsors = recentlyData.recruits.recipientMeets;
-                  console.log("sponsors: ", sponsors);
                   return sponsors ? (
                     sponsors?.map((sponsorData) => {
                       const sponsor = sponsorData.userProfiles;
