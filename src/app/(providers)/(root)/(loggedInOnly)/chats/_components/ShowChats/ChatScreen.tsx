@@ -81,8 +81,8 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
     return <span>채팅 기록을 불러오는 중 ...</span>;
 
   return (
-    <div className="grow border border-black h-[450px] relative">
-      <header className="border-b border-black px-5 py-3 flex gap-x-4 items-center">
+    <div className="grow bg-white rounded-md shadow-lg h-[450px] relative">
+      <header className="border-b border-gray-300 px-5 py-3 flex gap-x-4 items-center">
         {targetProfile?.profileImageUrl ? (
           <Image
             height={100}

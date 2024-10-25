@@ -21,14 +21,14 @@ function RoomList({ showChatUserId }: RoomListProps) {
   if (isLoading) return <span>채팅방 불러오는 중 ..</span>;
 
   return (
-    <ul className="flex flex-col gap-y-1 max-w-64 w-full">
+    <ul className="flex flex-col gap-y-1 max-w-64 w-full bg-white rounded-md shadow-md">
       {rooms!.map((room) => {
         const isActived = showChatUserId === room.targetUserId;
         return (
           <li
             key={room.roomId}
-            className={`border border-black px-3 py-2 ${
-              isActived && "bg-black bg-opacity-5"
+            className={` px-5 py-4 ${
+              isActived && "bg-yellow-400 bg-opacity-25"
             }`}
           >
             <RoomItem room={room} isActived={isActived} />
