@@ -42,6 +42,8 @@ function ApplyToRecipientButton({
   );
 
   if (!userId) return null;
+  if (!recipientMeets)
+    return <div className="w-[165px] h-8 bg-gray-200 ml-auto" />;
 
   const handleClickApplyButton = () => {
     const data = {
