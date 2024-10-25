@@ -23,6 +23,7 @@ function CreateFreeMealButton({ userId }: CreateFreeMealButtonProps) {
     setActiveModal(<CreateFreeMealModal />);
   };
 
+  if (!isStoreOwner) return null;
   return (
     <>
       {isStoreOwner?.length !== 0 && (
