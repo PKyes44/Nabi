@@ -1,3 +1,5 @@
+"use client";
+
 import { supabase } from "@/supabase/client";
 import { Database, Tables } from "@/supabase/database.types";
 
