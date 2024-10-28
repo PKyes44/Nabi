@@ -20,7 +20,6 @@ const getRecentlyRecipients = async (sponsorId: string) => {
         *, userProfiles(*)
       )
   )`;
-
   const { data: recentlyRecipientsData, error } = await supabase
     .from("sponsorMeets")
     .select(query)
@@ -38,7 +37,20 @@ const getRecentlyRecipients = async (sponsorId: string) => {
 
   if (error) throw new Error(error.message);
 
-  return recentlyRecipientsData;
+  const recipientMeets = recentlyRecipientsData
+    ?.flatMap(
+      (recentlySponsor) => recentlySponsor.recruits.recipientMeets || []
+    )
+    .filter((approvedMeet) => approvedMeet.status === "approved")
+    .filter(
+      (approvedMeet, index, callback) =>
+        index ===
+        callback.findIndex(
+          (t) => t.userProfiles.userId === approvedMeet.userProfiles.userId
+        )
+    );
+
+  return recipientMeets;
 };
 
 const approveSponsor = async (userId: string, recruitId: string) => {

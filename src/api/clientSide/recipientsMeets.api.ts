@@ -14,20 +14,27 @@ const getRecentlySponsors = async (userId: string) => {
     .order("createdAt", { ascending: false })
     .limit(5)
     .returns<
-      Tables<"recipientMeets"> &
-        {
-          recruits: Tables<"recruits"> & {
-            recipientMeets: Tables<"sponsorMeets"> &
-              {
-                userProfiles: Tables<"userProfiles">;
-              }[];
-          };
-        }[]
+      (Tables<"recipientMeets"> & {
+        recruits: Tables<"recruits"> & {
+          sponsorMeets: WithProfiles<Tables<"sponsorMeets">>[];
+        };
+      })[]
     >();
 
   if (error) throw new Error(error.message);
 
-  return recentlySponsorsData;
+  const sponsorMeets = recentlySponsorsData
+    ?.flatMap((recentlySponsor) => recentlySponsor.recruits.sponsorMeets || [])
+    .filter((approvedMeet) => approvedMeet.status === "approved")
+    .filter(
+      (approvedMeet, index, callback) =>
+        index ===
+        callback.findIndex(
+          (t) => t.userProfiles.userId === approvedMeet.userProfiles.userId
+        )
+    );
+
+  return sponsorMeets;
 };
 
 const approveRecipient = async (userId: string, recruitId: string) => {
