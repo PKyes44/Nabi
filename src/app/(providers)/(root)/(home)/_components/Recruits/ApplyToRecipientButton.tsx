@@ -4,6 +4,7 @@ import ButtonGroup from "@/components/Button/ButtonGroup";
 import { Database } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
 interface ApplyToRecipientButtonProps {
   recruitId: string;
@@ -42,8 +43,7 @@ function ApplyToRecipientButton({
   );
 
   if (!userId) return null;
-  if (!recipientMeets)
-    return <div className="w-[165px] h-8 bg-gray-200 ml-auto" />;
+  if (!recipientMeets) return <ApplyButtonSkeleton />;
 
   const handleClickApplyButton = () => {
     const data = {

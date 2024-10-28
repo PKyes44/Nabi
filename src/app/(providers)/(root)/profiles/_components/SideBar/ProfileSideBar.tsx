@@ -5,6 +5,7 @@ import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import StoreSkeleton from "./StoreSkeleton";
 
 interface ProfileSideBarProps {
   profile: Tables<"userProfiles">;
@@ -84,7 +85,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
             매장 이름 클릭 시 매장 위치로 이동합니다
           </span>
           {!ownerData ? (
-            <div className="m-auto w-48 flex h-5 bg-gray-200 mt-2" />
+            <StoreSkeleton />
           ) : ownerData?.length >= 0 ? (
             <ul className="mt-4">
               {ownerData?.map((store, idx) => {
