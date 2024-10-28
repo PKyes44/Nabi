@@ -24,6 +24,7 @@ const uploadImageToStorage = async (imageData: EditProfileData) => {
       .from(BUKET_BACKGROUNDIMAGES)
       .upload(`${imageData.userId}`, imageData.bgImg!, { upsert: true });
     if (bgErr) throw new Error(bgErr.message);
+
     result.bgImgUrl = bgData.fullPath;
   }
 

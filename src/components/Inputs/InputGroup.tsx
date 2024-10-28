@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { PropsWithChildren, useId } from "react";
 import Input, { InputProps } from "./Input";
 
 type inputGroupProps = {
@@ -18,20 +18,34 @@ function InputGroup({
   wrapperClassName,
   innerClassName,
   inputClassName,
+  children,
   ...props
-}: InputGroupProps) {
+}: PropsWithChildren<InputGroupProps>) {
   const inputId = useId();
 
   return (
-    <div className={`w-96 ${wrapperClassName} flex flex-col gap-y-1`}>
+    <div className={`w-96 flex flex-col gap-y-1 ${wrapperClassName}`}>
       {label && <label htmlFor={inputId}>{label}</label>}
-      <Input
-        intent={errorText ? "error" : "default"}
-        innerClassName={innerClassName}
-        inputClassName={inputClassName}
-        inputId={inputId}
-        {...props}
-      />
+      {children ? (
+        <div className={`${wrapperClassName}`}>
+          {children}
+          <Input
+            intent={errorText ? "error" : "default"}
+            innerClassName={innerClassName}
+            inputClassName={inputClassName}
+            inputId={inputId}
+            {...props}
+          />
+        </div>
+      ) : (
+        <Input
+          intent={errorText ? "error" : "default"}
+          innerClassName={innerClassName}
+          inputClassName={inputClassName}
+          inputId={inputId}
+          {...props}
+        />
+      )}
       {errorText ? (
         <span className="text-red-500 text-sm">{errorText}</span>
       ) : (

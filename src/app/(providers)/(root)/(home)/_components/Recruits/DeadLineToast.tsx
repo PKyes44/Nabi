@@ -9,7 +9,7 @@ interface DeadLineToastProps {
 function DeadLineToast({ deadLineDate, isHover }: DeadLineToastProps) {
   const toast: ToastType = {
     title: "마감 일시",
-    content: `${deadLineDate}에 모집 마감됩니다`,
+    content: `${deadLineDate}에 모집 마감`,
     id: crypto.randomUUID(),
     type: "default",
   };
@@ -23,6 +23,7 @@ function DeadLineToast({ deadLineDate, isHover }: DeadLineToastProps) {
           toast={toast}
           size="sm"
           isCenter
+          type="none"
           showDistance="sm"
         />
       )}
