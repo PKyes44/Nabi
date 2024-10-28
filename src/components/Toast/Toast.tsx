@@ -1,3 +1,5 @@
+"use client";
+
 import { ToastType } from "@/types/toast.types";
 import { useToastStore } from "@/zustand/toast.store";
 import { cva, VariantProps } from "class-variance-authority";
@@ -17,12 +19,19 @@ const toastVariant = cva("", {
       sm: "translate-x-[90px]",
       md: "translate-x-[430px]",
     },
+    type: {
+      success: "border-2 border-green-400 bg-green-400 bg-opacity-25",
+      fail: "border-2 border-red-400 bg-red-400 bg-opacity-25",
+      default: "border-2 border-black",
+      none: "",
+    },
   },
   compoundVariants: [],
   defaultVariants: {
     size: "md",
     isCenter: false,
     showDistance: "md",
+    type: "none",
   },
 });
 
@@ -34,6 +43,7 @@ type ToastProps = {
 
 function Toast({
   toast,
+  type,
   duration,
   showTime,
   size,
@@ -78,22 +88,33 @@ function Toast({
   return (
     <>
       {isMounted && (
-        <div
-          className={`p-5 flex flex-col gap-y-1 ${toastVariant({
+        <article
+          className={`bg-white flex flex-col gap-y-1 ${toastVariant({
             size,
             isCenter,
             showDistance,
-          })} bg-white shadow-xl rounded-lg transition-all duration-300  ${
+          })} bg-white rounded-lg transition-all duration-300  ${
             isShown && "!translate-x-0"
           }`}
         >
-          <h6 className={`font-bold ${size === "sm" && "text-sm"}`}>
-            {toast.title}
-          </h6>
-          <p className={`text-base ${size === "sm" && "!text-xs"}`}>
-            {toast.content}
-          </p>
-        </div>
+          <div
+            className={` p-5 flex flex-col gap-y-1 ${toastVariant({
+              size,
+              isCenter,
+              showDistance,
+              type,
+            })} bg-white shadow-xl rounded-lg transition-all duration-300  ${
+              isShown && "!translate-x-0"
+            }`}
+          >
+            <h6 className={`font-bold ${size === "sm" && "text-sm"}`}>
+              {toast.title}
+            </h6>
+            <p className={`text-base ${size === "sm" && "!text-xs"}`}>
+              {toast.content}
+            </p>
+          </div>
+        </article>
       )}
     </>
   );
