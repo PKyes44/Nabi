@@ -5,7 +5,8 @@ import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import RecentlyRecipientsSkeleton from "./RecentlyRecipientsSkeleton";
+import RecentRecipientsList from "./RecentRecipientsList";
+import RecentSponsorsList from "./RecentSponsorsList";
 import StoreSkeleton from "./StoreSkeleton";
 
 interface ProfileSideBarProps {
@@ -54,18 +55,6 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
     },
     enabled: !!profile.role,
   });
-
-  //후원자가 후원한 아동 목록 ( 후원한 아동만, 아동 중복 제거)
-  // const recipientMeets = recentlyRecipients
-  //   ?.flatMap((recentlyRecipient) => recentlyRecipient.recruits.recipientMeets)
-  //   .filter((approvedMeet) => approvedMeet.status === "approved")
-  //   .filter(
-  //     (approvedMeet, index, callback) =>
-  //       index ===
-  //       callback.findIndex(
-  //         (t) => t.userProfiles.userId === approvedMeet.userProfiles.userId
-  //       )
-  //   );
 
   return (
     <div className="flex flex-col grow gap-y-4 peer">
@@ -126,67 +115,12 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
       <article className="rounded-lg text-center">
         {profile.role === "sponsor" ? (
           user?.userId !== profile.userId ? (
-            // 다른 후원자의 프로필
-            <div className="bg-white rounded-lg shadow-md py-4 px-5">
-              <h3 className="mb-4 font-bold">
-                이 후원자가 최근에 후원한 아이들
-              </h3>
-              <ul className="flex flex-col gap-y-2 pl-9">
-                {recentlyRecipients ? (
-                  recentlyRecipients.map((recentlyData, idx) => {
-                    const recipient =
-                      recentlyData.recruits.recipientMeets[0].userProfiles;
-                    return (
-                      <li key={idx} className="">
-                        <ProfileItem
-                          className="m-auto"
-                          nickname={recipient.nickname}
-                          userId={recipient.userId}
-                          profileImageUrl={recipient.profileImageUrl}
-                        />
-                      </li>
-                    );
-                  })
-                ) : (
-                  <RecentlyRecipientsSkeleton />
-                )}
-              </ul>
-            </div>
+            // 다른 후원자의 프로필의 최근 후원아동 목록
+            <RecentRecipientsList recentlyRecipients={recentlyRecipients} />
           ) : null
         ) : (
-          // 다른 후원아동의 프로필
-          <div className="bg-white rounded-lg shadow-md py-4 px-5">
-            <h3 className="mb-4 font-bold">최근 후원자</h3>
-            {recentlySponsors && recentlySponsors.length !== 0 ? (
-              <ul>
-                {recentlySponsors.map((recentlyData) => {
-                  const sponsors = recentlyData.recruits.recipientMeets;
-                  return sponsors ? (
-                    sponsors?.map((sponsorData) => {
-                      const sponsor = sponsorData.userProfiles;
-                      console.log("sponsor: ", sponsor);
-                      return (
-                        <li key={sponsor.userId}>
-                          <ProfileItem
-                            className="m-auto"
-                            nickname={sponsor.nickname}
-                            userId={sponsor.userId}
-                            profileImageUrl={sponsor.profileImageUrl}
-                          />
-                        </li>
-                      );
-                    })
-                  ) : (
-                    <span key={1} className="text-sm">
-                      후원자가 없습니다
-                    </span>
-                  );
-                })}
-              </ul>
-            ) : (
-              <span className="text-sm">후원자가 없습니다</span>
-            )}
-          </div>
+          // 다른 후원아동의 프로필의 최근 후원자 목록
+          <RecentSponsorsList recentlySponsors={recentlySponsors} />
         )}
       </article>
     </div>
