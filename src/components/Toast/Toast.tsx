@@ -85,10 +85,12 @@ function Toast({
     }
   }, [isShown]);
 
+  console.log("type: ", type);
+
   return (
     isMounted && (
       <article
-        className={`bg-white flex flex-col gap-y-1 ${toastVariant({
+        className={` flex flex-col gap-y-1 ${toastVariant({
           size,
           isCenter,
           showDistance,
@@ -97,12 +99,12 @@ function Toast({
         }`}
       >
         <div
-          className={` p-5 flex flex-col gap-y-1 ${toastVariant({
+          className={`p-5 flex flex-col gap-y-1 ${toastVariant({
             size,
             isCenter,
             showDistance,
             type,
-          })} bg-white shadow-xl rounded-lg transition-all duration-300  ${
+          })} shadow-xl rounded-lg transition-all duration-300  ${
             isShown && "!translate-x-0"
           }`}
         >

@@ -9,6 +9,7 @@ function ToastList() {
   return (
     <ul className="fixed bottom-5 right-5 z-20">
       {toastList.map((toast, index) => {
+        console.log(toast);
         return (
           <li key={index} className="mt-5">
             <Toast
