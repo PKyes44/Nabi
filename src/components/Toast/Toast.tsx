@@ -86,37 +86,35 @@ function Toast({
   }, [isShown]);
 
   return (
-    <>
-      {isMounted && (
-        <article
-          className={`bg-white flex flex-col gap-y-1 ${toastVariant({
+    isMounted && (
+      <article
+        className={`bg-white flex flex-col gap-y-1 ${toastVariant({
+          size,
+          isCenter,
+          showDistance,
+        })} bg-white rounded-lg transition-all duration-300  ${
+          isShown && "!translate-x-0"
+        }`}
+      >
+        <div
+          className={` p-5 flex flex-col gap-y-1 ${toastVariant({
             size,
             isCenter,
             showDistance,
-          })} bg-white rounded-lg transition-all duration-300  ${
+            type,
+          })} bg-white shadow-xl rounded-lg transition-all duration-300  ${
             isShown && "!translate-x-0"
           }`}
         >
-          <div
-            className={` p-5 flex flex-col gap-y-1 ${toastVariant({
-              size,
-              isCenter,
-              showDistance,
-              type,
-            })} bg-white shadow-xl rounded-lg transition-all duration-300  ${
-              isShown && "!translate-x-0"
-            }`}
-          >
-            <h6 className={`font-bold ${size === "sm" && "text-sm"}`}>
-              {toast.title}
-            </h6>
-            <p className={`text-base ${size === "sm" && "!text-xs"}`}>
-              {toast.content}
-            </p>
-          </div>
-        </article>
-      )}
-    </>
+          <h6 className={`font-bold ${size === "sm" && "text-sm"}`}>
+            {toast.title}
+          </h6>
+          <p className={`text-base ${size === "sm" && "!text-xs"}`}>
+            {toast.content}
+          </p>
+        </div>
+      </article>
+    )
   );
 }
 
