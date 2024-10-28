@@ -1,6 +1,7 @@
 import { supabase } from "@/supabase/client";
 import { Tables } from "@/supabase/database.types";
 import { Feeds } from "@/types/feeds.types";
+import { RecruitItem } from "@/types/recruits.types";
 import dayjs from "dayjs";
 
 const getFeedsByUserId = async (userId: string) => {
@@ -30,6 +31,23 @@ const getFeedsByUserId = async (userId: string) => {
 
     if (freeMealError) throw new Error(freeMealError.message);
 
+    query =
+      "recruits(*, userProfiles(*), replies!replies_recruitId_fkey(*,userProfiles!replies_recipientId_fkey(*)))";
+    const { data: participatedRecruits, error: participatedRecruitsError } =
+      await supabase
+        .from("recipientMeets")
+        .select(query)
+        .eq("userId", userId)
+        .eq("status", "approved")
+        .returns<
+          {
+            recruits: RecruitItem[];
+          }[]
+        >();
+
+    if (participatedRecruitsError)
+      throw new Error(participatedRecruitsError.message);
+
     const myRecruitList = myRecruits.map((recruit) => {
       return {
         feedId: crypto.randomUUID(),
@@ -45,7 +63,21 @@ const getFeedsByUserId = async (userId: string) => {
       };
     });
 
-    const result: Feeds = [...myFreeMealList, ...myRecruitList] as Feeds;
+    const participatedRecruitList = participatedRecruits.map(
+      (participatedRecruit) => {
+        return {
+          feedId: crypto.randomUUID(),
+          type: "recruit",
+          feed: participatedRecruit.recruits,
+        };
+      }
+    );
+
+    const result: Feeds = [
+      ...myFreeMealList,
+      ...myRecruitList,
+      ...participatedRecruitList,
+    ] as Feeds;
 
     const sortedResult = bubbleSort(result);
     return sortedResult;
