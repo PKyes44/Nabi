@@ -18,16 +18,16 @@ function AnimeSection({ intro, title }: AnimeSectionProps) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          titleRef.current!.classList.add("animate-titleShow");
-          leftHandRef.current!.classList.add("animate-leftHandShow");
-          rightHandRef.current!.classList.add("animate-rightHandShow");
+          titleRef.current?.classList.add("animate-titleShow");
+          leftHandRef.current?.classList.add("animate-leftHandShow");
+          rightHandRef.current?.classList.add("animate-rightHandShow");
         } else {
-          titleRef.current!.classList.remove("animate-titleShow");
-          titleRef.current!.classList.add("animate-titleHidden");
-          leftHandRef.current!.classList.remove("animate-leftHandShow");
-          leftHandRef.current!.classList.add("animate-leftHandHidden");
-          rightHandRef.current!.classList.remove("animate-rightHandShow");
-          rightHandRef.current!.classList.add("animate-rightHandHidden");
+          titleRef.current?.classList.remove("animate-titleShow");
+          titleRef.current?.classList.add("animate-titleHidden");
+          leftHandRef.current?.classList.remove("animate-leftHandShow");
+          leftHandRef.current?.classList.add("animate-leftHandHidden");
+          rightHandRef.current?.classList.remove("animate-rightHandShow");
+          rightHandRef.current?.classList.add("animate-rightHandHidden");
         }
       });
     });
