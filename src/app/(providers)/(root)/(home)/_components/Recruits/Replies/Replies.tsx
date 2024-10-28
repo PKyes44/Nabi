@@ -21,7 +21,7 @@ function Replies({ replies, recruitId }: RepliesProps) {
             width={100}
             height={100}
             className="w-4 aspect-square"
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Comments.png"
+            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/ThanksComment.png?t=2024-10-28T07%3A43%3A30.947Z"
             alt="reply icon"
           />
           <span className="text-xs text-gray-700">
