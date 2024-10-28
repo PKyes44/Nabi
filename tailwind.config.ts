@@ -15,6 +15,10 @@ const config: Config = {
       fontFamily: {
         paperlogy: ["var(--font-paperlogy)"],
       },
+      backgroundImage: {
+        "report-video":
+          "url(https://join.beautifulfund.org/movie/3_impact.mp4)",
+      },
       animation: {
         titleShow: "titleShow 2s forwards",
         titleHidden: "titleHidden 2s forwards",

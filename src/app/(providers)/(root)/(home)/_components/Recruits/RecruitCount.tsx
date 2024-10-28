@@ -19,7 +19,7 @@ function RecruitCount({ recruit }: RecruitCountProps) {
         width={100}
         height={100}
         className="w-4"
-        src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/RecruitCount.png?t=2024-10-15T19%3A45%3A09.027Z"
+        src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/RecruitCount.png?t=2024-10-28T07%3A43%3A17.047Z"
         alt="recruit count icon"
       />
       <span className="font-light text-xs">

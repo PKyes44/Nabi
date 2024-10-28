@@ -28,7 +28,7 @@ function Finances() {
       }
       theme="finance"
     >
-      <section className="w-full h-[calc(235vh-64px)] bg-orange-200 flex flex-col gap-y-10 px-7">
+      <section className="w-full h-[calc(235vh-64px)] z-10 bg-orange-200 flex flex-col gap-y-10 px-7">
         <IncomeChart />
         <ExpenseChart />
 
