@@ -5,6 +5,7 @@ import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
 interface ApplyToSponsorButtonProps {
   recruitId: string;
@@ -52,6 +53,7 @@ function ApplyToSponsorButton({
   );
 
   if (!userId) return null;
+  if (!sponsorMeets) return <ApplyButtonSkeleton />;
 
   const handleClickApplyButton = () => {
     const data = {

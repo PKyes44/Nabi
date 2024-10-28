@@ -5,7 +5,7 @@ import { useModalStore } from "@/zustand/modal.store";
 import Link from "next/link";
 import SelectRoleModal from "../Modals/SelectRoleModal";
 import LoggedInNavigation from "./LoggedInNavigation";
-
+import HeaderNavigationSkeleton from "./components/NavigationSkeleton";
 function Navigation() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const authInitialized = useAuthStore((state) => state.isAuthInitialized);
@@ -30,7 +30,9 @@ function Navigation() {
               </li>
             </>
           )
-        ) : null}
+        ) : (
+          <HeaderNavigationSkeleton />
+        )}
       </ul>
     </nav>
   );

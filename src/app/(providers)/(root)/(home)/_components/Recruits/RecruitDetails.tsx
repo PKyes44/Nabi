@@ -2,6 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { Tables } from "@/supabase/database.types";
+import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import Image from "next/image";
@@ -18,6 +19,8 @@ interface RecruitDetailsProps {
 
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const [isHover, setIsHover] = useState(false);
+  const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
+  const currentUser = useAuthStore((state) => state.currentUser);
 
   let createdAt =
     Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "days")) + "일 전";
@@ -72,7 +75,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           />
         </div>
       </div>
-      <ApplyButtons recruit={recruit} />
+      {!isAuthInitialized || !currentUser ? null : (
+        <ApplyButtons recruit={recruit} />
+      )}
+
       <DeadLineToast
         deadLineDate={dayjs(recruit.deadLineDate).format("YYYY년 MM월 DD일")}
         isHover={isHover}
