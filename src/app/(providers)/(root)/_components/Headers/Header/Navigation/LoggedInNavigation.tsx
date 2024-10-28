@@ -49,7 +49,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
     const toast: ToastType = {
       title: "로그아웃 성공",
       content: "성공적으로 로그아웃되었습니다",
-      status: "start",
+      type: "success",
       id: crypto.randomUUID(),
     };
     addToast(toast);

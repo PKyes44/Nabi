@@ -34,10 +34,10 @@ function ApplyToSponsorButton({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sponsorMeets"] });
       const toast: ToastType = {
-        title: "신청 대기 중",
+        title: "신청 성공",
         content: "작성자가 승인을 하면 신청이 완료됩니다",
-        status: "running",
         id: crypto.randomUUID(),
+        type: "success",
       };
       addToast(toast);
     },
