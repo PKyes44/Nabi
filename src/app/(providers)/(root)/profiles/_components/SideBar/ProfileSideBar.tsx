@@ -5,7 +5,8 @@ import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import RecentlyRecipientsSkeleton from "./RecentlyRecipientsSkeleton";
+import RecentRecipientsList from "./RecentRecipientsList";
+import RecentSponsorsList from "./RecentSponsorsList";
 import StoreSkeleton from "./StoreSkeleton";
 
 interface ProfileSideBarProps {
@@ -114,56 +115,12 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
       <article className="rounded-lg text-center">
         {profile.role === "sponsor" ? (
           user?.userId !== profile.userId ? (
-            // 다른 후원자의 프로필
-            <div className="bg-white rounded-lg shadow-md py-4 px-5">
-              <h3 className="mb-4 font-bold">
-                이 후원자가 최근에 후원한 아이들
-              </h3>
-              <ul className="flex flex-col gap-y-2 pl-9">
-                {recentlyRecipients ? (
-                  recentlyRecipients.map((recentlyRecipient, idx) => {
-                    const recipientProfiles = recentlyRecipient.userProfiles;
-                    return (
-                      <li key={idx} className="">
-                        <ProfileItem
-                          className="m-auto"
-                          nickname={recipientProfiles.nickname}
-                          userId={recipientProfiles.userId}
-                          profileImageUrl={recipientProfiles.profileImageUrl}
-                        />
-                      </li>
-                    );
-                  })
-                ) : (
-                  <RecentlyRecipientsSkeleton />
-                )}
-              </ul>
-            </div>
+            // 다른 후원자의 프로필의 최근 후원아동 목록
+            <RecentRecipientsList recentlyRecipients={recentlyRecipients} />
           ) : null
         ) : (
-          // 다른 후원아동의 프로필
-          <div className="bg-white rounded-lg shadow-md py-4 px-5">
-            <h3 className="mb-4 font-bold">최근 후원자</h3>
-            <ul>
-              {recentlySponsors?.length !== 0 ? (
-                recentlySponsors?.map((recentlySponsor, idx) => {
-                  const sponsorProfiles = recentlySponsor.userProfiles;
-                  return (
-                    <li key={idx} className="">
-                      <ProfileItem
-                        className="m-auto"
-                        nickname={sponsorProfiles.nickname}
-                        userId={sponsorProfiles.userId}
-                        profileImageUrl={sponsorProfiles.profileImageUrl}
-                      />
-                    </li>
-                  );
-                })
-              ) : (
-                <li>최근 후원자가 없습니다.</li>
-              )}
-            </ul>
-          </div>
+          // 다른 후원아동의 프로필의 최근 후원자 목록
+          <RecentSponsorsList recentlySponsors={recentlySponsors} />
         )}
       </article>
     </div>
