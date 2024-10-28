@@ -40,6 +40,7 @@ const getRecruit = async (recruitId: string) => {
     .from("recruits")
     .select("*")
     .eq("recruitId", recruitId)
+    .returns<Tables<"recruits">[]>()
     .single();
 
   if (error) throw new Error(error.message);

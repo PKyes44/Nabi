@@ -22,6 +22,16 @@ function ApplyToRecipientButton({
   const userId = currentUser?.userId;
   const addToast = useToastStore((state) => state.addToast);
 
+  const { data: recruit } = useQuery({
+    queryKey: ["recruits", { recruitId }],
+    queryFn: () => clientApi.recruits.getRecruit(recruitId),
+  });
+
+  const { data: approvedRecipients } = useQuery({
+    queryKey: ["recruits", { recruitId: "recipients" }],
+    queryFn: () => clientApi.recipientMeets.getRecipientByRecruitId(recruitId),
+  });
+
   const { data: recipientMeets } = useQuery({
     queryKey: ["recipientMeets"],
     queryFn: () => clientApi.recipientMeets.getRecipientMeets(),
@@ -72,48 +82,54 @@ function ApplyToRecipientButton({
     insertRecipientMeet(data);
   };
 
-  return (
-    <>
-      {userId !== authorId && (
-        <>
-          {userStatus ? (
-            userStatus.status === "pending" ? (
-              <ButtonGroup
-                intent="disabled"
-                textIntent="disabled"
-                value="승인 대기 중"
-                className="ml-auto"
-                disabled
-              />
-            ) : userStatus.status === "approved" ? (
-              <ButtonGroup
-                intent="green"
-                textIntent="green"
-                value="승인됨"
-                className="ml-auto"
-                disabled
-              />
-            ) : userStatus.status === "rejected" ? (
-              <ButtonGroup
-                intent="red"
-                textIntent="red"
-                value="거절됨"
-                className="ml-auto"
-                disabled
-              />
-            ) : null
-          ) : (
+  return recruit?.maxRecipientRecruits! <= approvedRecipients?.length! ? (
+    <ButtonGroup
+      intent="red"
+      textIntent="red"
+      value="모집 마감"
+      className="ml-auto"
+      disabled
+    />
+  ) : (
+    userId !== authorId && (
+      <>
+        {userStatus ? (
+          userStatus.status === "pending" ? (
             <ButtonGroup
-              onClick={handleClickApplyButton}
-              intent="primary"
-              textIntent="primary"
+              intent="disabled"
+              textIntent="disabled"
+              value="승인 대기 중"
               className="ml-auto"
-              value="후원 신청"
+              disabled
             />
-          )}
-        </>
-      )}
-    </>
+          ) : userStatus.status === "approved" ? (
+            <ButtonGroup
+              intent="green"
+              textIntent="green"
+              value="승인됨"
+              className="ml-auto"
+              disabled
+            />
+          ) : userStatus.status === "rejected" ? (
+            <ButtonGroup
+              intent="red"
+              textIntent="red"
+              value="거절됨"
+              className="ml-auto"
+              disabled
+            />
+          ) : null
+        ) : (
+          <ButtonGroup
+            onClick={handleClickApplyButton}
+            intent="primary"
+            textIntent="primary"
+            className="ml-auto"
+            value="후원 신청"
+          />
+        )}
+      </>
+    )
   );
 }
 
