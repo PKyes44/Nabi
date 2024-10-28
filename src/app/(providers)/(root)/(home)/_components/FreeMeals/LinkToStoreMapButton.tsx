@@ -5,25 +5,24 @@ import { Tables } from "@/supabase/database.types";
 import { useRouter } from "next/navigation";
 
 interface LinkToStoreMapButtonProps {
-  storeDatas: Tables<"storeDatas">;
+  store: Tables<"storeDatas">;
 }
 
-function LinkToStoreMapButton({ storeDatas }: LinkToStoreMapButtonProps) {
+function LinkToStoreMapButton({ store }: LinkToStoreMapButtonProps) {
+  const { brandName, lat, lng } = store;
   const router = useRouter();
-  const handleClickLinkToStoreMap = (lat: number, lng: number) => {
-    router.push(
-      `/free-meals/map?lat=${lat}&lng=${lng}&brandName=${storeDatas.brandName}`
-    );
+  const handleClickLinkToStoreMap = () => {
+    router.push(`/free-meals/map?lat=${lat}&lng=${lng}&brandName=${brandName}`);
   };
+
   return (
     <ButtonGroup
       value="위치 보기"
       intent="primary"
       textIntent="primary"
       className="w-full"
-      onClick={() =>
-        handleClickLinkToStoreMap(storeDatas.lat!, storeDatas.lng!)
-      }
+      size="sm"
+      onClick={handleClickLinkToStoreMap}
     />
   );
 }
