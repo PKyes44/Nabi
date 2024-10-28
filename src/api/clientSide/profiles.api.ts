@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { supabase } from "@/supabase/client";
 import { Tables, TablesInsert } from "@/supabase/database.types";
-import { EditProfileData, WithProfiles } from "@/types/profiles.types";
+import { EditProfileData } from "@/types/profiles.types";
 import clientApi from "./api";
 
 const TABLE_PROFILES = "userProfiles";
@@ -96,23 +96,30 @@ const getProfilesFilterByRoleAndSponsorShipCount = async (
     .from(TABLE_PROFILES)
     .select(query)
     .eq("role", role)
-    .returns<WithProfiles<{ sponsorShip: { count: number }[] }>[]>();
+    .returns<
+      (Tables<"userProfiles"> & {
+        sponsorShip: { count: number };
+      })[]
+    >();
 
   if (error) throw new Error(error.message);
 
-  const orderedData: Omit<
-    WithProfiles<{ sponsorShip: { count: number }[] }>[],
-    "sponsorShip"
-  > = bubbleSort(data!);
+  const orderedData: (Tables<"userProfiles"> & {
+    sponsorShip: { count: number };
+  })[] = bubbleSort(data!);
 
   return orderedData;
 };
 
-function bubbleSort(arr: WithProfiles<{ sponsorShip: { count: number }[] }>[]) {
+function bubbleSort(
+  arr: (Tables<"userProfiles"> & {
+    sponsorShip: { count: number };
+  })[]
+) {
   const newArr = arr;
   for (let x = 0; x < newArr.length; x++) {
     for (let y = 1; y < newArr.length - x; y++) {
-      if (newArr[y - 1].sponsorShip[0].count > newArr[y].sponsorShip[0].count) {
+      if (newArr[y - 1].sponsorShip.count > newArr[y].sponsorShip.count) {
         [newArr[y - 1], newArr[y]] = [newArr[y], newArr[y - 1]];
       }
     }

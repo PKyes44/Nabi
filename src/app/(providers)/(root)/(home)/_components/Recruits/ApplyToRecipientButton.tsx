@@ -2,7 +2,9 @@
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import { Database } from "@/supabase/database.types";
+import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useToastStore } from "@/zustand/toast.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
@@ -18,6 +20,7 @@ function ApplyToRecipientButton({
   const queryClient = useQueryClient();
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = currentUser?.userId;
+  const addToast = useToastStore((state) => state.addToast);
 
   const { data: recipientMeets } = useQuery({
     queryKey: ["recipientMeets"],
@@ -30,10 +33,24 @@ function ApplyToRecipientButton({
     Database["public"]["Tables"]["recipientMeets"]["Insert"]
   >({
     mutationFn: (data) => clientApi.recipientMeets.insertRecipientMeet(data),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["recipientMeets"] }),
-    onError: (e) => {
-      alert(e.message);
+    onSuccess: () => {
+      const toast: ToastType = {
+        id: crypto.randomUUID(),
+        title: "봉사자 신청 성공",
+        content: "봉사자 신청에 성공하였습니다",
+        type: "success",
+      };
+      addToast(toast);
+      queryClient.invalidateQueries({ queryKey: ["recipientMeets"] });
+    },
+    onError: () => {
+      const toast: ToastType = {
+        id: crypto.randomUUID(),
+        title: "봉사자 신청 실패",
+        content: "봉사자 신청에 실패하였습니다",
+        type: "fail",
+      };
+      addToast(toast);
     },
   });
 

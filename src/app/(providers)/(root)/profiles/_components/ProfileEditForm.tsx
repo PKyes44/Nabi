@@ -4,8 +4,10 @@ import Button from "@/components/Button/Button";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { EditProfileData } from "@/types/profiles.types";
+import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
+import { useToastStore } from "@/zustand/toast.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ComponentProps, useEffect, useState } from "react";
 
@@ -26,6 +28,7 @@ function ProfileEditForm() {
   const [errMsgs, setErrMsgs] = useState<InitialErrMsgs>(initialErrMsgs);
   const [isClickedPrimaryProfile, setIsClickedPrimaryProfile] = useState(false);
   const [isClickedPrimaryBg, setIsClickedPrimaryBg] = useState(false);
+  const addToast = useToastStore((state) => state.addToast);
 
   // useMutation사용해서 기본 이미지로 변경하는 함수
   const { mutate: setPrimaryImage } = useMutation({
@@ -38,10 +41,27 @@ function ProfileEditForm() {
     mutationFn: (profileData: EditProfileData) =>
       clientApi.profiles.editProfile(profileData),
     onSuccess: () => {
+      const toast: ToastType = {
+        id: crypto.randomUUID(),
+        title: "프로필 수정 성공",
+        content:
+          "프로필 수정에 성공하였습니다. 이미지는 적용되는 데에 시간이 걸릴 수 있습니다",
+        type: "success",
+      };
+      addToast(toast);
       queryClient.invalidateQueries({
         queryKey: ["userProfiles", { showUserId: user?.userId }],
       });
       setActiveModal(null);
+    },
+    onError: () => {
+      const toast: ToastType = {
+        id: crypto.randomUUID(),
+        title: "프로필 수정 실패",
+        content: "프로필 수정에 실패하였습니다",
+        type: "fail",
+      };
+      addToast(toast);
     },
   });
 
@@ -65,6 +85,9 @@ function ProfileEditForm() {
 
       const profileImg = e.target.profileImg.files?.[0];
       const bgImg = e.target.backgroundImg.files?.[0];
+
+      if (nickname.length === 0 && !profileImg && !bgImg)
+        return setActiveModal(null);
 
       const profileData: EditProfileData = {
         userId: user.userId,

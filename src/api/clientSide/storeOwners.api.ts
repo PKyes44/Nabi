@@ -1,7 +1,7 @@
 import { supabase } from "@/supabase/client";
-import { Tables } from "@/supabase/database.types";
+import { TablesInsert } from "@/supabase/database.types";
 
-const insertStoreOwner = async (insertOwner: Tables<"storeOwners">) => {
+const insertStoreOwner = async (insertOwner: TablesInsert<"storeOwners">) => {
   const { error, data } = await supabase
     .from("storeOwners")
     .insert(insertOwner);
