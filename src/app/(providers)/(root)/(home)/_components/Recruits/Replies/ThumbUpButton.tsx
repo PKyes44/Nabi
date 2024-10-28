@@ -87,8 +87,8 @@ function ThumbUpButton({ recruitId }: ThumbsUpProps) {
           className="w-4 aspect-square"
           src={
             isActivedThumbUp
-              ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ThumbsUp.png?t=2024-10-15T19%3A56%3A31.548Z"
-              : "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/NotThumbUp.png"
+              ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/ActiveThumbsUp.png?t=2024-10-28T07%3A43%3A46.837Z"
+              : "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/InactiveThumbsUp.png?t=2024-10-28T07%3A43%3A51.232Z"
           }
           alt="thumbs up icon"
         />

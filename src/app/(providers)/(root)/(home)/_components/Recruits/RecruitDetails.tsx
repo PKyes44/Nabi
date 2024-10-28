@@ -78,7 +78,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
                 width={150}
                 height={150}
                 className="w-4 aspect-square"
-                src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Location.png?t=2024-10-15T19%3A39%3A08.745Z"
+                src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/Location.png?t=2024-10-28T07%3A42%3A51.571Z"
                 alt="location icon"
               />
               <span className="font-light text-xs">{recruit.region}</span>
@@ -88,10 +88,10 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             </div>
             <div className="flex gap-x-2 items-center group relative">
               <Image
-                width={150}
-                height={150}
-                className="w-4 aspect-square"
-                src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Date.png"
+                width={200}
+                height={200}
+                className="w-4 aspect-square object-cover"
+                src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/VolunteeringDate.png"
                 alt="date icon"
               />
               <span className="font-light text-xs">
