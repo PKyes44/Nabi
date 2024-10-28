@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import Marquee from "react-fast-marquee";
 
 interface AnimeSectionProps {
@@ -14,20 +14,39 @@ function AnimeSection({ intro, title }: AnimeSectionProps) {
   const leftHandRef = useRef<HTMLImageElement>(null);
   const rightHandRef = useRef<HTMLImageElement>(null);
 
+  function addClassShow(tempObject: {
+    [key: string]: RefObject<HTMLHeadingElement>;
+  }) {
+    const key = Object.keys(tempObject)[0];
+    const refName = key.replace("Ref", "");
+    if (tempObject[key].current) {
+      tempObject[key].current.classList.remove(`animate-${refName}Hidden`);
+      tempObject[key].current.classList.add(`animate-${refName}Show`);
+    }
+  }
+
+  function addClassHidden(tempObject: {
+    [key: string]: RefObject<HTMLHeadingElement>;
+  }) {
+    const key = Object.keys(tempObject)[0];
+    const refName = key.replace("Ref", "");
+    if (tempObject[key].current) {
+      tempObject[key].current.classList.remove(`animate-${refName}Show`);
+      tempObject[key].current.classList.add(`animate-${refName}Hidden`);
+    }
+  }
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          titleRef.current?.classList.add("animate-titleShow");
-          leftHandRef.current?.classList.add("animate-leftHandShow");
-          rightHandRef.current?.classList.add("animate-rightHandShow");
+          addClassShow({ titleRef });
+          addClassShow({ leftHandRef });
+          addClassShow({ rightHandRef });
         } else {
-          titleRef.current?.classList.remove("animate-titleShow");
-          titleRef.current?.classList.add("animate-titleHidden");
-          leftHandRef.current?.classList.remove("animate-leftHandShow");
-          leftHandRef.current?.classList.add("animate-leftHandHidden");
-          rightHandRef.current?.classList.remove("animate-rightHandShow");
-          rightHandRef.current?.classList.add("animate-rightHandHidden");
+          addClassHidden({ titleRef });
+          addClassHidden({ leftHandRef });
+          addClassHidden({ rightHandRef });
         }
       });
     });
