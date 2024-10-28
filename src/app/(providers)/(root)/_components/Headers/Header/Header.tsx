@@ -7,13 +7,13 @@ import Navigation from "./Navigation/Navigation";
 
 function Header() {
   return (
-    <header className="h-16 bg-white fixed top-0 left-0 z-[2] w-screen">
+    <header className="h-16 bg-white fixed top-0 left-0 z-[2] w-screen border-b">
       <Container
         width="lg"
         isMain={false}
         className="h-full flex items-center justify-between"
       >
-        <Link href="/" className="text-2xl font-extrabold">
+        <Link href="/" className="text-2xl font-extrabold -mt-2">
           <Image
             width={200}
             height={200}
