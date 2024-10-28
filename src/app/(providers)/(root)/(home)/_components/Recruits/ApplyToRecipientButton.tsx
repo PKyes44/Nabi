@@ -1,7 +1,7 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
@@ -9,12 +9,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
 interface ApplyToRecipientButtonProps {
-  recruitId: string;
+  recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
   authorId: string;
 }
 
 function ApplyToRecipientButton({
-  recruitId,
+  recruit,
   authorId,
 }: ApplyToRecipientButtonProps) {
   const queryClient = useQueryClient();
@@ -22,14 +22,10 @@ function ApplyToRecipientButton({
   const userId = currentUser?.userId;
   const addToast = useToastStore((state) => state.addToast);
 
-  const { data: recruit } = useQuery({
-    queryKey: ["recruits", { recruitId }],
-    queryFn: () => clientApi.recruits.getRecruit(recruitId),
-  });
-
   const { data: approvedRecipients } = useQuery({
     queryKey: ["recruits", { recruitId: "recipients" }],
-    queryFn: () => clientApi.recipientMeets.getRecipientByRecruitId(recruitId),
+    queryFn: () =>
+      clientApi.recipientMeets.getRecipientByRecruitId(recruit.recruitId),
   });
 
   const { data: recipientMeets } = useQuery({
@@ -66,7 +62,8 @@ function ApplyToRecipientButton({
 
   const userStatus = recipientMeets?.find(
     (recipientMeet) =>
-      recipientMeet.recruitId === recruitId && recipientMeet.userId === userId
+      recipientMeet.recruitId === recruit.recruitId &&
+      recipientMeet.userId === userId
   );
 
   if (!userId) return null;
@@ -74,7 +71,7 @@ function ApplyToRecipientButton({
 
   const handleClickApplyButton = () => {
     const data = {
-      recruitId,
+      recruitId: recruit.recruitId,
       userId,
       status: "pending",
     };
@@ -90,46 +87,40 @@ function ApplyToRecipientButton({
       className="ml-auto"
       disabled
     />
+  ) : userId !== authorId && userStatus ? (
+    userStatus.status === "pending" ? (
+      <ButtonGroup
+        intent="disabled"
+        textIntent="disabled"
+        value="승인 대기 중"
+        className="ml-auto"
+        disabled
+      />
+    ) : userStatus.status === "approved" ? (
+      <ButtonGroup
+        intent="green"
+        textIntent="green"
+        value="승인됨"
+        className="ml-auto"
+        disabled
+      />
+    ) : userStatus.status === "rejected" ? (
+      <ButtonGroup
+        intent="red"
+        textIntent="red"
+        value="거절됨"
+        className="ml-auto"
+        disabled
+      />
+    ) : null
   ) : (
-    userId !== authorId && (
-      <>
-        {userStatus ? (
-          userStatus.status === "pending" ? (
-            <ButtonGroup
-              intent="disabled"
-              textIntent="disabled"
-              value="승인 대기 중"
-              className="ml-auto"
-              disabled
-            />
-          ) : userStatus.status === "approved" ? (
-            <ButtonGroup
-              intent="green"
-              textIntent="green"
-              value="승인됨"
-              className="ml-auto"
-              disabled
-            />
-          ) : userStatus.status === "rejected" ? (
-            <ButtonGroup
-              intent="red"
-              textIntent="red"
-              value="거절됨"
-              className="ml-auto"
-              disabled
-            />
-          ) : null
-        ) : (
-          <ButtonGroup
-            onClick={handleClickApplyButton}
-            intent="primary"
-            textIntent="primary"
-            className="ml-auto"
-            value="후원 신청"
-          />
-        )}
-      </>
-    )
+    <ButtonGroup
+      onClick={handleClickApplyButton}
+      intent="primary"
+      textIntent="primary"
+      className="ml-auto"
+      value="후원 신청"
+    />
   );
 }
 

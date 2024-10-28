@@ -1,6 +1,6 @@
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
-import { Database } from "@/supabase/database.types";
+import { Database, Tables } from "@/supabase/database.types";
 import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
@@ -8,18 +8,24 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
 interface ApplyToSponsorButtonProps {
-  recruitId: string;
+  recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
   authorId: string;
 }
 
 function ApplyToSponsorButton({
-  recruitId,
+  recruit,
   authorId,
 }: ApplyToSponsorButtonProps) {
   const queryClient = useQueryClient();
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = currentUser?.userId;
   const addToast = useToastStore((state) => state.addToast);
+
+  const { data: approvedSponsors } = useQuery({
+    queryKey: ["recruits", { recruitId: "recipients" }],
+    queryFn: () =>
+      clientApi.sponsorMeets.getApprovedSponsorsByRecruitId(recruit.recruitId),
+  });
 
   const { data: sponsorMeets } = useQuery({
     queryKey: ["sponsorMeets"],
@@ -49,7 +55,8 @@ function ApplyToSponsorButton({
 
   const userStatus = sponsorMeets?.find(
     (sponsorMeet) =>
-      sponsorMeet.recruitId === recruitId && sponsorMeet.userId === userId
+      sponsorMeet.recruitId === recruit.recruitId &&
+      sponsorMeet.userId === userId
   );
 
   if (!userId) return null;
@@ -57,7 +64,7 @@ function ApplyToSponsorButton({
 
   const handleClickApplyButton = () => {
     const data = {
-      recruitId,
+      recruitId: recruit.recruitId,
       userId,
       status: "pending",
     };
@@ -65,48 +72,48 @@ function ApplyToSponsorButton({
     insertSponsorMeet(data);
   };
 
-  return (
-    <>
-      {userId !== authorId && (
-        <>
-          {userStatus ? (
-            userStatus.status === "pending" ? (
-              <ButtonGroup
-                intent="disabled"
-                textIntent="disabled"
-                value="승인 대기 중"
-                className="ml-auto"
-                disabled
-              />
-            ) : userStatus.status === "approved" ? (
-              <ButtonGroup
-                intent="green"
-                textIntent="green"
-                value="승인됨"
-                className="ml-auto"
-                disabled
-              />
-            ) : userStatus.status === "rejected" ? (
-              <ButtonGroup
-                intent="red"
-                textIntent="red"
-                value="거절됨"
-                className="ml-auto"
-                disabled
-              />
-            ) : null
-          ) : (
-            <ButtonGroup
-              onClick={handleClickApplyButton}
-              intent="primary"
-              textIntent="primary"
-              className="ml-auto"
-              value="신청하기"
-            />
-          )}
-        </>
-      )}
-    </>
+  return recruit?.maxSponsorRecruits! <= approvedSponsors?.length! ? (
+    <ButtonGroup
+      intent="red"
+      textIntent="red"
+      value="모집 마감"
+      className="ml-auto"
+      disabled
+    />
+  ) : userId !== authorId && userStatus ? (
+    userStatus.status === "pending" ? (
+      <ButtonGroup
+        intent="disabled"
+        textIntent="disabled"
+        value="승인 대기 중"
+        className="ml-auto"
+        disabled
+      />
+    ) : userStatus.status === "approved" ? (
+      <ButtonGroup
+        intent="green"
+        textIntent="green"
+        value="승인됨"
+        className="ml-auto"
+        disabled
+      />
+    ) : userStatus.status === "rejected" ? (
+      <ButtonGroup
+        intent="red"
+        textIntent="red"
+        value="거절됨"
+        className="ml-auto"
+        disabled
+      />
+    ) : null
+  ) : (
+    <ButtonGroup
+      onClick={handleClickApplyButton}
+      intent="primary"
+      textIntent="primary"
+      className="ml-auto"
+      value="신청하기"
+    />
   );
 }
 
