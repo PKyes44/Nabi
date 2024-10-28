@@ -17,7 +17,11 @@ function FreeMeal({ freeMeal }: FreeMealProps) {
   const date = freeMeal.freeMealDate;
 
   return (
-    <article className="bg-white py-4 flex flex-col gap-y-3 border-t group-last-of-type/free-meal-li:pb-0">
+    <article
+      className={
+        "bg-white py-4 flex flex-col gap-y-3 border-t group-last-of-type/free-meal-li:pb-0"
+      }
+    >
       <div className="flex flex-col">
         <span className="font-bold text-xs">후원자</span>
         <Link href={`/profiles/${sponsor.userId}`} className="text-xs">
