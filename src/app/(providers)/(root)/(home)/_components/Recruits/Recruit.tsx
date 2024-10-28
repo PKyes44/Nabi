@@ -9,7 +9,7 @@ interface RecruitProps {
 
 function Recruit({ recruit }: RecruitProps) {
   return (
-    <div className="bg-white mb-2 border rounded-lg relative">
+    <div className="bg-white mb-2 border rounded-md relative">
       <article className="grid grid-cols-1">
         <RecruitDetails recruit={recruit!} />
 

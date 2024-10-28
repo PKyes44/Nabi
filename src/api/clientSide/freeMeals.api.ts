@@ -17,6 +17,7 @@ const getFreeMealsWithStoreData = async () => {
     .order("createdAt", { ascending: false })
     .returns<FreeMealItem[]>();
   if (error) throw new Error(error.message);
+
   return data;
 };
 

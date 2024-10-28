@@ -1,10 +1,9 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
-import ButtonGroup from "@/components/Button/ButtonGroup";
 import { Tables } from "@/supabase/database.types";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import Image from "next/image";
 import FreeMeal from "./FreeMeal";
 
 interface FreeMealsProps {
@@ -15,6 +14,9 @@ interface FreeMealsProps {
   })[];
 }
 
+const mealImgUrl =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/meal.png";
+
 function FreeMeals({ initialFreeMeals }: FreeMealsProps) {
   const { data: freeMeals } = useQuery({
     initialData: initialFreeMeals,
@@ -23,22 +25,22 @@ function FreeMeals({ initialFreeMeals }: FreeMealsProps) {
   });
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <h2 className="font-bold text-base text-center mx-auto">
-        익명의 후원자가 무상식사를 제공합니다
-      </h2>
-      <Link className="bg-white my-3" href="/free-meals/map">
-        <ButtonGroup
-          intent="primary"
-          textIntent="primary"
-          value="내 주변 무상식사 보기"
-          className="w-full"
+    <div className="flex flex-col gap-y-6 bg-white border rounded-md px-5 py-7 ">
+      <div className="flex items-center gap-x-2">
+        <Image
+          src={mealImgUrl}
+          width={24}
+          height={24}
+          alt="무상식사"
+          className="-mt-1"
         />
-      </Link>
-      <ul className="flex flex-col gap-y-5">
+        <h5>새롭게 등록된 무상식사</h5>
+      </div>
+
+      <ul className="flex flex-col">
         {freeMeals?.map((freeMeal) => {
           return (
-            <li key={freeMeal.mealId}>
+            <li key={freeMeal.mealId} className="group/free-meal-li">
               <FreeMeal freeMeal={freeMeal} />
             </li>
           );

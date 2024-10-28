@@ -1,7 +1,6 @@
 import serverApi from "@/api/serverSide/api";
 import Container from "@/components/Container/Container";
 import FreeMeals from "./_components/FreeMeals/FreeMeals";
-import Funds from "./_components/Funds/Funds";
 import CreateRecruitButton from "./_components/Recruits/CreateRecruitButton";
 import RecruitList from "./_components/Recruits/RecruitList";
 import Users from "./_components/Users/Users";
@@ -31,17 +30,21 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
       className="h-full flex items-center justify-between py-20"
     >
       <div className="grid grid-cols-4 gap-x-5 w-full">
-        <FreeMeals initialFreeMeals={initialFreeMeals} />
+        {/* Left - FreeMeals*/}
+        <div>
+          <FreeMeals initialFreeMeals={initialFreeMeals} />
+        </div>
+
+        {/* Center - Main Feed */}
         <div className="col-span-2">
           <CreateRecruitButton />
           <RecruitList initialRecruitList={initialRecruitList!} />
         </div>
+
+        {/* Right - Users*/}
         <ul className="flex flex-col gap-y-5">
           <li>
             <Users page={page} />
-          </li>
-          <li>
-            <Funds />
           </li>
         </ul>
       </div>
