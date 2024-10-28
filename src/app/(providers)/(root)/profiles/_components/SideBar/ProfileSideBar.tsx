@@ -56,16 +56,16 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   });
 
   //후원자가 후원한 아동 목록 ( 후원한 아동만, 아동 중복 제거)
-  const recipientMeets = recentlyRecipients
-    ?.flatMap((recentlyRecipient) => recentlyRecipient.recruits.recipientMeets)
-    .filter((approvedMeet) => approvedMeet.status === "approved")
-    .filter(
-      (approvedMeet, index, callback) =>
-        index ===
-        callback.findIndex(
-          (t) => t.userProfiles.userId === approvedMeet.userProfiles.userId
-        )
-    );
+  // const recipientMeets = recentlyRecipients
+  //   ?.flatMap((recentlyRecipient) => recentlyRecipient.recruits.recipientMeets)
+  //   .filter((approvedMeet) => approvedMeet.status === "approved")
+  //   .filter(
+  //     (approvedMeet, index, callback) =>
+  //       index ===
+  //       callback.findIndex(
+  //         (t) => t.userProfiles.userId === approvedMeet.userProfiles.userId
+  //       )
+  //   );
 
   return (
     <div className="flex flex-col grow gap-y-4 peer">

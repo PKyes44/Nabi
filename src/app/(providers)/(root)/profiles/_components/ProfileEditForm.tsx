@@ -89,6 +89,10 @@ function ProfileEditForm() {
       setIsClickedPrimaryBg(true);
     };
 
+  const handleChangeProfileImage: ComponentProps<"input">["onChange"] = (e) => {
+    console.log(e.target.files![0]);
+  };
+
   useEffect(() => {}, []);
   return (
     <form
@@ -101,7 +105,12 @@ function ProfileEditForm() {
         name="nickname"
         errorText={errMsgs.nickname}
       />
-      <InputGroup label="프로필 사진 변경" type="file" name="profileImg" />
+      <InputGroup
+        onChange={handleChangeProfileImage}
+        label="프로필 사진 변경"
+        type="file"
+        name="profileImg"
+      />
       <Button onClick={handleClickPrimaryProfile}>기본 이미지로 변경</Button>
       <InputGroup label="배경 사진 변경" type="file" name="backgroundImg" />
       <Button onClick={handleCLickPrimaryBackground}>기본 이미지로 변경</Button>
@@ -110,10 +119,10 @@ function ProfileEditForm() {
         size="md"
         intent="primary"
         textIntent="primary"
-        className="mt-20"
+        className="mt-20 shadow-lg"
         type="submit"
       >
-        Save
+        저장
       </Button>
     </form>
   );
