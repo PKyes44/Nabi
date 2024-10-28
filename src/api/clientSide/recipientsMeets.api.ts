@@ -1,5 +1,6 @@
 import { supabase } from "@/supabase/client";
 import { Database, Tables } from "@/supabase/database.types";
+import { WithProfiles } from "@/types/profiles.types";
 
 const getRecentlySponsors = async (userId: string) => {
   const query = "*, recruits(*, sponsorMeets(*, userProfiles(*)))";
@@ -124,9 +125,7 @@ const getRejectedRecipientAppliesWithProfileByRecruitId = async (
     .select(query)
     .eq("recruitId", recruitId)
     .eq("status", "rejected")
-    .returns<
-      (Tables<"recipientMeets"> & { userProfiles: Tables<"userProfiles"> })[]
-    >();
+    .returns<WithProfiles<Tables<"recipientMeets">>[]>();
 
   if (error) throw new Error(error.message);
 
