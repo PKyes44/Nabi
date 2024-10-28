@@ -5,6 +5,7 @@ import { Feeds } from "@/types/feeds.types";
 import { FreeMealItem } from "@/types/freeMeals.types";
 import { RecruitItem } from "@/types/recruits.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import FreeMeal from "../../(home)/_components/FreeMeals/FreeMeal";
 import Recruit from "../../(home)/_components/Recruits/Recruit";
@@ -13,6 +14,9 @@ interface FeedListProps {
   initialFeeds: Feeds;
   userId: string;
 }
+
+const mealImgUrl =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/meal.png";
 
 function FeedList({ initialFeeds, userId }: FeedListProps) {
   const observerRef = useRef(null);
@@ -70,12 +74,25 @@ function FeedList({ initialFeeds, userId }: FeedListProps) {
             freeMeal = feed.feed as FreeMealItem;
           }
           return (
-            <li key={feed.feedId} className="bg-white">
+            <li key={feed.feedId}>
               <>
                 {feed.type === "recruit" ? (
                   <Recruit recruit={recruit!} />
                 ) : (
-                  <FreeMeal freeMeal={freeMeal!} />
+                  <div className="border bg-white rounded-md p-6">
+                    <div className="flex items-center gap-x-2 py-4">
+                      <Image
+                        src={mealImgUrl}
+                        width={24}
+                        height={24}
+                        alt="무상식사"
+                        className="-mt-1"
+                      />
+                      <h5>무상식사를 제공했어요!</h5>
+                    </div>
+
+                    <FreeMeal freeMeal={freeMeal!} />
+                  </div>
                 )}
               </>
             </li>
