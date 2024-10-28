@@ -29,9 +29,14 @@ const checkIsStoreOwnerByUserId = async (userId: string) => {
     .from("storeOwners")
     .select()
     .eq("sponsorId", userId);
+
   if (error) throw new Error(error.message);
 
-  return data;
+  if (data.length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const checkIsStoreOwnerByStoreId = async ({ storeId }: { storeId: string }) => {
