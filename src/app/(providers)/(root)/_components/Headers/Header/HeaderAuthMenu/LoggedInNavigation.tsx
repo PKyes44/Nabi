@@ -62,13 +62,13 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
           <Image
             width={150}
             height={150}
-            className="w-10 h-10 rounded-lg"
+            className="w-10 h-10 rounded-full border border-gray-100"
             src={
               !isCheckedNotifyList
                 ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/NewNotify.png?t=2024-10-18T08%3A33%3A22.480Z"
                 : "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Notify.png"
             }
-            alt="notify icon"
+            alt="알림"
           />
         </button>
         {isClickedNotifyList && (
@@ -91,7 +91,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
               "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/NewProfileDefault.png"
             }
             alt="profile image"
-            className="w-10 aspect-square object-cover rounded-lg"
+            className="w-10 aspect-square object-cover rounded-full border border-gray-100"
           />
         </Link>
         <div className="absolute left-1/2 -translate-x-1/2 w-28 invisible group-hover:visible">
