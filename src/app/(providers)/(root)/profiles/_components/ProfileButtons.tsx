@@ -49,7 +49,12 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   });
 
   const handleClickProfileEdit = () => {
-    setActiveModal(<ProfileEditModal />);
+    setActiveModal(
+      <ProfileEditModal
+        profileImage={profile.profileImageUrl}
+        bgImage={profile.bgImageUrl}
+      />
+    );
   };
 
   const handleClickRegularSponsorShip = () => {

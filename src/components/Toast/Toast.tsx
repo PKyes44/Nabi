@@ -85,8 +85,6 @@ function Toast({
     }
   }, [isShown]);
 
-  console.log("type: ", type);
-
   return (
     isMounted && (
       <article
