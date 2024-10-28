@@ -5,6 +5,8 @@ import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import RecentlyRecipientsSkeleton from "./RecentlyRecipientsSkeleton";
+import StoreSkeleton from "./StoreSkeleton";
 
 interface ProfileSideBarProps {
   profile: Tables<"userProfiles">;
@@ -95,7 +97,9 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
           <span className="text-xs text-gray-400">
             매장 이름 클릭 시 매장 위치로 이동합니다
           </span>
-          {ownerData?.length !== 0 ? (
+          {!ownerData ? (
+            <StoreSkeleton />
+          ) : ownerData?.length >= 0 ? (
             <ul className="mt-4">
               {ownerData?.map((store, idx) => {
                 const storeData = store.storeDatas;
@@ -128,9 +132,10 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                 이 후원자가 최근에 후원한 아이들
               </h3>
               <ul className="flex flex-col gap-y-2 pl-9">
-                {recentlyRecipients &&
-                  recipientMeets?.map((recentlyData, idx) => {
-                    const recipient = recentlyData.userProfiles;
+                {recentlyRecipients ? (
+                  recentlyRecipients.map((recentlyData, idx) => {
+                    const recipient =
+                      recentlyData.recruits.recipientMeets[0].userProfiles;
                     return (
                       <li key={idx} className="">
                         <ProfileItem
@@ -141,7 +146,10 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                         />
                       </li>
                     );
-                  })}
+                  })
+                ) : (
+                  <RecentlyRecipientsSkeleton />
+                )}
               </ul>
             </div>
           ) : null
@@ -169,7 +177,9 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
                       );
                     })
                   ) : (
-                    <span className="text-sm">후원자가 없습니다</span>
+                    <span key={1} className="text-sm">
+                      후원자가 없습니다
+                    </span>
                   );
                 })}
               </ul>
