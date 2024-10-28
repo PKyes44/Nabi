@@ -1,6 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { Tables } from "@/supabase/database.types";
 import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
+
 import Image from "next/image";
 
 interface ReplyProps {
@@ -10,10 +16,7 @@ interface ReplyProps {
 }
 
 function Reply({ reply }: ReplyProps) {
-  const createdAt =
-    Math.abs(dayjs(reply.createdAt).diff(dayjs(), "hours")) !== 0
-      ? Math.abs(dayjs(reply.createdAt).diff(dayjs(), "hours")) + "시간 전"
-      : Math.abs(dayjs(reply.createdAt).diff(dayjs(), "minutes")) + "분 전";
+  const createdAt = dayjs(reply.createdAt).fromNow();
 
   return (
     <div className="flex items-start gap-x-3">

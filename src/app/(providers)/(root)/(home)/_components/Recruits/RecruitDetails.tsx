@@ -5,6 +5,7 @@ import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
+import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -12,6 +13,9 @@ import ApplyButtons from "./ApplyButtons";
 import DeadLineToast from "./DeadLineToast";
 import OthersButton from "./OthersButton";
 import RecruitCount from "./RecruitCount";
+
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
 
 interface RecruitDetailsProps {
   recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
@@ -21,18 +25,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const [isHover, setIsHover] = useState(false);
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
   const currentUser = useAuthStore((state) => state.currentUser);
-
-  let createdAt =
-    Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "days")) + "일 전";
-  if (+createdAt.split("일 전")[0] === 0)
-    createdAt =
-      Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "hours")) + "시간 전";
-  if (
-    +createdAt.split("시간 전")[0] === 0 ||
-    +createdAt.split("일 전")[0] === 0
-  )
-    createdAt =
-      Math.abs(dayjs(recruit.createdAt).diff(dayjs(), "minutes")) + "분 전";
+  const createdAt = dayjs(recruit.createdAt).fromNow();
 
   const handleActiveToast = () => {
     setIsHover(true);
