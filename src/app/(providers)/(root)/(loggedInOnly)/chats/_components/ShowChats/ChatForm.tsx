@@ -56,7 +56,7 @@ function ChatForm({
       className="absolute bottom-0 left-0 w-full  flex"
     >
       <input
-        className="grow bg-transparent py-2 px-5 outline-none border-t border-black border-r"
+        className="grow bg-transparent py-2 px-5 outline-none border-t border-gray-300 border-r"
         type="text"
         name="message"
       />

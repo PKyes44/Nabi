@@ -1,6 +1,7 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import Loading from "@/components/Loading/Loading";
 import socket from "@/socket/socket";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -78,11 +79,11 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   }, [userProfile, targetProfile, socket, chatLogs]);
 
   if (isChatLoading || isTargetProfileLoading || isUserProfileLoading)
-    return <span>채팅 기록을 불러오는 중 ...</span>;
+    return <Loading />;
 
   return (
-    <div className="grow border border-black h-[450px] relative">
-      <header className="border-b border-black px-5 py-3 flex gap-x-4 items-center">
+    <div className="grow bg-white rounded-md shadow-lg h-[450px] relative">
+      <header className="border-b border-gray-300 px-5 py-3 flex gap-x-4 items-center">
         {targetProfile?.profileImageUrl ? (
           <Image
             height={100}

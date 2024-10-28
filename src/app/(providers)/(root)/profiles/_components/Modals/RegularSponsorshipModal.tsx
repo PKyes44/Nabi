@@ -1,7 +1,7 @@
 "use client";
-import RegularSponsorShip from "@/app/(providers)/(root)/profiles/_components/Modals/RegularSponsorShip";
 import Modal from "@/components/Modal/Modal";
 import { useModalStore } from "@/zustand/modal.store";
+import RegularSponsorShip from "./RegularSponsorShip";
 
 function RegularSponsorshipModal() {
   const activeModal = useModalStore((state) => state.activeModal);

@@ -1,7 +1,8 @@
 "use client";
-import ProfileEditForm from "@/app/(providers)/(root)/profiles/_components/ProfileEditForm";
+
 import Modal from "@/components/Modal/Modal";
 import { useModalStore } from "@/zustand/modal.store";
+import ProfileEditForm from "../ProfileEditForm";
 
 function ProfileEditModal() {
   const activeModal = useModalStore((state) => state.activeModal);

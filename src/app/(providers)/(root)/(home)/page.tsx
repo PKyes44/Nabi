@@ -25,29 +25,27 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
   if (!initialFreeMeals) initialFreeMeals = [];
 
   return (
-    <>
-      <Container
-        width="lg"
-        isMain={false}
-        className="h-full flex items-center justify-between py-20"
-      >
-        <div className="grid grid-cols-4 gap-x-5 w-full">
-          <FreeMeals initialFreeMeals={initialFreeMeals} />
-          <div className="col-span-2">
-            <CreateRecruitButton />
-            <RecruitList initialRecruitList={initialRecruitList!} />
-          </div>
-          <ul className="flex flex-col gap-y-5">
-            <li>
-              <Users page={page} />
-            </li>
-            <li>
-              <Funds />
-            </li>
-          </ul>
+    <Container
+      width="lg"
+      isMain={false}
+      className="h-full flex items-center justify-between py-20"
+    >
+      <div className="grid grid-cols-4 gap-x-5 w-full">
+        <FreeMeals initialFreeMeals={initialFreeMeals} />
+        <div className="col-span-2">
+          <CreateRecruitButton />
+          <RecruitList initialRecruitList={initialRecruitList!} />
         </div>
-      </Container>
-    </>
+        <ul className="flex flex-col gap-y-5">
+          <li>
+            <Users page={page} />
+          </li>
+          <li>
+            <Funds />
+          </li>
+        </ul>
+      </div>
+    </Container>
   );
 }
 

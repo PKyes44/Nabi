@@ -27,7 +27,7 @@ function Sponsors() {
         />
         활동률이 높은 후원자
       </h2>
-      <ul className="grid grid-cols-1 grid-rows-5 gap-y-2">
+      <ul className="grid grid-cols-1 grid-rows-5 gap-y-2 mx-auto">
         {sponsors!.slice(0, 5).map((sponsor) => {
           return (
             <li key={sponsor.userId}>

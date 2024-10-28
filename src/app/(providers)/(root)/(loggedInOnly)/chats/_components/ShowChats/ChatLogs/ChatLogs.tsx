@@ -1,5 +1,3 @@
-"use client";
-
 import { Tables } from "@/supabase/database.types";
 import { LegacyRef } from "react";
 import MyChatLog from "./MyChatLog";
@@ -19,26 +17,24 @@ function ChatLogs({
   messageEndRef,
 }: ChatLogsProps) {
   return (
-    <>
-      <ul
-        ref={messageEndRef}
-        id="chatLogs"
-        className="py-5 flex flex-col gap-y-2 px-2 max-h-[339px] overflow-auto"
-      >
-        {chatLogs?.map((chatLog) => {
-          const isMyChat = chatLog.from === userId;
-          return (
-            <li key={chatLog.chatId}>
-              {isMyChat ? (
-                <MyChatLog chatLog={chatLog} />
-              ) : (
-                <TargetChatLog chatLog={chatLog} userProfile={targetProfile!} />
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    <ul
+      ref={messageEndRef}
+      id="chatLogs"
+      className="py-5 flex flex-col gap-y-2 px-5 max-h-[339px] overflow-auto"
+    >
+      {chatLogs?.map((chatLog) => {
+        const isMyChat = chatLog.from === userId;
+        return (
+          <li key={chatLog.chatId}>
+            {isMyChat ? (
+              <MyChatLog chatLog={chatLog} />
+            ) : (
+              <TargetChatLog chatLog={chatLog} userProfile={targetProfile!} />
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
