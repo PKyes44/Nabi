@@ -16,6 +16,11 @@ interface LoggedInNavigationProps {
   userId: string;
 }
 
+const CHECKED_NOTIFY_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/NewNotify.png?t=2024-10-18T08%3A33%3A22.480Z";
+const UNCHECKED_NOTIFY_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Notify.png";
+
 function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
   const router = useRouter();
   const [isClickedNotifyList, setIsClickedNotifyList] = useState(false);
@@ -64,9 +69,7 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
             height={150}
             className="w-10 h-10 rounded-full border border-gray-100"
             src={
-              !isCheckedNotifyList
-                ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/NewNotify.png?t=2024-10-18T08%3A33%3A22.480Z"
-                : "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Notify.png"
+              !isCheckedNotifyList ? CHECKED_NOTIFY_ICON : UNCHECKED_NOTIFY_ICON
             }
             alt="알림"
           />

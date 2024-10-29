@@ -11,6 +11,11 @@ interface ThumbsUpProps {
   recruitId: string;
 }
 
+const ACTIVE_THUMBS_UP_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/ActiveThumbsUp.png?t=2024-10-28T07%3A43%3A46.837Z";
+const INACTIVE_THUMBS_UP_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/InactiveThumbsUp.png?t=2024-10-28T07%3A43%3A51.232Z";
+
 function ThumbUpButton({ recruitId }: ThumbsUpProps) {
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.currentUser);
@@ -86,9 +91,7 @@ function ThumbUpButton({ recruitId }: ThumbsUpProps) {
           height={100}
           className="w-4 aspect-square"
           src={
-            isActivedThumbUp
-              ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/ActiveThumbsUp.png?t=2024-10-28T07%3A43%3A46.837Z"
-              : "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/InactiveThumbsUp.png?t=2024-10-28T07%3A43%3A51.232Z"
+            isActivedThumbUp ? ACTIVE_THUMBS_UP_ICON : INACTIVE_THUMBS_UP_ICON
           }
           alt="thumbs up icon"
         />

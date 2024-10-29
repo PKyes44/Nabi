@@ -13,6 +13,9 @@ interface ProfileDetailsProps {
   initialProfile: Tables<"userProfiles">;
 }
 
+const DEFAULT_PROFILE_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z";
+
 function ProfileDetails({ showUserId, initialProfile }: ProfileDetailsProps) {
   const { data: profile } = useQuery({
     queryKey: ["userProfiles", { showUserId }],
@@ -39,10 +42,7 @@ function ProfileDetails({ showUserId, initialProfile }: ProfileDetailsProps) {
             height={300}
             alt="profile image"
             className="w-32 aspect-square object-cover  rounded-full"
-            src={
-              profile?.profileImageUrl ||
-              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
-            }
+            src={profile?.profileImageUrl || DEFAULT_PROFILE_IMG}
           />
           <div className="flex flex-col">
             <span className="text-2xl font-bold">{profile?.nickname}</span>
