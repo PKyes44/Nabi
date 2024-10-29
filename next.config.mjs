@@ -7,6 +7,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "gxoibjaejbmathfpztjt.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "beautifulfund.org",
+      },
     ],
   },
 };
