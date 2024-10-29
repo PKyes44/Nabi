@@ -1,8 +1,10 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
+import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
 import { useAuthStore } from "@/zustand/auth.store";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -25,6 +27,20 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const createdAt = dayjs(recruit.createdAt).fromNow();
   const isPassedDeadLineDate = dayjs().isBefore(recruit.deadLineDate);
   const remainDeadLineDate = dayjs(recruit.deadLineDate).toNow();
+
+  const { data: approvedRecipients } = useQuery({
+    queryKey: ["recruits", { recruit: "recipients" }],
+    queryFn: () =>
+      clientApi.recipientMeets.getRecipientByRecruitId(recruit.recruitId),
+    enabled: currentUser?.role === "recipient",
+  });
+
+  const { data: approvedSponsors } = useQuery({
+    queryKey: ["recruits", { recruit: "sponsors" }],
+    queryFn: () =>
+      clientApi.sponsorMeets.getApprovedSponsorsByRecruitId(recruit.recruitId),
+    enabled: currentUser?.role === "sponsor",
+  });
 
   return (
     <section className="p-8 px-6">
@@ -59,9 +75,11 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           />
         </div>
       </div>
-      {!isAuthInitialized || !currentUser ? null : (
-        <ApplyButtons recruit={recruit} />
-      )}
+      {isAuthInitialized &&
+        currentUser &&
+        recruit.authorId !== currentUser.userId && (
+          <ApplyButtons recruit={recruit} user={currentUser!} />
+        )}
 
       <article className="flex flex-col gap-y-4 mt-3">
         {/* 제목 */}
@@ -105,11 +123,17 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
             </div>
             <RecruitCount recruit={recruit} />
           </div>
-          {!isPassedDeadLineDate && (
-            <span className="text-red-400 text-xs font-semibold">
-              {remainDeadLineDate} 마감됩니다
-            </span>
-          )}
+          {!isPassedDeadLineDate &&
+            ((currentUser?.role === "recipient" &&
+              approvedRecipients &&
+              recruit.maxRecipientRecruits > approvedRecipients?.length) ||
+              (currentUser?.role === "sponsor" &&
+                approvedSponsors &&
+                recruit.maxSponsorRecruits > approvedSponsors?.length)) && (
+              <span className="text-red-400 text-xs font-semibold">
+                {remainDeadLineDate} 마감됩니다
+              </span>
+            )}
         </section>
       </article>
     </section>

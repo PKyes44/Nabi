@@ -1,7 +1,7 @@
 import { Role } from "@/types/profiles.types";
 import { create } from "zustand";
 
-type CurrentUser = {
+export type CurrentUser = {
   userId: string;
   role: Role;
 };

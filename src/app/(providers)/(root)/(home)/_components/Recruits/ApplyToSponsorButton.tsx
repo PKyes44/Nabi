@@ -23,7 +23,7 @@ function ApplyToSponsorButton({
   const addToast = useToastStore((state) => state.addToast);
 
   const { data: approvedSponsors } = useQuery({
-    queryKey: ["recruits", { recruitId: "recipients" }],
+    queryKey: ["recruits", { recruit: "sponsor" }],
     queryFn: () =>
       clientApi.sponsorMeets.getApprovedSponsorsByRecruitId(recruit.recruitId),
   });
