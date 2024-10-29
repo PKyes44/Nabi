@@ -1,8 +1,8 @@
 "use client";
 
 import Container from "@/components/Container/Container";
-import Business from "./_components/Business";
-import Finances from "./_components/Finances";
+import Business from "./_components/Business/Business";
+import Finances from "./_components/Finances/Finances";
 
 function FundReportPage() {
   return (

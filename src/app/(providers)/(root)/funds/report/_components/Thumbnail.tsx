@@ -10,6 +10,7 @@ const thumbnailVariant = cva(" ", {
     theme: {
       finance: "bg-orange-200",
       business: "bg-sky-100",
+      donation: "bg-yellow-100",
     },
   },
   compoundVariants: [],
@@ -34,6 +35,20 @@ function Thumbnail({
   className,
   children,
 }: PropsWithChildren<ThumbnailProps>) {
+  let backgroundColor;
+  switch (theme) {
+    case "business":
+      backgroundColor = "bg-sky-400";
+      break;
+    case "donation":
+      backgroundColor = "bg-yellow-400";
+      break;
+    case "finance":
+      backgroundColor = "bg-orange-400";
+      break;
+    default:
+      backgroundColor = "bg-orange-400";
+  }
   return (
     <>
       <section
@@ -42,9 +57,7 @@ function Thumbnail({
         )}`}
       >
         <div
-          className={`${
-            theme === "business" ? "bg-sky-400" : "bg-orange-400"
-          } w-full aspect-square rounded-full absolute -right-24 top-20`}
+          className={`${backgroundColor} w-full aspect-square rounded-full absolute -right-24 top-20`}
         />
         <Image
           className="w-full rounded-full aspect-square absolute -right-20 top-24"
