@@ -1,9 +1,9 @@
 import Container from "@/components/Container/Container";
-import Funds from "../../(home)/_components/Funds/Funds";
+import Funds from "./_components/Funds/Funds";
 
 function FundSelectPage() {
   return (
-    <Container>
+    <Container isMain className="pt-5">
       <Funds />
     </Container>
   );
