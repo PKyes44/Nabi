@@ -28,7 +28,7 @@ function FundModal({ domain }: FundModal) {
     if (isNaN(amount)) return setErrorMsg("잘못된 모금액입니다");
     if (amount < 10000) return setErrorMsg("최소 모금액은 10,000₩입니다");
 
-    router.replace(`/funds?spontAmount=${amount}&domain=${domain}`);
+    router.replace(`/funds/${domain}/${amount}`);
     setActiveModal(null);
   };
 
