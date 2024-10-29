@@ -3,6 +3,7 @@
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
+import Loading from "@/components/Loading/Loading";
 import { TablesInsert } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { ToastType } from "@/types/toast.types";
@@ -121,7 +122,7 @@ function CreateFreeMealForm() {
     }));
   };
 
-  if (isLoading) return <span>데이터를 불러오는 중</span>;
+  if (isLoading) return <Loading />;
 
   return (
     <div className="px-6 w-[500px]">
