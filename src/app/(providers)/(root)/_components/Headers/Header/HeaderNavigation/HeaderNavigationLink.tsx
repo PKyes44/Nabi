@@ -10,7 +10,7 @@ export default function HeaderNavigationLink({
   label,
 }: HeaderNavigationLinkProps) {
   return (
-    <Link href={href} className="text-sm font-semibold">
+    <Link href={href} className="text-sm">
       {label}
     </Link>
   );

@@ -4,14 +4,16 @@ import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import { useToastStore } from "@/zustand/toast.store";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import FundModal from "./FundModal";
 
 interface FundProps {
   domain: string;
+  imgUrl: string;
 }
 
-function Fund({ domain }: FundProps) {
+function Fund({ domain, imgUrl }: FundProps) {
   const router = useRouter();
   const addToast = useToastStore((state) => state.addToast);
   const user = useAuthStore((state) => state.currentUser);
@@ -40,8 +42,17 @@ function Fund({ domain }: FundProps) {
   };
 
   return (
-    <button onClick={handleClickFunds} className="flex flex-col items-center">
-      <div className="grow aspect-square rounded-lg bg-gray-300" />
+    <button
+      onClick={handleClickFunds}
+      className="border border-gray-400 rounded-lg flex flex-col items-center justify-center"
+    >
+      <Image
+        alt="domain image"
+        width={300}
+        height={300}
+        src={imgUrl}
+        className="w-16 aspect-square rounded-lg "
+      />
       <span className="mx-auto">{domain}</span>
     </button>
   );
