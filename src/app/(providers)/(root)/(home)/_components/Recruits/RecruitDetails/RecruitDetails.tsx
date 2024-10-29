@@ -1,25 +1,16 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
-import { useAuthStore } from "@/zustand/auth.store";
-import { useQuery } from "@tanstack/react-query";
+import { WithProfiles } from "@/types/profiles.types";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
 import Link from "next/link";
-import ApplyButtons from "./ApplyButtons";
-import OthersButton from "./OthersButton";
-import RecruitCount from "./RecruitCount";
-
-dayjs.extend(relativeTime);
-dayjs.locale("ko");
-
-interface RecruitDetailsProps {
-  recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
-}
+import ApplyButtons from "../ApplyButtons/ApplyButtons";
+import OthersButton from "../OtherButton/OthersButton";
+import RecruitCount from "../RecruitCount/RecruitCount";
+import useRecruitDetails from "./RecruitDetails.hooks";
 
 const DEFAULT_PROFILE_IMG =
   "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z";
@@ -28,26 +19,20 @@ const LOCATION_ICON =
 const VOLUNTEERING_DATE_ICON =
   "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/VolunteeringDate.png";
 
+interface RecruitDetailsProps {
+  recruit: WithProfiles<Tables<"recruits">>;
+}
+
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
-  const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const createdAt = dayjs(recruit.createdAt).fromNow();
-  const isPassedDeadLineDate = dayjs().isBefore(recruit.deadLineDate);
-  const remainDeadLineDate = dayjs(recruit.deadLineDate).toNow();
-
-  const { data: approvedRecipients } = useQuery({
-    queryKey: ["recruits", { recruit: "recipients" }],
-    queryFn: () =>
-      clientApi.recipientMeets.getRecipientByRecruitId(recruit.recruitId),
-    enabled: currentUser?.role === "recipient",
-  });
-
-  const { data: approvedSponsors } = useQuery({
-    queryKey: ["recruits", { recruit: "sponsors" }],
-    queryFn: () =>
-      clientApi.sponsorMeets.getApprovedSponsorsByRecruitId(recruit.recruitId),
-    enabled: currentUser?.role === "sponsor",
-  });
+  const {
+    isAuthInitialized,
+    createdAt,
+    currentUser,
+    approvedSponsors,
+    approvedRecipients,
+    isPassedDeadLineDate,
+    remainDeadLineDate,
+  } = useRecruitDetails(recruit);
 
   return (
     <section className="p-8 px-6">

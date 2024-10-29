@@ -1,23 +1,14 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-"use client";
-
 import clientApi from "@/api/clientSide/api";
 import { Tables } from "@/supabase/database.types";
+import { WithProfiles } from "@/types/profiles.types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import Recruit from "./Recruit";
 
-interface RecruitListProps {
-  initialRecruitList: (Tables<"recruits"> & {
-    userProfiles: Tables<"userProfiles">;
-  } & {
-    replies: (Tables<"replies"> & {
-      userProfiles: Tables<"userProfiles">;
-    })[];
-  })[];
-}
+type RecruitListHookProps = (WithProfiles<Tables<"recruits">> & {
+  replies: WithProfiles<Tables<"replies">>[];
+})[];
 
-function RecruitList({ initialRecruitList }: RecruitListProps) {
+function useRecruitList(initialRecruitList: RecruitListHookProps) {
   const observerRef = useRef(null);
 
   const {
@@ -61,20 +52,7 @@ function RecruitList({ initialRecruitList }: RecruitListProps) {
     };
   }, [isLoading, hasNextPage, fetchNextPage]);
 
-  return (
-    <ul className="w-full flex flex-col gap-y-4">
-      {recruitsData.pages.map((page) =>
-        page?.map((recruit) => (
-          <li key={recruit.recruitId}>
-            <Recruit recruit={recruit} />
-          </li>
-        ))
-      )}
-
-      {isLoading && <div className="m-auto">Loading...</div>}
-      <div ref={observerRef} />
-    </ul>
-  );
+  return { recruitsData, isLoading, observerRef };
 }
 
-export default RecruitList;
+export default useRecruitList;

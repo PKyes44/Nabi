@@ -1,23 +1,14 @@
-"use client";
 import clientApi from "@/api/clientSide/api";
-import ButtonGroup from "@/components/Button/ButtonGroup";
 import { Database, Tables } from "@/supabase/database.types";
 import { WithProfiles } from "@/types/profiles.types";
 import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
-interface ApplyToRecipientButtonProps {
-  recruit: WithProfiles<Tables<"recruits">>;
-  authorId: string;
-}
+type ApplyToRecipientButtonHookProps = WithProfiles<Tables<"recruits">>;
 
-function ApplyToRecipientButton({
-  recruit,
-  authorId,
-}: ApplyToRecipientButtonProps) {
+function useApplyRecipientButton(recruit: ApplyToRecipientButtonHookProps) {
   const queryClient = useQueryClient();
   const currentUser = useAuthStore((state) => state.currentUser);
   const userId = currentUser?.userId;
@@ -67,9 +58,6 @@ function ApplyToRecipientButton({
       recipientMeet.userId === userId
   );
 
-  if (!userId) return null;
-  if (!recipientMeets) return <ApplyButtonSkeleton />;
-
   const handleClickApplyButton = () => {
     const data = {
       recruitId: recruit.recruitId,
@@ -80,49 +68,13 @@ function ApplyToRecipientButton({
     insertRecipientMeet(data);
   };
 
-  return recruit?.maxRecipientRecruits! <= approvedRecipients?.length! ? (
-    <ButtonGroup
-      intent="red"
-      textIntent="red"
-      value="모집 마감"
-      className="ml-auto"
-      disabled
-    />
-  ) : userId !== authorId && userStatus ? (
-    userStatus.status === "pending" ? (
-      <ButtonGroup
-        intent="disabled"
-        textIntent="disabled"
-        value="승인 대기 중"
-        className="ml-auto"
-        disabled
-      />
-    ) : userStatus.status === "approved" ? (
-      <ButtonGroup
-        intent="green"
-        textIntent="green"
-        value="승인됨"
-        className="ml-auto"
-        disabled
-      />
-    ) : userStatus.status === "rejected" ? (
-      <ButtonGroup
-        intent="red"
-        textIntent="red"
-        value="거절됨"
-        className="ml-auto"
-        disabled
-      />
-    ) : null
-  ) : (
-    <ButtonGroup
-      onClick={handleClickApplyButton}
-      intent="primary"
-      textIntent="primary"
-      className="ml-auto"
-      value="후원 신청"
-    />
-  );
+  return {
+    userId,
+    userStatus,
+    recipientMeets,
+    approvedRecipients,
+    handleClickApplyButton,
+  };
 }
 
-export default ApplyToRecipientButton;
+export default useApplyRecipientButton;

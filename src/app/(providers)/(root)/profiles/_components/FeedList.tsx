@@ -8,7 +8,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import FreeMeal from "../../(home)/_components/FreeMeals/FreeMeal";
-import Recruit from "../../(home)/_components/Recruits/Recruit";
+import Recruit from "../../(home)/_components/Recruits/Recruit/Recruit";
 
 interface FeedListProps {
   initialFeeds: Feeds;
