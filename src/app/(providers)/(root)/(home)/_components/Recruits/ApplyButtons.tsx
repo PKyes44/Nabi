@@ -12,15 +12,9 @@ function ApplyButtons({ recruit }: ApplyButtonsProps) {
   const currentUser = useAuthStore((state) => state.currentUser);
 
   return currentUser?.role === "recipient" ? (
-    <ApplyToRecipientButton
-      recruitId={recruit.recruitId}
-      authorId={recruit.authorId}
-    />
+    <ApplyToRecipientButton recruit={recruit} authorId={recruit.authorId} />
   ) : (
-    <ApplyToSponsorButton
-      recruitId={recruit.recruitId}
-      authorId={recruit.authorId}
-    />
+    <ApplyToSponsorButton recruit={recruit} authorId={recruit.authorId} />
   );
 }
 

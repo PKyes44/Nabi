@@ -138,6 +138,18 @@ const getRejectedSponsorAppliesWithProfileByRecruitId = async (
   return data;
 };
 
+const getApprovedSponsorsByRecruitId = async (recruitId: string) => {
+  const { data: sponsors, error } = await supabase
+    .from("sponsorMeets")
+    .select("userId, userProfiles(*)")
+    .eq("recruitId", recruitId)
+    .eq("status", "approved")
+    .returns<WithProfiles<{ userId: string }>[]>();
+  if (error) throw new Error(error.message);
+
+  return sponsors;
+};
+
 const sponsorMeetsAPI = {
   getRecruitIdByUserId,
   getRecentlyRecipients,
@@ -148,6 +160,7 @@ const sponsorMeetsAPI = {
   getPendingSponsorAppliesWithProfileByRecruitId,
   getApprovedSponsorAppliesWithProfileByRecruitIdAndUserId,
   getRejectedSponsorAppliesWithProfileByRecruitId,
+  getApprovedSponsorsByRecruitId,
 };
 
 export default sponsorMeetsAPI;

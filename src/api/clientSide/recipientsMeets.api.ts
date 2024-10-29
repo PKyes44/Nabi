@@ -64,7 +64,7 @@ const getRecipientMeets = async () => {
 };
 
 const getRecipientByRecruitId = async (recruitId: string) => {
-  const { data: recipients } = await supabase
+  const { data: recipients, error } = await supabase
     .from("recipientMeets")
     .select("userId, userProfiles(*)")
     .eq("recruitId", recruitId)
@@ -75,6 +75,7 @@ const getRecipientByRecruitId = async (recruitId: string) => {
         userProfiles: Tables<"userProfiles">;
       }[]
     >();
+  if (error) throw new Error(error.message);
 
   return recipients;
 };
