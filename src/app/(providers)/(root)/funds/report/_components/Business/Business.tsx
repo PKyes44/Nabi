@@ -1,12 +1,15 @@
 import Thumbnail from "../Thumbnail";
 import BusinessContent from "./BusinessContent";
 
+const BUSINESS_THUMBNAIL =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/hand-2@2x.png";
+
 function Business() {
   return (
     <Thumbnail
       id="business"
       className="h-[calc(110vh-64px)]"
-      thumbnailSrc="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/title-finance.jpg"
+      thumbnailSrc={BUSINESS_THUMBNAIL}
       title="사업"
       intro={
         <strong className="font-semibold z-10 relative text-lg">

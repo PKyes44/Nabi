@@ -1,12 +1,15 @@
 import Thumbnail from "../Thumbnail";
 import FinanceContent from "./FinanceContent";
 
+const FINANCE_THUMBNAIL =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/title-finance.jpg";
+
 function Finances() {
   return (
     <Thumbnail
       id="finances"
       className="h-[calc(110vh-64px)]"
-      thumbnailSrc="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/title-finance.jpg"
+      thumbnailSrc={FINANCE_THUMBNAIL}
       title="재정"
       intro={
         <strong className="font-semibold z-10 relative text-lg">

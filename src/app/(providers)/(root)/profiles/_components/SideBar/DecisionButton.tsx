@@ -18,6 +18,9 @@ type DecisionButtonProps = {
   recruitId: string;
 };
 
+const DECISION_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Others.svg";
+
 function DecisionButton(props: DecisionButtonProps) {
   const [isShowDecision, setIsShownOthers] = useState(false);
 
@@ -28,7 +31,7 @@ function DecisionButton(props: DecisionButtonProps) {
     <div className="flex flex-col items-center justify-center relative">
       <button onClick={handleToggleDecision}>
         <Image
-          src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Others.svg"
+          src={DECISION_ICON}
           width={150}
           height={150}
           className="w-4 aspect-square"

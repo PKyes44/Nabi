@@ -8,6 +8,9 @@ interface CreateFreeMealButtonProps {
   userId: string;
 }
 
+const CREATE_FREEMEAL_BUTTON_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/LinkToFreeMeal%20.png?t=2024-10-15T21%3A07%3A35.956Z";
+
 function CreateFreeMealButton({ userId }: CreateFreeMealButtonProps) {
   const setActiveModal = useModalStore((state) => state.setActiveModal);
   const { data: isStoreOwner } = useQuery({
@@ -29,7 +32,7 @@ function CreateFreeMealButton({ userId }: CreateFreeMealButtonProps) {
             width={150}
             height={150}
             className="w-10 aspect-square rounded-lg"
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/LinkToFreeMeal%20.png?t=2024-10-15T21%3A07%3A35.956Z"
+            src={CREATE_FREEMEAL_BUTTON_ICON}
             alt="create free-meal post icon"
           />
         </button>

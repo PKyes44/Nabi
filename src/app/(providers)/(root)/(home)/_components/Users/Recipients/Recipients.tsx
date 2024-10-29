@@ -10,6 +10,9 @@ interface RecipientsProps {
   page: number;
 }
 
+const HEART_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Heart.png";
+
 function Recipients({ page }: RecipientsProps) {
   return (
     <article className="bg-white h-[360px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
@@ -18,7 +21,7 @@ function Recipients({ page }: RecipientsProps) {
           height={100}
           width={100}
           className="w-5 aspect-square"
-          src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Heart.png"
+          src={HEART_ICON}
           alt="heart icon"
         />
         도움이 필요한 아이들

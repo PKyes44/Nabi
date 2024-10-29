@@ -18,6 +18,11 @@ interface SubmitReplyForm {
 
 type SubmitReplyFormEvent = CustomFormEvent<SubmitReplyForm>;
 
+const DEFAULT_PROFILE_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png";
+const SEND_THANKS_COMMENT_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Send.png?t=2024-10-15T20%3A30%3A14.946Z";
+
 function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.currentUser);
@@ -84,10 +89,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
         <Image
           width={100}
           height={100}
-          src={
-            currentUser?.userProfiles.profileImageUrl ||
-            "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
-          }
+          src={currentUser?.userProfiles.profileImageUrl || DEFAULT_PROFILE_IMG}
           alt="profile image"
           className="w-7 aspect-square object-cover rounded-full"
         />
@@ -106,7 +108,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
             <Image
               width={25}
               height={25}
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Send.png?t=2024-10-15T20%3A30%3A14.946Z"
+              src={SEND_THANKS_COMMENT_ICON}
               alt="send icon"
             />
           </Button>

@@ -5,6 +5,9 @@ import Link from "next/link";
 
 import Image from "next/image";
 
+const CREATE_RECRUIT_BUTTON_IMAGE =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/PlusButton.png?t=2024-10-16T02%3A00%3A45.760Z";
+
 function CreateRecruitButton() {
   const currentUser = useAuthStore((state) => state.currentUser);
 
@@ -20,7 +23,7 @@ function CreateRecruitButton() {
               width={100}
               height={100}
               className="w-8 aspect-square"
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/PlusButton.png?t=2024-10-16T02%3A00%3A45.760Z"
+              src={CREATE_RECRUIT_BUTTON_IMAGE}
               alt="create recruits button"
             />
             봉사활동 참여자 모집하기

@@ -14,6 +14,9 @@ interface UpdateRecruitButtonProps {
   recruitId: string;
 }
 
+const OTHERS_IMAGE =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Others.svg";
+
 function OthersButton({ authorId, recruitId }: UpdateRecruitButtonProps) {
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.currentUser);
@@ -58,7 +61,7 @@ function OthersButton({ authorId, recruitId }: UpdateRecruitButtonProps) {
         <div className="relative flex items-center">
           <button onClick={handleToggleOthers}>
             <Image
-              src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Others.svg"
+              src={OTHERS_IMAGE}
               width={150}
               height={150}
               className="w-4 aspect-square"

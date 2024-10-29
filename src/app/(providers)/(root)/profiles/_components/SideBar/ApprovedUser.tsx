@@ -15,6 +15,9 @@ type ApprovedUserProps = {
   user: Sponsor | Recipient;
 };
 
+const DEFAULT_PROFILE_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png";
+
 function ApprovedUser({ user }: ApprovedUserProps) {
   return (
     <Link
@@ -32,7 +35,7 @@ function ApprovedUser({ user }: ApprovedUserProps) {
         <div className="w-7 aspect-square rounded-lg grid place-items-center bg-[#f5f5f5]">
           <img
             className="object-cover w-8/12"
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
+            src={DEFAULT_PROFILE_IMG}
             alt="default profile"
           />
         </div>
