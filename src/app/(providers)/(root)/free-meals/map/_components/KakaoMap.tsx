@@ -208,8 +208,6 @@ function KakaoMap({
         map,
         "bounds_changed",
         async function () {
-          router.push("/free-meals/map");
-
           const bounds = map.getBounds();
 
           const swLatLng = bounds.getSouthWest();
@@ -290,7 +288,7 @@ function KakaoMap({
             }
             cluster.clear();
             createMarker(selectedStore, cluster, !!storeData);
-            // return setActiveModal(<StoreDetailModal detailData={selectedStore} />);
+
             return;
           }
           cluster.clear();
@@ -302,6 +300,10 @@ function KakaoMap({
             createMarker(storeData, cluster, true);
           });
         });
+
+      return () => {
+        window.kakao.maps.event.removeListener(map, "bounds_changed");
+      };
     });
   }, [location, currentStore]);
 
