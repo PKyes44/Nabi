@@ -1,5 +1,7 @@
 import { PropsWithChildren } from "react";
 
+const REPORT_VIDEO_URL = "https://join.beautifulfund.org/movie/3_impact.mp4";
+
 function ReportLayout({ children }: PropsWithChildren) {
   return (
     <div className="bg-black w-screen h-screen">
@@ -9,10 +11,7 @@ function ReportLayout({ children }: PropsWithChildren) {
         muted
         loop
       >
-        <source
-          src="https://join.beautifulfund.org/movie/3_impact.mp4"
-          type="video/mp4"
-        />
+        <source src={REPORT_VIDEO_URL} type="video/mp4" />
       </video>
       <div className="w-screen h-screen absolute top-0 left-0">{children}</div>
     </div>

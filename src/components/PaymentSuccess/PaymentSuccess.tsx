@@ -15,6 +15,9 @@ interface PaymentSuccessProps {
   url: string;
 }
 
+const SUCCESS_PAYMENT_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/SuccessPayment.png";
+
 function PaymentSuccessComponent({
   orderId,
   orderName,
@@ -38,7 +41,7 @@ function PaymentSuccessComponent({
             width={100}
             alt="success payment icon"
             className="w-10"
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/SuccessPayment.png"
+            src={SUCCESS_PAYMENT_ICON}
           />
           <h2 className="font-extrabold text-2xl text-center">결제 완료</h2>
         </div>

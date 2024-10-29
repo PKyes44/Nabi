@@ -13,6 +13,9 @@ interface FailPageProps {
   };
 }
 
+const ERROR_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/FailPayment.png";
+
 export default function FailPage({
   searchParams: { message, code },
 }: FailPageProps) {
@@ -25,7 +28,7 @@ export default function FailPage({
             width={200}
             height={200}
             className="w-10"
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/FailPayment.png"
+            src={ERROR_IMG}
             alt="에러 이미지"
           />
           <h2 className="font-extrabold text-2xl text-center">결제 실패</h2>

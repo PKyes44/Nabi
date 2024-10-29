@@ -10,6 +10,9 @@ interface RecruitCountProps {
     | (Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> });
 }
 
+const RECRUIT_COUNT_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/RecruitCount.png?t=2024-10-28T07%3A43%3A17.047Z";
+
 function RecruitCount({ recruit }: RecruitCountProps) {
   const user = useAuthStore((state) => state.currentUser);
 
@@ -19,7 +22,7 @@ function RecruitCount({ recruit }: RecruitCountProps) {
         width={100}
         height={100}
         className="w-4"
-        src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/RecruitCount.png?t=2024-10-28T07%3A43%3A17.047Z"
+        src={RECRUIT_COUNT_IMG}
         alt="recruit count icon"
       />
       <span className="font-light text-xs">

@@ -12,6 +12,9 @@ type RepliesProps = {
   recruitId: string;
 };
 
+const THANKS_COMMENT_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/ThanksComment.png?t=2024-10-28T07%3A43%3A30.947Z";
+
 function Replies({ replies, recruitId }: RepliesProps) {
   return (
     <article className="border-t bg-gray-50 px-6 py-6 rounded-b-lg grid grid-cols-1 gap-y-4">
@@ -21,7 +24,7 @@ function Replies({ replies, recruitId }: RepliesProps) {
             width={100}
             height={100}
             className="w-4 aspect-square"
-            src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/ThanksComment.png?t=2024-10-28T07%3A43%3A30.947Z"
+            src={THANKS_COMMENT_ICON}
             alt="reply icon"
           />
           <span className="text-xs text-gray-700">

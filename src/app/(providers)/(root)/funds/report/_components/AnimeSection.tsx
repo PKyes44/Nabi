@@ -8,6 +8,11 @@ interface AnimeSectionProps {
   title: string;
 }
 
+const LEFT_HAND_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/hand-1@2x.png";
+const RIGHT_HAND_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/hand-2@2x.png";
+
 function AnimeSection({ intro, title }: AnimeSectionProps) {
   const targetRef = useRef(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -75,7 +80,7 @@ function AnimeSection({ intro, title }: AnimeSectionProps) {
         width={100}
         height={100}
         className="w-20 z-10 absolute top-[500px]"
-        src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/hand-1@2x.png"
+        src={LEFT_HAND_IMG}
         alt="hand-1"
       />
       <Marquee
@@ -90,7 +95,7 @@ function AnimeSection({ intro, title }: AnimeSectionProps) {
         width={100}
         height={100}
         className="w-20 z-10 absolute top-[450px] right-16"
-        src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/hand-2@2x.png"
+        src={RIGHT_HAND_IMG}
         alt="hand-2"
       />
       <p ref={targetRef} className="mt-80 opacity-0">

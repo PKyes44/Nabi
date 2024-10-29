@@ -21,6 +21,13 @@ interface RecruitDetailsProps {
   recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
 }
 
+const DEFAULT_PROFILE_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z";
+const LOCATION_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/Location.png?t=2024-10-28T07%3A42%3A51.571Z";
+const VOLUNTEERING_DATE_ICON =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/VolunteeringDate.png";
+
 function RecruitDetails({ recruit }: RecruitDetailsProps) {
   const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
   const currentUser = useAuthStore((state) => state.currentUser);
@@ -52,10 +59,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
           <Image
             width={300}
             height={300}
-            src={
-              recruit.userProfiles.profileImageUrl ||
-              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
-            }
+            src={recruit.userProfiles.profileImageUrl || DEFAULT_PROFILE_IMG}
             alt="profile image"
             className="w-12 rounded-full aspect-square object-cover border border-gray-100"
           />
@@ -96,7 +100,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
                 width={150}
                 height={150}
                 className="w-4 aspect-square"
-                src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/Location.png?t=2024-10-28T07%3A42%3A51.571Z"
+                src={LOCATION_ICON}
                 alt="location icon"
               />
               <span className="font-light text-xs">{recruit.region}</span>
@@ -109,7 +113,7 @@ function RecruitDetails({ recruit }: RecruitDetailsProps) {
                 width={200}
                 height={200}
                 className="w-4 aspect-square object-cover"
-                src="https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BlackIconList/VolunteeringDate.png"
+                src={VOLUNTEERING_DATE_ICON}
                 alt="date icon"
               />
               <span className="font-light text-xs">
