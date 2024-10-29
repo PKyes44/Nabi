@@ -12,7 +12,10 @@ function CreateFreeMealButton({ userId }: CreateFreeMealButtonProps) {
   const setActiveModal = useModalStore((state) => state.setActiveModal);
   const { data: isStoreOwner } = useQuery({
     queryKey: ["storeOwners", { userId }],
-    queryFn: () => clientApi.storeOwners.checkIsStoreOwnerByUserId(userId),
+    queryFn: () => {
+      if (!userId) return null;
+      return clientApi.storeOwners.checkIsStoreOwnerByUserId(userId);
+    },
   });
   const handleClickCreateFreeMeal = () => {
     setActiveModal(<CreateFreeMealModal />);
