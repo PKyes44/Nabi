@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
 interface ApplyToSponsorButtonProps {
-  recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
+  recruit: WithProfiles<Tables<"recruits">>;
   authorId: string;
 }
 

@@ -2,6 +2,7 @@
 import clientApi from "@/api/clientSide/api";
 import ButtonGroup from "@/components/Button/ButtonGroup";
 import { Database, Tables } from "@/supabase/database.types";
+import { WithProfiles } from "@/types/profiles.types";
 import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
@@ -9,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ApplyButtonSkeleton from "./components/ApplyButtonSkeleton";
 
 interface ApplyToRecipientButtonProps {
-  recruit: Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> };
+  recruit: WithProfiles<Tables<"recruits">>;
   authorId: string;
 }
 

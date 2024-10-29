@@ -132,12 +132,7 @@ const getApprovedSponsorsByRecruitId = async (recruitId: string) => {
     .select("userId, userProfiles(*)")
     .eq("recruitId", recruitId)
     .eq("status", "approved")
-    .returns<
-      {
-        userId: string;
-        userProfiles: Tables<"userProfiles">;
-      }[]
-    >();
+    .returns<WithProfiles<{ userId: string }>[]>();
   if (error) throw new Error(error.message);
 
   return sponsors;
