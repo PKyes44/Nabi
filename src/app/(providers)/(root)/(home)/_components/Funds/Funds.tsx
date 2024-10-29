@@ -1,12 +1,10 @@
 "use client";
 
-import Button from "@/components/Button/Button";
-import Link from "next/link";
 import Fund from "./Fund";
 
 function Funds() {
   return (
-    <article className="bg-white h-[550px] px-6 py-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
+    <article className=" bg-white h-[550px] mx-32 px-16 py-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
       <h2 className="flex items-center mx-auto gap-x-2 font-bold">
         영역별 후원 기금 사업
       </h2>
@@ -21,12 +19,6 @@ function Funds() {
         <Fund domain="주거" />
         <Fund domain="환경" />
       </section>
-
-      <Link href="/funds/report">
-        <Button className="w-full" intent="primary" textIntent="primary">
-          2023 보고서 보기
-        </Button>
-      </Link>
     </article>
   );
 }
