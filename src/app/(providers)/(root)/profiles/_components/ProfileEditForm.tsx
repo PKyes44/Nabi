@@ -25,6 +25,9 @@ interface ProfileEditForm {
   bgImage: string | null;
 }
 
+const DEFAULT_PROFILE_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z";
+
 function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
   const queryClient = useQueryClient();
 
@@ -188,9 +191,7 @@ function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
             height={150}
             className="w-12 h-12 self-end aspect-square rounded-full object-cover"
             alt="background image preview"
-            src={
-              "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
-            }
+            src={DEFAULT_PROFILE_IMG}
           />
         ) : profileImage ? (
           <Image

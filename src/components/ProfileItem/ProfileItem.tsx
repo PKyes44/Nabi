@@ -8,6 +8,9 @@ interface ProfileItemProps {
   className?: string;
 }
 
+const DEFAULT_PROFILE_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z";
+
 function ProfileItem({
   profileImageUrl,
   nickname,
@@ -22,10 +25,7 @@ function ProfileItem({
       <Image
         width={80}
         height={80}
-        src={
-          profileImageUrl ||
-          "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/BigDefaultProfile.png?t=2024-10-17T21%3A23%3A00.314Z"
-        }
+        src={profileImageUrl || DEFAULT_PROFILE_IMG}
         alt="profile image"
         className="w-6 aspect-square object-cover rounded-lg"
       />

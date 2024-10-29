@@ -15,6 +15,9 @@ interface ReplyProps {
   };
 }
 
+const DEFAULT_PROFILE_IMG =
+  "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png";
+
 function Reply({ reply }: ReplyProps) {
   const createdAt = dayjs(reply.createdAt).fromNow();
 
@@ -23,10 +26,7 @@ function Reply({ reply }: ReplyProps) {
       <Image
         width={100}
         height={100}
-        src={
-          reply.userProfiles?.profileImageUrl ||
-          "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/ProfileDefault.png"
-        }
+        src={reply.userProfiles?.profileImageUrl || DEFAULT_PROFILE_IMG}
         alt=""
         className="w-7 aspect-square object-cover rounded-full"
       />
