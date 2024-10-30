@@ -47,7 +47,9 @@ function InputGroup({
         />
       )}
       {errorText ? (
-        <span className="text-red-500 text-sm">{errorText}</span>
+        <span className="text-red-500 text-sm sm:text-[10px] sm:leading-3">
+          {errorText}
+        </span>
       ) : (
         helpText && <span className="text-gray-400 text-sm">{helpText}</span>
       )}

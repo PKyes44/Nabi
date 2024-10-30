@@ -53,9 +53,11 @@ function ApplyUsers({
   }, [pendingSponsorApplyList]);
 
   return (
-    <section className="!w-[650px] h-96 bg-white rounded-lg shadow-lg px-7 py-5">
-      <h1 className="font-bold text-xl text-center">{recruitData?.title}</h1>
-      <span className="text-sm text-center block mt-2">
+    <section className=" bg-white rounded-lg shadow-lg px-5 py-4 ">
+      <h1 className="font-bold text-xl text-center sm:text-[12px] sm:text-left">
+        신청자 현황
+      </h1>
+      <span className="text-sm text-center block mt-2 sm:text-[10px] sm:leading-3 sm:text-left">
         경제적으로 어려움이 있는 후원 아동들을 위해 후원자들과 모임을 구성하여
         봉사활동을 해보세요 ! <br />
         나비는 후원아동을 돕고자 하는 후원자들을 적극적으로 지원합니다

@@ -173,7 +173,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
   return (
     <form
       onSubmit={handleSubmitRecruitEditForm}
-      className="flex flex-col gap-y-4 w-full"
+      className="flex flex-col gap-y-4 w-full sm:text-[12px]"
     >
       <InputGroup
         intent="comment"
@@ -204,7 +204,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
           errorText={errMsgs.maxRecipientRecruits}
         />
       </div>
-      <div className="flex gap-x-2">
+      <div className="grid grid-cols-3 gap-x-2 w-full sm:grid-cols-1 md:grid-cols-2 md:gap-y-4">
         <InputGroup
           intent="comment"
           wrapperClassName="w-full"
@@ -227,7 +227,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
         />
         <InputGroup
           intent="comment"
-          wrapperClassName="w-full"
+          wrapperClassName="w-full sm:col-span-1 md:col-span-2"
           defaultValue={recruit?.region}
           type="text"
           label="집합 장소"
@@ -241,7 +241,7 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
         <textarea
           name="content"
           defaultValue={recruit?.content}
-          className={`bg-[#f5f5f5] resize-none w-full h-60 p-3 ${
+          className={`bg-[#f5f5f5] resize-none w-full h-60 sm:h-32 p-3 ${
             errMsgs.content && "border-red-500"
           }`}
         />
@@ -254,7 +254,8 @@ function EditRecruitForm({ recruitId }: EditRecruitFormProps) {
         textIntent="primary"
         value="수정하기"
         size="md"
-        className="ml-auto"
+        className="ml-auto sm:h-7 sm:px-0 sm:py-0 sm:w-full sm:text-[12px]"
+        wrapperClassName="h-7"
       />
     </form>
   );
