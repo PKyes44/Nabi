@@ -4,6 +4,7 @@
 
 import clientApi from "@/api/clientSide/api";
 import Button from "@/components/Button/Button";
+import useWindowSize from "@/components/Hooks/WindowSize.hooks";
 import Input from "@/components/Inputs/Input";
 import { Tables } from "@/supabase/database.types";
 import { ToastType } from "@/types/toast.types";
@@ -73,6 +74,7 @@ function KakaoMap({
   const [searchList, setSearchList] = useState<SearchResponse>([]);
   const setActiveModal = useModalStore((state) => state.setActiveModal);
   const addToast = useToastStore((state) => state.addToast);
+  const windowSize = useWindowSize();
 
   const createMarker = (
     storeData: CurrentStore,
@@ -120,7 +122,8 @@ function KakaoMap({
       status: kakao.maps.services.Status
     ) {
       if (status === kakao.maps.services.Status.OK) {
-        setSearchList(result.slice(0, 5));
+        const sliceCount = windowSize.width <= 360 ? 2 : 5;
+        setSearchList(result.slice(0, sliceCount));
       }
     };
     if (keyword.length === 0) return;
