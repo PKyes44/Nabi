@@ -2,7 +2,7 @@ import clientApi from "@/api/clientSide/api";
 import { useModalStore } from "@/zustand/modal.store";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import CreateFreeMealModal from "../Modals/FreeMealCreateModal";
+import CreateFreeMealModal from "../Modals/FreeMeal/FreeMealCreateModal";
 
 interface CreateFreeMealButtonProps {
   userId: string;

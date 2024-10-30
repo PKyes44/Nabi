@@ -1,7 +1,7 @@
 import { RecruitItem } from "@/types/recruits.types";
 import "dayjs/locale/ko";
 import RecruitDetails from "../RecruitDetails/RecruitDetails";
-import Replies from "../Replies/Replies";
+import Replies from "../../Replies/Replies";
 
 interface RecruitProps {
   recruit: RecruitItem;

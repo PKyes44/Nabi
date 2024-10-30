@@ -2,8 +2,8 @@
 
 import { useAuthStore } from "@/zustand/auth.store";
 import Recipients from "./Recipients/Recipients";
+import UsersSkeleton from "./Skeleton/UsersSkeleton";
 import Sponsors from "./Sponsors/Sponsors";
-import UsersSkeleton from "./components/UsersSkeleton";
 
 interface UsersProps {
   page: string;
