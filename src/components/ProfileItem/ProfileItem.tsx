@@ -29,7 +29,7 @@ function ProfileItem({
         alt="profile image"
         className="w-6 aspect-square object-cover rounded-lg sm:w-4"
       />
-      <span className="line-clamp-4 text-sm sm:text-[8px] overflow-hidden whitespace-nowrap text-ellipsis">
+      <span className="line-clamp-4 text-sm sm:text-[0.6rem] overflow-hidden whitespace-nowrap text-ellipsis">
         {nickname}
       </span>
     </Link>

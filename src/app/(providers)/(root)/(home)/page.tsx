@@ -42,7 +42,7 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
         </div>
 
         {/* Right - Users*/}
-        <div className="sm:order-2 md:order-3 md:hidden">
+        <div className="sm:order-2 sm:!visible md:order-3 md:invisible">
           <Users page={page} />
         </div>
       </div>
