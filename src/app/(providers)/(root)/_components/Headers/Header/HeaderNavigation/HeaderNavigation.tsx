@@ -1,7 +1,7 @@
 "use client";
 import useWindowSize from "@/components/Hooks/WindowSize.hooks";
 import { useEffect, useState } from "react";
-import HeaderNavigationLink from "./HeaderNavigationLink";
+import Navigation from "./Navigation";
 
 function HeaderNavigation() {
   const windowSize = useWindowSize();
@@ -14,13 +14,12 @@ function HeaderNavigation() {
     }
   }, [windowSize]);
 
-  if (!isDesktop) return null;
-  return (
-    <nav className="flex items-center gap-x-5">
-      <HeaderNavigationLink href="/funds" label="후원기금 모금하기" />
-      <HeaderNavigationLink href="/funds/report" label="후원 리포트" />
-      <HeaderNavigationLink href="/free-meals/map" label="아동급식카드 지도" />
-    </nav>
+  return isDesktop ? (
+    <Navigation />
+  ) : (
+    <div className="fixed bottom-0 left-0 h-12 w-screen bg-white flex justify-center">
+      <Navigation />
+    </div>
   );
 }
 
