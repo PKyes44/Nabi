@@ -1,26 +1,83 @@
 import { supabase } from "@/supabase/client";
+import { Tables } from "@/supabase/database.types";
+import { WithProfiles } from "@/types/profiles.types";
+import dayjs from "dayjs";
 
 const TABLE_ROOMS = "rooms";
 
-const getRoomsWithTargetUserByUserId = async (userId: string) => {
+const getRecentlyRoomByUserId = async (userId: string) => {
   const selectQueryForeignUserA =
-    "*, userProfiles!rooms_userBId_fkey2(nickname, role)";
+    "*, userProfiles!rooms_userBId_fkey2(userId), chats!chats_roomId_fkey(createdAt)";
   const selectQueryForeignB =
-    "*, userProfiles!rooms_userAId_fkey2(nickname, role)";
+    "*, userProfiles!rooms_userAId_fkey2(userId), chats!chats_roomId_fkey(createdAt)";
   const userAPromise = supabase
     .from(TABLE_ROOMS)
     .select(selectQueryForeignUserA)
-    .eq("userAId", userId);
+    .eq("userAId", userId)
+    .order("createdAt", { ascending: false, referencedTable: "chats" })
+    .limit(1)
+    .single();
 
   const userBPromise = supabase
     .from(TABLE_ROOMS)
     .select(selectQueryForeignB)
-    .eq("userBId", userId);
+    .eq("userBId", userId)
+    .order("createdAt", { ascending: false, referencedTable: "chats" })
+    .limit(1)
+    .single();
 
-  const [{ data: userAData }, { data: userBData }] = await Promise.all([
-    userAPromise,
-    userBPromise,
-  ]);
+  const [
+    { data: userAData, error: userAError },
+    { data: userBData, error: userBError },
+  ] = await Promise.all([userAPromise, userBPromise]);
+
+  if (userAError) throw new Error(userAError.message);
+  if (userBError) throw new Error(userBError.message);
+
+  if (!userAData || userAData.chats.length === 0) {
+    return userBData.userProfiles.userId;
+  }
+  if (!userBData || userBData.chats.length === 0) {
+    return userAData.userProfiles.userId;
+  }
+  if (
+    dayjs(userAData.chats[0].createdAt).isAfter(userBData.chats[0].createdAt)
+  ) {
+    return userAData.userProfiles.userId;
+  }
+
+  return userBData.userProfiles.userId;
+};
+
+const getRecentlyRoomsWithTargetUserByUserId = async (userId: string) => {
+  const selectQueryForeignUserA =
+    "*, userProfiles!rooms_userBId_fkey2(nickname, role), chats!chats_roomId_fkey(to, from, createdAt)";
+  const selectQueryForeignB =
+    "*, userProfiles!rooms_userAId_fkey2(nickname, role), chats!chats_roomId_fkey(to, from, createdAt)";
+  const userAPromise = supabase
+    .from(TABLE_ROOMS)
+    .select(selectQueryForeignUserA)
+    .eq("userAId", userId)
+    .returns<
+      (WithProfiles<Tables<"rooms">> & { chats: Tables<"chats">[] })[]
+    >();
+
+  const userBPromise = supabase
+    .from(TABLE_ROOMS)
+    .select(selectQueryForeignB)
+    .eq("userBId", userId)
+    .order("createdAt", { ascending: false, referencedTable: "chats" })
+    .returns<
+      (WithProfiles<Tables<"rooms">> & { chats: Tables<"chats">[] })[]
+    >();
+
+  const [
+    { data: userAData, error: userAError },
+    { data: userBData, error: userBError },
+  ] = await Promise.all([userAPromise, userBPromise]);
+
+  if (userAError) throw new Error(userAError.message);
+  if (userBError) throw new Error(userBError.message);
 
   const result = [];
 
@@ -41,6 +98,7 @@ const getRoomsWithTargetUserByUserId = async (userId: string) => {
             nickname,
             role,
           },
+          chats: data.chats,
         };
       })
     );
@@ -63,12 +121,41 @@ const getRoomsWithTargetUserByUserId = async (userId: string) => {
             nickname,
             role,
           },
+          chats: data.chats,
         };
       })
     );
   }
 
-  return result;
+  const sortedResult = bubbleSort(result);
+  return sortedResult;
+};
+
+const bubbleSort = (
+  arr: {
+    roomId: string;
+    userId: string;
+    targetUserId: string;
+    userProfile: Pick<Tables<"userProfiles">, "role" | "nickname">;
+    chats: Tables<"chats">[];
+  }[]
+) => {
+  const newArr = arr;
+  for (let x = 0; x < newArr.length; x++) {
+    for (let y = 1; y < newArr.length - x; y++) {
+      if (
+        newArr[y].chats.length !== 0 &&
+        (newArr[y - 1].chats.length === 0 ||
+          dayjs(newArr[y - 1].chats[0].createdAt).isBefore(
+            newArr[y].chats[0].createdAt
+          ))
+      ) {
+        [newArr[y - 1], newArr[y]] = [newArr[y], newArr[y - 1]];
+      }
+    }
+  }
+
+  return newArr;
 };
 
 const getRoomIdByUserIdAndTargetUserId = async ({
@@ -90,8 +177,9 @@ const getRoomIdByUserIdAndTargetUserId = async ({
 };
 
 const roomsAPI = {
-  getRoomsWithTargetUserByUserId,
+  getRecentlyRoomsWithTargetUserByUserId,
   getRoomIdByUserIdAndTargetUserId,
+  getRecentlyRoomByUserId,
 };
 
 export default roomsAPI;

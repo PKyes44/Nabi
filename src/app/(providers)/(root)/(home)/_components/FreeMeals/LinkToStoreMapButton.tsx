@@ -23,7 +23,6 @@ function LinkToStoreMapButton({ store }: LinkToStoreMapButtonProps) {
   };
 
   useEffect(() => {
-    console.log("windowSize:", windowSize);
     if (!windowSize) return;
     if (windowSize.width <= 360) setButtonSize("xs");
     else setButtonSize("sm");
