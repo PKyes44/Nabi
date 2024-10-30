@@ -21,6 +21,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const router = useRouter();
   const user = useAuthStore((state) => state.currentUser);
   const setActiveModal = useModalStore((state) => state.setActiveModal);
+  const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
 
   const { data: myRegularSponsorships } = useQuery({
     queryKey: ["regularSponsorship", { currentUserId: user?.userId }],
@@ -68,15 +69,17 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const handleClickStopRegularSponsorship = () => {
     stopRegularSponsorShip();
   };
-  return !user ? (
+
+  if (!user) return null;
+  return !isAuthInitialized ? (
     <ProfileDetailButtonsSkeleton />
   ) : (
-    <article className="self-center -mt-5 flex gap-x-3">
+    <article className="self-center -mt-5 flex gap-x-3 sm:mt-3">
       {user?.userId === profile.userId ? (
         <Button
           intent="primary"
           textIntent="primary"
-          className="px-5 py-1.5 rounded-sm text-base font-bold"
+          className="px-5 py-1.5 rounded-sm text-base font-bold sm:text-xs sm:px-1"
           onClick={handleClickProfileEdit}
         >
           프로필 수정
@@ -86,7 +89,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
           intent="primary"
           textIntent="primary"
           onClick={handleClickLinkToChat}
-          className="px-5 py-1.5 rounded-sm text-base font-bold"
+          className="px-5 py-1.5 rounded-sm text-base font-bold sm:text-xs sm:px-1"
         >
           채팅하기
         </Button>
@@ -99,7 +102,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
           <Button
             intent="red"
             textIntent="red"
-            className="px-5 py-1.5 rounded-sm text-base font-bold"
+            className="px-5 py-1.5 rounded-sm text-base font-bold sm:text-xs sm:px-1"
             onClick={handleClickStopRegularSponsorship}
           >
             후원 끊기
@@ -109,7 +112,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
             intent="primary"
             textIntent="primary"
             onClick={handleClickRegularSponsorShip}
-            className="px-5 py-1.5 rounded-sm text-base font-bold"
+            className="px-5 py-1.5 rounded-sm text-base font-bold sm:text-xs sm:px-1"
           >
             정기 후원
           </Button>

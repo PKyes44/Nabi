@@ -8,7 +8,7 @@ const buttonVariant = cva("", {
       false: "border-none",
     },
     size: {
-      xs: "p-0",
+      xs: "py-1.5 px-10",
       sm: "px-14 py-1.5",
       md: "px-28 py-2.5",
     },
@@ -38,6 +38,7 @@ const buttonVariant = cva("", {
   compoundVariants: [
     { intent: "default", className: "text-white" },
     { size: "sm", className: "text-sm" },
+    { size: "xs", className: "text-xs" },
     {
       size: "md",
       className: "text-base",
