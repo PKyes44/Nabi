@@ -3,7 +3,7 @@
 import { useAuthStore } from "@/zustand/auth.store";
 import { useModalStore } from "@/zustand/modal.store";
 import Link from "next/link";
-import SelectRoleModal from "../Modals/SelectRoleModal";
+import SelectRoleModal from "../Modals/SelectRole/SelectRoleModal";
 import LoggedInNavigation from "./LoggedInNavigation";
 import HeaderNavigationSkeleton from "./components/NavigationSkeleton";
 

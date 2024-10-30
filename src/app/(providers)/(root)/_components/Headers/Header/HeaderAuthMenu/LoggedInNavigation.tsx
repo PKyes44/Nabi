@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import NotifyList from "../NotifyList";
+import NotifyList from "../Modals/Notify/NotifyList";
 import CreateFreeMealButton from "./CreateFreeMealButton";
 
 interface LoggedInNavigationProps {

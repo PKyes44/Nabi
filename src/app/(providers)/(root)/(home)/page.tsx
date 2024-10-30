@@ -1,8 +1,8 @@
 import serverApi from "@/api/serverSide/api";
 import Container from "@/components/Container/Container";
 import FreeMeals from "./_components/FreeMeals/FreeMeals";
-import CreateRecruitButton from "./_components/Recruits/CreateRecruitButton";
-import RecruitList from "./_components/Recruits/RecruitList";
+import CreateRecruitButton from "./_components/Recruits/CreateRecruitButton/CreateRecruitButton";
+import RecruitList from "./_components/Recruits/RecruitList/RecruitList";
 import Users from "./_components/Users/Users";
 
 interface HomePageProps {

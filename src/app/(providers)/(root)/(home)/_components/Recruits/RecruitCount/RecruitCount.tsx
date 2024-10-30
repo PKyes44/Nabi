@@ -1,13 +1,12 @@
 "use client";
 
 import { Tables } from "@/supabase/database.types";
+import { WithProfiles } from "@/types/profiles.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import Image from "next/image";
 
 interface RecruitCountProps {
-  recruit:
-    | Tables<"recruits">
-    | (Tables<"recruits"> & { userProfiles: Tables<"userProfiles"> });
+  recruit: Tables<"recruits"> | WithProfiles<Tables<"recruits">>;
 }
 
 const RECRUIT_COUNT_IMG =

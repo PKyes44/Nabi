@@ -4,7 +4,7 @@ import clientApi from "@/api/clientSide/api";
 import ProfileItem from "@/components/ProfileItem/ProfileItem";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import UsersSkeleton from "../components/UsersSkeleton";
+import UsersSkeleton from "../Skeleton/UsersSkeleton";
 
 const crownImgUrl =
   "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/crown.png";
