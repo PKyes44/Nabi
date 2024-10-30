@@ -21,6 +21,7 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const router = useRouter();
   const user = useAuthStore((state) => state.currentUser);
   const setActiveModal = useModalStore((state) => state.setActiveModal);
+  const isAuthInitialized = useAuthStore((state) => state.isAuthInitialized);
 
   const { data: myRegularSponsorships } = useQuery({
     queryKey: ["regularSponsorship", { currentUserId: user?.userId }],
@@ -68,7 +69,9 @@ function ProfileButtons({ showUserId, profile }: ProfileButtonsProps) {
   const handleClickStopRegularSponsorship = () => {
     stopRegularSponsorShip();
   };
-  return !user ? (
+
+  if (!user) return null;
+  return !isAuthInitialized ? (
     <ProfileDetailButtonsSkeleton />
   ) : (
     <article className="self-center -mt-5 flex gap-x-3 sm:mt-3">
