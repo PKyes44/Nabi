@@ -5,7 +5,7 @@ import { useToastStore } from "@/zustand/toast.store";
 import { cva, VariantProps } from "class-variance-authority";
 import { useEffect, useState } from "react";
 
-const toastVariant = cva("", {
+const toastVariant = cva("sm:w-44 sm:h-24", {
   variants: {
     size: {
       sm: "w-52 h-20 py-0.5",
@@ -106,10 +106,10 @@ function Toast({
             isShown && "!translate-x-0"
           }`}
         >
-          <h6 className={`font-bold ${size === "sm" && "text-sm"}`}>
+          <h6 className={`font-bold ${size === "sm" && "text-sm"} sm:text-sm`}>
             {toast.title}
           </h6>
-          <p className={`text-base ${size === "sm" && "!text-xs"}`}>
+          <p className={`text-base ${size === "sm" && "!text-xs"} sm:text-xs`}>
             {toast.content}
           </p>
         </div>
