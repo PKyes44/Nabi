@@ -54,7 +54,7 @@ function ApplyUsers({
 
   return (
     <section className=" bg-white rounded-lg shadow-lg px-5 py-4 ">
-      <h1 className="font-bold text-xl text-center sm:text-[12px] sm:text-left">
+      <h1 className="font-bold text-xl md:text-lg text-center sm:text-[12px] sm:text-left">
         신청자 현황
       </h1>
       <span className="text-sm text-center block mt-2 sm:text-[10px] sm:leading-3 sm:text-left">

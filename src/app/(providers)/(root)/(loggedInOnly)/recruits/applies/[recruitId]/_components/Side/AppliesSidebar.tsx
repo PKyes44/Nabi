@@ -12,7 +12,7 @@ function AppliesSidebar({ recruitData }: AppliesSidebarProps) {
       <ul className="flex flex-col gap-y-5">
         <li key="글 정보" className="bg-white rounded-lg shadow-md py-4 px-5">
           <OtherInformation title="글 정보">
-            <div className="grid grid-cols-2 gap-y-2 sm:gap-y-1 sm:border-t sm:pt-2">
+            <div className="grid grid-cols-2 gap-y-2 sm:gap-y-1 sm:border-t pt-2">
               <label className="font-semibold text-sm sm:text-[10px]">
                 글 제목
               </label>
