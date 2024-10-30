@@ -10,7 +10,7 @@ interface ChatsProps {
   showChatUserId?: string;
 }
 
-function DesktopChat({ showChatUserId }: ChatsProps) {
+function DefaultChat({ showChatUserId }: ChatsProps) {
   const user = useAuthStore((state) => state.currentUser);
   const { data: targetUserId } = useQuery({
     initialData: null,
@@ -31,4 +31,4 @@ function DesktopChat({ showChatUserId }: ChatsProps) {
   );
 }
 
-export default DesktopChat;
+export default DefaultChat;

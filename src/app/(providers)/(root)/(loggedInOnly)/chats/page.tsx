@@ -2,7 +2,7 @@
 
 import Container from "@/components/Container/Container";
 import useWindowSize from "@/components/Hooks/WindowSize.hooks";
-import DesktopChat from "./_components/Desktop/DesktopChat";
+import DefaultChat from "./_components/DefaultScreen/DefaultScreen";
 import MobileChat from "./_components/Mobile/MobileChat";
 
 interface ChatPageProps {
@@ -17,7 +17,7 @@ function ChatPage({ searchParams: { showChatUserId } }: ChatPageProps) {
   return (
     <Container width="lg" isMain className="pt-5">
       {windowSize.width > 360 ? (
-        <DesktopChat showChatUserId={showChatUserId} />
+        <DefaultChat showChatUserId={showChatUserId} />
       ) : (
         <MobileChat showChatUserId={showChatUserId} />
       )}
