@@ -29,7 +29,7 @@ function ProfileItem({
         alt="profile image"
         className="w-6 aspect-square object-cover rounded-lg"
       />
-      <span className="line-clamp-4 text-sm">{nickname}</span>
+      <span className="line-clamp-4 text-sm sm:text-xs">{nickname}</span>
     </Link>
   );
 }

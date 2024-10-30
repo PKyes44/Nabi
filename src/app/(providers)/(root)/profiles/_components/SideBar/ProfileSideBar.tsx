@@ -57,7 +57,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   });
 
   return (
-    <div className="flex flex-col grow gap-y-4 peer">
+    <div className="w-[251px] sm:text-xs min-h-0 gap-x-3 flex flex-col sm:grid sm:grid-cols-2 grow gap-y-4 peer">
       {regularSpons && regularSpons.length !== 0 && (
         <article className="text-center bg-white rounded-lg shadow-md py-4 px-7">
           <h3 className="font-bold">
@@ -81,7 +81,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
         </article>
       )}
       {profile.role === "sponsor" && (
-        <article className="text-center bg-white rounded-lg shadow-md py-4 px-7">
+        <article className="text-center sm:text-xs only:col-span-2 h-42 bg-white rounded-lg shadow-md py-4 px-7">
           <h3 className="font-bold">후원 매장</h3>
           <span className="text-xs text-gray-400">
             매장 이름 클릭 시 매장 위치로 이동합니다
@@ -112,17 +112,15 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
           )}
         </article>
       )}
-      <article className="rounded-lg text-center">
-        {profile.role === "sponsor" ? (
-          user?.userId !== profile.userId ? (
-            // 다른 후원자의 프로필의 최근 후원아동 목록
-            <RecentRecipientsList recentlyRecipients={recentlyRecipients} />
-          ) : null
-        ) : (
-          // 다른 후원아동의 프로필의 최근 후원자 목록
-          <RecentSponsorsList recentlySponsors={recentlySponsors} />
-        )}
-      </article>
+      {profile.role === "sponsor" ? (
+        user?.userId !== profile.userId ? (
+          // 다른 후원자의 프로필의 최근 후원아동 목록
+          <RecentRecipientsList recentlyRecipients={recentlyRecipients} />
+        ) : null
+      ) : (
+        // 다른 후원아동의 프로필의 최근 후원자 목록
+        <RecentSponsorsList recentlySponsors={recentlySponsors} />
+      )}
     </div>
   );
 }
