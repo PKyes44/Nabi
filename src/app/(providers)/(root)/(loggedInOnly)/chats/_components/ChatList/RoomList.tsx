@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import RoomItem from "./RoomItem";
 
 interface RoomListProps {
-  showChatUserId: string;
+  showChatUserId?: string;
 }
 
 function RoomList({ showChatUserId }: RoomListProps) {

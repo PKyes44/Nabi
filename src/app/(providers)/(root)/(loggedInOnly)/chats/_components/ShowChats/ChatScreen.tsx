@@ -1,6 +1,7 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
+import useWindowSize from "@/components/Hooks/WindowSize.hooks";
 import Loading from "@/components/Loading/Loading";
 import socket from "@/socket/socket";
 import { useAuthStore } from "@/zustand/auth.store";
@@ -9,6 +10,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import ChatForm from "./ChatForm";
 import ChatLogs from "./ChatLogs/ChatLogs";
+import RoomListButton from "./RoomListButton";
 
 interface ChatScreenProps {
   showChatUserId: string;
@@ -19,6 +21,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   const user = useAuthStore((state) => state.currentUser);
   const queryClient = useQueryClient();
   const [roomId, setRoomId] = useState(null);
+  const windowSize = useWindowSize();
 
   const { data: userProfile, isLoading: isUserProfileLoading } = useQuery({
     queryKey: ["userProfiles", { userId: user?.userId }],
@@ -84,6 +87,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
   return (
     <div className="grow bg-white rounded-md shadow-lg h-[450px] relative">
       <header className="border-b border-gray-300 px-5 py-3 flex gap-x-4 items-center">
+        {windowSize.width <= 360 && <RoomListButton />}
         {targetProfile?.profileImageUrl ? (
           <Image
             height={100}
