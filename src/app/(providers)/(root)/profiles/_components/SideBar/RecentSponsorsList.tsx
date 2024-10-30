@@ -8,7 +8,7 @@ interface RecentSponsorsListProps {
 
 function RecentSponsorsList({ recentlySponsors }: RecentSponsorsListProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md py-4 px-5">
+    <div className="text-center bg-white rounded-lg only:col-span-2 shadow-md py-4 px-5 min-h-0">
       <h3 className="mb-4 font-bold">최근 후원자</h3>
       <ul>
         {recentlySponsors?.length !== 0 ? (
