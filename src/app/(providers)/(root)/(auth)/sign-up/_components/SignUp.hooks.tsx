@@ -7,7 +7,7 @@ import { ToastType } from "@/types/toast.types";
 import { useAuthStore } from "@/zustand/auth.store";
 import { useToastStore } from "@/zustand/toast.store";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { ComponentProps, useState } from "react";
 
 interface InitialErrMsgs {
