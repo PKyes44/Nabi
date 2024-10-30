@@ -57,7 +57,7 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
   });
 
   return (
-    <div className="w-[251px] sm:text-xs min-h-0 gap-x-3 flex flex-col sm:grid sm:grid-cols-2 grow gap-y-4 peer">
+    <div className="md:max-w-[850px] sm:text-xs min-h-0 gap-x-3 flex flex-col md:grid md:grid-cols-2 sm:grid sm:grid-cols-2 grow gap-y-4 peer">
       {regularSpons && regularSpons.length !== 0 && (
         <article className="text-center bg-white rounded-lg shadow-md py-4 px-7">
           <h3 className="font-bold">

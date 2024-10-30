@@ -19,7 +19,7 @@ async function ProfilePage({ searchParams: { userId } }: ProfilePageProps) {
   return (
     <Container width="lg" className="my-10 pt-5">
       <div className="flex flex-wrap gap-y-5 w-full">
-        <section className="min-w-[150px] flex flex-nowrap sm:flex-wrap gap-y-5 gap-x-7 ">
+        <section className="min-w-[150px] flex flex-nowrap md:flex-wrap sm:flex-wrap gap-y-5 gap-x-7 ">
           <ProfileDetails
             initialProfile={profile!}
             showUserId={profile.userId}

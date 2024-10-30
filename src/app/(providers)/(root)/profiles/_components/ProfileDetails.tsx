@@ -35,20 +35,20 @@ function ProfileDetails({ showUserId, initialProfile }: ProfileDetailsProps) {
       ) : (
         <div className="w-full h-[64%] bg-yellow-200 border border-gray-100" />
       )}
-      <div className="flex flex-row justify-between mx-10 sm:mx-4 sm:-mt-1 -mt-6">
+      <div className="flex flex-row justify-between mx-10 sm:mx-4 sm:-mt-1 -mt-6 md:-mt-3 md:mx-7">
         <article className="h-full flex items-center gap-x-7">
           <Image
             width={300}
             height={300}
             alt="profile image"
-            className="w-32 sm:w-12 aspect-square object-cover  rounded-full"
+            className="w-32 sm:w-12 md:w-16 aspect-square object-cover rounded-full"
             src={profile?.profileImageUrl || DEFAULT_PROFILE_IMG}
           />
           <div className="flex flex-col">
-            <span className="text-2xl font-bold sm:text-xs">
+            <span className="text-2xl font-bold sm:text-xs md:text-sm">
               {profile?.nickname}
             </span>
-            <span className="sm:text-xs">
+            <span className="sm:text-xs md:text-sm">
               {profile?.role === "sponsor" ? "후원자" : "후원아동"}
             </span>
           </div>
