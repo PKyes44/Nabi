@@ -27,9 +27,9 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
     <Container
       width="lg"
       isMain={false}
-      className="h-full flex items-center justify-between py-20"
+      className="flex items-center justify-between py-20"
     >
-      <div className="grid grid-cols-4 gap-x-5 w-full">
+      <div className="grid grid-cols-4 gap-x-5 w-full sm:grid-cols-1">
         {/* Left - FreeMeals*/}
         <div>
           <FreeMeals initialFreeMeals={initialFreeMeals} />
