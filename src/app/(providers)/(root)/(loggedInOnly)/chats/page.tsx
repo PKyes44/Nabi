@@ -16,10 +16,10 @@ function ChatPage({ searchParams: { showChatUserId } }: ChatPageProps) {
 
   return (
     <Container width="lg" isMain className="pt-5">
-      {windowSize.width <= 360 ? (
-        <MobileChat showChatUserId={showChatUserId} />
-      ) : (
+      {windowSize.width > 360 ? (
         <DesktopChat showChatUserId={showChatUserId} />
+      ) : (
+        <MobileChat showChatUserId={showChatUserId} />
       )}
     </Container>
   );

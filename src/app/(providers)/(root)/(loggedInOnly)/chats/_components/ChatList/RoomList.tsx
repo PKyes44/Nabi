@@ -14,16 +14,16 @@ function RoomList({ showChatUserId }: RoomListProps) {
   const user = useAuthStore((state) => state.currentUser);
 
   const { data: rooms, isLoading } = useQuery({
+    initialData: [],
     queryKey: ["rooms"],
     queryFn: () =>
-      clientApi.rooms.getRoomsWithTargetUserByUserId(user?.userId!),
+      clientApi.rooms.getRecentlyRoomsWithTargetUserByUserId(user!.userId),
   });
 
   if (isLoading) return <Loading />;
-
   return (
     <ul className="flex flex-col gap-y-1 max-w-64 w-full bg-white rounded-md shadow-md">
-      {rooms!.map((room) => {
+      {rooms.map((room) => {
         const isActived = showChatUserId === room.targetUserId;
         return (
           <li
