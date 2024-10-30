@@ -10,6 +10,7 @@ const getFreeMealsWithStoreData = async () => {
       .from(TABLE_FREE_MEALS)
       .select(query)
       .order("createdAt", { ascending: false })
+      .limit(3)
       .returns<
         (Tables<"freeMeals"> & {
           storeDatas: Tables<"storeDatas">;

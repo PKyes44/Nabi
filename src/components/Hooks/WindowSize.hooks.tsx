@@ -22,7 +22,7 @@ function useWindowSize() {
       return;
     }
   }, []);
-  return windowSize.width;
+  return windowSize;
 }
 
 export default useWindowSize;

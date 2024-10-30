@@ -17,7 +17,7 @@ function RecruitList({ initialRecruitList }: RecruitListProps) {
     useRecruitList(initialRecruitList);
 
   return (
-    <ul className="w-full flex flex-col gap-y-4">
+    <ul className="w-full flex flex-col gap-y-4 sm:gap-y-1">
       {recruitsData.pages.map((page) =>
         page?.map((recruit) => (
           <li key={recruit.recruitId}>
