@@ -29,20 +29,20 @@ async function HomePage({ searchParams: { page } }: HomePageProps) {
       isMain={false}
       className="flex items-center justify-between py-20"
     >
-      <div className="grid grid-cols-4 gap-x-5 w-full sm:grid-cols-2 sm:gap-x-2 sm:gap-y-2">
+      <div className="grid grid-cols-4 gap-x-5 w-full sm:grid-cols-2 sm:gap-x-2 sm:gap-y-2 md:grid-cols-3">
         {/* Left - FreeMeals*/}
-        <div className="sm:order-1">
+        <div className="sm:order-1 md:order-2">
           <FreeMeals initialFreeMeals={initialFreeMeals} />
         </div>
 
         {/* Center - Main Feed */}
-        <div className="col-span-2 sm:order-3">
+        <div className="col-span-2 sm:order-3 md:order-1">
           <CreateRecruitButton />
           <RecruitList initialRecruitList={initialRecruitList!} />
         </div>
 
         {/* Right - Users*/}
-        <div className="sm:order-2">
+        <div className="sm:order-2 md:order-3 md:hidden">
           <Users page={page} />
         </div>
       </div>
