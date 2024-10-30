@@ -128,7 +128,7 @@ function OtherApplyInfos({
             otherApplies.applies &&
             otherApplies.applies.length !== 0 && (
               <li
-                className="bg-white rounded-lg shadow-md py-4 px-5 w-full"
+                className="bg-white rounded-lg shadow-md py-4 px-5 w-full text-xl md:text-lg"
                 key={otherApplies.title}
               >
                 <OtherInformation title={otherApplies.title}>
