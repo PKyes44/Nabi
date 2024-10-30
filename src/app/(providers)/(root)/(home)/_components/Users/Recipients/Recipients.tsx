@@ -15,7 +15,7 @@ const HEART_ICON =
 
 function Recipients({ page }: RecipientsProps) {
   return (
-    <article className="bg-white h-[360px] px-6 pt-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
+    <article className="bg-white px-6 pt-5 flex flex-col gap-y-5 rounded-lg border border-gray-200">
       <h2 className="flex items-center mx-auto gap-x-2 font-bold">
         <Image
           height={100}
