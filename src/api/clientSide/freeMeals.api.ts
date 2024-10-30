@@ -9,7 +9,6 @@ const insertFreeMeals = async (insertData: TablesInsert<"freeMeals">) => {
 };
 
 const getFreeMealsWithStoreData = async (limit: number) => {
-  console.log("limit: ", limit);
   const query =
     "*, storeDatas!freeMeals_storeId_fkey(*), userProfiles!freeMeals_sponsorId_fkey(*)";
   const { error, data } = await supabase
