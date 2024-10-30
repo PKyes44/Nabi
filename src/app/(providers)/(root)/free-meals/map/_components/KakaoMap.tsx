@@ -318,7 +318,7 @@ function KakaoMap({
 
   return (
     <div ref={mapRef} className="w-screen h-screen relative">
-      <div className="flex flex-col gap-y-2 bg-white w-80 h-96 absolute z-[2] top-24 left-16 px-4 py-4 rounded-lg shadow-md">
+      <div className="flex flex-col gap-y-2 bg-white w-80 h-96 absolute z-[2] top-24 sm:top-[90%] sm:-translate-y-[75%] sm:left-[50%] sm:-translate-x-[50%] sm:h-60  left-16 px-4 py-4 rounded-lg shadow-md">
         <h2 className="font-bold text-lg">매장 검색하기</h2>
         <form className="flex items-start" onClick={handleSubmitSearchStore}>
           <Input
