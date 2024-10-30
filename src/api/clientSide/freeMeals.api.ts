@@ -8,13 +8,14 @@ const insertFreeMeals = async (insertData: TablesInsert<"freeMeals">) => {
   if (error) throw new Error(error.message);
 };
 
-const getFreeMealsWithStoreData = async () => {
+const getFreeMealsWithStoreData = async (limit: number = 3) => {
   const query =
     "*, storeDatas!freeMeals_storeId_fkey(*), userProfiles!freeMeals_sponsorId_fkey(*)";
   const { error, data } = await supabase
     .from(TABLE_FREE_MEALS)
     .select(query)
     .order("createdAt", { ascending: false })
+    .limit(limit)
     .returns<FreeMealItem[]>();
   if (error) throw new Error(error.message);
 
