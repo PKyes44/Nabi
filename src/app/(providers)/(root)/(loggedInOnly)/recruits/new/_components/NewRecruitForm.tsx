@@ -134,6 +134,7 @@ function NewRecruitForm() {
 
     setErrMsgs(initialErrMsgs);
 
+    if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
     if (isNaN(maxSponsorRecruits) || maxSponsorRecruits <= 0) {
       return throwErrMsgs(
         "maxSponsorRecruits",
@@ -161,7 +162,6 @@ function NewRecruitForm() {
       );
     }
     if (!region) return throwErrMsgs("region", "지역을 입력해주세요");
-    if (!title) return throwErrMsgs("title", "제목을 입력해주세요");
     if (!content) return throwErrMsgs("content", "내용을 작성해주세요");
 
     const deadLineDate = nonFormatDeadLineDate.format("YYYY-MM-DD HH:mm");
@@ -186,7 +186,7 @@ function NewRecruitForm() {
   return (
     <form
       onSubmit={handleSubmitRecruitForm}
-      className="flex flex-col gap-y-4 w-full mt-10"
+      className="flex flex-col gap-y-4 w-full mt-10 sm:text-[12px]"
     >
       <InputGroup
         intent="comment"
@@ -196,7 +196,7 @@ function NewRecruitForm() {
         name="title"
         errorText={errMsgs.title}
       />
-      <div className="flex gap-x-2 w-full">
+      <div className="grid grid-cols-2 gap-x-2 w-full">
         <InputGroup
           intent="comment"
           wrapperClassName="w-full"
@@ -214,7 +214,7 @@ function NewRecruitForm() {
           errorText={errMsgs.maxRecipientRecruits}
         />
       </div>
-      <div className="flex gap-x-2">
+      <div className="grid grid-cols-3 gap-x-2 w-full sm:grid-cols-1 md:grid-cols-2 md:gap-y-4">
         <InputGroup
           intent="comment"
           wrapperClassName="w-full"
@@ -235,7 +235,7 @@ function NewRecruitForm() {
         />
         <InputGroup
           intent="comment"
-          wrapperClassName="w-full"
+          wrapperClassName="w-full sm:col-span-1 md:col-span-2"
           type="text"
           label="집합 장소"
           name="region"
@@ -247,7 +247,7 @@ function NewRecruitForm() {
         <p className="mb-1">내용</p>
         <textarea
           name="content"
-          className={`bg-[#f5f5f5] resize-none w-full h-60 p-3 outline-none border border-gray-200 rounded-sm ${
+          className={`bg-[#f5f5f5] resize-none w-full h-60 sm:h-32 p-3 outline-none border border-gray-200 rounded-sm ${
             errMsgs.content && "border-red-500"
           }`}
         />
@@ -261,7 +261,8 @@ function NewRecruitForm() {
         textIntent="primary"
         value="등록하기"
         size="md"
-        className="ml-auto"
+        className="ml-auto sm:h-7 sm:px-0 sm:py-0 sm:w-full sm:text-[12px]"
+        wrapperClassName="h-7"
       />
     </form>
   );

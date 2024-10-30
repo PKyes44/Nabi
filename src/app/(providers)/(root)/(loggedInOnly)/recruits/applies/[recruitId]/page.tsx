@@ -78,18 +78,26 @@ async function RecruitAppliesPage({
   ];
 
   return (
-    <Container width="lg" className="flex gap-x-5 py-5">
-      <AppliesSidebar recruitData={recruitData!} />
-      <ApplyUsers
-        initialPendingRecipientApplies={pendingRecipientApplies!}
-        initialPendingSponsorApplies={pendingSponsorApplies!}
-        recruitData={recruitData!}
-      />
-
-      <OtherApplyInfos
-        recruitId={recruitData!.recruitId}
-        otherApplyInfoList={otherApplyInfoList}
-      />
+    <Container
+      width="lg"
+      className="grid grid-cols-5 gap-x-5 py-5 sm:grid-cols-1 sm:gap-y-3 sm:gap-x-0"
+    >
+      <div className="col-span-1">
+        <AppliesSidebar recruitData={recruitData!} />
+      </div>
+      <div className="w-full col-span-3">
+        <ApplyUsers
+          initialPendingRecipientApplies={pendingRecipientApplies!}
+          initialPendingSponsorApplies={pendingSponsorApplies!}
+          recruitData={recruitData!}
+        />
+      </div>
+      <div className="col-span-1">
+        <OtherApplyInfos
+          recruitId={recruitData!.recruitId}
+          otherApplyInfoList={otherApplyInfoList}
+        />
+      </div>
     </Container>
   );
 }

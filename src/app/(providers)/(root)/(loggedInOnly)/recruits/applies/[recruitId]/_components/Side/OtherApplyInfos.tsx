@@ -122,7 +122,7 @@ function OtherApplyInfos({
 
   return (
     <section className="grow">
-      <ul className="flex flex-col gap-y-5 w-full">
+      <ul className="flex flex-col gap-y-5 w-full sm:grid sm:grid-cols-2 sm:gap-y-3 sm:gap-x-3">
         {otherApplyInfos.map((otherApplies) => {
           return (
             otherApplies.applies &&

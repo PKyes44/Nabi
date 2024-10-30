@@ -27,9 +27,11 @@ function ProfileItem({
         height={80}
         src={profileImageUrl || DEFAULT_PROFILE_IMG}
         alt="profile image"
-        className="w-6 aspect-square object-cover rounded-lg"
+        className="w-6 aspect-square object-cover rounded-lg sm:w-4"
       />
-      <span className="line-clamp-4 text-sm sm:text-xs">{nickname}</span>
+      <span className="line-clamp-4 text-sm sm:text-[8px] overflow-hidden whitespace-nowrap text-ellipsis">
+        {nickname}
+      </span>
     </Link>
   );
 }

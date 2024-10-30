@@ -82,7 +82,7 @@ function PendingApply({ userProfile, recruitId }: PendingApplyProps) {
       />
       <Button
         onClick={handleApproveUser}
-        className="w-16 !p-0"
+        className="w-16 !p-0 sm:text-[8px] sm:w-5"
         intent="green"
         textIntent="green"
       >
@@ -90,7 +90,7 @@ function PendingApply({ userProfile, recruitId }: PendingApplyProps) {
       </Button>
       <Button
         onClick={handleRejectUser}
-        className="w-16 !p-0"
+        className="w-16 !p-0 sm:text-[8px] sm:w-5"
         size="sm"
         intent="red"
         textIntent="red"
