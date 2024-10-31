@@ -9,7 +9,7 @@ function CreateFreeMealModal() {
     <>
       {activeModal && (
         <Modal className="flex items-center justify-center">
-          <div className=" bg-white flex flex-col gap-y-8 justify-start items-center rounded-lg p-12">
+          <div className=" bg-white flex flex-col gap-y-8 justify-start items-center rounded-lg p-12 sm:p-4">
             <CreateFreeMealForm />
           </div>
         </Modal>
