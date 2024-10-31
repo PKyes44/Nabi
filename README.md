@@ -19,9 +19,9 @@
 - 백엔드 서버 : `CloudType`
 
 ### 📚 기술 스택
-- 언어 : `Javascript & Typescript`
+- 언어 : `JavaScript & TypeScript`
 - 프론트엔드 프레임워크 : `next.js`
-- 백엔드 프레임워크 : `express`
+- 백엔드 프레임워크 : `express.js`
 
 |📕 라이브러리|
 |-------|
