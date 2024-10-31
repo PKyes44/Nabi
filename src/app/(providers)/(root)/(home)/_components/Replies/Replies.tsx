@@ -34,7 +34,7 @@ function Replies({ replies, recruitId }: RepliesProps) {
         <ThumbUpButton recruitId={recruitId} />
       </div>
 
-      {replies?.length === 0 && <CreateRecruitsReply recruitId={recruitId} />}
+      <CreateRecruitsReply recruitId={recruitId} />
 
       {replies ? (
         replies.length !== 0 ? (

@@ -1,7 +1,6 @@
 "use client";
 
 import clientApi from "@/api/clientSide/api";
-import Button from "@/components/Button/Button";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { TablesInsert } from "@/supabase/database.types";
 import { CustomFormEvent } from "@/types/formEvent.types";
@@ -85,7 +84,7 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
     );
 
     return (
-      <div className="pb-5 mb-5 text-xs flex items-center mt-4 gap-x-3">
+      <div className="pb-5 mb-5 text-xs flex items-center mt-4 gap-x-3 sm:mb-0">
         <Image
           width={100}
           height={100}
@@ -94,24 +93,25 @@ function CreateRecruitsReply({ recruitId }: { recruitId?: string }) {
           className="w-7 aspect-square object-cover rounded-full"
         />
         <form
-          className="flex items-center gap-x-3"
+          className="flex items-center gap-x-3 w-full"
           onSubmit={handleSubmitReplyForm}
         >
           <InputGroup
             type="text"
             name="content"
             intent="comment"
-            wrapperClassName="grow"
+            wrapperClassName="grow w-full"
             placeholder="감사인사를 남겨보세요"
           />
-          <Button intent="none" size="xs">
+          <button type="submit">
             <Image
               width={25}
               height={25}
               src={SEND_THANKS_COMMENT_ICON}
               alt="send icon"
+              className="sm:w-5"
             />
-          </Button>
+          </button>
         </form>
       </div>
     );

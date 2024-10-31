@@ -19,9 +19,15 @@ function Sponsors() {
   if (isLoading) return <UsersSkeleton />;
 
   return (
-    <article className="bg-white px-5 py-7 flex flex-col gap-y-6 rounded-md border">
-      <h2 className="flex items-center gap-x-2.5 font-semibold">
-        <Image width={24} height={24} src={crownImgUrl} alt="hot icon" />
+    <article className="bg-white px-5 py-7 flex flex-col gap-y-6 rounded-md border sm:py-5">
+      <h2 className="flex items-center gap-x-2.5 font-semibold sm:text-xs">
+        <Image
+          width={24}
+          height={24}
+          src={crownImgUrl}
+          alt="hot icon"
+          className="sm:hidden"
+        />
         후원이 활발한 후원자들
       </h2>
 
