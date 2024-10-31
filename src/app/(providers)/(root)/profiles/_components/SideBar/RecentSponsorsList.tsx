@@ -8,9 +8,9 @@ interface RecentSponsorsListProps {
 
 function RecentSponsorsList({ recentlySponsors }: RecentSponsorsListProps) {
   return (
-    <div className="text-center bg-white rounded-lg only:col-span-2 shadow-md py-4 px-5 min-h-0">
+    <section className="text-center sm:text-xs only:col-span-2 h-42 bg-white rounded-lg shadow-md py-4 px-7">
       <h3 className="mb-4 font-bold">최근 후원자</h3>
-      <ul>
+      <ul className="px-9">
         {recentlySponsors?.length !== 0 ? (
           recentlySponsors?.map((recentlySponsor, idx) => {
             const sponsorProfiles = recentlySponsor.userProfiles;
@@ -29,7 +29,7 @@ function RecentSponsorsList({ recentlySponsors }: RecentSponsorsListProps) {
           <li>최근 후원자가 없습니다.</li>
         )}
       </ul>
-    </div>
+    </section>
   );
 }
 
