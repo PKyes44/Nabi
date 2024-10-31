@@ -10,7 +10,7 @@ function RegularSponsorshipModal() {
     <>
       {activeModal && (
         <Modal isDim className="flex items-center justify-center z-[3]">
-          <div className="fixed w-[450px] h-[400px] bg-white flex flex-col gap-y-8 justify-start items-center rounded-3xl">
+          <div className="fixed w-[450px] h-[400px] sm:w-[300px] sm:h-auto sm:rounded-md bg-white flex flex-col gap-y-8 justify-start items-center rounded-3xl">
             <RegularSponsorShip />
           </div>
         </Modal>

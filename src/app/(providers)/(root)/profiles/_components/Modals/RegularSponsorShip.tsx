@@ -72,13 +72,16 @@ function RegularSponsorShip() {
   };
 
   return (
-    <div className="flex flex-col gap-y-[70px] py-10 justify-between">
-      <h1 className="font-bold text-3xl text-center">정기 후원하기</h1>
+    <div className="flex flex-col gap-y-[70px] py-10 justify-between sm:py-5 sm:px-5 w-full sm:gap-y-10">
+      <h1 className="font-bold text-3xl text-center sm:text-lg">
+        정기 후원하기
+      </h1>
       <InputGroup
         value={price}
         errorText={priceErrorMsg}
         onChange={handleChangePrice}
         label="후원금액"
+        wrapperClassName="w-full sm:text-xs"
         helpText="최소 후원 금액은 10,000₩입니다"
         type="number"
       />
@@ -86,7 +89,7 @@ function RegularSponsorShip() {
         onClick={requestBillingAuth}
         intent="primary"
         textIntent="primary"
-        className="w-full py-3.5 text-lg"
+        className="w-full py-3.5 text-lg sm:text-xs"
         value="정기 후원하기"
       />
     </div>

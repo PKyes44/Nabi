@@ -14,7 +14,7 @@ function StoreDetailModal({ detailData }: StoreDetailModalProps) {
   return (
     <>
       {activeModal && (
-        <Modal className="grid place-content-center w-auto">
+        <Modal className="grid place-content-center">
           <StoreDetails detailData={detailData} />
         </Modal>
       )}
