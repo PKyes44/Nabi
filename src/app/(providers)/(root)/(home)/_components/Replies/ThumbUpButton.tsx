@@ -89,14 +89,16 @@ function ThumbUpButton({ recruitId }: ThumbsUpProps) {
         <Image
           width={100}
           height={100}
-          className="w-4 aspect-square"
+          className="w-4 aspect-square sm:w-2"
           src={
             isActivedThumbUp ? ACTIVE_THUMBS_UP_ICON : INACTIVE_THUMBS_UP_ICON
           }
           alt="thumbs up icon"
         />
       </button>
-      <span className="font-light text-xs">좋아요 ({thumbUpCount})</span>
+      <span className="font-light text-xs sm:text-[9px]">
+        좋아요 ({thumbUpCount})
+      </span>
     </div>
   );
 }

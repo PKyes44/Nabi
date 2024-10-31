@@ -16,15 +16,15 @@ function RecruitCount({ recruit }: RecruitCountProps) {
   const user = useAuthStore((state) => state.currentUser);
 
   return (
-    <div className="flex gap-x-2 items-center group relative">
+    <div className="flex gap-x-2 items-center group relative sm:gap-x-1">
       <Image
         width={100}
         height={100}
-        className="w-4"
+        className="w-4 sm:w-2"
         src={RECRUIT_COUNT_IMG}
         alt="recruit count icon"
       />
-      <span className="font-light text-xs">
+      <span className="font-light text-xs sm:text-[9px]">
         {user?.role === "sponsor"
           ? recruit.maxSponsorRecruits
           : recruit.maxRecipientRecruits}

@@ -16,11 +16,11 @@ const HEART_ICON =
 function Recipients({ page }: RecipientsProps) {
   return (
     <article className="sm:h-full bg-white px-6 pt-5 flex flex-col gap-y-5 rounded-lg border border-gray-200">
-      <h2 className="flex items-center mx-auto gap-x-2 font-bold">
+      <h2 className="flex items-center mx-auto gap-x-2 font-bold sm:text-xs">
         <Image
           height={100}
           width={100}
-          className="w-5 aspect-square"
+          className="w-5 aspect-square sm:hidden"
           src={HEART_ICON}
           alt="heart icon"
         />

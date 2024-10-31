@@ -33,8 +33,8 @@ function LinkToStoreMapButton({ store }: LinkToStoreMapButtonProps) {
       value="위치 보기"
       intent="primary"
       textIntent="primary"
-      wrapperClassName="grow sm:grow-0"
-      className="whitespace-nowrap w-full sm:w-auto"
+      wrapperClassName="grow sm:grow-0 "
+      className="whitespace-nowrap w-full sm:w-auto sm:text-[10px]"
       size={buttonSize}
       onClick={handleClickLinkToStoreMap}
     />
