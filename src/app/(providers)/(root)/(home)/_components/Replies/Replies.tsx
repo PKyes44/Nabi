@@ -27,7 +27,7 @@ function Replies({ replies, recruitId }: RepliesProps) {
             src={THANKS_COMMENT_ICON}
             alt="reply icon"
           />
-          <span className="text-xs text-gray-700 text-[9px]">
+          <span className="text-xs text-gray-700 sm:text-[9px]">
             감사인사 ({replies?.length})
           </span>
         </div>

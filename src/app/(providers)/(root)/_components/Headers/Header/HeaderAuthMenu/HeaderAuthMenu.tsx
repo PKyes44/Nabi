@@ -18,7 +18,7 @@ function HeaderAuthMenu() {
 
   return (
     <nav>
-      <ul className="flex gap-x-3.5 items-center justify-center">
+      <ul className="flex gap-x-3.5 items-center justify-center sm:text-sm">
         {authInitialized ? (
           isLoggedIn ? (
             <LoggedInNavigation userId={user?.userId!} />

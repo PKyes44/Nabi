@@ -63,7 +63,7 @@ function FeedList({ initialFeeds, userId }: FeedListProps) {
   }, [isLoading, hasNextPage, fetchNextPage]);
 
   return (
-    <ul className="flex flex-col gap-y-5 w-[850px]">
+    <ul className="flex flex-col w-[850px]">
       {feedsData.pages.map((feeds) =>
         feeds?.map((feed) => {
           let recruit: RecruitItem | null = null;
@@ -79,8 +79,8 @@ function FeedList({ initialFeeds, userId }: FeedListProps) {
                 {feed.type === "recruit" ? (
                   <Recruit recruit={recruit!} />
                 ) : (
-                  <div className="border bg-white rounded-md p-6">
-                    <div className="flex items-center gap-x-2 py-4">
+                  <div className="border bg-white rounded-md p-6 mb-3">
+                    <div className="flex items-center gap-x-2 py-4 ">
                       <Image
                         src={mealImgUrl}
                         width={24}

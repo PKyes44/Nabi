@@ -17,9 +17,9 @@ async function ProfilePage({ searchParams: { userId } }: ProfilePageProps) {
   if (!profile) return <span>데이터가 없습니다</span>;
 
   return (
-    <Container width="lg" className="my-10 pt-5">
-      <div className="flex flex-wrap gap-y-5 w-full">
-        <section className="min-w-[150px] flex flex-nowrap md:flex-wrap sm:flex-wrap gap-y-5 gap-x-7 ">
+    <Container width="lg" className="my-10 py-5">
+      <div className="flex flex-wrap gap-y-5 w-full sm:gap-y-3">
+        <section className="min-w-[150px] flex flex-nowrap md:flex-wrap sm:flex-wrap gap-y-5 gap-x-7 sm:gap-y-3">
           <ProfileDetails
             initialProfile={profile!}
             showUserId={profile.userId}
