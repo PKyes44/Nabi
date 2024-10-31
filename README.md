@@ -12,7 +12,7 @@
 - __조은진(팀원)__ : 홈 화면, 봉사자 모집글(CRUD), 감사인사(CRUD), 반응형 UI 디자인 및 구현 등
 
 ### Database ERD
-![DatabaseERD](https://github.com/Nabi-06/Nabi/blob/develop/DatabaseERD)
+![DatabaseERD](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/DatabaseERD)
   
 ### 개발 환경
 - `Javascript`
