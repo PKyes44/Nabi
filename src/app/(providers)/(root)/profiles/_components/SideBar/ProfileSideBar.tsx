@@ -81,9 +81,9 @@ function ProfileSideBar({ profile }: ProfileSideBarProps) {
         </article>
       )}
       {profile.role === "sponsor" && (
-        <article className="text-center sm:text-xs only:col-span-2 h-42 bg-white rounded-lg shadow-md py-4 px-7">
+        <article className="text-center sm:text-xs only:col-span-2 h-42 bg-white rounded-lg shadow-md py-4 px-7 sm:px-4">
           <h3 className="font-bold">후원 매장</h3>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-gray-400 sm:text-[7px]">
             매장 이름 클릭 시 매장 위치로 이동합니다
           </span>
           {!ownerData ? (
