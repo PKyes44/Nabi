@@ -13,7 +13,7 @@ function RecentRecipientsList({
   return (
     <div className="text-center bg-white only:col-span-2 rounded-lg shadow-md py-4 px-5 sm:px-1 sm:text-xs">
       <h3 className="mb-4 font-bold">이 후원자가 최근에 후원한 아이들</h3>
-      <ul className="flex flex-col gap-y-2 pl-9 sm:pl-0">
+      <ul className="flex flex-col gap-y-2 px-9 sm:pl-0">
         {recentlyRecipients ? (
           recentlyRecipients.map((recentlyRecipient, idx) => {
             const recipientProfiles = recentlyRecipient.userProfiles;
