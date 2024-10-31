@@ -1,6 +1,6 @@
 "use client";
 import clientApi from "@/api/clientSide/api";
-import Button from "@/components/Button/Button";
+import ButtonGroup from "@/components/Button/ButtonGroup";
 import InputGroup from "@/components/Inputs/InputGroup";
 import { CustomFormEvent } from "@/types/formEvent.types";
 import { EditProfileData } from "@/types/profiles.types";
@@ -161,19 +161,19 @@ function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
   return (
     <form
       onSubmit={handleSubmitProfileEditForm}
-      className="flex flex-col gap-y-4 items-center"
+      className="flex flex-col gap-y-4 items-center px-5 sm:text-xs sm:p-0"
     >
       <InputGroup
         label="닉네임 변경"
         type="text"
         name="nickname"
         errorText={errMsgs.nickname}
-        wrapperClassName="sm:w-40"
+        wrapperClassName="w-full"
       />
 
       <InputGroup
         onChange={handleChangeProfileImage}
-        wrapperClassName="flex flex-row gap-x-5 w-96 sm:w-40"
+        wrapperClassName="flex flex-row gap-x-5 w-full items-center"
         label="프로필 사진 변경"
         type="file"
         name="profileImg"
@@ -206,16 +206,23 @@ function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
           <div className="w-12 h-12 self-end aspect-square rounded-full bg-gray-400" />
         )}
       </InputGroup>
-      <Button className="sm:px-10" onClick={handleClickPrimaryProfile}>
-        기본 이미지로 변경
-      </Button>
+
+      <ButtonGroup
+        onClick={handleClickPrimaryProfile}
+        intent="default"
+        textIntent="default"
+        value="기본 이미지로 변경"
+        className="sm:h-7 sm:px-0 sm:py-0 w-full sm:text-[12px] mt-3"
+        wrapperClassName="w-full"
+        size="md"
+      />
 
       <InputGroup
         onChange={handleChangeBackgroundImage}
         label="배경 사진 변경"
         type="file"
         name="backgroundImg"
-        wrapperClassName="sm:w-40"
+        wrapperClassName="w-full"
       >
         {bgImagePreview ? (
           <Image
@@ -231,7 +238,7 @@ function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
           <Image
             width={150}
             height={150}
-            className="w-full h-14 object-cover mb-3 rounded-sm"
+            className="w-full object-cover mb-3 rounded-sm"
             alt="previous background image preview"
             src={bgImage}
           />
@@ -239,19 +246,24 @@ function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
           <div className="w-full h-14 bg-gray-400 mb-3 rounded-sm" />
         )}
       </InputGroup>
-      <Button className="sm:px-10" onClick={handleClickPrimaryBackground}>
-        기본 이미지로 변경
-      </Button>
-
-      <Button
+      <ButtonGroup
+        onClick={handleClickPrimaryBackground}
+        intent="default"
+        textIntent="default"
+        value="기본 이미지로 변경"
+        className="sm:h-7 sm:px-0 sm:py-0 w-full sm:text-[12px] mt-3"
+        wrapperClassName="w-full"
         size="md"
+      />
+
+      <ButtonGroup
         intent="primary"
         textIntent="primary"
-        className="mt-6 shadow-lg sm:px-20"
-        type="submit"
-      >
-        저장
-      </Button>
+        value="수정하기"
+        className="sm:h-7 sm:px-0 sm:py-0 w-full sm:text-[12px] mt-3"
+        wrapperClassName="w-full"
+        size="md"
+      />
     </form>
   );
 }

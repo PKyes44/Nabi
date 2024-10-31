@@ -97,11 +97,11 @@ function LoggedInNavigation({ userId }: LoggedInNavigationProps) {
             className="w-10 aspect-square object-cover rounded-full border border-gray-100"
           />
         </Link>
-        <div className="absolute left-1/2 -translate-x-1/2 w-28 invisible group-hover:visible">
+        <div className="absolute left-1/2 -translate-x-1/2 w-28 sm:w-16 invisible group-hover:visible">
           <div className="mt-3 border border-gray-200 rounded-lg shadow-sm bg-white py-1.5 px-2">
             <button
               onClick={handleClickLogOut}
-              className="text-center w-full text-sm"
+              className="text-center w-full text-sm sm:text-xs"
             >
               로그아웃
             </button>
