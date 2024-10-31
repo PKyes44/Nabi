@@ -67,6 +67,9 @@ function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
       queryClient.invalidateQueries({
         queryKey: ["userProfiles", { showUserId: user?.userId }],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["userProfiles", { userId: user?.userId }],
+      });
 
       setActiveModal(null);
     },
