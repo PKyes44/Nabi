@@ -11,7 +11,7 @@ function TextBox({ title, content, titleBgColor }: TextBoxProps) {
         <span>{title}</span>
       </div>
       <hr className="bg-black h-0.5" />
-      <div className="py-3 px-6 flex flex-col items-center justify-center grow">
+      <div className="py-3 px-6 flex flex-col items-center justify-center grow sm:text-xs">
         <p>{content}</p>
       </div>
     </div>
