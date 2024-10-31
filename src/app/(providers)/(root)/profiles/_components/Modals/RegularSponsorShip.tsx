@@ -33,6 +33,26 @@ function RegularSponsorShip() {
     queryFn: () => clientApi.auth.getUser(),
   });
 
+  const requestBillingAuth = async () => {
+    if (!payment || !user || !userProfile) return;
+    if (+price < 10000)
+      return setPriceErrorMsg("최소 후원금액이 10,000₩ 입니다");
+    await payment.requestBillingAuth({
+      method: "CARD",
+      successUrl:
+        window.location.origin +
+        `/regular-sponsorship/billing/${recipientId}/${price}`,
+      failUrl: window.location.origin + "/regular-sponsorship/fail",
+      customerEmail: user.email,
+      customerName: userProfile.nickname,
+    });
+  };
+
+  const handleChangePrice: ComponentProps<"input">["onChange"] = (e) => {
+    const newPriceValue = e.target.value;
+    setPrice(newPriceValue);
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -50,26 +70,6 @@ function RegularSponsorShip() {
       }
     })();
   }, [currentUser]);
-
-  async function requestBillingAuth() {
-    if (!payment || !user || !userProfile) return;
-    if (+price < 10000)
-      return setPriceErrorMsg("최소 후원금액이 10,000₩ 입니다");
-    await payment.requestBillingAuth({
-      method: "CARD",
-      successUrl:
-        window.location.origin +
-        `/regular-sponsorship/billing/${recipientId}/${price}`,
-      failUrl: window.location.origin + "/regular-sponsorship/fail",
-      customerEmail: user.email,
-      customerName: userProfile.nickname,
-    });
-  }
-
-  const handleChangePrice: ComponentProps<"input">["onChange"] = (e) => {
-    const newPriceValue = e.target.value;
-    setPrice(newPriceValue);
-  };
 
   return (
     <div className="flex flex-col gap-y-[70px] py-10 justify-between">
