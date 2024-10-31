@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nabi
+[나비 서비스](https://nabi-psi.vercel.app, "나비 서비스")
 
-## Getting Started
+나비는 경제적으로 어려움을 겪고 있는 아동과 후원자들을 연결하여 따뜻한 사회적 지원을 가능하게 하는 웹 서비스입니다. 나비는 아동급식카드 가맹점 위치 기반 검색, 후원아동을 위한 봉사자 모집과 커뮤니티 서비스, 정기 결연 등 다양한 후원자와 후원아동을 위한 서비스을 제공하여 아동과 후원자의 소통을 돕습니다.
 
-First, run the development server:
+### 개발 기간
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 멤버 구성
+- __양은석(팀장)__ : 정기 후원, 후원기금 모금, 지도 표시 및 검색, 알림, 토스트 , 로딩 애니메이션, DB 설계, 백엔드 개발, 반응형 구현, 데스크탑 UI 및 로고 디자인 등
+- __심우섭(팀원)__ : 프로필 화면, 후원 리포트 애니메이션 및 차트, 로그인, 회원가입, 봉사자 모집글 신청자 관리, 반응형 구현 등 
+- __조은진(팀원)__ : 홈 화면, 봉사자 모집글(CRUD), 감사인사, 반응형 UI 디자인 및 구현
+  
+### 개발 환경
+- `Javascript`
+- `TypeScript`
+- Framework: NextJS
+- Database: supabase
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 배포 환경
+- 프론트엔드 서버 : Vercel
+- 백엔드 서버 : CloudType
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 기술 스택
+- React
+- NextJS
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+|라이브러리|||
+|------|---|--|
+|Tanstack-query|zustand|axios|
+|tailwindCSS|socket.io|class-variance-authority|
+|dayjs|react-spring|chart.js|
 
-## Learn More
+|API||
+|------|---|
+|Kakao Map|Tosspayments|
 
-To learn more about Next.js, take a look at the following resources:
+|Tools||
+|------|---|
+|Git|Figma|
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+|Collaboration|||
+|------|---|---|
+|Github|Notion|Slack|
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### 기능 설명
+<details>
+  <summary></summary>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  ㅁㄴㅇㅁㄴㅇㅁㅇㄴㄴㅁㅇ
+</details>
