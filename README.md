@@ -1,53 +1,52 @@
-# Nabi
+# <img src="https://github.com/Nabi-06/Nabi/blob/develop/src/app/favicon.ico" width=25 height=25 alt="nabi logo" /> Nabi
 [나비 서비스](https://nabi-psi.vercel.app, "나비 서비스")
 
 나비는 경제적으로 어려움을 겪고 있는 아동과 후원자들을 연결하여 따뜻한 사회적 지원을 가능하게 하는 웹 서비스입니다. 나비는 아동급식카드 가맹점 위치 기반 검색, 후원아동을 위한 봉사자 모집과 커뮤니티 서비스, 정기 결연 등 다양한 후원자와 후원아동을 위한 서비스을 제공하여 아동과 후원자의 소통을 돕습니다.
 
-### 개발 기간
+### ⏰ 개발 기간
 `2024.10.08 ~ 2024.11.01`
 
-### 개발자 소개
+### 👥 개발자 소개
 - __양은석(팀장)__ : 정기 후원, 후원기금 모금, 지도 표시 및 검색, 알림, 토스트 , 로딩 애니메이션, DB 설계, 백엔드 개발, 반응형 구현, 데스크탑 UI 및 로고 디자인 등
 - __심우섭(팀원)__ : 프로필 화면, 후원 리포트 애니메이션 및 차트, 로그인, 회원가입, 봉사자 모집글 신청자 관리, 반응형 구현 등 
 - __조은진(팀원)__ : 홈 화면, 봉사자 모집글(CRUD), 감사인사(CRUD), 반응형 UI 디자인 및 구현 등
 
-### Database ERD
+### 📊 Database ERD
 ![DatabaseERD](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/DatabaseERD)
   
-### 개발 환경
+### 🧑‍💻 개발 환경
 - `Javascript`
 - `TypeScript`
 - Framework: NextJS
 - Database: supabase
 
-### 배포 환경
+### 🚀 배포 환경
 - 프론트엔드 서버 : Vercel
 - 백엔드 서버 : CloudType
 
-### 기술 스택
+### 📚 기술 스택
 - 프론트엔드 프레임워크 : NextJS
 - 백엔드 프레임워크 : Express
 
-|라이브러리|||
+|📕 라이브러리|||
 |------|---|--|
 |Tanstack-query|zustand|axios|
 |tailwindCSS|socket.io|class-variance-authority|
 |dayjs|react-spring|chart.js|
 
-|API|||
+|🌎 API|||
 |------|---|---|
 |[Kakao Map](https://apis.map.kakao.com/web/)|[Tosspayments](https://developers.tosspayments.com/)|[서울시 아동급식카드 가맹점 정보](https://data.seoul.go.kr/dataList/OA-15812/F/1/datasetView.do)|
 
-|Tools||
+|🛠️ Tools||
 |------|---|
 |Git|Figma|
 
-|Collaboration|||
+|🫂 Collaboration|||
 |------|---|---|
 |Github|Notion|Slack|
 
-
-### 주요 기능
+### 📝 주요 기능
 
 <details>
   <summary>봉사자 구인 커뮤니티</summary>
@@ -99,7 +98,7 @@
   - Chart.js를 활용한 차트 구현
 </details>
 
-### 세부 기능
+### 📝 세부 기능
 
 <details>
   <summary>로그인 / 회원가입</summary>
@@ -134,3 +133,19 @@
   - react-spring를 활용한 나비 애니메이션 구현
   - NextJS의 loading.tsx로 로딩화면 구현
 </details>
+
+
+### 👨‍🎨 반응형 디자인
+<details>
+  <summary>반응형 디자인 Views</summary>
+
+  ![home](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-home.png)
+  ![recruits](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-recruits.png)
+  ![profile](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-profile.png)
+  ![freemeal](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-freemeal.png)
+  ![map](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-map.png)
+  ![storeInfo](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-storeInfo.png)
+  ![chatlist](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-chatlist.png)
+  ![chatscreen](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-chatscreen.png)
+</details>
+
