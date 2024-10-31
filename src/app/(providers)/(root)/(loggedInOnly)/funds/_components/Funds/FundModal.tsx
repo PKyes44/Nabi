@@ -36,7 +36,7 @@ function FundModal({ domain }: FundModal) {
     <>
       {activeModal && (
         <Modal className="grid place-items-center">
-          <article className="w-96 h-72 bg-white rounded-lg py-5 px-10">
+          <article className="w-96 h-72 sm:w-[300px] sm:h-auto bg-white rounded-lg py-5 px-10">
             <h1 className="font-bold text-center text-xl mb-12">
               후원 기금 모금하기
             </h1>
@@ -46,7 +46,7 @@ function FundModal({ domain }: FundModal) {
             >
               <InputGroup
                 label="후원 모금액"
-                wrapperClassName="w-full"
+                wrapperClassName="w-full sm:text-xs"
                 defaultValue="10000"
                 helpText="최소 모금액은 10,000₩입니다"
                 name="amount"

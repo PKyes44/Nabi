@@ -79,8 +79,8 @@ function FundCheckOutPage({
   }, [widgets]);
 
   return (
-    <Container className="w-[700px] py-10 ">
-      <div className="box_section bg-white rounded-lg shadow-lg px-10 py-10">
+    <Container className="w-[700px] sm:w-[330px] py-10 pb-20 ">
+      <div className="box_section bg-white rounded-lg shadow-lg px-10 py-10 sm:px-5 sm:py-5">
         {/* 결제 UI */}
         <div id="payment-method" />
         {/* 이용약관 UI */}
@@ -91,7 +91,7 @@ function FundCheckOutPage({
           value="결제하기"
           intent="primary"
           textIntent="primary"
-          className="w-full py-2.5"
+          className="w-full py-2.5 sm:text-xs"
           disabled={!ready}
           onClick={async () => {
             const successUrl =

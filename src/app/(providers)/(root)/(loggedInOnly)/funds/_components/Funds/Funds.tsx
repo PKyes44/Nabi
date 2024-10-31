@@ -4,7 +4,7 @@ import Fund from "./Fund";
 
 function Funds() {
   return (
-    <article className=" bg-white h-[550px] mx-32 px-16 py-5 flex flex-col gap-y-5 rounded-lg shadow-sm">
+    <article className=" bg-white h-[550px] mx-32 px-16 py-5 flex flex-col gap-y-5 rounded-lg shadow-sm sm:mx-0">
       <h2 className="flex items-center mx-auto gap-x-2 font-bold">
         영역별 후원 기금 사업
       </h2>

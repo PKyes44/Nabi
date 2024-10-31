@@ -66,9 +66,12 @@ function ExpenseChart() {
           2023 지출
         </h2>
       </section>
-      <ul className="w-96 m-auto border-t-2 border-black pt-4">
+      <ul className="w-full m-auto border-t-2 border-black pt-4">
         {Object.values(expense).map((label, index) => (
-          <li key={label} className="flex items-center justify-between">
+          <li
+            key={label}
+            className="flex items-center justify-between sm:text-sm sm:mb-2"
+          >
             <div className="flex items-center gap-x-3">
               <div
                 style={{ background: data.datasets[0].backgroundColor[index] }}

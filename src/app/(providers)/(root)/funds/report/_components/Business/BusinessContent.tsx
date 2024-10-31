@@ -36,7 +36,7 @@ const allDonation = sumValue(donation);
 
 function BusinessContent() {
   return (
-    <section className="w-full h-[calc(235vh-64px)] bg-sky-100 items-center flex flex-col gap-y-10 px-7 py-16">
+    <section className="w-full bg-sky-100 items-center flex flex-col gap-y-10 px-7 py-16">
       <div className="flex flex-col items-center">
         <p>총 사업비</p>
         <p>
