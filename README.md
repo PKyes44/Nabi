@@ -100,16 +100,5 @@
 
 #### 모바일, 태블릿 사용자를 위한 반응형 디자인
 
-<details>
-  <summary>반응형 디자인 Views</summary>
-
-  ![home](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-home.png)
-  ![recruits](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-recruits.png)
-  ![profile](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-profile.png)
-  ![freemeal](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-freemeal.png)
-  ![map](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-map.png)
-  ![storeInfo](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-storeInfo.png)
-  ![chatlist](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-chatlist.png)
-  ![chatscreen](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-chatscreen.png)
-</details>
+  ![반응형디자인](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-screenshots.png)
 
