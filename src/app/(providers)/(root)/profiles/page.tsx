@@ -18,16 +18,20 @@ async function ProfilePage({ searchParams: { userId } }: ProfilePageProps) {
 
   return (
     <Container width="lg" className="my-10 py-5">
-      <div className="flex flex-wrap gap-y-5 w-full sm:gap-y-3">
-        <section className="min-w-[150px] flex flex-nowrap md:flex-wrap sm:flex-wrap gap-y-5 gap-x-7 sm:gap-y-3">
+      <div className="grid grid-cols-4 w-full gap-x-3 sm:grid-cols-1">
+        <section className="flex flex-col col-span-3 w-full gap-y-3">
           <ProfileDetails
             initialProfile={profile!}
             showUserId={profile.userId}
           />
-          <ProfileSideBar profile={profile!} />
+          <div className="hidden sm:block">
+            <ProfileSideBar profile={profile!} />
+          </div>
+          <FeedList userId={profile.userId} initialFeeds={initialFeeds} />
         </section>
-
-        <FeedList userId={profile.userId} initialFeeds={initialFeeds} />
+        <div className="sm:hidden">
+          <ProfileSideBar profile={profile!} />
+        </div>
       </div>
     </Container>
   );

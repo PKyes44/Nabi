@@ -5,16 +5,16 @@ import Navigation from "./Navigation";
 
 function HeaderNavigation() {
   const windowSize = useWindowSize();
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [isMobile, setIsMobile] = useState(true);
   useEffect(() => {
-    if (windowSize.width <= 1024) {
-      setIsDesktop(false);
+    if (windowSize.width <= 360) {
+      setIsMobile(false);
     } else {
-      setIsDesktop(true);
+      setIsMobile(true);
     }
   }, [windowSize]);
 
-  return isDesktop ? (
+  return isMobile ? (
     <Navigation />
   ) : (
     <div className="fixed bottom-0 left-0 h-12 w-screen bg-white flex justify-center">

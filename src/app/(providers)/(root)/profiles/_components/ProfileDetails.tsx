@@ -23,7 +23,7 @@ function ProfileDetails({ showUserId, initialProfile }: ProfileDetailsProps) {
     initialData: initialProfile,
   });
   return (
-    <section className="w-[850px] aspect-[2.125/1] border border-gray-100 bg-white rounded-lg overflow-hidden">
+    <section className="w-full aspect-[2.125/1] border border-gray-100 bg-white rounded-lg overflow-hidden">
       {profile?.bgImageUrl ? (
         <Image
           width={100}

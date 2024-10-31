@@ -42,7 +42,7 @@ function RegularSponsorShip() {
       successUrl:
         window.location.origin +
         `/regular-sponsorship/billing/${recipientId}/${price}`,
-      failUrl: window.location.origin + "/regular-sponsorship/fail",
+      failUrl: window.location.origin + "/fail",
       customerEmail: user.email,
       customerName: userProfile.nickname,
     });
@@ -72,7 +72,7 @@ function RegularSponsorShip() {
   }, [currentUser]);
 
   return (
-    <div className="flex flex-col gap-y-[70px] py-10 justify-between sm:py-5 sm:px-5 w-full sm:gap-y-10">
+    <div className="flex flex-col gap-y-[70px] px-10 py-10 justify-between sm:py-5 sm:px-5 w-full sm:gap-y-10">
       <h1 className="font-bold text-3xl text-center sm:text-lg">
         정기 후원하기
       </h1>

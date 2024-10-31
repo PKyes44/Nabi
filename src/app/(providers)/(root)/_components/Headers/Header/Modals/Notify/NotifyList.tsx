@@ -5,7 +5,7 @@ function NotifyList() {
   const notifyList = useNotifyStore((state) => state.notifyList);
 
   return (
-    <ul className="px-2 py-2 border border-gray-200 shadow-sm rounded-lg bg-white w-80 flex flex-col gap-y-1 sm:w-52">
+    <ul className="px-2 py-2 border border-gray-200 shadow-sm rounded-lg bg-white w-80 flex flex-col gap-y-1 md:w-60 sm:w-52">
       {notifyList.length !== 0 &&
         notifyList.reverse().map((notify, index) => (
           <li key={index}>
