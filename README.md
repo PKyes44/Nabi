@@ -46,7 +46,6 @@
 |------|---|---|
 |Github|Notion|Slack|
 
-
 ### 주요 기능
 
 <details>
@@ -134,3 +133,19 @@
   - react-spring를 활용한 나비 애니메이션 구현
   - NextJS의 loading.tsx로 로딩화면 구현
 </details>
+
+
+### 반응형 디자인
+<details>
+  <summary>반응형 디자인 Views</summary>
+
+  - ![home](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-home.png)
+  - ![recruits](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-recruits.png)
+  - ![profile](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-profile.png)
+  - ![freemeal](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-freemeal.png)
+  - ![map](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-map.png)
+  - ![storeInfo](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-storeInfo.png)
+  - ![chatlist](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-chatlist.png)
+  - ![chatscreen](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-chatscreen.png)
+</details>
+
