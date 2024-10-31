@@ -41,14 +41,14 @@ function FreeMeals({ initialFreeMeals }: FreeMealsProps) {
   }, [windowSize]);
 
   return (
-    <div className="flex flex-col gap-y-6 bg-white border rounded-md px-5 py-7 sm:h-full">
-      <div className="flex items-center gap-x-2 ">
+    <div className="flex flex-col gap-y-6 bg-white border rounded-md px-5 py-7 sm:h-full sm:py-5 sm:gap-y-3">
+      <div className="flex items-center gap-x-2">
         <Image
           src={mealImgUrl}
           width={24}
           height={24}
           alt="무상식사"
-          className="-mt-1"
+          className="-mt-1 sm:hidden"
         />
         <h5 className="sm:text-xs">새롭게 등록된 무상식사</h5>
       </div>

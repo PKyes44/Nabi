@@ -23,22 +23,22 @@ function FreeMeal({ freeMeal }: FreeMealProps) {
       }
     >
       <div className="flex flex-col">
-        <span className="font-bold text-xs">후원자</span>
+        <span className="font-bold text-xs sm:text-[0.7rem]">후원자</span>
         <Link href={`/profiles/${sponsor.userId}`}>{sponsor.nickname}</Link>
       </div>
 
-      <div className="flex flex-col">
-        <span className="font-bold text-xs">매장명</span>
+      <div className="flex flex-col ">
+        <span className="font-bold text-xs sm:text-[0.7rem]">매장명</span>
         <span className="not-italic">{store.brandName}</span>
       </div>
 
       <div className="flex flex-col">
-        <span className="font-bold text-xs">매장 주소</span>
+        <span className="font-bold text-xs sm:text-[0.7rem]">매장 주소</span>
         <address className="not-italic">{store.address}</address>
       </div>
 
       <div className="flex flex-col">
-        <span className="font-bold text-xs">일시</span>
+        <span className="font-bold text-xs sm:text-[0.7rem]">일시</span>
         <address className="not-italic ">
           {dayjs(date).format("YYYY-MM-DD HH:mm")}
         </address>

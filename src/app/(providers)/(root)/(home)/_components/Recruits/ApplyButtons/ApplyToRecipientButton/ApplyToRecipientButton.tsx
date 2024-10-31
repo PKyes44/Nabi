@@ -29,7 +29,7 @@ function ApplyToRecipientButton({
       intent="red"
       textIntent="red"
       value="모집 마감"
-      className="ml-auto"
+      className="ml-auto sm:text-xs"
       disabled
     />
   ) : userId !== authorId && userStatus ? (
@@ -38,7 +38,7 @@ function ApplyToRecipientButton({
         intent="disabled"
         textIntent="disabled"
         value="승인 대기 중"
-        className="ml-auto"
+        className="ml-auto sm:text-xs"
         disabled
       />
     ) : userStatus.status === "approved" ? (
@@ -46,7 +46,7 @@ function ApplyToRecipientButton({
         intent="green"
         textIntent="green"
         value="승인됨"
-        className="ml-auto"
+        className="ml-auto sm:text-xs"
         disabled
       />
     ) : userStatus.status === "rejected" ? (
@@ -54,7 +54,7 @@ function ApplyToRecipientButton({
         intent="red"
         textIntent="red"
         value="거절됨"
-        className="ml-auto"
+        className="ml-auto sm:text-xs"
         disabled
       />
     ) : null
@@ -63,7 +63,7 @@ function ApplyToRecipientButton({
       onClick={handleClickApplyButton}
       intent="primary"
       textIntent="primary"
-      className="ml-auto"
+      className="ml-auto sm:text-xs"
       value="후원 신청"
     />
   );

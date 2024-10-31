@@ -31,7 +31,7 @@ function OthersButton({ authorId, recruitId }: UpdateRecruitButtonProps) {
           <article className="bg-white rounded-lg border border-gray-200 shadow-lg py-2 px-3 right-5 absolute w-28 flex flex-col items-center gap-y-1">
             <Link
               href={`recruits/applies/${recruitId}`}
-              className="text-sm text-center px-2"
+              className="text-sm text-center px-2 sm:text-xs"
             >
               신청자 확인
             </Link>
@@ -39,14 +39,14 @@ function OthersButton({ authorId, recruitId }: UpdateRecruitButtonProps) {
             <Link
               onClick={handleToggleOthers}
               href={`recruits/edit/${recruitId}`}
-              className="text-center text-sm rounded-md"
+              className="text-center text-sm rounded-md sm:text-xs"
             >
               수정하기
             </Link>
-            <hr className="border-[0.5px] w-full border-gray-200" />
+            <hr className="border-[0.5px] w-full border-gray-200 " />
             <button
               onClick={handleClickDeleteRecruit}
-              className="text-sm text-center px-2"
+              className="text-sm text-center px-2 sm:text-xs"
             >
               삭제하기
             </button>

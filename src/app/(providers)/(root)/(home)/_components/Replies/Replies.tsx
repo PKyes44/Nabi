@@ -23,18 +23,18 @@ function Replies({ replies, recruitId }: RepliesProps) {
           <Image
             width={100}
             height={100}
-            className="w-4 aspect-square"
+            className="w-4 aspect-square sm:w-2"
             src={THANKS_COMMENT_ICON}
             alt="reply icon"
           />
-          <span className="text-xs text-gray-700">
+          <span className="text-xs text-gray-700 text-[9px]">
             감사인사 ({replies?.length})
           </span>
         </div>
         <ThumbUpButton recruitId={recruitId} />
       </div>
 
-      <CreateRecruitsReply recruitId={recruitId} />
+      {replies?.length === 0 && <CreateRecruitsReply recruitId={recruitId} />}
 
       {replies ? (
         replies.length !== 0 ? (

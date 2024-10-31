@@ -16,13 +16,13 @@ function CreateRecruitButton() {
       {currentUser?.role === "sponsor" && (
         <Link
           href="/recruits/new"
-          className="w-full mb-5 grid place-items-center bg-white text-center py-3 text-[15px] font-paperlogy shadow-sm"
+          className="w-full mb-5 grid place-items-center bg-white text-center py-3 text-[15px] shadow-sm rounded-md sm:text-xs sm:mb-2"
         >
           <div className="flex items-center gap-x-3">
             <Image
               width={100}
               height={100}
-              className="w-8 aspect-square"
+              className="w-8 aspect-square sm:w-3"
               src={CREATE_RECRUIT_BUTTON_IMAGE}
               alt="create recruits button"
             />

@@ -31,14 +31,14 @@ function Reply({ reply }: ReplyProps) {
         className="w-7 aspect-square object-cover rounded-full"
       />
       <article className="w-full bg-white border rounded-md px-4 py-3 flex justify-between">
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 sm:gap-y-1">
           <span className="font-semibold text-xs">
             {reply.userProfiles.nickname}
           </span>
-          <p className="text-sm">{reply.content}</p>
+          <p className="text-sm sm:text-xs">{reply.content}</p>
         </div>
 
-        <span className="text-gray-400 text-xs whitespace-nowrap">
+        <span className="text-gray-400 text-xs whitespace-nowrap sm:text-[9px]">
           {createdAt}
         </span>
       </article>
