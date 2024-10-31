@@ -2,17 +2,15 @@
 
 import Container from "@/components/Container/Container";
 import useWindowSize from "@/components/Hooks/WindowSize.hooks";
+import { useSearchParams } from "next/navigation";
 import DefaultChat from "./_components/DefaultScreen/DefaultScreen";
 import MobileChat from "./_components/Mobile/MobileChat";
 
-interface ChatPageProps {
-  searchParams: {
-    showChatUserId: string;
-  };
-}
-
-function ChatPage({ searchParams: { showChatUserId } }: ChatPageProps) {
+function ChatPage() {
   const windowSize = useWindowSize();
+
+  const searchParams = useSearchParams();
+  const showChatUserId = searchParams.get("showChatUserId");
 
   return (
     <Container width="lg" isMain className="pt-5">
