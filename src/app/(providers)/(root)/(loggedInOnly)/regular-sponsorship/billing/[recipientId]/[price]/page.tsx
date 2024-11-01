@@ -47,12 +47,10 @@ function RegularSponsorShipBillingPage({
       recipientId: string;
     }) => clientApi.regularSponsorShip.getBillingKey(requestData),
     onSuccess: (responseData: PaymentResponse) => {
-      console.log("success:", responseData);
       setReceipt(responseData);
       addRegularSponsorShipTable();
     },
     onError: (data: { message: string; code: string }) => {
-      console.log("error: ", data);
       router.replace(`/fail?code=${data.code}&message=${data.message}`);
     },
   });

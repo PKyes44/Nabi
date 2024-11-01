@@ -8,7 +8,6 @@ interface MobileChatProps {
 }
 
 function MobileChat({ showChatUserId }: MobileChatProps) {
-  console.log("showChatUserId at mobile chat: ", showChatUserId);
   return showChatUserId ? (
     <ChatScreen showChatUserId={showChatUserId} />
   ) : (

@@ -158,7 +158,6 @@ function ProfileEditForm({ profileImage, bgImage }: ProfileEditForm) {
 
       return setProfileImagePreview(imageUrl);
     };
-    reader.onerror = (error) => console.log("Error: ", error);
   };
 
   return (

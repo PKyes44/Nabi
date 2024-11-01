@@ -43,7 +43,6 @@ function SuccessPage({
         domain: decodeURIComponent(domain),
       }),
     onSuccess: (data) => {
-      console.log(data);
       setResponseData(data);
     },
     onError: (error: { code: string; message: string }) => {

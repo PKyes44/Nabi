@@ -32,7 +32,6 @@ function AuthProvider({ children }: PropsWithChildren) {
       const response = await clientApi.profiles.getProfileByUserId(userId);
       const role = response?.role as "sponsor" | "recipient";
       const currentUser = { userId, role };
-      // console.log("login session: ", currentUser);
       setCurrentUser(currentUser);
     })();
   }, [isLoggedIn]);

@@ -20,8 +20,6 @@ function NotificationProvider({ children }: PropsWithChildren) {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "freeMeals" },
         async (payload) => {
-          console.log("FreeMeals Table Change received!", payload);
-
           const { data: user } = await supabase.auth.getUser();
 
           if (!user) return;
@@ -70,8 +68,6 @@ function NotificationProvider({ children }: PropsWithChildren) {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chats" },
         async (payload) => {
-          console.log("Chats Table Change received!", payload);
-
           const from = payload.new.from;
           const to = payload.new.to;
 
@@ -79,8 +75,6 @@ function NotificationProvider({ children }: PropsWithChildren) {
 
           if (!user) return;
           if (user.user?.id !== to) return;
-
-          console.log("received chat !");
 
           const sendUser = await clientApi.profiles.getProfileByUserId(to);
 
@@ -111,7 +105,6 @@ function NotificationProvider({ children }: PropsWithChildren) {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "sponsorShipOrder" },
         async (payload) => {
-          console.log("sponsorship order Table Change received!", payload);
           const sponsorShipId = payload.new.sponsorShipId;
           const sponsorShipData =
             await clientApi.sponsorShip.getSponsorShipBySponsorShipId(
@@ -144,7 +137,6 @@ function NotificationProvider({ children }: PropsWithChildren) {
             url,
             notifiedAt,
           };
-          console.log("notify: ", notify);
           addNotify(notify);
           setIsCheckedNotifyList(false);
         }
@@ -159,8 +151,6 @@ function NotificationProvider({ children }: PropsWithChildren) {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "sponsorShip" },
         async (payload) => {
-          console.log("sponsorship Table Change received!", payload);
-
           const recipientId = payload.new.recipientId;
 
           const { data: user } = await supabase.auth.getUser();

@@ -71,7 +71,6 @@ function useLogIn() {
         type,
       };
       addToast(toast);
-      console.log("error: ", arg);
     },
   });
 

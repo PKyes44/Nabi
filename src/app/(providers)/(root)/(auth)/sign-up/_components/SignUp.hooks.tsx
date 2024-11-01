@@ -40,8 +40,6 @@ function useSignUp(role: SignUpHookProps) {
   const { mutate: signUp } = useMutation({
     mutationFn: (userInfo: UserInfo) => clientApi.auth.signUp(userInfo),
     onSuccess: (userData) => {
-      console.log("success: ", userData.user!.id);
-
       if (!nickname) return throwErrMsgs("nickname", "닉네임을 입력해주세요");
       if (!email) return throwErrMsgs("email", "이메일을 입력해주세요");
 
@@ -67,7 +65,6 @@ function useSignUp(role: SignUpHookProps) {
         type,
       };
       addToast(toast);
-      console.log("sign up error: ", arg);
     },
   });
 
@@ -94,7 +91,7 @@ function useSignUp(role: SignUpHookProps) {
       addToast(toast);
       router.replace("/");
     },
-    onError: (...arg) => {
+    onError: () => {
       const id = crypto.randomUUID();
       const title = "회원가입 실패";
       const content = "회원가입에 실패하였습니다";
@@ -106,7 +103,6 @@ function useSignUp(role: SignUpHookProps) {
         type,
       };
       addToast(toast);
-      console.log("insert profile error : ", arg);
     },
   });
 
