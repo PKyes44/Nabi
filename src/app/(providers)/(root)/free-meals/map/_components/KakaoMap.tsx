@@ -81,8 +81,7 @@ function KakaoMap({
     currentCluerster: kakao.maps.MarkerClusterer,
     isRegisted: boolean
   ) => {
-    if (!currentCluerster)
-      return console.log("currentCluerster is", currentCluerster);
+    if (!currentCluerster) return;
 
     const imageSrc = isRegisted
         ? "https://gxoibjaejbmathfpztjt.supabase.co/storage/v1/object/public/icons/Shop.png"
@@ -216,8 +215,7 @@ function KakaoMap({
           const swLatLng = bounds.getSouthWest();
           const neLatLng = bounds.getNorthEast();
 
-          if (isNaN(swLatLng.La) || isNaN(swLatLng.Ma))
-            return console.log("map is undefined");
+          if (isNaN(swLatLng.La) || isNaN(swLatLng.Ma)) return;
           if (isNaN(neLatLng.La) || isNaN(neLatLng.Ma)) return;
 
           const requestData = {
@@ -244,8 +242,7 @@ function KakaoMap({
       const swLatLng = bounds.getSouthWest();
       const neLatLng = bounds.getNorthEast();
 
-      if (isNaN(swLatLng.La) || isNaN(swLatLng.Ma))
-        return console.log("map is undefined");
+      if (isNaN(swLatLng.La) || isNaN(swLatLng.Ma)) return;
       if (isNaN(neLatLng.La) || isNaN(neLatLng.Ma)) return;
 
       const requestData = {
@@ -255,9 +252,8 @@ function KakaoMap({
       clientApi.storeData
         .getStoreDatasBySwLatLngAndNeLatLng(requestData)
         .then((res) => {
-          if (res.length === 0) return console.log("storeData is ", res.length);
+          if (res.length === 0) return;
           if (isSelectedStore) {
-            console.log("show selected store");
             const storeData = res?.find(
               (store) =>
                 Math.floor(store.lat) === Math.floor(currentStore.lat) &&

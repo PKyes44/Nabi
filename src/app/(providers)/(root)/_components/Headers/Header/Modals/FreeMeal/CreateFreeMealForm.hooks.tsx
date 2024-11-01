@@ -46,9 +46,8 @@ function useCreateFreeMealForm() {
   const { mutate: insertFreeMeal } = useMutation({
     mutationFn: (insertData: TablesInsert<"freeMeals">) =>
       clientApi.freeMeals.insertFreeMeals(insertData),
-    onSuccess: (...arg) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["freeMeals"] });
-      console.log("success: ", arg);
       const toast: ToastType = {
         id: crypto.randomUUID(),
         title: "무상식사 공지 업로드 성공",
@@ -58,8 +57,7 @@ function useCreateFreeMealForm() {
       addToast(toast);
       setActiveModal(null);
     },
-    onError: (...arg) => {
-      console.log("error: ", arg);
+    onError: () => {
       const toast: ToastType = {
         id: crypto.randomUUID(),
         title: "무상식사 공지 업로드 실패",

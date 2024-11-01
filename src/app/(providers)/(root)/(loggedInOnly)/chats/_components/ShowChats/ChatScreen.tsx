@@ -56,9 +56,7 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
         user?.userId,
         targetProfile!.userId,
         userProfile!.nickname,
-        () => {
-          console.log("entered Room");
-        }
+        () => {}
       );
     }
 
@@ -76,7 +74,6 @@ function ChatScreen({ showChatUserId }: ChatScreenProps) {
     });
 
     return () => {
-      console.log("leavedRoom");
       socket.off("disconnecting");
     };
   }, [userProfile, targetProfile, socket, chatLogs]);

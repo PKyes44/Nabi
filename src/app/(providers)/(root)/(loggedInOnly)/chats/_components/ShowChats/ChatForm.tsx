@@ -31,7 +31,7 @@ function ChatForm({
     const msg = e.target.message.value;
 
     if (msg.length === 0) return;
-    if (!roomId) return console.log("roomId is null : ", roomId);
+    if (!roomId) return;
 
     socket.emit(
       "newMessage",
