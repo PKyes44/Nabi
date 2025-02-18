@@ -48,6 +48,16 @@
 |Notion|
 |Slack|
 
+### 📌 기술적 의사결정
+
+|기술|설명|
+|--|---------|
+|next.js|next.js는 기존 React와 달리 SSR을 지원해 SEO에 유리해지고, 페이지를 변경할 때마다 CSR방식으로 처리하기 때문에 SPA의 장점도 유지할 수 있다는 장점이 있어 사용하였습니다|
+|tanstack-query|데이터 캐싱, 네트워크 상태 제공, 자동 refetch 지원 등 서비스의 다양한 면에서 최적화된 기능을 지원하는 서버 상태 관리 라이브러리이기 때문에 사용하였습니다|
+|zustand|ContextAPI에 비해 보일러플레이트 코드가 적고, redux DevTools를 사용할 수 있어 디버깅에 용이하며, 상태 변경 시 불필요한 리렌더링을 최소화하기 좋다는 장점을 지녀 사용하게 되었습니다|
+|socket.io|WebSocket과 달리 사용자의 브라우저, 네트워크 상태에 따라 세 가지 양방향 통신 방식을 지원하고 room 기능과 같이 실시간 채팅 기능을 간편하게 만들 수 있도록 여러 기능을 지원하여 사용하게 되었습니다|
+
+
 ### 📝 주요 기능
 
 #### 카카오맵 API와 공공데이터를 결합한 아동급식카드 가맹점 지도 검색 및 무상식사 지원 [WIKI 링크](https://github.com/Nabi-06/Nabi/wiki/%EC%95%84%EB%8F%99%EA%B8%89%EC%8B%9D%EC%B9%B4%EB%93%9C-%EA%B0%80%EB%A7%B9%EC%A0%90-%EC%A7%80%EB%8F%84-%EA%B2%80%EC%83%89-%EB%B0%8F-%EB%AC%B4%EC%83%81%EC%8B%9D%EC%82%AC-%EC%A7%80%EC%9B%90-WIKI, "WIKI 링크")
@@ -102,13 +112,4 @@
 #### 모바일, 태블릿 사용자를 위한 반응형 디자인
 
   ![반응형디자인](https://github.com/Nabi-06/Nabi/blob/develop/ScreenShots/Views/Responsive/responsive-screenshots.png)
-
-### 📌 기술적 의사결정
-
-|기술|설명|
-|--|---------|
-|next.js|next.js는 기존 React와 달리 SSR을 지원해 SEO에 유리해지고, 페이지를 변경할 때마다 CSR방식으로 처리하기 때문에 SPA의 장점도 유지할 수 있다는 장점이 있어 사용하였습니다|
-|tanstack-query|데이터 캐싱, 네트워크 상태 제공, 자동 refetch 지원 등 서비스의 다양한 면에서 최적화된 기능을 지원하는 서버 상태 관리 라이브러리이기 때문에 사용하였습니다|
-|zustand|ContextAPI에 비해 보일러플레이트 코드가 적고, redux DevTools를 사용할 수 있어 디버깅에 용이하며, 상태 변경 시 불필요한 리렌더링을 최소화하기 좋다는 장점을 지녀 사용하게 되었습니다|
-|socket.io|WebSocket과 달리 사용자의 브라우저, 네트워크 상태에 따라 세 가지 양방향 통신 방식을 지원하고 room 기능과 같이 실시간 채팅 기능을 간편하게 만들 수 있도록 여러 기능을 지원하여 사용하게 되었습니다|
 
